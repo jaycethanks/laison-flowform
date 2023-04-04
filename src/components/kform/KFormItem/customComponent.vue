@@ -1,0 +1,95 @@
+<!--
+ * @Descripttion: 
+ * @Author: kcz
+ * @Date: 2021-05-02 16:04:02
+ * @LastEditors: your name
+ * @LastEditTime: 2022-11-24 19:00:44
+-->
+<template>
+  <a-form-item
+    :label="record.label"
+    :label-col="formConfig.layout === 'horizontal' ? (formConfig.labelLayout === 'flex' ? { style: `width:${formConfig.labelWidth}px` } : formConfig.labelCol) : {}"
+    :wrapper-col="formConfig.layout === 'horizontal' ? (formConfig.labelLayout === 'flex' ? { style: 'width:auto;flex:1' } : formConfig.wrapperCol) : {}"
+    :style="formConfig.layout === 'horizontal' && formConfig.labelLayout === 'flex' ? { display: 'flex' } : {}"
+  >
+    <component
+      ref="actualCusComp"
+      :record="record"
+      :style="`width:${record.options.width}`"
+      @change="handleChange"
+      @input="handleInput"
+      :disabled="disabled"
+      :showType="showType"
+      :dynamicData="dynamicData"
+      :sunOfProps="sunOfProps"
+      :stockRecord="stockRecord"
+      :rootCompent="rootCompent"
+      :conditions="cd"
+      :options="record.options"
+      :height="typeof record.options.height !== 'undefined' ? record.options.height : ''"
+      v-decorator="[
+        record.model,
+        {
+          initialValue: record.options.defaultValue,
+          rules: record.rules,
+        },
+      ]"
+      :is="customComponent"
+    ></component>
+  </a-form-item>
+</template>
+<script>
+export default {
+  name: 'customComponent',
+  props: ['record', 'formConfig', 'disabled', 'dynamicData', 'sunOfProps', 'stockRecord', 'rootCompent', 'showType'],
+  watch: {
+    disabled: {
+      handler(val, oldVal) {},
+      deep: true,
+      //确认是否以当前的初始值执行handler的函数。
+      immediate: true,
+    },
+  },
+  created() {
+    //console.log('传进来的数据是', this.dynamicData)
+  },
+  computed: {
+    customComponent() {
+      // 计算需要显示的组件
+      const customComponentList = {}
+      if (window.$customComponentList) {
+        // 将数组映射成json
+        window.$customComponentList.forEach((item) => {
+          customComponentList[item.type] = item.component
+        })
+      }
+      window.re = customComponentList[this.record]
+      window.cm = customComponentList[this.record.type]
+      return customComponentList[this.record.type]
+    },
+    cd() {
+      try {
+        if (this.record.options.data) {
+          return JSON.parse(this.record.options.data)
+        }
+      } catch (error) {
+        console.error('JSON.parse(this.record.options.data) 发生错误', this.record)
+      }
+    },
+  },
+  methods: {
+    handleChange(value, key) {
+      // console.log('自定义组件捕获change传值', value, this.record.model)
+      this.$emit('change', value, this.record.model)
+    },
+    handleInput(value, key) {
+      //console.log('自定义组件捕获input', value, this.record.model)
+      this.$emit('input', value, this.record.model)
+    },
+  },
+  mounted() {
+    //console.log("customer compnent mounted",this.record)
+  },
+}
+</script>
+
