@@ -1,10 +1,11 @@
 {
   "name": "laison-flowform",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
+  "main": "dist/laison-flowform.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib index.js --name laison-flowform --dest dist",
     "pkg": "rollup -c build/rollup.config.js",
     "build:component": "rollup --config build/rollup.config.js --format es"
   },

@@ -20,12 +20,32 @@
 </template>
 
 <script>
+// https://cli.vuejs.org/zh/guide/build-targets.html#web-components-%E7%BB%84%E4%BB%B6
 import FormPreviewer from '@/components/FormPreviewer/index.vue';
 import ProcessList from '@/components/FlowFormDesigner/comps/ProcessList.vue';
 import FlowFormDesigner from '@/components/FlowFormDesigner/index.vue';
+import JeecgComponents from '@/components/jeecg/index';
+
+// https://stackoverflow.com/a/53396524/12261182
+import Vue from 'vue';
+import VueI18n from 'vue-i18n';
+Vue.use(JeecgComponents);
+Vue.use(VueI18n);
+const languages = {
+  en: {},
+};
+const messages = Object.assign(languages);
+
+const i18n = new VueI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages,
+});
 // import LaisonStockList from '@/components/laison/LaisonStockList.vue'
 
 export default {
+  name: 'App',
+  i18n: i18n,
   data() {
     return {
       showIndex: true,
