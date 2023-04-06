@@ -4,6 +4,7 @@
     <div v-if="showIndex" class="flow_form_index_page" style="height: 100%">
       <!-- prettier-ignore -->
       <a-button @click="record = null;showIndex = false">新建流程表单</a-button>
+      <FormPreviewer />
       <ProcessList
         style="height: calc(100% - 62px)"
         @edit="
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import FormPreviewer from '@/components/FormPreviewer/index.vue';
 import ProcessList from '@/components/FlowFormDesigner/comps/ProcessList.vue';
 import FlowFormDesigner from '@/components/FlowFormDesigner/index.vue';
 // import LaisonStockList from '@/components/laison/LaisonStockList.vue'
@@ -33,6 +35,7 @@ export default {
   components: {
     FlowFormDesigner,
     ProcessList,
+    FormPreviewer,
     // LaisonStockList,
   },
   mounted() {},

@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import { MyProcessDesigner, MyProcessPenal } from '@/components/bpmnpd/package/index.js';
 import translations from '@/components/bpmnpd/src/translations';
 // 自定义渲染（隐藏了 label 标签）
 import CustomRenderer from '@/components/bpmnpd/src/modules/custom-renderer';
@@ -90,7 +91,7 @@ import MyProcessPalette from '@/components/bpmnpd/package/palette/ProcessPalette
 // import { xmlStr } from '@/bpmnJs/mockBpmnXml/bpmnMockXml'
 export default {
   name: 'App',
-  components: { MyProcessPalette },
+  components: { MyProcessPalette, MyProcessDesigner, MyProcessPenal },
   props: ['height', 'bpmnEditDataInit'],
   data() {
     return {

@@ -22,7 +22,13 @@
       </a-tooltip>
     </div>
     <div id="print-target-id">
-      <k-form-build :value="jsonData" @submit="handleSubmit" @input="handleInput" ref="KFormBuild" @change="handleChange" />
+      <k-form-build
+        :value="jsonData"
+        @submit="handleSubmit"
+        @input="handleInput"
+        ref="KFormBuild"
+        @change="handleChange"
+      />
       <jsonModel ref="jsonModel" />
     </div>
   </j-modal>
@@ -46,7 +52,8 @@
  * author kcz
  * date 2019-11-20
  */
-import jsonModel from '../KFormDesign/module/jsonModal'
+import jsonModel from '../KFormDesign/module/jsonModal';
+import KFormBuild from '../KFormBuild';
 
 export default {
   name: 'KFormPreview',
@@ -56,52 +63,53 @@ export default {
       previewWidth: 1000,
       jsonData: {},
       isFullScreen: false,
-    }
+    };
   },
   components: {
     jsonModel,
+    KFormBuild,
   },
   created() {
-    window.aa = this
+    window.aa = this;
   },
   mounted() {
     // @jayce jsEnhance
     try {
       if (this.jsonData.config && this.jsonData.config.jsEnhance) {
-        Function('"use strict";' + this.jsonData.config.jsEnhance)()
+        Function('"use strict";' + this.jsonData.config.jsEnhance)();
       }
     } catch (err) {
-      console.error('accur error duaring jsEnhance execution:', err)
+      console.error('accur error duaring jsEnhance execution:', err);
     }
   },
   methods: {
     handleSubmit(p) {
       p.then((res) => {
-        console.log(res, '获取数据成功')
-        this.$refs.jsonModel.jsonData = res
-        this.$refs.jsonModel.visible = true
+        console.log(res, '获取数据成功');
+        this.$refs.jsonModel.jsonData = res;
+        this.$refs.jsonModel.visible = true;
       }).catch((err) => {
-        console.error(err, '获取数据失败')
-      })
+        console.error(err, '获取数据失败');
+      });
     },
     handleGetData() {
       this.$refs.KFormBuild.getData()
         .then((res) => {
-          console.log(res, '获取数据成功')
-          this.$refs.jsonModel.jsonData = res
-          this.$refs.jsonModel.visible = true
+          console.log(res, '获取数据成功');
+          this.$refs.jsonModel.jsonData = res;
+          this.$refs.jsonModel.visible = true;
         })
         .catch((err) => {
-          console.log(err, '获取数据失败')
-        })
+          console.log(err, '获取数据失败');
+        });
     },
     handleCancel() {
-      this.visible = false
+      this.visible = false;
     },
     handleInput(value, key) {
-      console.log('有收到input 吗', value, key)
-      console.log(this.jsonData)
-      window.kfp = this
+      console.log('有收到input 吗', value, key);
+      console.log(this.jsonData);
+      window.kfp = this;
     },
     handleChange(value, key) {
       // console.log('有收到change吗', value, key)
@@ -111,8 +119,8 @@ export default {
 
     // ---------------------------------------custom start-----------------------------------
     printHandler() {
-      console.log('hello', '--line78')
+      console.log('hello', '--line78');
     },
   },
-}
+};
 </script>
