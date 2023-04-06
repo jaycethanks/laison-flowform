@@ -4,14 +4,7 @@
       :propModalHeight="propModalHeight"
       :showHead="false"
       ref="kfd"
-      :toolbars="[
-        'preview',
-        'exportJson',
-        'exportCode',
-        'reset',
-        'undo',
-        'redo',
-      ]"
+      :toolbars="['preview', 'exportJson', 'exportCode', 'reset', 'undo', 'redo']"
       @save="handleSave"
     />
     <!-- <DesignLabelForm @okForm="onFormSave" ref="modalForm"></DesignLabelForm> -->
@@ -20,15 +13,15 @@
 
 <script>
 // import DesignLabelForm from '@/components/designform/DesignLabelForm'
-import KFormDesign from '@/components/kform/KFormDesign'
-import LaisonInputMeterSelect from '@/components/laison/LaisonInputMeterSelect'
-import API from '@api/ActZForm'
+import KFormDesign from '@/components/kform/KFormDesign';
+// import LaisonInputMeterSelect from '@/components/laison/LaisonInputMeterSelect'
+import API from '@/api/ActZForm';
 export default {
   name: 'FormDesignView',
   components: {
     // DesignLabelForm,
     KFormDesign,
-    LaisonInputMeterSelect,
+    // LaisonInputMeterSelect,
   },
   props: ['height'],
   data() {
@@ -80,35 +73,35 @@ export default {
           customStyle: '',
         },
       },
-    }
+    };
   },
   computed: {
     propModalHeight() {
-      return this.height
+      return this.height;
     },
   },
   methods: {
     handleSave(jsonForm) {
-      console.log(jsonForm, '--line95')
-      let objectForm = JSON.parse(jsonForm)
+      console.log(jsonForm, '--line95');
+      let objectForm = JSON.parse(jsonForm);
       if (!objectForm || !objectForm.list || objectForm.list.length < 1) {
-        this.$message.error(this.$t('order.pleaseDesignFrom'))
-        return
+        this.$message.error(this.$t('order.pleaseDesignFrom'));
+        return;
       }
-      this.$refs.modalForm.formInfo.jsonForm = jsonForm
-      this.$refs.modalForm.title = this.$t('common.edit')
-      this.$refs.modalForm.visible = true
+      this.$refs.modalForm.formInfo.jsonForm = jsonForm;
+      this.$refs.modalForm.title = this.$t('common.edit');
+      this.$refs.modalForm.visible = true;
     },
     onFormSave(formInfo) {
       //清空数据
-      window.hjxcx = this.$refs.kfd
-      this.$refs.kfd.clearData()
-      this.$emit('operatOK', formInfo)
+      window.hjxcx = this.$refs.kfd;
+      this.$refs.kfd.clearData();
+      this.$emit('operatOK', formInfo);
     },
     resetData() {},
     importData(item) {
-      this.$refs.modalForm.formInfo = item
-      this.$refs.kfd.handleSetData(JSON.parse(item.jsonForm))
+      this.$refs.modalForm.formInfo = item;
+      this.$refs.kfd.handleSetData(JSON.parse(item.jsonForm));
     },
     // fetchFormData() {
     //   return JSON.stringify(this.$refs.kfd.$data.data)
@@ -121,5 +114,5 @@ export default {
     },
   },
   mounted() {},
-}
+};
 </script>

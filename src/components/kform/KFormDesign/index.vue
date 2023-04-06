@@ -50,11 +50,7 @@
             </a-collapse-panel>
             <!-- 基础控件 end -->
             <!-- 自定义控件 start -->
-            <a-collapse-panel
-              v-if="customComponents.list.length > 0"
-              :header="customComponents.title"
-              key="3"
-            >
+            <a-collapse-panel v-if="customComponents.list.length > 0" :header="customComponents.title" key="3">
               <collapseItem
                 :list="customComponents.list"
                 @generateKey="generateKey"
@@ -131,11 +127,7 @@
               <formProperties :config="data.config" :previewOptions="previewOptions" />
             </a-tab-pane>
             <a-tab-pane :key="2" tab="控件属性设置">
-              <formItemProperties
-                class="form-item-properties"
-                :selectItem="selectItem"
-                :hideModel="hideModel"
-              />
+              <formItemProperties class="form-item-properties" :selectItem="selectItem" :hideModel="hideModel" />
             </a-tab-pane>
           </a-tabs>
         </aside>
@@ -151,23 +143,23 @@
  * date 2019-11-20
  * description 表单设计器
  */
-import kHeader from './module/header'
-import operatingArea from './module/operatingArea'
+import kHeader from './module/header';
+import operatingArea from './module/operatingArea';
 
 // import kFooter from "./module/footer";
-import kFormComponentPanel from './module/formComponentPanel'
-import kJsonModal from './module/jsonModal'
-import kCodeModal from './module/codeModal'
-import collapseItem from './module/collapseItem'
-import importJsonModal from './module/importJsonModal'
-import previewModal from '../KFormPreview/index.vue'
+import kFormComponentPanel from './module/formComponentPanel';
+import kJsonModal from './module/jsonModal';
+import kCodeModal from './module/codeModal';
+import collapseItem from './module/collapseItem';
+import importJsonModal from './module/importJsonModal';
+import previewModal from '../KFormPreview/index.vue';
 // import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
-import LaisonInputCustomerSelect from '@/components/laison/LaisonInputCustomerSelect'
+// import LaisonInputCustomerSelect from '@/components/laison/LaisonInputCustomerSelect'
 
-import { Revoke } from '../core/revoke'
-import { basicsList, layoutList, customComponents } from './config/formItemsConfig'
-import formItemProperties from './module/formItemProperties'
-import formProperties from './module/formProperties'
+import { Revoke } from '../core/revoke';
+import { basicsList, layoutList, customComponents } from './config/formItemsConfig';
+import formItemProperties from './module/formItemProperties';
+import formProperties from './module/formProperties';
 export default {
   name: 'KFormDesign',
   props: {
@@ -267,7 +259,7 @@ export default {
       selectItem: {
         key: '',
       },
-    }
+    };
   },
   components: {
     kHeader,
@@ -281,7 +273,7 @@ export default {
     kFormComponentPanel,
     formItemProperties,
     formProperties,
-    LaisonInputCustomerSelect,
+    // LaisonInputCustomerSelect,
   },
   watch: {
     // data: {
@@ -299,42 +291,42 @@ export default {
   computed: {
     basicsArray() {
       // 计算需要显示的基础字段
-      return basicsList.filter((item) => this.fields.includes(item.type))
+      return basicsList.filter((item) => this.fields.includes(item.type));
     },
     layoutArray() {
       // 计算需要显示的布局字段
-      return layoutList.filter((item) => this.fields.includes(item.type))
+      return layoutList.filter((item) => this.fields.includes(item.type));
     },
     collapseDefaultActiveKey() {
       // 计算当前展开的控件列表
-      const defaultActiveKey = window.localStorage.getItem('collapseDefaultActiveKey')
+      const defaultActiveKey = window.localStorage.getItem('collapseDefaultActiveKey');
       if (defaultActiveKey) {
-        return defaultActiveKey.split(',')
+        return defaultActiveKey.split(',');
       } else {
-        return ['1']
+        return ['1'];
       }
     },
   },
   mounted() {
     //@jayce 21/12/23-09:35:57 : 优先从localStorage中获取缓存以初始化
-    let kformcache = cusLocalStorage.getItem('kform', 'data')
+    let kformcache = cusLocalStorage.getItem('kform', 'data');
     if (kformcache != null) {
-      this.data = kformcache
+      this.data = kformcache;
     }
     //@jayce 21/12/23-13:23:39 : 这个监听器原本时定义在watch 对象中，但是会造成data中初始值覆盖localstorage, 所以需要让监听器在mounted时再生效
     this.$watch(
       'data',
       function (e) {
-        this.$store.commit('SET_KFORM_DATA', this.data) //@jayce 21/12/23-09:26:56 : 用于监听数据变化，触发缓存内容到localStorage
+        this.$store.commit('SET_KFORM_DATA', this.data); //@jayce 21/12/23-09:26:56 : 用于监听数据变化，触发缓存内容到localStorage
         this.$nextTick(() => {
-          this.revoke.push(e)
-        })
+          this.revoke.push(e);
+        });
       },
-      { deep: true, immediate: true }
-    )
+      { deep: true, immediate: true },
+    );
   },
   beforeDestroy() {
-    console.log('destroyed hook', '--line384')
+    console.log('destroyed hook', '--line384');
     // this.$confirm({
     //   content: '离开页面将会清除',
     // })
@@ -343,15 +335,15 @@ export default {
   methods: {
     generateKey(list, index) {
       // 生成key值
-      const key = list[index].type + '_' + new Date().getTime()
+      const key = list[index].type + '_' + new Date().getTime();
       this.$set(list, index, {
         ...list[index],
         key,
         model: key,
-      })
+      });
       if (this.noModel.includes(list[index].type)) {
         // 删除不需要的model属性
-        delete list[index].model
+        delete list[index].model;
       }
     },
     handleListPush(item) {
@@ -359,56 +351,56 @@ export default {
       // 生成key值
       if (!this.selectItem.key) {
         // 在没有选择表单时，将数据push到this.data.list
-        const key = item.type + '_' + new Date().getTime()
+        const key = item.type + '_' + new Date().getTime();
         item = {
           ...item,
           key,
           model: key,
-        }
+        };
         if (this.noModel.includes(item.type)) {
           // 删除不需要的model属性
-          delete item.model
+          delete item.model;
         }
-        const itemString = JSON.stringify(item)
-        const record = JSON.parse(itemString)
+        const itemString = JSON.stringify(item);
+        const record = JSON.parse(itemString);
         // 删除icon及compoent属性
-        delete record.icon
-        delete record.component
-        this.data.list.push(record)
-        this.handleSetSelectItem(record)
-        return false
+        delete record.icon;
+        delete record.component;
+        this.data.list.push(record);
+        this.handleSetSelectItem(record);
+        return false;
       }
-      this.$refs.KFCP.handleCopy(false, item)
+      this.$refs.KFCP.handleCopy(false, item);
     },
     handleOpenJsonModal() {
       // 打开json预览模态框
-      this.$refs.jsonModal.jsonData = this.data
-      this.$refs.jsonModal.visible = true
+      this.$refs.jsonModal.jsonData = this.data;
+      this.$refs.jsonModal.visible = true;
     },
     handleOpenCodeModal() {
       // 打开代码预览模态框
-      this.$refs.codeModal.jsonData = this.data
-      this.$refs.codeModal.visible = true
+      this.$refs.codeModal.jsonData = this.data;
+      this.$refs.codeModal.visible = true;
     },
     handleOpenImportJsonModal() {
       // 打开json预览模态框
-      this.$refs.importJsonModal.jsonData = this.data
-      this.$refs.importJsonModal.handleSetSelectItem = this.handleSetSelectItem
-      this.$refs.importJsonModal.visible = true
+      this.$refs.importJsonModal.jsonData = this.data;
+      this.$refs.importJsonModal.handleSetSelectItem = this.handleSetSelectItem;
+      this.$refs.importJsonModal.visible = true;
     },
     handlePreview() {
       // 打开预览模态框
-      this.$refs.previewModal.jsonData = this.data
-      this.$refs.previewModal.previewWidth = this.previewOptions.width
-      this.$refs.previewModal.visible = true
+      this.$refs.previewModal.jsonData = this.data;
+      this.$refs.previewModal.previewWidth = this.previewOptions.width;
+      this.$refs.previewModal.visible = true;
     },
     handleReset() {
       // 清空
-      let _this = this
+      let _this = this;
       if (this.hideResetHint) {
         // 不显示提示直接清空
-        this.resetData()
-        return
+        this.resetData();
+        return;
       }
       this.$confirm({
         title: '警告',
@@ -417,13 +409,13 @@ export default {
         okType: 'danger',
         cancelText: '否',
         onOk() {
-          _this.resetData()
+          _this.resetData();
         },
-      })
+      });
     },
     resetData() {
-      this.clearData()
-      this.$message.success('已清空')
+      this.clearData();
+      this.$message.success('已清空');
     },
     clearData() {
       this.data = {
@@ -439,27 +431,27 @@ export default {
           enablePrint: false, //@jayce
           jsEnhance: '', //@jayce
         },
-      }
-      this.handleSetSelectItem({ key: '' })
+      };
+      this.handleSetSelectItem({ key: '' });
     },
     handleSetSelectItem(record) {
       // 操作间隔不能低于100毫秒
-      const newTime = new Date().getTime()
+      const newTime = new Date().getTime();
       if (newTime - this.updateTime < 100) {
-        return false
+        return false;
       }
 
-      this.updateTime = newTime
+      this.updateTime = newTime;
 
       // 设置selectItem的值
-      this.selectItem = record
+      this.selectItem = record;
 
       // 判断是否选中控件，如果选中则弹出属性面板，否则关闭属性面板
       if (record.key) {
-        this.startType = record.type
-        this.changeTab(2)
+        this.startType = record.type;
+        this.changeTab(2);
       } else {
-        this.changeTab(1)
+        this.changeTab(1);
       }
     },
     /**
@@ -469,7 +461,7 @@ export default {
      */
 
     changeTab(e) {
-      this.activeKey = e
+      this.activeKey = e;
     },
     /**
      * @Author: kcz
@@ -478,59 +470,59 @@ export default {
      * @return {*} Array
      */
     getFieldSchema() {
-      const fields = []
+      const fields = [];
       const traverse = (array) => {
         array.forEach((element) => {
           if (element.type === 'grid' || element.type === 'tabs') {
             // 栅格布局
             element.columns.forEach((item) => {
-              traverse(item.list)
-            })
+              traverse(item.list);
+            });
           } else if (element.type === 'card') {
             // 卡片布局
-            traverse(element.list)
+            traverse(element.list);
           } else if (element.type === 'batch') {
             // 动态表格内复制
-            traverse(element.list)
+            traverse(element.list);
           } else if (element.type === 'table') {
             // 表格布局
             element.trs.forEach((item) => {
               item.tds.forEach((val) => {
-                traverse(val.list)
-              })
-            })
+                traverse(val.list);
+              });
+            });
           } else {
             if (element.model) {
-              fields.push(element)
+              fields.push(element);
             }
           }
-        })
-      }
-      traverse(this.data.list)
-      return fields
+        });
+      };
+      traverse(this.data.list);
+      return fields;
     },
     handleSetData(data) {
       // 用于父组件赋值
       try {
         if (typeof data !== 'object') {
-          return false
+          return false;
         } else {
-          this.data = data
+          this.data = data;
           // 导入json数据后，需要清除已选择key
-          this.handleSetSelectItem({ key: '' })
+          this.handleSetSelectItem({ key: '' });
         }
-        return true
+        return true;
       } catch (error) {
-        console.error(error)
-        return false
+        console.error(error);
+        return false;
       }
     },
     collapseChange(val) {
       // 点击collapse时，保存当前collapse状态
-      window.localStorage.setItem('collapseDefaultActiveKey', val)
+      window.localStorage.setItem('collapseDefaultActiveKey', val);
     },
     handleStart(type) {
-      this.startType = type
+      this.startType = type;
     },
 
     /**
@@ -539,13 +531,13 @@ export default {
      * @return {*}
      */
     handleUndo() {
-      const record = this.revoke.undo()
+      const record = this.revoke.undo();
       if (!record) {
-        return false
+        return false;
       }
-      this.data = record
+      this.data = record;
 
-      this.handleSetSelectItem({ key: '' })
+      this.handleSetSelectItem({ key: '' });
     },
 
     /**
@@ -554,29 +546,29 @@ export default {
      * @return {*}
      */
     handleRedo() {
-      const record = this.revoke.redo()
+      const record = this.revoke.redo();
       if (!record) {
-        return false
+        return false;
       }
-      this.data = record
+      this.data = record;
     },
 
     handleSave() {
       // 保存函数
-      this.$emit('save', JSON.stringify(this.data))
+      this.$emit('save', JSON.stringify(this.data));
     },
     getValue() {
       // 获取数据
-      return this.data
+      return this.data;
     },
     handleClose() {
-      this.$emit('close')
+      this.$emit('close');
     },
   },
   created() {
-    this.revoke = new Revoke()
-    this.recordList = this.revoke.recordList
-    this.redoList = this.revoke.redoList
+    this.revoke = new Revoke();
+    this.recordList = this.revoke.recordList;
+    this.redoList = this.revoke.redoList;
   },
-}
+};
 </script>

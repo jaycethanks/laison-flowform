@@ -16,10 +16,7 @@
           <a-input v-model="options.type" placeholder="请输入" />
         </a-form-item>
         <!-- input type end -->
-        <a-form-item
-          v-if="typeof options.rangePlaceholder !== 'undefined' && options.range"
-          label="占位内容"
-        >
+        <a-form-item v-if="typeof options.rangePlaceholder !== 'undefined' && options.range" label="占位内容">
           <a-input placeholder="请输入" v-model="options.rangePlaceholder[0]" />
           <a-input placeholder="请输入" v-model="options.rangePlaceholder[1]" />
         </a-form-item>
@@ -62,16 +59,10 @@
         <a-form-item v-if="typeof options.options !== 'undefined'" label="选项配置">
           <a-radio-group buttonStyle="solid" v-model="options.dynamic">
             <a-radio-button :value="false">静态数据</a-radio-button>
-            <a-radio-button :value="true" v-if="selectItem.type != 'LaisonRadioWithInput'"
-              >动态数据</a-radio-button
-            >
+            <a-radio-button :value="true" v-if="selectItem.type != 'LaisonRadioWithInput'">动态数据</a-radio-button>
           </a-radio-group>
 
-          <a-input
-            v-show="options.dynamic"
-            v-model="options.dynamicKey"
-            placeholder="动态数据变量名"
-          ></a-input>
+          <a-input v-show="options.dynamic" v-model="options.dynamicKey" placeholder="动态数据变量名"></a-input>
 
           <KChangeOption v-show="!options.dynamic" v-model="options.options" />
         </a-form-item>
@@ -167,7 +158,7 @@
         <a-form-item
           v-if="
             !['number', 'radio', 'checkbox', 'date', 'rate', 'select', 'switch', 'slider', 'html'].includes(
-              selectItem.type
+              selectItem.type,
             ) && typeof options.defaultValue !== 'undefined'
           "
           label="默认值"
@@ -342,79 +333,32 @@
           label="操作属性"
         >
           <kCheckbox v-if="typeof options.hidden !== 'undefined'" v-model="options.hidden" label="隐藏" />
-          <kCheckbox
-            v-if="typeof options.disabled !== 'undefined'"
-            v-model="options.disabled"
-            label="禁用"
-          />
-          <kCheckbox
-            v-if="typeof options.readonly !== 'undefined'"
-            v-model="options.readonly"
-            label="只读"
-          />
-          <kCheckbox
-            v-if="typeof options.clearable !== 'undefined'"
-            v-model="options.clearable"
-            label="可清除"
-          />
-          <kCheckbox
-            v-if="typeof options.multiple !== 'undefined'"
-            v-model="options.multiple"
-            label="多选"
-          />
+          <kCheckbox v-if="typeof options.disabled !== 'undefined'" v-model="options.disabled" label="禁用" />
+          <kCheckbox v-if="typeof options.readonly !== 'undefined'" v-model="options.readonly" label="只读" />
+          <kCheckbox v-if="typeof options.clearable !== 'undefined'" v-model="options.clearable" label="可清除" />
+          <kCheckbox v-if="typeof options.multiple !== 'undefined'" v-model="options.multiple" label="多选" />
           <kCheckbox v-if="typeof options.range !== 'undefined'" v-model="options.range" label="范围选择" />
-          <kCheckbox
-            v-if="typeof options.showTime !== 'undefined'"
-            v-model="options.showTime"
-            label="时间选择器"
-          />
-          <kCheckbox
-            v-if="typeof options.allowHalf !== 'undefined'"
-            v-model="options.allowHalf"
-            label="允许半选"
-          />
-          <kCheckbox
-            v-if="typeof options.showInput !== 'undefined'"
-            v-model="options.showInput"
-            label="显示输入框"
-          />
-          <kCheckbox
-            v-if="typeof options.showLabel !== 'undefined'"
-            v-model="options.showLabel"
-            label="显示Label"
-          />
-          <kCheckbox
-            v-if="typeof options.chinesization !== 'undefined'"
-            v-model="options.chinesization"
-            label="汉化"
-          />
+          <kCheckbox v-if="typeof options.showTime !== 'undefined'" v-model="options.showTime" label="时间选择器" />
+          <kCheckbox v-if="typeof options.allowHalf !== 'undefined'" v-model="options.allowHalf" label="允许半选" />
+          <kCheckbox v-if="typeof options.showInput !== 'undefined'" v-model="options.showInput" label="显示输入框" />
+          <kCheckbox v-if="typeof options.showLabel !== 'undefined'" v-model="options.showLabel" label="显示Label" />
+          <kCheckbox v-if="typeof options.chinesization !== 'undefined'" v-model="options.chinesization" label="汉化" />
           <kCheckbox
             v-if="typeof options.hideSequence !== 'undefined'"
             v-model="options.hideSequence"
             label="隐藏序号"
           />
           <kCheckbox v-if="typeof options.drag !== 'undefined'" v-model="options.drag" label="允许拖拽" />
-          <kCheckbox
-            v-if="typeof options.showSearch !== 'undefined'"
-            v-model="options.showSearch"
-            label="可搜索"
-          />
+          <kCheckbox v-if="typeof options.showSearch !== 'undefined'" v-model="options.showSearch" label="可搜索" />
           <kCheckbox
             v-if="typeof options.treeCheckable !== 'undefined'"
             v-model="options.treeCheckable"
             label="可勾选"
           />
-          <kCheckbox
-            v-if="typeof options.animated !== 'undefined'"
-            v-model="options.animated"
-            label="动画切换"
-          />
+          <kCheckbox v-if="typeof options.animated !== 'undefined'" v-model="options.animated" label="动画切换" />
         </a-form-item>
 
-        <a-form-item
-          v-if="typeof selectItem.rules !== 'undefined' && selectItem.rules.length > 0"
-          label="校验"
-        >
+        <a-form-item v-if="typeof selectItem.rules !== 'undefined' && selectItem.rules.length > 0" label="校验">
           <kCheckbox v-model="selectItem.rules[0].required" label="必填" />
           <a-input v-model="selectItem.rules[0].message" placeholder="必填校验提示信息" />
           <KChangeOption v-model="selectItem.rules" type="rules" />
@@ -472,14 +416,13 @@
     </div>
   </div>
 </template>
-/* * author kcz * date 2019-11-20 * description
-表单控件属性设置组件,因为配置数据是引用关系，所以可以直接修改 */
+/* * author kcz * date 2019-11-20 * description 表单控件属性设置组件,因为配置数据是引用关系，所以可以直接修改 */
 <script>
-import KChangeOption from '../../KChangeOption/index.vue'
-import kCheckbox from '../../KCheckbox/index.vue'
-import FormFieldsControl2 from '@/components/BpmnProcessDesigner/package/penal/comps/FormFieldsControl2.vue'
-import OrgSelectionModal from '@/components/BpmnProcessDesigner/package/penal/comps/OrgSelectionModal.vue'
-import jEditor from '@/components/jeecg/JCodeEditor.vue'
+import KChangeOption from '../../KChangeOption/index.vue';
+import kCheckbox from '../../KCheckbox/index.vue';
+import FormFieldsControl2 from '@/components/BpmnProcessDesigner/package/penal/comps/FormFieldsControl2.vue';
+import OrgSelectionModal from '@/components/BpmnProcessDesigner/package/penal/comps/OrgSelectionModal.vue';
+// import jEditor from '@/components/jeecg/JCodeEditor.vue'
 export default {
   name: 'formItemProperties',
   data() {
@@ -623,12 +566,12 @@ export default {
           ],
         },
       },
-    }
+    };
   },
   computed: {
     options() {
-      console.log(this.selectItem, '4444444444')
-      return this.selectItem.options || {}
+      console.log(this.selectItem, '4444444444');
+      return this.selectItem.options || {};
     },
   },
   props: {
@@ -646,7 +589,7 @@ export default {
     kCheckbox,
     FormFieldsControl2,
     OrgSelectionModal,
-    jEditor,
+    // jEditor,
   },
-}
+};
 </script>

@@ -7,8 +7,8 @@
       <ProcessList
         style="height: calc(100% - 62px)"
         @edit="
-          record = $event
-          showIndex = false
+          record = $event;
+          showIndex = false;
         "
       />
     </div>
@@ -19,25 +19,23 @@
 </template>
 
 <script>
-import ProcessList from './comps/ProcessList.vue'
-import BpmnProcessFormDesigner from './BpmnProcessFormDesigner/index.vue'
-import LaisonStockList from '@/components/laison/LaisonStockList.vue'
+import ProcessList from './comps/ProcessList.vue';
+import BpmnProcessFormDesigner from './BpmnProcessFormDesigner/index.vue';
+// import LaisonStockList from '@/components/laison/LaisonStockList.vue'
 
 export default {
   data() {
     return {
       showIndex: true,
       record: null,
-    }
+    };
   },
   components: {
     BpmnProcessFormDesigner,
     ProcessList,
-    LaisonStockList,
+    // LaisonStockList,
   },
-  mounted() {
-    console.log(this.$route.path, '--line29')
-  },
+  mounted() {},
   methods: {
     handleDownload() {},
     //  handleEdit(record) {
@@ -60,7 +58,7 @@ export default {
      */
     // }
   },
-}
+};
 </script>
 <style scoped lang="scss">
 >>> .ant-modal {

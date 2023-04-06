@@ -11,7 +11,10 @@
     :value="value"
     ref="vueQuillEditor"
     class="ql-editor-class"
-    :class="{ chinesization: record.options.chinesization, 'disabled-editor': record.options.disabled || parentDisabled }"
+    :class="{
+      chinesization: record.options.chinesization,
+      'disabled-editor': record.options.disabled || parentDisabled,
+    }"
     :options="editorOption"
     :disabled="record.options.disabled || parentDisabled"
     @paste.native.stop="imagePaste"
@@ -22,13 +25,13 @@
   </quillEditor>
 </template>
 <script>
-import { quillEditor } from 'vue-quill-editor' //调用编辑器
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+import { quillEditor } from 'vue-quill-editor'; //调用编辑器
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 
 // @jayce
-import API from '@api/upload.js'
+import API from '@/api/upload.js';
 
 // 三方插件
 /**
@@ -36,9 +39,9 @@ import API from '@api/upload.js'
  * https://github.com/surmon-china/vue-quill-editor/issues/322#issuecomment-490780441
  * https://github.com/visualjerk/quill-magic-url
  */
-import Quill from 'quill'
-import MagicUrl from 'quill-magic-url'
-Quill.register('modules/magicUrl', MagicUrl)
+import Quill from 'quill';
+import MagicUrl from 'quill-magic-url';
+Quill.register('modules/magicUrl', MagicUrl);
 
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -58,7 +61,7 @@ var toolbarOptions = [
   [{ align: [] }],
   // ['clean'], // remove formatting button
   ['image'],
-]
+];
 
 export default {
   name: 'editor',
@@ -81,19 +84,19 @@ export default {
           },
         },
       },
-    }
+    };
   },
   mounted() {
-    this.overWriteToolbarImageHandler()
-    window.quillEditor_jayce = this.$refs['vueQuillEditor']
+    this.overWriteToolbarImageHandler();
+    window.quillEditor_jayce = this.$refs['vueQuillEditor'];
   },
   methods: {
     onEditorBlur() {}, // 失去焦点事件
     onEditorFocus() {
-      console.log(this.record.options.disabled, this.parentDisabled, '--line90')
+      console.log(this.record.options.disabled, this.parentDisabled, '--line90');
     }, // 获得焦点事件
     onEditorChange(e) {
-      this.$emit('change', e.html)
+      this.$emit('change', e.html);
     },
 
     /**
@@ -102,50 +105,50 @@ export default {
      * @param event
      */
     imagePaste(event) {
-      var items = event.clipboardData && event.clipboardData.items
-      var file = null
+      var items = event.clipboardData && event.clipboardData.items;
+      var file = null;
       if (items && items.length) {
         // 检索剪切板items
         for (var i = 0; i < items.length; i++) {
-          console.log(items[i])
+          console.log(items[i]);
           if (items[i].type.indexOf('image') !== -1) {
-            file = items[i].getAsFile()
-            break
+            file = items[i].getAsFile();
+            break;
           }
         }
       }
       if (file && file.type.match(/^image\//i)) {
-        event.preventDefault()
-        this.uploadImage(file, true)
+        event.preventDefault();
+        this.uploadImage(file, true);
       }
     },
     /*
      * 图片上传
      */
     async uploadImage(data, isPaste) {
-      let formData = new FormData()
-      formData.append('file', data.file || data)
+      let formData = new FormData();
+      formData.append('file', data.file || data);
       // let params = {
       //   action: 'uploadimage',
       //   target: this.configData.type,
       // }
-      let res = await API.upload(formData)
-      let url = window.location.href.split(window.location.port)[0]
-      url += window.location.port
-      url += '/file'
+      let res = await API.upload(formData);
+      let url = window.location.href.split(window.location.port)[0];
+      url += window.location.port;
+      url += '/file';
       // window.open(file.url ? file.url : url + file.response.fileLocation, '_blank')
       // return
-      let resURL = url + (res.success == true && res.fileLocation)
-      this.insertContent(resURL)
+      let resURL = url + (res.success == true && res.fileLocation);
+      this.insertContent(resURL);
     },
     insertContent(resURL) {
-      let quill = this.$refs['vueQuillEditor'].quill
+      let quill = this.$refs['vueQuillEditor'].quill;
       // 获取光标所在位置
-      let length = quill.getSelection().index
+      let length = quill.getSelection().index;
       // 插入图片  res.info为服务器返回的图片地址
-      quill.insertEmbed(length, 'image', resURL)
+      quill.insertEmbed(length, 'image', resURL);
       // 调整光标到最后
-      quill.setSelection(length + 1)
+      quill.setSelection(length + 1);
     },
 
     /**
@@ -153,39 +156,39 @@ export default {
      * https://github.com/surmon-china/vue-quill-editor/issues/43#issuecomment-1147189697
      */
     overWriteToolbarImageHandler() {
-      let quill = this.$refs['vueQuillEditor'].quill
-      var toolbar = quill.getModule('toolbar')
-      console.log(this.$refs['vueQuillEditor'], '--line133')
+      let quill = this.$refs['vueQuillEditor'].quill;
+      var toolbar = quill.getModule('toolbar');
+      console.log(this.$refs['vueQuillEditor'], '--line133');
       // 如果没有toolbar，则是在预览状态，也就不需要去重写ImageHandler
-      if (!toolbar) return
+      if (!toolbar) return;
 
       // toolbar.handlers.image = function () {
       //   console.log(this)
       // }
-      let _this = this //vue instance
+      let _this = this; //vue instance
       toolbar.addHandler('image', function () {
-        let fileInput = document.createElement('input')
-        fileInput.setAttribute('type', 'file')
-        fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon')
-        fileInput.classList.add('ql-image')
+        let fileInput = document.createElement('input');
+        fileInput.setAttribute('type', 'file');
+        fileInput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
+        fileInput.classList.add('ql-image');
         fileInput.addEventListener('change', async function () {
           if (fileInput.files != null && fileInput.files[0] != null) {
-            let formData = new FormData()
-            formData.append('file', fileInput.files[0])
-            let res = await API.upload(formData)
-            let url = window.location.href.split(window.location.port)[0]
-            url += window.location.port
-            url += '/file'
-            let resURL = url + (res.success == true && res.fileLocation)
-            _this.insertContent(resURL)
+            let formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            let res = await API.upload(formData);
+            let url = window.location.href.split(window.location.port)[0];
+            url += window.location.port;
+            url += '/file';
+            let resURL = url + (res.success == true && res.fileLocation);
+            _this.insertContent(resURL);
           }
-        })
-        this.container.appendChild(fileInput)
-        fileInput.click()
-      })
+        });
+        this.container.appendChild(fileInput);
+        fileInput.click();
+      });
     },
   },
-}
+};
 </script>
 <style lang="less" scoped>
 .ql-editor-class {

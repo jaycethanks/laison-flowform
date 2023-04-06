@@ -1,0 +1,176 @@
+<template>
+  <a-drawer
+    :title="title"
+    :width="drawerWidth"
+    @close="handleCancel"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    :maskClosable="false"
+    switchFullscreen
+    @ok="handleOk"
+    @cancel="handleCancel">
+    <a-spin :spinning="confirmLoading">
+
+<!--  <a-tabs v-model="activeKey" @change="handleChangeTabs">-->
+      <!--主表区域 -->
+<!--     <a-tab-pane tab="SysRole" key="SysRole" :forceRender="true">-->
+     
+            <a-form-model 
+				ref="ruleForm"
+              :model="model"
+              :rules="rules"
+              :label-col="labelCol"
+              :wrapper-col="wrapperCol">
+                <a-row>
+	                  <a-form-model-item label="id"  v-show=false>
+	                      <a-input v-model="model.id"></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.name')" prop="name" v-if="showFiled('name')">
+	                  		<a-input :disabled="isDetail" v-model="model.name" prop="name" placeholder="请输入name" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.briefIntro')" prop="briefIntro" v-if="showFiled('briefIntro')">
+	                  		<a-input :disabled="isDetail" v-model="model.briefIntro" prop="briefIntro" placeholder="请输入briefIntro" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.levelId')" prop="levelId" v-if="showFiled('levelId')">
+	                  		<a-input :disabled="isDetail" v-model="model.levelId" prop="levelId" placeholder="请输入levelId" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.signingStartTime')" prop="signingStartTime" v-if="showFiled('signingStartTime')">
+	                        <j-date :disabled="isDetail || isEdit" v-model="model.signingStartTime"  :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"  />	
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.signingEndTime')" prop="signingEndTime" v-if="showFiled('signingEndTime')">
+	                        <j-date :disabled="isDetail || isEdit" v-model="model.signingEndTime"  :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"  />	
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.personalInfoId')" prop="personalInfoId" v-if="showFiled('personalInfoId')">
+	                  		<a-input :disabled="isDetail" v-model="model.personalInfoId" prop="personalInfoId" placeholder="请输入personalInfoId" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.financeId')" prop="financeId" v-if="showFiled('financeId')">
+	                  		<a-input :disabled="isDetail" v-model="model.financeId" prop="financeId" placeholder="请输入financeId" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.salesmanId')" prop="salesmanId" v-if="showFiled('salesmanId')">
+	                  		<a-input :disabled="isDetail" v-model="model.salesmanId" prop="salesmanId" placeholder="请输入salesmanId" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.belongDeptId')" prop="belongDeptId" v-if="showFiled('belongDeptId')">
+	                  		<a-input :disabled="isDetail" v-model="model.belongDeptId" prop="belongDeptId" placeholder="请输入belongDeptId" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.status')" prop="status" v-if="showFiled('status')">
+	                  		<a-switch :disabled="isDetail" :checked="form.status" @change="(check) => { model.status=check}" checked-children="$t('status_true')" un-checked-children="$t('status_false')" />
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.delFlag')" prop="delFlag" v-if="showFiled('delFlag')">
+	                  		<a-switch :disabled="isDetail" :checked="form.delFlag" @change="(check) => { model.delFlag=check}" checked-children="$t('delFlag_true')" un-checked-children="$t('delFlag_false')" />
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.createBy')" prop="createBy" v-if="showFiled('createBy')">
+	                  		<a-input :disabled="isDetail" v-model="model.createBy" prop="createBy" placeholder="请输入createBy" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.createTime')" prop="createTime" v-if="showFiled('createTime')">
+	                        <j-date :disabled="isDetail || isEdit" v-model="model.createTime"  :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"  />	
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.updateBy')" prop="updateBy" v-if="showFiled('updateBy')">
+	                  		<a-input :disabled="isDetail" v-model="model.updateBy" prop="updateBy" placeholder="请输入updateBy" ></a-input>
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.updateTime')" prop="updateTime" v-if="showFiled('updateTime')">
+	                        <j-date :disabled="isDetail || isEdit" v-model="model.updateTime"  :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"  />	
+	                  </a-form-model-item>
+	              	  <a-form-model-item :label="$t('ErpCustomer.deptId')" prop="deptId" v-if="showFiled('deptId')">
+	                  		<a-input :disabled="isDetail" v-model="model.deptId" prop="deptId" placeholder="请输入deptId" ></a-input>
+	                  </a-form-model-item>
+
+                </a-row>
+            </a-form-model>
+       <!--        </a-tab-pane>-->
+<!--      </a-tabs>-->
+    </a-spin>
+  </a-drawer>
+</template>
+
+<script>
+  import { FormTypes,getRefPromise } from '@/utils/JEditableTableUtil'
+  import { JEditableTableMixin } from '@/mixins/JEditableTableMixin'
+  import API   from '@/api/ErpCustomer'
+  import JDate from '@/components/jeecg/JDate'
+  
+  export default {
+    name: 'ErpCustomerModal',
+    mixins: [JEditableTableMixin],
+    components: {
+      JDate,
+    },
+    data() {
+      return {
+        visible: false,
+        disableSubmit:false,
+        confirmLoading: false,
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 6 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 16 },
+        },
+        type: 'add',
+        rules:{
+          id:[{required: true, message: '请输入',trigger: 'blur'}],
+          name:[{required: true, message: '请输入',trigger: 'blur'}],
+          briefIntro:[{required: true, message: '请输入',trigger: 'blur'}],
+          levelId:[{required: true, message: '请输入',trigger: 'blur'}],
+          signingStartTime:[{required: true, message: '请输入',trigger: 'blur'}],
+          signingEndTime:[{required: true, message: '请输入',trigger: 'blur'}],
+          personalInfoId:[{required: true, message: '请输入',trigger: 'blur'}],
+          financeId:[{required: true, message: '请输入',trigger: 'blur'}],
+          salesmanId:[{required: true, message: '请输入',trigger: 'blur'}],
+          belongDeptId:[{required: true, message: '请输入',trigger: 'blur'}],
+          status:[{required: true, message: '请输入',trigger: 'blur'}],
+          delFlag:[{required: true, message: '请输入',trigger: 'blur'}],
+          createBy:[{required: true, message: '请输入',trigger: 'blur'}],
+          createTime:[{required: true, message: '请输入',trigger: 'blur'}],
+          updateBy:[{required: true, message: '请输入',trigger: 'blur'}],
+          updateTime:[{required: true, message: '请输入',trigger: 'blur'}],
+          deptId:[{required: true, message: '请输入',trigger: 'blur'}],
+        }
+      }
+    },
+    methods: {
+        getAllTable() {
+            
+        },
+        /** 调用完edit()方法之后会自动调用此方法 */
+        editAfter() {
+            
+        
+        },
+      
+       /** 确定按钮点击事件 */
+        handleOk(e) {
+           e.preventDefault();
+           let fn=this.getFn();//获取方法
+           
+           fn(this.model).then((res) => {
+             if (res.code === 0) {
+               this.$message.success(res.msg);
+             } else {
+               this.$message.warning(res.errors);
+             }
+             this.$emit('ok');
+             this.visible=false
+           })
+        },
+        getFn(){
+           if(this.isAdd){ return API.add;}else if(this.isEdit){return API.update;}
+        },
+        validateError(msg){
+            this.$message.error(msg)
+        },
+        showFiled(filedName){
+           let config = this.$store.getters.userInfo.sysDept.config.erpCustomerAddFiled
+           config=config ==undefined ?0:config
+           let indexOfFiled=API.filedList.indexOf(filedName)
+           let flag=1<<indexOfFiled;
+           return !(config&flag)
+        }
+
+    }
+  }
+</script>
+
+<style scoped>
+</style>

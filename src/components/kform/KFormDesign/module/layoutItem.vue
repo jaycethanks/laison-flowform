@@ -1,18 +1,12 @@
 <template>
   <div
     :class="{
-      'layout-width': ['grid', 'table', 'card', 'divider', 'html'].includes(
-        record.type
-      )
+      'layout-width': ['grid', 'table', 'card', 'divider', 'html'].includes(record.type),
     }"
   >
     <!-- 动态表格设计模块 start -->
     <template v-if="record.type === 'batch'">
-      <div
-        class="batch-box"
-        :class="{ active: record.key === selectItem.key }"
-        @click.stop="handleSelectItem(record)"
-      >
+      <div class="batch-box" :class="{ active: record.key === selectItem.key }" @click.stop="handleSelectItem(record)">
         <a-form-item
           :label="!record.options.showLabel ? '' : record.label"
           :label-col="
@@ -30,9 +24,7 @@
               : {}
           "
           :style="
-            config.layout === 'horizontal' &&
-            config.labelLayout === 'flex' &&
-            record.options.showLabel
+            config.layout === 'horizontal' && config.labelLayout === 'flex' && record.options.showLabel
               ? { display: 'flex' }
               : {}
           "
@@ -44,7 +36,7 @@
               group: insertAllowed ? 'form-draggable' : '',
               ghostClass: 'moving',
               animation: 180,
-              handle: '.drag-move'
+              handle: '.drag-move',
             }"
             v-model="record.list"
             @start="$emit('dragStart', $event, record.list)"
@@ -109,18 +101,12 @@
               : {}
           "
           :style="
-            config.layout === 'horizontal' &&
-            config.labelLayout === 'flex' &&
-            record.options.showLabel
+            config.layout === 'horizontal' && config.labelLayout === 'flex' && record.options.showLabel
               ? { display: 'flex' }
               : {}
           "
         >
-          <div
-            class="column-box"
-            v-for="(column, index) in record.columns"
-            :key="index"
-          >
+          <div class="column-box" v-for="(column, index) in record.columns" :key="index">
             <div class="check-box">
               <a-checkbox v-if="record.options.multiple" disabled>
                 {{ column.label }}
@@ -136,7 +122,7 @@
                 group: insertAllowed ? 'form-draggable' : '',
                 ghostClass: 'moving',
                 animation: 180,
-                handle: '.drag-move'
+                handle: '.drag-move',
               }"
               v-model="column.list"
               @start="$emit('dragStart', $event, column.list)"
@@ -180,11 +166,7 @@
     <!-- 选择输入列 end -->
     <!-- 标签Tabs布局 start -->
     <template v-else-if="record.type === 'tabs'">
-      <div
-        class="grid-box"
-        :class="{ active: record.key === selectItem.key }"
-        @click.stop="handleSelectItem(record)"
-      >
+      <div class="grid-box" :class="{ active: record.key === selectItem.key }" @click.stop="handleSelectItem(record)">
         <a-tabs
           class="grid-row"
           :default-active-key="0"
@@ -194,11 +176,7 @@
           :tabPosition="record.options.tabPosition"
           :animated="record.options.animated"
         >
-          <a-tab-pane
-            v-for="(tabItem, index) in record.columns"
-            :key="index"
-            :tab="tabItem.label"
-          >
+          <a-tab-pane v-for="(tabItem, index) in record.columns" :key="index" :tab="tabItem.label">
             <div class="grid-col">
               <draggable
                 tag="div"
@@ -207,7 +185,7 @@
                   group: 'form-draggable',
                   ghostClass: 'moving',
                   animation: 180,
-                  handle: '.drag-move'
+                  handle: '.drag-move',
                 }"
                 v-model="tabItem.list"
                 @start="$emit('dragStart', $event, tabItem.list)"
@@ -255,18 +233,9 @@
     <!-- 标签Tabs布局 end -->
     <!-- 栅格布局 start -->
     <template v-else-if="record.type === 'grid'">
-      <div
-        class="grid-box"
-        :class="{ active: record.key === selectItem.key }"
-        @click.stop="handleSelectItem(record)"
-      >
+      <div class="grid-box" :class="{ active: record.key === selectItem.key }" @click.stop="handleSelectItem(record)">
         <a-row class="grid-row" :gutter="record.options.gutter">
-          <a-col
-            class="grid-col"
-            v-for="(colItem, idnex) in record.columns"
-            :key="idnex"
-            :span="colItem.span || 0"
-          >
+          <a-col class="grid-col" v-for="(colItem, idnex) in record.columns" :key="idnex" :span="colItem.span || 0">
             <draggable
               tag="div"
               class="draggable-box"
@@ -274,7 +243,7 @@
                 group: 'form-draggable',
                 ghostClass: 'moving',
                 animation: 180,
-                handle: '.drag-move'
+                handle: '.drag-move',
               }"
               v-model="colItem.list"
               @start="$emit('dragStart', $event, colItem.list)"
@@ -321,11 +290,7 @@
     <!-- 栅格布局 end -->
     <!-- 卡片布局 start -->
     <template v-else-if="record.type === 'card'">
-      <div
-        class="grid-box"
-        :class="{ active: record.key === selectItem.key }"
-        @click.stop="handleSelectItem(record)"
-      >
+      <div class="grid-box" :class="{ active: record.key === selectItem.key }" @click.stop="handleSelectItem(record)">
         <a-card class="grid-row" :title="record.label">
           <div class="grid-col">
             <draggable
@@ -335,7 +300,7 @@
                 group: 'form-draggable',
                 ghostClass: 'moving',
                 animation: 180,
-                handle: '.drag-move'
+                handle: '.drag-move',
               }"
               v-model="record.list"
               @start="$emit('dragStart', $event, record.list)"
@@ -382,17 +347,13 @@
     <!-- 卡片布局 end -->
     <!-- 表格布局 start -->
     <template v-else-if="record.type === 'table'">
-      <div
-        class="table-box"
-        :class="{ active: record.key === selectItem.key }"
-        @click.stop="handleSelectItem(record)"
-      >
+      <div class="table-box" :class="{ active: record.key === selectItem.key }" @click.stop="handleSelectItem(record)">
         <table
           class="table-layout kk-table-9136076486841527"
           :class="{
             bright: record.options.bright,
             small: record.options.small,
-            bordered: record.options.bordered
+            bordered: record.options.bordered,
           }"
           :style="record.options.customStyle"
         >
@@ -404,9 +365,7 @@
               :key="tdIndex"
               :colspan="tdItem.colspan"
               :rowspan="tdItem.rowspan"
-              @contextmenu.prevent="
-                $emit('handleShowRightMenu', $event, record, trIndex, tdIndex)
-              "
+              @contextmenu.prevent="$emit('handleShowRightMenu', $event, record, trIndex, tdIndex)"
             >
               <draggable
                 tag="div"
@@ -415,7 +374,7 @@
                   group: 'form-draggable',
                   ghostClass: 'moving',
                   animation: 180,
-                  handle: '.drag-move'
+                  handle: '.drag-move',
                 }"
                 v-model="tdItem.list"
                 @start="$emit('dragStart', $event, tdItem.list)"
@@ -482,58 +441,57 @@
  * date 2019-11-20
  * description 使用递归组件调用自己，生成布局结构及表单
  */
-import draggable from "vuedraggable";
-import formNode from "./formNode";
-import LaisonInputCustomerSelect from '@/components/laison/LaisonInputCustomerSelect'
+import draggable from 'vuedraggable';
+import formNode from './formNode';
+// import LaisonInputCustomerSelect from '@/components/laison/LaisonInputCustomerSelect'
 export default {
-  name: "layoutItem",
+  name: 'layoutItem',
   props: {
     record: {
       type: Object,
-      required: true
+      required: true,
     },
     selectItem: {
       type: Object,
-      required: true
+      required: true,
     },
     config: {
       type: Object,
-      required: true
+      required: true,
     },
     startType: {
       type: String,
-      required: true
+      required: true,
     },
     insertAllowedType: {
       type: Array,
-      required: true
+      required: true,
     },
     hideModel: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     insertAllowed() {
       return this.insertAllowedType.includes(this.startType);
-    }
+    },
   },
   components: {
     formNode,
     draggable,
-    LaisonInputCustomerSelect
+    // LaisonInputCustomerSelect
   },
   methods: {
     handleShowRightMenu(e, record, trIndex, tdIndex) {
-      this.$emit("handleShowRightMenu", e, record, trIndex, tdIndex);
+      this.$emit('handleShowRightMenu', e, record, trIndex, tdIndex);
     },
     handleSelectItem(record) {
-      this.$emit("handleSelectItem", record);
+      this.$emit('handleSelectItem', record);
     },
     handleColAdd(e, list) {
-      this.$emit("handleColAdd", e, list);
-    }
+      this.$emit('handleColAdd', e, list);
+    },
   },
- 
 };
 </script>
