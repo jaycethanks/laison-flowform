@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import ProcessList from './comps/ProcessList.vue';
-import BpmnProcessFormDesigner from './BpmnProcessFormDesigner/index.vue';
+import ProcessList from '@/components/BpmnProcessFormDesigner/comps/ProcessList.vue';
+import BpmnProcessFormDesigner from '@/components/BpmnProcessFormDesigner/index.vue';
 // import LaisonStockList from '@/components/laison/LaisonStockList.vue'
 
 export default {

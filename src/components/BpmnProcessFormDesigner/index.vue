@@ -38,7 +38,7 @@
     </p>
     <div class="step-container">
       <div v-show="current === 0">
-        <!-- <form-design-view :height="propHeight" ref="formDesignView"></form-design-view> -->
+        <form-design-view :height="propHeight" ref="formDesignView"></form-design-view>
       </div>
       <div v-show="current === 1">
         <bpmn-designer :height="propHeight" :bpmnEditDataInit="bpmnEditDataInit"></bpmn-designer>
