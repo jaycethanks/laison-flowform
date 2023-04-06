@@ -38,7 +38,7 @@
     </p>
     <div class="step-container">
       <div v-show="current === 0">
-        <!-- <form-design-view :height="propHeight" ref="formDesignView"></form-design-view> -->
+        <form-design-view :height="propHeight" ref="formDesignView"></form-design-view>
       </div>
       <div v-show="current === 1">
         <bpmn-designer :height="propHeight" :bpmnEditDataInit="bpmnEditDataInit"></bpmn-designer>
@@ -169,7 +169,7 @@ export default {
       //   })
       // }
       /**
-       * 触发事件 'stepChange' , 以便于在src/components/BpmnProcessDesigner/package/penal/PropertiesPanel.vue 中触发更新
+       * 触发事件 'stepChange' , 以便于在src/components/bpmnpd/package/penal/PropertiesPanel.vue 中触发更新
        * @param key -  { Number } - 当前step对应的key,相当于 "to" 的含义
        * @param from { Number } - 上一个step
        */

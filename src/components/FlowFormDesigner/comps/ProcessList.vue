@@ -4,13 +4,7 @@
     <div class="form-list">
       <template v-if="list.length == 0">
         <a-empty
-          style="
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-          "
+          style="height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column"
         />
       </template>
       <div class="form-list-groups">
@@ -64,8 +58,8 @@
   </div>
 </template>
 <script>
-import API from '@/api/ErpConfig.js'
-import icons from '@/views/erp/formdesign/statics/index.js'
+import API from '@/api/ErpConfig.js';
+import icons from '@/components/FlowFormDesigner/statics/index.js';
 
 export default {
   data() {
@@ -73,71 +67,71 @@ export default {
       list: [],
       icons,
       loadingSwitch: false,
-    }
+    };
   },
   methods: {
     async loadList() {
-      let res = await API.processFormList()
+      let res = await API.processFormList();
       if (res.code === 0) {
-        this.list = res.data
+        this.list = res.data;
       }
     },
     getIcon(iconName) {
-      console.log(iconName, '--line69')
-      let iconObj = this.icons.find((it) => it.name === iconName)
-      return iconObj.file
+      console.log(iconName, '--line69');
+      let iconObj = this.icons.find((it) => it.name === iconName);
+      return iconObj.file;
     },
     onSwitchChange(status, id) {
-      this.changeStatus(status, id)
+      this.changeStatus(status, id);
     },
     async changeStatus(status, id) {
-      this.loadingSwitch = true
-      let res = await API.editConfigStatus({ enable: status, formDesignId: id })
+      this.loadingSwitch = true;
+      let res = await API.editConfigStatus({ enable: status, formDesignId: id });
       if (res.code === 0) {
-        this.$message.success('修改状态成功')
+        this.$message.success('修改状态成功');
       } else {
-        this.$message.error('修改状态失败!')
+        this.$message.error('修改状态失败!');
       }
-      this.loadList()
-      this.loadingSwitch = false
+      this.loadList();
+      this.loadingSwitch = false;
     },
     async handleDelete(id) {
-      let res = await API.realDeleteConfigById(id)
-      this.loadList()
+      let res = await API.realDeleteConfigById(id);
+      this.loadList();
       if (res.code === 0) {
-        this.$message.success('删除成功')
+        this.$message.success('删除成功');
       } else {
-        this.$message.error('删除失败')
+        this.$message.error('删除失败');
       }
     },
     handleEdit(record) {
-      this.$emit('edit', record)
+      this.$emit('edit', record);
     },
     /** util function */
     omit(str) {
-      let pat = /[^\x00-\xff]/gi
-      let char = '@'
-      let res = str.replace(pat, char).replace(/\s/gi, '')
-      let arr = res.split('')
-      let tag = arr.filter((it) => it === char)
-      let perc = tag.length / arr.length
+      let pat = /[^\x00-\xff]/gi;
+      let char = '@';
+      let res = str.replace(pat, char).replace(/\s/gi, '');
+      let arr = res.split('');
+      let tag = arr.filter((it) => it === char);
+      let perc = tag.length / arr.length;
       if (!str.length) {
-        return str
+        return str;
       }
       if (tag < 10) {
         // 字符串以非双音节字符为主
-        return str.slice(0, 60) + '...'
+        return str.slice(0, 60) + '...';
       }
       if (perc > 0.3) {
         // 有大量双音节字符
-        return str.slice(0, 28) + '...'
+        return str.slice(0, 28) + '...';
       }
     },
   },
   mounted() {
-    this.loadList()
+    this.loadList();
   },
-}
+};
 </script>
 <style scoped lang="scss">
 .form-list-wrapper {

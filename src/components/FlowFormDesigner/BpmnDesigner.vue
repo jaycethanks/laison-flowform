@@ -24,20 +24,8 @@
         <i class="el-icon-setting"></i>
       </div>
     </div>
-    <el-drawer
-      :visible.sync="controlDrawerVisible"
-      size="400px"
-      title="偏好设置"
-      append-to-body
-      destroy-on-close
-    >
-      <el-form
-        :model="controlForm"
-        size="small"
-        label-width="100px"
-        class="control-form"
-        @submit.native.prevent
-      >
+    <el-drawer :visible.sync="controlDrawerVisible" size="400px" title="偏好设置" append-to-body destroy-on-close>
+      <el-form :model="controlForm" size="small" label-width="100px" class="control-form" @submit.native.prevent>
         <el-form-item label="流程ID">
           <el-input v-model="controlForm.processId" @change="reloadProcessDesigner" />
         </el-form-item>
@@ -88,17 +76,17 @@
 </template>
 
 <script>
-import translations from '@/components/BpmnProcessDesigner/src/translations'
+import translations from '@/components/bpmnpd/src/translations';
 // 自定义渲染（隐藏了 label 标签）
-import CustomRenderer from '@/components/BpmnProcessDesigner/src/modules/custom-renderer'
+import CustomRenderer from '@/components/bpmnpd/src/modules/custom-renderer';
 // 自定义元素选中时的弹出菜单（修改 默认任务 为 用户任务）
-import CustomContentPadProvider from '@/components/BpmnProcessDesigner/package/designer/plugins/content-pad'
+import CustomContentPadProvider from '@/components/bpmnpd/package/designer/plugins/content-pad';
 // 自定义左侧菜单（修改 默认任务 为 用户任务）
-import CustomPaletteProvider from '@/components/BpmnProcessDesigner/package/designer/plugins/palette'
-import xmlObj2json from '@/components/BpmnProcessDesigner/src/utils/xml2json'
-import MyProcessPalette from '@/components/BpmnProcessDesigner/package/palette/ProcessPalette'
+import CustomPaletteProvider from '@/components/bpmnpd/package/designer/plugins/palette';
+import xmlObj2json from '@/components/bpmnpd/src/utils/xml2json';
+import MyProcessPalette from '@/components/bpmnpd/package/palette/ProcessPalette';
 // 自定义侧边栏
-// import MyProcessPanel from "@/components/BpmnProcessDesigner/package/process-panel/ProcessPanel";
+// import MyProcessPanel from "@/components/bpmnpd/package/process-panel/ProcessPanel";
 // import { xmlStr } from '@/bpmnJs/mockBpmnXml/bpmnMockXml'
 export default {
   name: 'App',
@@ -128,7 +116,7 @@ export default {
         CustomContentPadProvider,
         CustomPaletteProvider,
       },
-    }
+    };
   },
   created() {
     // 如果bpmnEditDataInit 不为null. 说明是 edit,进行数据回显初始化
@@ -137,36 +125,36 @@ export default {
   methods: {
     initModeler(modeler) {
       setTimeout(() => {
-        this.modeler = modeler
-        console.log(modeler)
-      }, 10)
+        this.modeler = modeler;
+        console.log(modeler);
+      }, 10);
     },
     reloadProcessDesigner(deep) {
-      this.controlForm.additionalModel = []
+      this.controlForm.additionalModel = [];
       for (let key in this.addis) {
         if (this.addis[key]) {
-          this.controlForm.additionalModel.push(this.addis[key])
+          this.controlForm.additionalModel.push(this.addis[key]);
         }
       }
-      deep && (this.xmlString = undefined)
-      this.reloadIndex += 1
-      this.modeler = null // 避免 panel 异常
+      deep && (this.xmlString = undefined);
+      this.reloadIndex += 1;
+      this.modeler = null; // 避免 panel 异常
       // if (deep) {
       //   this.xmlString = undefined;
       //   this.$refs.processDesigner.processRestart();
       // }
     },
     changeLabelEditingStatus(status) {
-      this.addis.labelEditing = status ? { labelEditingProvider: ['value', ''] } : false
-      this.reloadProcessDesigner()
+      this.addis.labelEditing = status ? { labelEditingProvider: ['value', ''] } : false;
+      this.reloadProcessDesigner();
     },
     changeLabelVisibleStatus(status) {
-      this.addis.customRenderer = status ? CustomRenderer : false
-      this.reloadProcessDesigner()
+      this.addis.customRenderer = status ? CustomRenderer : false;
+      this.reloadProcessDesigner();
     },
 
     elementClick(element) {
-      this.element = element
+      this.element = element;
       // !this.elementOverlayIds && (this.elementOverlayIds = {})
       // !this.overlays && (this.overlays = this.modeler.get('overlays'))
       // !this.contextPad && (this.contextPad = this.modeler.get('contextPad'))
@@ -193,7 +181,7 @@ export default {
       // })
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

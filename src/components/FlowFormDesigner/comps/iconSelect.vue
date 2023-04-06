@@ -7,11 +7,7 @@
         <a-icon class="a-icon" type="edit" />
       </div>
     </div>
-    <div
-      v-else
-      class="icon-selected-box"
-      :style="{ backgroundColor: value.color }"
-    >
+    <div v-else class="icon-selected-box" :style="{ backgroundColor: value.color }">
       <img :src="getIcon(value.name)" alt="" />
       <a-icon class="a-icon" type="edit" />
     </div>
@@ -28,11 +24,7 @@
       <div class="color-select-wrapper">
         <span style="font-weight: 600">背景色:</span>
         <div class="color-btn" v-for="(item, index) in colors" :key="index">
-          <div
-            @click="setColor(item)"
-            :style="{ backgroundColor: item }"
-            class="color-item"
-          ></div>
+          <div @click="setColor(item)" :style="{ backgroundColor: item }" class="color-item"></div>
         </div>
       </div>
 
@@ -52,7 +44,7 @@
   </div>
 </template>
 <script>
-import icons from '@/views/erp/formdesign/statics/index.js'
+import icons from '@/components/FlowFormDesigner/statics/index.js';
 
 export default {
   name: 'iconSelect',
@@ -83,12 +75,12 @@ export default {
         name: '',
         color: '#0089ff',
       },
-    }
+    };
   },
   watch: {
     target: {
       handler: function () {
-        this.$emit('cusEvent', this.target)
+        this.$emit('cusEvent', this.target);
       },
     },
   },
@@ -97,26 +89,26 @@ export default {
       this.target = {
         name: '',
         color: '#0089ff',
-      }
-      this.visible = true
+      };
+      this.visible = true;
     },
     hide() {
-      this.visible = false
+      this.visible = false;
     },
     handleSelected(iconName) {
-      let iconObj = this.icons.find((it) => it.name === iconName)
-      this.target.name = iconObj.name
-      this.hide()
+      let iconObj = this.icons.find((it) => it.name === iconName);
+      this.target.name = iconObj.name;
+      this.hide();
     },
     getIcon(iconName) {
-      let iconObj = this.icons.find((it) => it.name === iconName)
-      return iconObj.file
+      let iconObj = this.icons.find((it) => it.name === iconName);
+      return iconObj.file;
     },
     setColor(color) {
-      this.target.color = color
+      this.target.color = color;
     },
   },
-}
+};
 </script>
 <style scoped lang="scss">
 .icon-wrapper {

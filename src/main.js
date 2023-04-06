@@ -17,16 +17,16 @@ Vue.use(KFormDesign);
 // import './components/styles/form-design.less';
 /* Bpmn Process Designer -- Start -- */
 
-import '@/components/BpmnProcessDesigner/package/theme/element-variables.scss';
+import '@/components/bpmnpd/package/theme/element-variables.scss';
 
 // 引入highlight，代码高亮插件
-// import { vuePlugin } from '@/components/BpmnProcessDesigner/src/highlight'
+// import { vuePlugin } from '@/components/bpmnpd/src/highlight'
 // import 'highlight.js/styles/atom-one-dark-reasonable.css'
 // Vue.use(vuePlugin)
 
 // 引入bpmn-process-designer插件
-import '@/components/BpmnProcessDesigner/package/theme/index.scss';
-import MyPD from '@/components/BpmnProcessDesigner/package/';
+import '@/components/bpmnpd/package/theme/index.scss';
+import MyPD from '@/components/bpmnpd/package/';
 Vue.use(MyPD);
 
 // 引入bpmn插件

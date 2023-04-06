@@ -322,7 +322,7 @@ export default {
       if (unwatch) unwatch()
     })
     /**
-     * 用以监听src/views/erp/formdesign/BpmnProcessFormDesigner/index.vue 中， step 切换时的事件
+     * 用以监听src/views/erp/formdesign/FlowFormDesigner/index.vue 中， step 切换时的事件
      * 该监听事件，用于当表单设计器变动时，刷新流程节点的字段控制
      * @param key { Number } - 当前step对应的key
      */

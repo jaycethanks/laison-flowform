@@ -420,8 +420,8 @@
 <script>
 import KChangeOption from '../../KChangeOption/index.vue';
 import kCheckbox from '../../KCheckbox/index.vue';
-import FormFieldsControl2 from '@/components/BpmnProcessDesigner/package/penal/comps/FormFieldsControl2.vue';
-import OrgSelectionModal from '@/components/BpmnProcessDesigner/package/penal/comps/OrgSelectionModal.vue';
+import FormFieldsControl2 from '@/components/bpmnpd/package/penal/comps/FormFieldsControl2.vue';
+import OrgSelectionModal from '@/components/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
 // import jEditor from '@/components/jeecg/JCodeEditor.vue'
 export default {
   name: 'formItemProperties',
