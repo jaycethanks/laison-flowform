@@ -14,14 +14,14 @@
 <script>
 // import DesignLabelForm from '@/components/designform/DesignLabelForm'
 import KFormDesign from '@/components/kform/KFormDesign';
-import LaisonInputMeterSelect from '@/components/laison/LaisonInputMeterSelect';
+// import LaisonInputMeterSelect from '@/components/laison/LaisonInputMeterSelect';
 import API from '@/api/ActZForm';
 export default {
   name: 'FormDesignView',
   components: {
     // DesignLabelForm,
     KFormDesign,
-    LaisonInputMeterSelect,
+    // LaisonInputMeterSelect,
   },
   props: ['height'],
   data() {

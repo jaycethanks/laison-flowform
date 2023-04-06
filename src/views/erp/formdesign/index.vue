@@ -4,39 +4,41 @@
     <div v-if="showIndex" class="flow_form_index_page" style="height: 100%">
       <!-- prettier-ignore -->
       <a-button @click="record = null;showIndex = false">新建流程表单</a-button>
+      hekansdjknas
       <ProcessList
         style="height: calc(100% - 62px)"
         @edit="
-          record = $event
-          showIndex = false
+          record = $event;
+          showIndex = false;
         "
       />
     </div>
+
     <div v-else class="flow_form_designer_page">
-      <BpmnProcessFormDesigner :editRecord="record" @back="showIndex = true" />
+      <!-- <BpmnProcessFormDesigner :editRecord="record" @back="showIndex = true" /> -->
     </div>
   </div>
 </template>
 
 <script>
-import ProcessList from './comps/ProcessList.vue'
-import BpmnProcessFormDesigner from './BpmnProcessFormDesigner/index.vue'
-import LaisonStockList from '@/components/laison/LaisonStockList.vue'
+import ProcessList from './comps/ProcessList.vue';
+import BpmnProcessFormDesigner from './BpmnProcessFormDesigner/index.vue';
+// import LaisonStockList from '@/components/laison/LaisonStockList.vue'
 
 export default {
   data() {
     return {
       showIndex: true,
       record: null,
-    }
+    };
   },
   components: {
     BpmnProcessFormDesigner,
     ProcessList,
-    LaisonStockList,
+    // LaisonStockList,
   },
   mounted() {
-    console.log(this.$route.path, '--line29')
+    console.log(this.$route.path, '--line29');
   },
   methods: {
     handleDownload() {},
@@ -60,7 +62,7 @@ export default {
      */
     // }
   },
-}
+};
 </script>
 <style scoped lang="scss">
 >>> .ant-modal {
