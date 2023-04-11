@@ -41,7 +41,7 @@ import ModelingModule from 'bpmn-js/lib/features/modeling';
 // https://www.modb.pro/db/32324
 
 export default {
-  name: 'TaskProgressBpmn',
+  name: 'FlowPreviewer',
   props: {
     value: {
       type: Object,

@@ -90,7 +90,7 @@ import MyProcessPalette from '@/lib/bpmnpd/package/palette/ProcessPalette';
 // import MyProcessPanel from "@/lib/bpmnpd/package/process-panel/ProcessPanel";
 // import { xmlStr } from '@/bpmnJs/mockBpmnXml/bpmnMockXml'
 export default {
-  name: 'App',
+  name: 'FlowDesigner',
   components: { MyProcessPalette, MyProcessDesigner, MyPropertiesPanel },
   props: ['height', 'bpmnEditDataInit'],
   data() {

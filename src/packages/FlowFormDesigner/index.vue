@@ -61,13 +61,13 @@ import FlowDesign from '@/packages/FlowDesigner/index.vue';
 import FlowFormPublish from './FlowFormPublish';
 
 export default {
+  name: 'FlowFormDesigner',
   props: ['editRecord'],
   components: {
     FormDesign,
     FlowDesign,
     FlowFormPublish,
   },
-  name: 'FlowFormDesigner',
   provide: function () {
     return {
       jumpTo: this.jumpTo,

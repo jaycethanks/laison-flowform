@@ -54,7 +54,7 @@
  */
 import jsonModel from '../KFormDesign/module/jsonModal';
 import KFormBuild from '../KFormBuild';
-
+import JModal from '@/components/jeecg/JModal/index.vue';
 export default {
   name: 'KFormPreview',
   data() {
@@ -68,6 +68,7 @@ export default {
   components: {
     jsonModel,
     KFormBuild,
+    JModal,
   },
   created() {
     window.aa = this;

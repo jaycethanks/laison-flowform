@@ -11,6 +11,7 @@ module.exports = defineConfig({
       // template: "public/index.html"
     },
   },
+  productionSourceMap: false,
   transpileDependencies: true,
   css: {
     extract: false, // 配置打包后css文件是否独立

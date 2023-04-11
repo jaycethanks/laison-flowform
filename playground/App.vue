@@ -11,14 +11,14 @@
       />
     </div>
     <div v-else class="flow_form_designer_page"></div> -->
-    <button @click="formvisible = true">show form</button>
+    <!-- <button @click="formvisible = true">show form</button>
     <FormPreviewer :visible="formvisible" @close="formvisible = false" />
-
     <button @click="flowvisible = true">show flow</button>
     <FlowPreviewer :visible="flowvisible" @close="flowvisible = false" :value="mockFLow" />
     <FlowFormDesigner :editRecord="record" @back="showIndex = true" />
     <FormDesigner />
-    <FlowDesigner />
+    <FlowDesigner /> -->
+    <Test />
   </div>
 </template>
 
@@ -30,8 +30,7 @@ import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';
 import FormDesigner from '@/packages/FormDesigner';
 import mock from '@/packages/FlowPreviewer/mock';
-import FormDesign from '@/packages/FormDesigner/index.vue';
-
+import Test from './Test.vue';
 export default {
   name: 'App',
   data() {
@@ -44,6 +43,7 @@ export default {
     };
   },
   components: {
+    Test,
     FlowFormDesigner,
     ProcessList,
     FlowPreviewer,
