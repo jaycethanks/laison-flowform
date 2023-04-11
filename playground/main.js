@@ -1,20 +1,16 @@
 import Vue from 'vue';
 import App from './App.vue';
 import VueI18n from 'vue-i18n';
-import JeecgComponents from '@/components/jeecg/index';
-import vueBus from '@/utils/vueBus';
-import store from './store/';
-import laison from '../dist/laison-flowform.umd';
+// import vueBus from '@/utils/vueBus';
+import store from '../src/store';
 // Antd 按需加载
 import '@/lib/lazy_antd';
 // elementui 按需引入
 import '@/lib/lazy_elementui.js';
 //LocalStorage 方法增强
-import './utils/localStorageEnhance.js';
+import '../src/utils/localStorageEnhance.js';
 Vue.config.productionTip = false;
-Vue.use(laison);
-Vue.use(JeecgComponents);
-Vue.use(vueBus);
+// Vue.use(vueBus);
 
 /** i18n start */
 Vue.use(VueI18n);

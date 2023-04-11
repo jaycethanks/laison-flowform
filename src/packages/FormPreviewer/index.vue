@@ -6,8 +6,9 @@
     switchFullscreen
     title="订单详情"
     @ok="handleOk"
-    @cancel="handleCancel"
+    @cancel="closeModal"
     :maskClosable="false"
+    :footer="footer"
     @fullScreenEvent="isFullScreen = $event"
     :body-style="{ maxHeight: isFullScreen ? '' : '70vh', overflowY: 'auto' }"
     :ok-button-props="{ props: { disabled: this.okBtnDisabled } }"
@@ -57,6 +58,18 @@ export default {
       default: function () {
         return {};
       },
+    },
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    title: {
+      type: String,
+      default: 'title is not defined',
+    },
+    footer: {
+      type: [String, Object],
+      // default: null,
     },
     opts: {
       type: Object,
@@ -193,6 +206,9 @@ export default {
 
   destroyed() {},
   methods: {
+    closeModal: function () {
+      this.$emit('close');
+    },
     typeHandler(type) {
       switch (type) {
         case 0: //申请 add

@@ -132,7 +132,7 @@ export default {
       this.initBpmn();
     },
     closeModal: function () {
-      this.BpmnViewer.this.$emit('close');
+      this.$emit('close');
     },
 
     /**
@@ -143,10 +143,12 @@ export default {
       // const canvas = document.getElementById('canvas')
       // 建模\
       try {
-        this.BpmnViewer = new BpmnViewer({
-          container: '#canvas',
-          additionalModules: [ModelingModule], //引入修改模块颜色 在Viewer[只读模式]中添加功能
-        });
+        if (this.BpmnViewer === null) {
+          this.BpmnViewer = new BpmnViewer({
+            container: '#canvas',
+            additionalModules: [ModelingModule], //引入修改模块颜色 在Viewer[只读模式]中添加功能
+          });
+        }
         this.createNewDiagram();
       } catch (e) {
         console.log('initBpmnError', e);

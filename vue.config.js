@@ -5,6 +5,12 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = defineConfig({
+  pages: {
+    index: {
+      entry: 'playground/main.js',
+      // template: "public/index.html"
+    },
+  },
   transpileDependencies: true,
   css: {
     extract: false, // 配置打包后css文件是否独立
