@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <h2>This is a test component for form design</h2>
 </template>
 <script>
 export default {};

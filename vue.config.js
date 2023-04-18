@@ -18,11 +18,11 @@ module.exports = defineConfig({
     loaderOptions: {
       less: {
         modifyVars: {
-          /* less 变量覆盖，用于自定义 ant design 主题 */
-          'primary-color': '#1890FF', // 同时也是k-form-design的主题色
-          'layout-color': '#1890FF', //k-form-design 的布局框颜色
-          'link-color': '#1890FF',
-          'border-radius-base': '4px',
+          // /* less 变量覆盖，用于自定义 ant design 主题 */
+          // 'primary-color': '#1890FF', // 同时也是k-form-design的主题色
+          // 'layout-color': '#1890FF', //k-form-design 的布局框颜色
+          // 'link-color': '#1890FF',
+          // 'border-radius-base': '4px',
         },
         javascriptEnabled: true, // 解决，antd less 样式引入报错问题
       },

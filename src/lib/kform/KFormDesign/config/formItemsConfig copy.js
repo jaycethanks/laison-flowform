@@ -3,8 +3,6 @@
  * date 2019-11-20
  * description 表单控件项
  */
-
-import cuscomponents from '@/components/CusCompsForFormDesign/index.js';
 // 基础控件
 export const basicsList = [
   {
@@ -580,10 +578,533 @@ export const basicsList = [
   },
 ];
 
+// 高级控件
+// export const highList = [];
+
+// import { Alert } from "ant-design-vue";
+// import LaisonInputCustomerSelect from '@/components/laison/LaisonInputCustomerSelect'
+// import LaisonErpCustomerSelector from '@/components/laison/LaisonErpCustomerSelector'
+
+// import LaisonInputMeterSelect from '@/components/laison/LaisonInputMeterSelect'
+// import LaisonInputUserSelect from '@/components/laison/LaisonInputUserSelect'
+
+// import LaisonInputDeptSelect from '@/components/laison/LaisonInputDeptSelect'
+// import LaisonMultiImgUploadModel from '@/components/laison/LaisonMultiImgUploadModel'
+// import LaisonLoginUser from '@/components/laison/LaisonLoginUser'
+// import LaisonSalesmanInfo from '@/components/laison/LaisonSalesmanInfo'
+
+// import LaisonGmapMeterSelector from '@/components/laison/LaisonGmapMeterSelector'
+// import LaisonStockList from '@/components/laison/LaisonStockList'
+
+// import LaisonErpConfig from '@/components/laison/LaisonErpConfig'
+// import LaisonErpMeterNumberRecord from '@/components/laison/LaisonErpMeterNumberRecord'
+// import LaisonErpProductionOptions from '@/components/laison/LaisonErpProductionOptions'
+
+//  -------------------------------- 工单系统 Start --------------------------------
+
+// import WorkOrderNumberGenerator from '@/components/laison/AftersaleCutsomComponents/WorkOrderNumberGenerator'
+// import MerterNumberInfo from '@/components/laison/AftersaleCutsomComponents/MerterNumberInfo'
+// import EditorToolbar from '@/components/laison/AftersaleCutsomComponents/EditorToolbar'
+import EditorToolbar from './EditorToolbar';
+// import UserSelectionAndDesc from '@/components/laison/AftersaleCutsomComponents/UserSelectionAndDesc'
+// import ConfigSelector from '@/components/laison/AftersaleCutsomComponents/ConfigSelector'
+// import DcuCiuDynamicForm from '@/components/laison/AftersaleCutsomComponents/DcuCiuDynamicForm'
+
+// import CategoriesSelector from '@/components/laison/AftersaleCutsomComponents/CategoriesSelector.vue'
+// import LongTaskRelateSelector from '@/components/laison/AftersaleCutsomComponents/LongTaskRelateSelector.vue'
+
+//  -------------------------------- 工单系统 End --------------------------------
+
 // 自定义组件
 export const customComponents = {
   title: '自定义组件',
-  list: cuscomponents,
+  list: [
+    // {
+    //   label: '登录用户',
+    //   type: 'LoginUser',
+    //   component: LaisonLoginUser,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //   },
+    //   model: 'vcds',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '业务员信息',
+    //   type: 'SalemanInfo',
+    //   component: LaisonSalesmanInfo,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //   },
+    //   model: 'vcds',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '部门选择',
+    //   type: 'DeptSelect',
+    //   component: LaisonInputDeptSelect,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '客户选择',
+    //   type: 'CustomerSelect',
+    //   component: LaisonInputCustomerSelect,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '表计选择',
+    //   type: 'MeterSelect',
+    //   component: LaisonInputMeterSelect,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '用户选择',
+    //   type: 'UserSelect',
+    //   component: LaisonInputUserSelect,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: 'erp级联配置',
+    //   type: 'ErpTypeSelect',
+    //   component: LaisonErpConfig,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '文件上传',
+    //   type: 'FileUpload',
+    //   component: LaisonMultiImgUploadModel,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     width: '100%',
+    //     data: '{"listType":"text","count":1,"size":500,"onlyImg":true}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '地图表计选择器',
+    //   type: 'GmapMeterSelect',
+    //   component: LaisonGmapMeterSelector,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '产品明细表',
+    //   type: 'LaisonStockList',
+    //   component: LaisonStockList,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'text',
+    //   },
+    //   rules: [
+    //     //验证规则
+    //     {
+    //       required: true, // 必须填写
+    //       message: 'common.please_input',
+    //     },
+    //   ],
+    //   model: '',
+    //   key: '',
+    // },
+    // {
+    //   label: 'erp客户选择器',
+    //   type: 'erpCustomerSelector',
+    //   component: LaisonErpCustomerSelector,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{"customer":"SUB_DEPT_TYPE"}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '表号生成器',
+    //   type: 'laisonErpMeterNumberRecord',
+    //   component: LaisonErpMeterNumberRecord,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '生产选项',
+    //   type: 'LaisonErpProductionOptions',
+    //   component: LaisonErpProductionOptions,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // ---------------------------------------------------- 工单系统组件 Start ----------------------------------------------------
+    // {
+    //   label: '工单号生成器',
+    //   type: 'WorkOrderNumberGenerator',
+    //   component: WorkOrderNumberGenerator,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     // listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '表号信息',
+    //   type: 'MerterNumberInfo',
+    //   component: MerterNumberInfo,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     // listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    {
+      label: '立即处理工具栏',
+      type: 'EditorToolbar',
+      component: EditorToolbar,
+      options: {
+        // multiple: false,
+        disabled: false,
+        hidden: false, // 是否隐藏，false显示，true隐藏
+        width: '100%',
+        data: '{}',
+        // placeholder: '',
+        // action: '',
+        // listType: 'picture-card',
+      },
+      model: '',
+      key: '',
+      rules: [
+        {
+          required: false,
+          message: 'order.pleaseSelect',
+        },
+      ],
+    },
+    // {
+    //   label: '用户选择与描述',
+    //   type: 'UserSelectionAndDesc',
+    //   component: UserSelectionAndDesc,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     data: '{}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     // listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: 'DCU/CIU表单',
+    //   type: 'DcuCiuDynamicForm',
+    //   component: DcuCiuDynamicForm,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     // data: '{"processType":"chlx","mode":"default"}',
+    //     data: '',
+    //     // placeholder: '',
+    //     // action: '',
+    //     // listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '配置选择器',
+    //   type: 'ConfigSelector',
+    //   component: ConfigSelector,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     // data: '{"processType":"chlx","mode":"default"}',
+    //     data: '{"processType":"shlx","mode":"default","default":"表计"}',
+    //     // placeholder: '',
+    //     // action: '',
+    //     // listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '问题分类选择器',
+    //   type: 'CategoriesSelector',
+    //   component: CategoriesSelector,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     // data: '{"processType":"chlx","mode":"default"}',
+    //     data: '[]',
+    //     // placeholder: '',
+    //     // action: '',
+    //     // listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // {
+    //   label: '长期任务选择器',
+    //   type: 'LongTaskRelateSelector',
+    //   component: LongTaskRelateSelector,
+    //   options: {
+    //     // multiple: false,
+    //     disabled: false,
+    //     hidden: false, // 是否隐藏，false显示，true隐藏
+    //     width: '100%',
+    //     // data: '{"processType":"chlx","mode":"default"}',
+    //     data: '[]',
+    //     // placeholder: '',
+    //     // action: '',
+    //     // listType: 'picture-card',
+    //   },
+    //   model: '',
+    //   key: '',
+    //   rules: [
+    //     {
+    //       required: false,
+    //       message: 'order.pleaseSelect',
+    //     },
+    //   ],
+    // },
+    // ---------------------------------------------------- 工单系统组件 End ----------------------------------------------------
+  ],
 };
 window.$customComponentList = customComponents.list;
 
