@@ -4,10 +4,10 @@
   </div>
 </template>
 <script>
-import { Flow } from '../dist/laison-flowform.umd.js';
-console.log('[FormDesigner]: ', FormDesigner);
+// import { FlowDesigner } from '../dist/';
+// console.log('[FormDesigner]: ', FormDesigner);
 export default {
-  components: { FormDesigner: FormDesigner },
+  // components: { FormDesigner },
 };
 </script>
 <style></style>

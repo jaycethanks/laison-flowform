@@ -5,10 +5,7 @@
   "main": "dist/laison-flowform.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib index.js --name laison-flowform --dest dist",
-    "types": "vue-tsc --noEmit && vue-tsc --emitDeclarationOnly",
-    "pkg": "rollup -c build/rollup.config.js",
-    "build:component": "rollup --config build/rollup.config.js --format es"
+    "build": "vue-cli-service build --target lib index.js --name laison-flowform --dest dist"
   },
   "dependencies": {
     "ant-design-vue": "1.7.8",
@@ -52,6 +49,7 @@
     "@rollup/plugin-terser": "^0.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "compression-webpack-plugin": "^10.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "postcss": "^8.4.21",

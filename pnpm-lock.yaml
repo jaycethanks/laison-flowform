@@ -19,6 +19,7 @@ specifiers:
   camunda-bpmn-moddle: ^4.4.1
   clipboard: 2.0.4
   codemirror: ^5.63.3
+  compression-webpack-plugin: ^10.0.0
   core-js: ^3.8.3
   diagram-js: ^11.12.0
   diagram-js-origin: ^1.3.2
@@ -91,6 +92,7 @@ devDependencies:
   '@rollup/plugin-terser': 0.4.1_rollup@2.79.1
   '@vue/cli-plugin-babel': 5.0.8_oimaos2g5cm3arooezizr2ae5u
   '@vue/cli-service': 5.0.8_g2npfgajv3nkmgmwiaxzikkgaa
+  compression-webpack-plugin: 10.0.0_webpack@5.78.0
   less: 3.13.1
   less-loader: 4.1.0_less@3.13.1+webpack@5.78.0
   postcss: 8.4.21
@@ -3228,6 +3230,17 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.52.0
+    dev: true
+
+  /compression-webpack-plugin/10.0.0_webpack@5.78.0:
+    resolution: {integrity: sha512-wLXLIBwpul/ALcm7Aj+69X0pYT3BYt6DdPn3qrgBIh9YejV9Bju9ShhlAsjujLyWMo6SAweFIWaUoFmXZNuNrg==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      webpack: ^5.1.0
+    dependencies:
+      schema-utils: 4.0.0
+      serialize-javascript: 6.0.1
+      webpack: 5.78.0
     dev: true
 
   /compression/1.7.4:

@@ -11,13 +11,13 @@
       />
     </div>
     <div v-else class="flow_form_designer_page"></div> -->
-    <!-- <button @click="formvisible = true">show form</button>
+    <button @click="formvisible = true">show form</button>
     <FormPreviewer :visible="formvisible" @close="formvisible = false" />
     <button @click="flowvisible = true">show flow</button>
     <FlowPreviewer :visible="flowvisible" @close="flowvisible = false" :value="mockFLow" />
     <FlowFormDesigner :editRecord="record" @back="showIndex = true" />
     <FormDesigner />
-    <FlowDesigner /> -->
+    <FlowDesigner />
     <Test />
   </div>
 </template>
