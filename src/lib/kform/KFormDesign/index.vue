@@ -250,7 +250,7 @@ export default {
           hideRequiredMark: false,
           customStyle: '',
           enablePrint: false, //@jayce
-          jsEnhance: '', //@jayce
+          Expressions: '', //@jayce
         },
       },
       previewOptions: {
@@ -429,7 +429,7 @@ export default {
           hideRequiredMark: false,
           customStyle: '',
           enablePrint: false, //@jayce
-          jsEnhance: '', //@jayce
+          Expressions: '', //@jayce
         },
       };
       this.handleSetSelectItem({ key: '' });

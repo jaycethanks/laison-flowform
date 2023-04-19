@@ -463,8 +463,7 @@ export default {
     handleChange(value, key, model) {
       // 触发change事件时，去执行fixItem
       this.$emit('change', value, key);
-      // console.log('[ ]: ', value, key, model);
-      console.log('[ ]: ', this.value);
+      console.log('[ ]: ', value, key, model);
       this.cvalue.list.forEach((i, index) => {
         // console.log(i.options.hiddenJs, model)
         if (i.columns) {
@@ -553,14 +552,14 @@ export default {
       this.tempModel = this.form.getFieldsValue();
       //this.recModel(this.tempModel) //因为递归比较耗性能注释掉   所以凡是有hiddenJs和disablejs的都必须要有 initJs执行首次处理
       this.exeInitJs();
-      // // @jayce jsEnhance
-      // try {
-      //   if (this.value.config && this.value.config.jsEnhance) {
-      //     Function('"use strict";' + this.value.config.jsEnhance)();
-      //   }
-      // } catch (err) {
-      //   console.error('accur error duaring jsEnhance execution:', err);
-      // }
+      // @jayce jsEnhance
+      try {
+        if (this.value.config && this.value.config.jsEnhance) {
+          Function('"use strict";' + this.value.config.jsEnhance)();
+        }
+      } catch (err) {
+        console.error('accur error duaring jsEnhance execution:', err);
+      }
     });
     this.$emit('mount', this);
   },

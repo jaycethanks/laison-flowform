@@ -2,6 +2,10 @@
   <div class="properties-centent kk-checkbox">
     <div class="properties-body">
       <a-form>
+        <a-form-item label="增强表达式">
+          <!-- <a-textarea v-model="config.Expressions" /> -->
+          <Expressions v-model="config.Expressions" />
+        </a-form-item>
         <a-form-item label="表单布局">
           <a-radio-group buttonStyle="solid" v-model="config.layout">
             <a-radio-button value="horizontal">水平</a-radio-button>
@@ -15,21 +19,12 @@
             <a-radio-button value="Grid">栅格</a-radio-button>
           </a-radio-group>
         </a-form-item>
-        <a-form-item
-          v-show="config.labelLayout === 'flex'"
-          label="标签宽度（px）"
-        >
+        <a-form-item v-show="config.labelLayout === 'flex'" label="标签宽度（px）">
           <a-input-number v-model="config.labelWidth" />
         </a-form-item>
         <a-form-item label="labelCol" v-show="config.labelLayout !== 'flex'">
           <div class="change-col-box">
-            <a-slider
-              id="test"
-              :max="24"
-              :min="0"
-              v-model="config.labelCol.xs"
-              @change="handleChangeCol"
-            />
+            <a-slider id="test" :max="24" :min="0" v-model="config.labelCol.xs" @change="handleChangeCol" />
             <div>
               <label>xs:</label>
               <a-input-number v-model="config.labelCol.xs" />
@@ -85,23 +80,19 @@
           </div>
         </a-form-item>
         <a-form-item label="预览模态框宽度">
-          <a-input-number style="width:100%;" v-model="previewOptions.width" />
+          <a-input-number style="width: 100%" v-model="previewOptions.width" />
+        </a-form-item>
+
+        <a-form-item label="启用打印">
+          <a-switch v-model="config.enablePrint" />
+        </a-form-item>
+        <a-form-item label="表单属性">
+          <kCheckbox v-model="config.hideRequiredMark" label="隐藏必选标记" />
         </a-form-item>
         <a-form-item label="表单CSS">
           <a-textarea v-model="config.customStyle" />
         </a-form-item>
-          <a-form-item label="启用打印">
-            <a-switch v-model="config.enablePrint" />
-          </a-form-item>
-          <a-form-item label="js增强">
-            <a-textarea v-model="config.jsEnhance" />
-          </a-form-item>               
-        <a-form-item label="表单属性">
-          <kCheckbox v-model="config.hideRequiredMark" label="隐藏必选标记" />
-        </a-form-item>
-        <a-form-item label="提示">
-          实际预览效果请点击预览查看
-        </a-form-item>
+        <!-- <a-form-item label="提示"> 实际预览效果请点击预览查看 </a-form-item> -->
       </a-form>
     </div>
   </div>
@@ -112,30 +103,43 @@
  * date 2019-11-20
  * description 表单属性设置面板组件
  */
-import kCheckbox from "../../KCheckbox/index.vue";
+import kCheckbox from '../../KCheckbox/index.vue';
+import Expressions from '../../KExpressions/expressions.vue';
 export default {
-  name: "formProperties",
+  name: 'formProperties',
   components: {
-    kCheckbox
+    kCheckbox,
+    Expressions,
   },
   props: {
     config: {
       type: Object,
-      required: true
+      required: true,
     },
     previewOptions: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     handleChangeCol(e) {
-      this.config.labelCol.xs = this.config.labelCol.sm = this.config.labelCol.md = this.config.labelCol.lg = this.config.labelCol.xl = this.config.labelCol.xxl = e;
+      this.config.labelCol.xs =
+        this.config.labelCol.sm =
+        this.config.labelCol.md =
+        this.config.labelCol.lg =
+        this.config.labelCol.xl =
+        this.config.labelCol.xxl =
+          e;
 
-      this.config.wrapperCol.xs = this.config.wrapperCol.sm = this.config.wrapperCol.md = this.config.wrapperCol.lg = this.config.wrapperCol.xl = this.config.wrapperCol.xxl =
-        24 - e;
-    }
-  }
+      this.config.wrapperCol.xs =
+        this.config.wrapperCol.sm =
+        this.config.wrapperCol.md =
+        this.config.wrapperCol.lg =
+        this.config.wrapperCol.xl =
+        this.config.wrapperCol.xxl =
+          24 - e;
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
