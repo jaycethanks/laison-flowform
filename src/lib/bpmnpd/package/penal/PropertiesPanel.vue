@@ -90,19 +90,10 @@
         v-if="elementType === 'UserTask'"
       >
         <div slot="title" class="panel-tab__title"><i class="el-icon-share"></i>审批配置</div>
-        <el-checkbox
-          v-model="currentExtendNodeConfig.taskConfig.applyerLeader"
-          label="申请者领导审批"
-        ></el-checkbox>
+        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
-        <el-checkbox
-          v-model="currentExtendNodeConfig.taskConfig.createOrderNumber"
-          label="产生订单编号"
-        ></el-checkbox>
-        <el-checkbox
-          v-model="currentExtendNodeConfig.taskConfig.createMeterNumber"
-          label="生成表号"
-        ></el-checkbox>
+        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
+        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox>
         <p class="field-label-text"><i class="el-icon-s-check"></i>审批人</p>
         <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
         <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
@@ -192,20 +183,20 @@
 </template>
 
 <script>
-import ElementBaseInfo from './base/ElementBaseInfo'
-import ElementOtherConfig from './other/ElementOtherConfig'
-import ElementTask from './task/ElementTask'
-import ElementMultiInstance from './multi-instance/ElementMultiInstance'
-import FlowCondition from './flow-condition/FlowCondition'
-import SignalAndMassage from './signal-message/SignalAndMessage'
-import ElementListeners from './listeners/ElementListeners'
-import ElementProperties from './properties/ElementProperties'
-import ElementForm from './form/ElementForm'
-import UserTaskListeners from './listeners/UserTaskListeners'
+import ElementBaseInfo from './base/ElementBaseInfo';
+import ElementOtherConfig from './other/ElementOtherConfig';
+import ElementTask from './task/ElementTask';
+import ElementMultiInstance from './multi-instance/ElementMultiInstance';
+import FlowCondition from './flow-condition/FlowCondition';
+import SignalAndMassage from './signal-message/SignalAndMessage';
+import ElementListeners from './listeners/ElementListeners';
+import ElementProperties from './properties/ElementProperties';
+import ElementForm from './form/ElementForm';
+import UserTaskListeners from './listeners/UserTaskListeners';
 //@jayce 21/12/20-11:02:31 :
-import FormFieldsControl from './comps/FormFieldsControl.vue'
-import OrgSelectionModal from './comps/OrgSelectionModal.vue'
-import convert from 'xml-js'
+import FormFieldsControl from './comps/FormFieldsControl.vue';
+import OrgSelectionModal from './comps/OrgSelectionModal.vue';
+import convert from 'xml-js';
 
 /**
  * 侧边栏
@@ -253,7 +244,7 @@ export default {
     return {
       prefix: this.prefix,
       width: this.width,
-    }
+    };
   },
   data() {
     return {
@@ -291,17 +282,17 @@ export default {
         },
       },
       historyExtendConfig: [],
-    }
+    };
   },
   watch: {
     elementId: {
       handler() {
-        this.activeTab = ['peopleInchage']
+        this.activeTab = ['peopleInchage'];
       },
     },
     historyExtendConfig: {
       handler: function () {
-        window.historyExtendConfig = this.historyExtendConfig
+        window.historyExtendConfig = this.historyExtendConfig;
       },
       deep: true,
       immediate: true,
@@ -310,28 +301,26 @@ export default {
   created() {
     // try init edit data
     if (this.bpmnEditDataInit != null && !!this.bpmnEditDataInit.nodeDesignConfigs) {
-      this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeDesignConfigs)
+      this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeDesignConfigs);
     }
   },
   mounted() {
-    console.log('mounted---trigger', '--line317')
-
     // this.initModels()
     let unwatch = this.$watch('bpmnModeler', function () {
-      this.initModels()
-      if (unwatch) unwatch()
-    })
+      this.initModels();
+      if (unwatch) unwatch();
+    });
     /**
      * 用以监听src/views/erp/formdesign/FlowFormDesigner/index.vue 中， step 切换时的事件
      * 该监听事件，用于当表单设计器变动时，刷新流程节点的字段控制
      * @param key { Number } - 当前step对应的key
      */
-    this.$bus.$on('stepChange', (from, key) => this.stepChangeListener(from, key))
+    this.$bus.$on('stepChange', (from, key) => this.stepChangeListener(from, key));
   },
   methods: {
     testbtn() {
       // console.log(this.$store.state.kform.data, '--line225')
-      console.log(this.historyExtendConfig, '--line450')
+      console.log(this.historyExtendConfig, '--line450');
     },
     initModels() {
       /**
@@ -355,41 +344,41 @@ export default {
         elementRegistry: this.bpmnModeler.get('elementRegistry'),
         replace: this.bpmnModeler.get('replace'),
         selection: this.bpmnModeler.get('selection'),
-      }
-      this.getActiveElement()
+      };
+      this.getActiveElement();
     },
     getActiveElement() {
       // 初始第一个选中元素 bpmn:Process
-      this.initFormOnChanged(null)
+      this.initFormOnChanged(null);
       this.bpmnModeler.on('import.done', (e) => {
-        this.initFormOnChanged(null)
-      })
+        this.initFormOnChanged(null);
+      });
       // 监听选择事件，修改当前激活的元素以及表单
       this.bpmnModeler.on('selection.changed', ({ newSelection }) => {
-        this.initFormOnChanged(newSelection[0] || null)
-      })
+        this.initFormOnChanged(newSelection[0] || null);
+      });
       this.bpmnModeler.on('element.changed', ({ element }) => {
         // 保证 修改 "默认流转路径" 类似需要修改多个元素的事件发生的时候，更新表单的元素与原选中元素不一致。
         if (element && element.id === this.elementId) {
-          this.initFormOnChanged(element)
+          this.initFormOnChanged(element);
         }
-      })
+      });
 
       this.bpmnModeler.on('shape.remove', ({ element }) => {
         // 节点移除监听
-        this.shapeRemoveEventCustomHandle(element)
-      })
+        this.shapeRemoveEventCustomHandle(element);
+      });
     },
     // 初始化数据
     initFormOnChanged(element) {
       //@jayce 21/12/22-15:38:48 : 节点点击事件
-      let activatedElement = element
+      let activatedElement = element;
       if (!activatedElement) {
         activatedElement =
           window.bpmnInstances.elementRegistry.find((el) => el.type === 'bpmn:Process') ??
-          window.bpmnInstances.elementRegistry.find((el) => el.type === 'bpmn:Collaboration')
+          window.bpmnInstances.elementRegistry.find((el) => el.type === 'bpmn:Collaboration');
       }
-      if (!activatedElement) return
+      if (!activatedElement) return;
       // console.log(`
       //         ----------
       // select element changed:
@@ -398,24 +387,24 @@ export default {
       //         ----------
       //         `)
       // console.log('businessObject: ', activatedElement.businessObject)
-      window.bpmnInstances.bpmnElement = activatedElement
-      this.bpmnElement = activatedElement
-      this.elementId = activatedElement.id
-      this.elementType = activatedElement.type.split(':')[1] || ''
+      window.bpmnInstances.bpmnElement = activatedElement;
+      this.bpmnElement = activatedElement;
+      this.elementId = activatedElement.id;
+      this.elementType = activatedElement.type.split(':')[1] || '';
 
-      this.elementBusinessObject = JSON.parse(JSON.stringify(activatedElement.businessObject))
+      this.elementBusinessObject = JSON.parse(JSON.stringify(activatedElement.businessObject));
       this.conditionFormVisible = !!(
         this.elementType === 'SequenceFlow' &&
         activatedElement.source &&
         activatedElement.source.type.indexOf('StartEvent') === -1
-      )
-      this.formVisible = this.elementType === 'UserTask' || this.elementType === 'StartEvent'
+      );
+      this.formVisible = this.elementType === 'UserTask' || this.elementType === 'StartEvent';
 
       //@jayce 21/12/28-16:30:42 : extend entry
-      this.clickEventCustomHandle()
+      this.clickEventCustomHandle();
     },
     beforeDestroy() {
-      window.bpmnInstances = null
+      window.bpmnInstances = null;
     },
     //@jayce 21/12/28-15:49:52 :
     // fetchBpmnJsonData() {
@@ -424,11 +413,11 @@ export default {
     //   })
     // },
     shapeRemoveEventCustomHandle(element) {
-      let i = this.historyExtendConfig.findIndex((it) => it.node_id === element.id)
-      this.historyExtendConfig.splice(i, 1) // 移除该节点
+      let i = this.historyExtendConfig.findIndex((it) => it.node_id === element.id);
+      this.historyExtendConfig.splice(i, 1); // 移除该节点
     },
     clickEventCustomHandle() {
-      this.initFieldsControl() // 初始化表单字段控制组件
+      this.initFieldsControl(); // 初始化表单字段控制组件
     },
     //@jayce 21/12/28-16:26:41 :
     initFieldsControl() {
@@ -439,28 +428,24 @@ export default {
        */
       if (this.elementType === 'UserTask') {
         // 1. 判断bpmnUserTaskNodeConfig是否已经维护该节点
-        let target = this.historyExtendConfig.find((it) => it.nodeId === this.elementId)
+        let target = this.historyExtendConfig.find((it) => it.nodeId === this.elementId);
         if (target != undefined) {
           // 2. 如果已经维护
           //拿出其表单，响应式绑定到 <FormFieldsControl/>,  实时修改
-          this.currentExtendNodeConfig = target
+          this.currentExtendNodeConfig = target;
         } else {
           // 3. 如果没有维护
           //深拷贝一份kform 表单信息，并关联改节点后，放入bpmnUserTaskNodeConfig,将表单的引用响应式绑定到 <FormFieldsControl/>,  实时修改
           let temp = {
             nodeId: this.elementId,
             taskConfig: {
-              columnConfigs: this.pureFieldsControl(
-                JSON.parse(JSON.stringify(this.$store.state.kform.data))
-              ), // 将深拷贝表单信息转为 <FormFieldsControl/> 能直接处理的数据对象,
+              columnConfigs: this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data))), // 将深拷贝表单信息转为 <FormFieldsControl/> 能直接处理的数据对象,
               members: [],
               applyerLeader: false, // 发起人领导
               applyer: false,
             },
             copyConfig: {
-              columnConfigs: this.pureFieldsControl(
-                JSON.parse(JSON.stringify(this.$store.state.kform.data))
-              ),
+              columnConfigs: this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data))),
               members: [],
               type: 'end',
             },
@@ -471,73 +456,71 @@ export default {
                 hidden: true,
               },
               userConfig: {
-                columnConfigs: this.pureFieldsControl(
-                  JSON.parse(JSON.stringify(this.$store.state.kform.data))
-                ),
+                columnConfigs: this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data))),
                 members: [],
               },
             },
-          }
+          };
 
-          this.currentExtendNodeConfig = temp
-          this.historyExtendConfig.push(temp)
+          this.currentExtendNodeConfig = temp;
+          this.historyExtendConfig.push(temp);
         }
       }
     },
     /* ----@jayce 21/12/28-15:58:01 :   util functions 工具函数---- */
     //表单中的字段过滤出来 until function
     pureFieldsControl(formInfo) {
-      let _this = this
+      let _this = this;
       /*
       grid columns
       card list
       tabs columns
       table trs
       */
-      let result = []
-      const TYPELIST = ['grid', 'card', 'tabs', 'table'] //布局元素
-      recursionFilter(formInfo.list) // 过滤出嵌套在布局元素中的字段，
+      let result = [];
+      const TYPELIST = ['grid', 'card', 'tabs', 'table']; //布局元素
+      recursionFilter(formInfo.list); // 过滤出嵌套在布局元素中的字段，
       function recursionFilter(target) {
         target.map((it) => {
           if (TYPELIST.includes(it.type)) {
             if (it.type === 'grid' || it.type === 'tabs') {
               it.columns.map((_it) => {
-                recursionFilter(_it.list)
-              })
+                recursionFilter(_it.list);
+              });
             } else if (it.type === 'card') {
-              recursionFilter(it.list)
+              recursionFilter(it.list);
             } else if (it.type === 'table') {
               it.trs.map((_it) => {
                 _it.tds.map((__it) => {
-                  recursionFilter(__it.list)
-                })
-              })
+                  recursionFilter(__it.list);
+                });
+              });
             }
           } else {
             // 非布局元素
-            result.push(_this.structDateObj(it))
+            result.push(_this.structDateObj(it));
           }
-        })
+        });
       }
-      return result
+      return result;
     },
     structDateObj(it) {
-      const obj = {}
+      const obj = {};
       if (it.model != undefined || it.key != undefined) {
-        obj.label = it.label || 'empty'
-        obj.type = it.type || 'unknown'
-        obj.model = it.model || it.key
-        obj.key = it.key
-        obj.hidden = false
-        obj.disabled = false
+        obj.label = it.label || 'empty';
+        obj.type = it.type || 'unknown';
+        obj.model = it.model || it.key;
+        obj.key = it.key;
+        obj.hidden = false;
+        obj.disabled = false;
         // obj.hidden = it.options.hidden || false
         // obj.disabled = it.options.disabled || false
       }
-      return obj
+      return obj;
     },
     stepChangeListener(from, key) {
-      let _this = this
-      console.time('计时器1')
+      let _this = this;
+      console.time('计时器1');
       if (from === 0 && key == 1) {
         // 如果从表单设计跳转到流程设定step
         /**
@@ -556,30 +539,30 @@ export default {
         // prettier-ignore
         // H: History Nodes Fields Control Template 获取历史的字段控制模板
         const H = this.historyExtendConfig.length > 0 ? this.historyExtendConfig[0].taskConfig.columnConfigs : [] //获取历史节点，都是一样的随便取一个
-        if (this.historyExtendConfig.length === 0 || H.length === 0) return // 如果压根没有历史节点，或者表单字段为空就不需要做处理
+        if (this.historyExtendConfig.length === 0 || H.length === 0) return; // 如果压根没有历史节点，或者表单字段为空就不需要做处理
         // N: New Nodes Fields Control Template 生成最新的字段控制模板
-        const N = this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data)))
+        const N = this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data)));
         // 一定要在set 之前， 保留一份历史节点的数据
-        const historyExtendConfig_backup = JSON.parse(JSON.stringify(this.historyExtendConfig)) //历史节点深拷贝
+        const historyExtendConfig_backup = JSON.parse(JSON.stringify(this.historyExtendConfig)); //历史节点深拷贝
 
         // set 新的最新字段控制模板
         this.historyExtendConfig.forEach((it) => {
-          it.taskConfig.columnConfigs = JSON.parse(JSON.stringify(N))
-          it.copyConfig.columnConfigs = JSON.parse(JSON.stringify(N))
-          it.viewConfig.userConfig.columnConfigs = JSON.parse(JSON.stringify(N))
-        })
+          it.taskConfig.columnConfigs = JSON.parse(JSON.stringify(N));
+          it.copyConfig.columnConfigs = JSON.parse(JSON.stringify(N));
+          it.viewConfig.userConfig.columnConfigs = JSON.parse(JSON.stringify(N));
+        });
         /**
          * 1. 去做判断， 最新的字段控制模板和历史的字段控制模板有什么差异
          * 2. 找出最新的字段控制模板中有，且历史字段模板有的 历史字段字段（如果是新增字段则不用管，在上一步的set最新字段控制模板中就已经设定了默认值）也就是需要恢复设定值的字段
          */
 
         // 找出存在历史配置的字段key
-        const H_keys = H.map((it) => it.key)
-        const N_keys = N.map((it) => it.key)
-        const DiffKeys = N_keys.filter((it) => H_keys.indexOf(it) != -1) // 存在历史的字段key
+        const H_keys = H.map((it) => it.key);
+        const N_keys = N.map((it) => it.key);
+        const DiffKeys = N_keys.filter((it) => H_keys.indexOf(it) != -1); // 存在历史的字段key
 
         // 设定每个节点历史配置值
-        console.log(this.historyExtendConfig, '--line586')
+        console.log(this.historyExtendConfig, '--line586');
         // prettier-ignore
         this.historyExtendConfig.forEach((it) => {
           historyExtendConfig_backup.forEach(h_it=>{
@@ -607,7 +590,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 <style scoped>
 >>> .person-incarge-item .el-collapse-item__content {

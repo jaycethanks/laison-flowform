@@ -570,7 +570,6 @@ export default {
   },
   computed: {
     options() {
-      console.log(this.selectItem, '4444444444');
       return this.selectItem.options || {};
     },
   },

@@ -35,11 +35,11 @@ service.interceptors.response.use(
     if (response.data.errorcode === 401) {
       window.location.href = 'login.html';
     } else if (response.data.errorcode === 403) {
-      Message({
-        message: 'The login information has expired. Please login again.',
-        type: 'error',
-        duration: 5 * 1000,
-      });
+      // Message({
+      //   message: 'The login information has expired. Please login again.',
+      //   type: 'error',
+      //   duration: 5 * 1000,
+      // });
       localStorage.removeItem('token');
       window.location.href = 'login.html';
     } else {
@@ -49,11 +49,11 @@ service.interceptors.response.use(
   // 服务器状态码不是2开头的的情况
   // 然后根据返回的状态码进行一些操作，例如登录过期提示，错误提示等等
   (error) => {
-    Message({
-      message: error.response.statusText,
-      type: 'error',
-      duration: 5 * 1000,
-    });
+    // Message({
+    //   message: error.response.statusText,
+    //   type: 'error',
+    //   duration: 5 * 1000,
+    // });
   },
 );
 

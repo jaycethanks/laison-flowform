@@ -127,7 +127,6 @@ export default {
     initModeler(modeler) {
       setTimeout(() => {
         this.modeler = modeler;
-        console.log(modeler);
       }, 10);
     },
     reloadProcessDesigner(deep) {

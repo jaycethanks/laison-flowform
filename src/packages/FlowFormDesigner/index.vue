@@ -77,7 +77,7 @@ export default {
     return {
       current: 0,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
-      propHeight: 'calc(100vh - 185px)',
+      propHeight: 'calc(100vh - 66px)',
       isSubmit: false, // 用于判断路由切换时，提示控制
       bpmnEditDataInit: null, // 用于edit的回显初始化
       publishEditDataInit: null, // 用于edit的回显初始化

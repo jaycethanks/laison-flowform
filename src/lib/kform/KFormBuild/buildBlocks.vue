@@ -11,7 +11,12 @@
     :animated="record.options.animated"
     v-model="activeKey"
   >
-    <a-tab-pane v-for="(tabItem, index) in record.columns" :key="index" :tab="this.$t(tabItem.label)" :forceRender="true">
+    <a-tab-pane
+      v-for="(tabItem, index) in record.columns"
+      :key="index"
+      :tab="this.$t(tabItem.label)"
+      :forceRender="true"
+    >
       <buildBlocks
         ref="nestedComponents"
         @handleReset="$emit('handleReset')"
@@ -31,7 +36,11 @@
     </a-tab-pane>
   </a-tabs>
   <!-- 栅格布局 -->
-  <a-row v-else-if="record.type === 'grid' && !laisonHiddenFlag && !record.options.hidden" class="grid-row" :gutter="record.options.gutter">
+  <a-row
+    v-else-if="record.type === 'grid' && !laisonHiddenFlag && !record.options.hidden"
+    class="grid-row"
+    :gutter="record.options.gutter"
+  >
     <a-col class="grid-col" v-for="(colItem, idnex) in record.columns" :key="idnex" :span="colItem.span || 0">
       <buildBlocks
         ref="nestedComponents"
@@ -52,7 +61,11 @@
     </a-col>
   </a-row>
   <!-- 卡片布局 -->
-  <a-card v-else-if="record.type === 'card' && !laisonHiddenFlag && !record.options.hidden" class="grid-row" :title="this.$t(record.label)">
+  <a-card
+    v-else-if="record.type === 'card' && !laisonHiddenFlag && !record.options.hidden"
+    class="grid-row"
+    :title="this.$t(record.label)"
+  >
     <buildBlocks
       ref="nestedComponents"
       @handleReset="$emit('handleReset')"
@@ -83,7 +96,13 @@
     :style="record.options.customStyle"
   >
     <tr v-for="(trItem, trIndex) in record.trs" :key="trIndex">
-      <td class="table-td" v-for="(tdItem, tdIndex) in trItem.tds.filter((item) => item.colspan && item.rowspan)" :key="tdIndex" :colspan="tdItem.colspan" :rowspan="tdItem.rowspan">
+      <td
+        class="table-td"
+        v-for="(tdItem, tdIndex) in trItem.tds.filter((item) => item.colspan && item.rowspan)"
+        :key="tdIndex"
+        :colspan="tdItem.colspan"
+        :rowspan="tdItem.rowspan"
+      >
         <buildBlocks
           ref="nestedComponents"
           @handleReset="$emit('handleReset')"
@@ -136,11 +155,13 @@
   />
 </template>
 <script>
+import { debounce } from 'min-dash';
 /*
  * author kcz
  * date 2019-11-20
  */
-import KFormItem from '../KFormItem/index'
+import KFormItem from '../KFormItem/index';
+import { simpleDebounce } from '@/utils/util.js';
 export default {
   name: 'buildBlocks',
   props: {
@@ -157,7 +178,7 @@ export default {
       type: Object,
 
       default() {
-        return {}
+        return {};
       },
     },
     formConfig: {
@@ -183,14 +204,14 @@ export default {
     stockRecord: {
       type: Object,
       default: () => {
-        return null
+        return null;
       },
     },
     rootCompent: {
       //根组件 可以从根组件获取完整的数据结构
       type: Object,
       default: () => {
-        return null
+        return null;
       },
     },
     validatorError: {
@@ -203,8 +224,8 @@ export default {
   },
   created() {
     //函数防抖    //时间太多如果输入框切换太快 修改的字段就不会更新  这说明虽然实力不是同一个但是方法是同一个
-    this.handleChange = this.$debounce(this.handleChange, 150)
-    this.handelFieldDisableAndHidden(this.record)
+    this.handleChange = simpleDebounce(this.handleChange, 150);
+    this.handelFieldDisableAndHidden(this.record);
   },
   data() {
     return {
@@ -214,7 +235,7 @@ export default {
       tempValue: null,
       tempKey: null,
       // copyOfProp:null
-    }
+    };
   },
   methods: {
     // fieldShow(record) {
@@ -253,13 +274,13 @@ export default {
       //先去执行流程设计里面的显示配置
       if (this.fieldConfig[record.model]) {
         //这个字段由单独的 显式配置
-        let culumeConfig = this.fieldConfig[record.model]
+        let culumeConfig = this.fieldConfig[record.model];
         if (culumeConfig.disable) {
-          this.$set(record.options, 'disabled', true)
+          this.$set(record.options, 'disabled', true);
         }
 
         if (culumeConfig.hidden) {
-          this.$set(record.options, 'hidden', true)
+          this.$set(record.options, 'hidden', true);
         }
       }
 
@@ -267,12 +288,12 @@ export default {
         //当这个是翻单编辑的时候 去判断要不要禁用
         // console.log('yyyyssss', record, this.showType)
         if (!['预收款备注', '期望出货日期'].includes(record.label)) {
-          this.$set(record.options, 'disabled', true)
+          this.$set(record.options, 'disabled', true);
         } else {
-          this.$set(record.options, 'disabled', false)
+          this.$set(record.options, 'disabled', false);
           // this.$set(this._props, 'disabled', false)
-          this._props.disabled = false
-          return false
+          this._props.disabled = false;
+          return false;
         }
       }
 
@@ -282,19 +303,22 @@ export default {
          * 针对 LaisonStockList 组件的配置 start
          * 如果是审核  那么要处理LaisonOrderPropShow里面的 kformbuild
          */
-        if (['BOM版本', '固件版本', '特规零部件清单', 'BOM文件', '工艺卡文件', '客户化工具'].includes(record.label) && this.$store.getters.userInfo.username == 'jianwb') {
-          this.$set(record.options, 'disabled', false)
+        if (
+          ['BOM版本', '固件版本', '特规零部件清单', 'BOM文件', '工艺卡文件', '客户化工具'].includes(record.label) &&
+          this.$store.getters.userInfo.username == 'jianwb'
+        ) {
+          this.$set(record.options, 'disabled', false);
           //this.$set(this._props, 'disabled', false)
-          this._props.disabled = false
+          this._props.disabled = false;
         } else if (['生产选项'].includes(record.label) && this.$store.getters.userInfo.username == 'xiaoh') {
-          this.$set(record.options, 'disabled', false)
-          this._props.disabled = false
-          console.log('record.label', record.label, this.disabled)
+          this.$set(record.options, 'disabled', false);
+          this._props.disabled = false;
+          console.log('record.label', record.label, this.disabled);
         } else {
           //怎么判断自己时propshow 的子组件
           if (this.sunOfProps) {
             //如果时存货属性 则禁用其他属性  因为存货属性无法通过流程设计里的配置控制表单显示
-            this.$set(record.options, 'disabled', true)
+            this.$set(record.options, 'disabled', true);
           } else {
             //什么都不做 走的是fieldConfig 进行 disable和hidden
           }
@@ -312,31 +336,31 @@ export default {
       }
     },
     hiddenThis() {
-      this.laisonHiddenFlag = true
+      this.laisonHiddenFlag = true;
     },
     disableThis() {
-      this.laisonDisabledFlag = true
+      this.laisonDisabledFlag = true;
     },
     validationSubform() {
       // 验证动态表格
-      const nestedComponents = this.$refs.nestedComponents
+      const nestedComponents = this.$refs.nestedComponents;
       if (typeof nestedComponents === 'object' && nestedComponents instanceof Array) {
         for (let i = 0; nestedComponents.length > i; i++) {
           if (!nestedComponents[i].validationSubform()) {
-            return false
+            return false;
           }
         }
-        return true
+        return true;
       } else if (typeof nestedComponents !== 'undefined') {
-        return nestedComponents.validationSubform()
+        return nestedComponents.validationSubform();
       } else {
-        return true
+        return true;
       }
     },
     //@jayce 22/08/18-14:11:28 : 支持自定义组件为 表单时的验证
 
     validateKFormItem() {
-      let cusCompList = []
+      let cusCompList = [];
       /**
        * @description: 递归查找 含有validateCurrentForm 方法的子组件
        * @param {*} target
@@ -348,10 +372,10 @@ export default {
           for (let i = 0; i < target.length; i++) {
             if (target[i].$refs && target[i].$refs.cusComp) {
               if (target[i].$refs.cusComp.$refs.actualCusComp.validateCurrentForm) {
-                cusCompList.push(target[i].$refs.cusComp.$refs.actualCusComp)
+                cusCompList.push(target[i].$refs.cusComp.$refs.actualCusComp);
               }
             } else {
-              digCusComp(target[i].$children)
+              digCusComp(target[i].$children);
             }
           }
         } else if (
@@ -363,18 +387,18 @@ export default {
           target.$refs.cusComp.$refs.actualCusComp &&
           target.$refs.cusComp.$refs.actualCusComp.validateCurrentForm
         ) {
-          cusCompList.push(target.$refs.cusComp.$refs.actualCusComp)
+          cusCompList.push(target.$refs.cusComp.$refs.actualCusComp);
         }
       }
-      const nestedComponents = this.$refs.nestedComponents || []
-      digCusComp(nestedComponents)
+      const nestedComponents = this.$refs.nestedComponents || [];
+      digCusComp(nestedComponents);
       // 去handle 我们收集的组件集合， 然后触发 定义的 `validateCurrentForm` 方法，他们将返回西岸Promise, 我们交由 Promise.all 处理，并返回到上层。
-      const promiseall = cusCompList.map((it) => it.validateCurrentForm())
-      return Promise.all(promiseall)
+      const promiseall = cusCompList.map((it) => it.validateCurrentForm());
+      return Promise.all(promiseall);
     },
 
     handleChange(value, key) {
-      this.$emit('change', value, key)
+      this.$emit('change', value, key);
     },
 
     //调用this.$debounce  更好  支持传参
@@ -390,14 +414,14 @@ export default {
     validatorError: {
       deep: true,
       handler: function (n) {
-        const errorItems = Object.keys(n)
+        const errorItems = Object.keys(n);
         if (errorItems.length) {
-          if (!this.record.columns) return false
+          if (!this.record.columns) return false;
           for (let i = 0; i < this.record.columns.length; i++) {
-            const err = this.record.columns[i].list.filter((item) => errorItems.includes(item.model))
+            const err = this.record.columns[i].list.filter((item) => errorItems.includes(item.model));
             if (err.length) {
-              this.activeKey = i
-              break
+              this.activeKey = i;
+              break;
             }
           }
         }
@@ -406,11 +430,11 @@ export default {
 
     record: {
       handler: function (n, o) {
-        this.handelFieldDisableAndHidden(this.record)
+        this.handelFieldDisableAndHidden(this.record);
       },
     },
   },
-}
+};
 </script>
 <style scoped>
 .ant-input[disabled] {
@@ -423,4 +447,3 @@ export default {
   display: none !important;
 }
 </style>
-
