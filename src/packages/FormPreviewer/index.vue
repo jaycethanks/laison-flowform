@@ -1,41 +1,17 @@
 <template>
-  <!-- wrapClassName 用于设定modal的最大宽度 -->
-  <j-modal
-    width="90vw"
-    :visible="visible"
-    switchFullscreen
-    title="订单详情"
-    @ok="handleOk"
-    @cancel="closeModal"
-    :maskClosable="false"
-    :footer="footer"
-    @fullScreenEvent="isFullScreen = $event"
-    :body-style="{ maxHeight: isFullScreen ? '' : '70vh', overflowY: 'auto' }"
-    :ok-button-props="{ props: { disabled: this.okBtnDisabled } }"
-  >
-    <!-- <div align="right">
-      <a-tooltip title="打印预览" v-if="formInfo.config != undefined && formInfo.config.enablePrint">
-        <a-button
-          type="link"
-          @click="getPdf('#pdfDom', (formdataObj.orderNo || '') + ' 质检计划')"
-          :loading="loading"
-          :disabled="loading"
-        >
-          <a-icon :type="loading ? '' : 'printer'" style="font-size: 20px" />
-        </a-button>
-      </a-tooltip>
-    </div> -->
-    <div style="padding: 20px" id="pdfDom">
-      <k-form-build
-        @mount="handleMount"
-        :value="formInfo"
-        :disabled="allDisabled"
-        :showType="0"
-        :rootCompent="this"
-        ref="kfb"
-      />
-    </div>
-  </j-modal>
+  <div class="form-previewer-root">
+    <k-form-build
+      :style="style"
+      class="container form-previewer"
+      @mount="handleMount"
+      :value="formInfo"
+      :rootCompent="this"
+      ref="kfb"
+      :disabled="false"
+    />
+    <!-- :disabled="allDisabled"
+      :showType="0" -->
+  </div>
 </template>
 
 <script>
@@ -80,8 +56,6 @@ export default {
   },
   data() {
     return {
-      // title:'',
-      visible: true,
       okBtnDisabled: true,
       allDisabled: true,
       formInfo: {
@@ -171,6 +145,10 @@ export default {
       }, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
+      style: {
+        maxWidth: 'auto',
+        minWidth: 'auto',
+      },
     };
   },
   watch: {
@@ -188,7 +166,6 @@ export default {
       }
     },
   },
-
   computed: {
     title() {
       if (!this.value) {
@@ -197,11 +174,12 @@ export default {
       return this.value.title;
     },
   },
-  created() {
-    //this.value  就是使用方穿进来打 node信息
-    //this.fixData()
 
-    window.aaaaaa = this;
+  created() {
+    const { query } = this.$route;
+    const { maxWidth, minWidth } = query;
+    this.style.maxWidth = maxWidth;
+    this.style.minWidth = minWidth;
   },
 
   destroyed() {},
@@ -362,80 +340,6 @@ export default {
         .catch((e) => {
           console.error(e, '--line240');
         });
-
-      // return
-      /* old version */
-      // let children = this.$refs.kfb.$children[0].$children[0].$children[0].$children[0].$children
-      // await children.forEach(async (i) => {
-      //   try {
-      //     if (i.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]) {
-      //       let node = i.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]
-      //       if (node.$vnode.tag.includes('LaisonStockList')) {
-      //         //LaisonStockList组件
-      //         let stockListForm =
-      //           node.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]
-      //             .$children[0].$children[1].$children[0]
-      //         stockListForm.$children.forEach(async (ii) => {
-      //           if (
-      //             ii.$vnode.key &&
-      //             typeof ii.$vnode.key == 'string' &&
-      //             ii.$vnode.key.includes('extra-row')
-      //           ) {
-      //             try {
-      //               let res = await ii.$children[1].$children[0].$children[0].form.validateFields()
-      //               console.log(res)
-      //             } catch (e) {
-      //               iserror = true
-      //               Object.keys(e.errors).every((key) => {
-      //                 console.log('错误时', e)
-      //                 errMes = e.errors[key].errors[0].message
-      //                 //console.log('errMes=', errMes)
-      //                 return
-      //               })
-      //               throw new Error('有错误直接退出')
-      //             }
-      //           }
-      //         })
-      //       }
-      //     }
-      //   } catch (error) {}
-      // })
-      // return
-
-      // console.log(iserror)
-      // if (iserror) {
-      //   this.$message.error(errMes)
-      //   return
-      // }
-
-      // this.$refs.kfb
-      //   .getData()
-      //   .then((values) => {
-      //     console.log('获取的值是', values)
-      //     if (values.LaisonStockList.tableData.length == 0) {
-      //       this.$message.error('请至少选择一个存货')
-      //       return
-      //     }
-      //     console.log(this.formdataObj)
-      //     for (let key in values) {
-      //       this.formdataObj[key] = values[key]
-      //     }
-      //     let newValue = this.value
-
-      //     if (newValue.erpFormVal) {
-      //       newValue.erpFormVal.formData = this.formdataObj
-      //     } else {
-      //       newValue.erpFormVal = { formData: this.formdataObj }
-      //     }
-      //     //
-      //     this.$emit('input', newValue) //其实这个就是更新value
-      //     console.log(newValue)
-      //     this.$emit('apply_success', newValue)
-      //     this.visible = false
-      //   })
-      //   .catch((e) => {
-      //     console.error(e, '--line240')
-      //   })
     },
 
     handleCancel() {
@@ -456,8 +360,53 @@ export default {
 };
 </script>
 
-<style scoped>
->>> .laison_modal-preview > .ant-modal {
-  /* max-width: 1400px; */
+<style scoped lang="scss">
+.form-previewer-root {
+  width: 100vw;
+  padding: 20px;
+  .form-previewer {
+    padding: 1rem;
+    margin: 0 auto;
+    // max-width: 100%;
+    box-shadow: 0px 0px 7px 3px #f4f4f4;
+  }
 }
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+// @media (min-width: 1280px) {
+//   .container {
+//     max-width: 1280px;
+//   }
+// }
+// @media (min-width: 1536px) {
+//   .container {
+//     max-width: 1536px;
+//   }
+// }
 </style>
