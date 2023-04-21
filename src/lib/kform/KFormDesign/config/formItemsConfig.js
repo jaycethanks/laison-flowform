@@ -583,7 +583,11 @@ export const basicsList = [
 // 自定义组件
 export const customComponents = {
   title: '自定义组件',
-  list: cuscomponents,
+  list: cuscomponents.map((cuscomponent) => {
+    cuscomponent.options.isCustom = true;
+    cuscomponent.options.type = 'custom';
+    return cuscomponent;
+  }),
 };
 window.$customComponentList = customComponents.list;
 
