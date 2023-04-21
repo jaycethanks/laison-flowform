@@ -4,7 +4,7 @@
       <a-form>
         <a-form-item label="增强表达式">
           <!-- <a-textarea v-model="config.Expressions" /> -->
-          <Expressions v-model="config.Expressions" />
+          <Expressions ref="EXP" v-model="config.expressions" />
         </a-form-item>
         <a-form-item label="表单布局">
           <a-radio-group buttonStyle="solid" v-model="config.layout">
@@ -138,6 +138,11 @@ export default {
         this.config.wrapperCol.xl =
         this.config.wrapperCol.xxl =
           24 - e;
+    },
+    //@jayce 23/04/20-14:45:31 : //CUS START
+    rightPanelClicked(form) {
+      // 事件透传
+      this.$refs.EXP.rightPanelClicked(form);
     },
   },
 };

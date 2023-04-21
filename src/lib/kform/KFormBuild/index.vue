@@ -39,6 +39,7 @@ import { createLogger } from 'vuex';
  * description 将json数据构建成表单
  */
 import buildBlocks from './buildBlocks';
+import { expressionAnalyser } from '@/lib/kform/KExpressions/expressionsHandleFns.js';
 // import moment from "moment";
 export default {
   name: 'KFormBuild',
@@ -163,6 +164,12 @@ export default {
   },
 
   computed: {
+    getDynamicData() {
+      return typeof this.dynamicData === 'object' && Object.keys(this.dynamicData).length
+        ? this.dynamicData
+        : window.$kfb_dynamicData || {};
+    },
+    // ---------------------------------------------------CUS START --------------------------------
     // cvalue() {
     //   let res = {}
     //   if (this.value.list && this.value.list.length > 0) {
@@ -185,11 +192,6 @@ export default {
     //   }
     //   return res
     // },
-    getDynamicData() {
-      return typeof this.dynamicData === 'object' && Object.keys(this.dynamicData).length
-        ? this.dynamicData
-        : window.$kfb_dynamicData || {};
-    },
   },
 
   methods: {
@@ -316,21 +318,157 @@ export default {
       };
       traverse(this.value.list);
     },
-    recModel(model) {
-      //递归触发每个字段的handlechange事件  稍微有点耗性能
-      //因为首次渲染不会调用handleChange 所以要在挂载的时候主动触发
-      // let i =0;
-      for (let prop in model) {
-        if (typeof model[prop] === 'object') {
-          this.recModel(model[prop]);
-          //return
-        }
 
-        //console.log('属性' + prop, model[prop], prop, this.tempModel)
-
-        this.handleChange(model[prop], prop, this.tempModel);
+    // 隐藏表单字段
+    hide(fields) {
+      this.setOptions(fields, 'hidden', true);
+    },
+    // 显示表单字段
+    show(fields) {
+      if (fields) {
+        this.setOptions(fields, 'hidden', false);
       }
     },
+    // 禁用表单字段
+    disable(fields) {
+      this.setOptions(fields, 'disabled', true);
+    },
+    // 启用表单字段
+    enable(fields) {
+      this.setOptions(fields, 'disabled', false);
+    },
+    // @jayce rewrite below
+    // handleChange(value, key) {
+    //   // 触发change事件
+    //   this.$emit("change", value, key);
+    // }
+
+    // ----------------------------------------------------CUS START --------------------------------
+
+    /**
+ * 
+  recModel(model) {
+    //递归触发每个字段的handlechange事件  稍微有点耗性能
+    //因为首次渲染不会调用handleChange 所以要在挂载的时候主动触发
+    // let i =0;
+    for (let prop in model) {
+      if (typeof model[prop] === 'object') {
+        this.recModel(model[prop]);
+        //return
+      }
+      //console.log('属性' + prop, model[prop], prop, this.tempModel)
+      this.handleChange(model[prop], prop, this.tempModel);
+    }
+  },
+*/
+
+    /**
+     * i =item
+     * key =变化的属性名
+     * value =变化的值
+     * istable=是否是table组件
+     * model=当前全部的值
+     */
+    fixItem(i, key, value, istable, model) {
+      // 执行所有的 hiddenjs 和 displayjs
+      // 注： fixItem 的触发来自页面所有组件的变动
+
+      // this.getData().then((res) => {
+
+      //   console.log('[res]: ', res);
+      // });
+
+      if (!model) {
+        model = this.form.getFieldsValue();
+        console.log('[model]: ', model);
+      }
+
+      if (model[key]) {
+        model[key] = value;
+      }
+
+      // 如果有从页面注入hiddenJS 字段
+      if (i.options.hiddenJs) {
+        if (i.label == '套餐业务') {
+          // debugger
+        }
+
+        if (!i.options.hiddenJs.includes(key)) {
+          return;
+        }
+        let funh = new Function('return ' + i.options.hiddenJs)();
+        if (i.model === 'meterInfoDetails') {
+          console.log(model.basicOrderType, '--line430');
+          console.log(funh.toString(), '--line431');
+        }
+        if (istable) {
+          i.options.hidden = funh(model);
+          /**
+           * window.rootKForm 是在src/components/laison/LaisonCustomeFormShow2.vue中
+           * 注册的根表单实例
+           */
+          return funh(model, this, window.rootKForm || undefined);
+        } else {
+          //this.$set(i.options, 'hidden', funh(model))
+          i.options.hidden = funh(model, this, window.rootKForm || undefined); //不知道怎么回事自定义主键无法监听到变化
+        }
+
+        return false;
+      }
+
+      // 如果有从页面注入dispalyJs字段
+      if (i.options.dispalyJs) {
+        let fund = new Function('return ' + i.options.dispalyJs)();
+        i.options.disabled = fund(model);
+      }
+
+      return false;
+    },
+    handleChange(value, key, model) {
+      // 触发change事件时，去执行fixItem
+      this.$emit('change', value, key);
+      this.handleExpression();
+
+      this.cvalue.list.forEach((i, index) => {
+        // console.log(i.options.hiddenJs, model)
+        if (i.columns) {
+          //遍历儿子
+          i.columns.forEach((ci) => {
+            if (ci.list) {
+              ci.list.forEach((cci) => {
+                this.fixItem(cci, key, value, false, model);
+              });
+            }
+          });
+        } else if (i.trs) {
+          //如果是表格
+          //判断下子是否需要隐藏
+
+          let hiddenTable = this.fixItem(i, key, value, true, model);
+          if (!hiddenTable) {
+            i.trs.forEach((ci) => {
+              if (ci.tds) {
+                ci.tds.forEach((cci) => {
+                  if (cci.list) {
+                    cci.list.forEach((ccci) => {
+                      this.fixItem(ccci, key, value, false, model);
+                    });
+                  }
+                });
+              }
+            });
+          }
+        } else {
+          this.fixItem(i, key, value, false, model);
+        }
+      });
+    },
+    /**
+     * that就是this
+     * item=某个节点
+     * model = 这个form表单当前的值
+     */
+
     /**
      * 执行mounted或者 执行show()的时候应该执行这个方法
      */
@@ -384,126 +522,7 @@ export default {
           //this.$forceUpdate()
         });
       }
-
-      //console.log('lihuaxxx KForm 完成 exeInitJs', this._uid, new Date())
     },
-    // 隐藏表单字段
-    hide(fields) {
-      this.setOptions(fields, 'hidden', true);
-    },
-    // 显示表单字段
-    show(fields) {
-      if (fields) {
-        this.setOptions(fields, 'hidden', false);
-      }
-    },
-    // 禁用表单字段
-    disable(fields) {
-      this.setOptions(fields, 'disabled', true);
-    },
-    // 启用表单字段
-    enable(fields) {
-      this.setOptions(fields, 'disabled', false);
-    },
-    /**
-     * i =item
-     * key =变化的属性名
-     * value =变化的值
-     * istable=是否是table组件
-     * model=当前全部的值
-     */
-    fixItem(i, key, value, istable, model) {
-      // 执行所有的 hiddenjs 和 displayjs
-      // 注： fixItem 的触发来自页面所有组件的变动
-      if (!model) {
-        model = this.form.getFieldsValue();
-      }
-
-      if (model[key]) {
-        model[key] = value;
-      }
-
-      // 如果有从页面注入hiddenJS 字段
-      if (i.options.hiddenJs) {
-        if (i.label == '套餐业务') {
-          // debugger
-        }
-
-        if (!i.options.hiddenJs.includes(key)) {
-          return;
-        }
-        let funh = new Function('return ' + i.options.hiddenJs)();
-        if (i.model === 'meterInfoDetails') {
-          console.log(model.basicOrderType, '--line430');
-          console.log(funh.toString(), '--line431');
-        }
-        if (istable) {
-          i.options.hidden = funh(model);
-          /**
-           * window.rootKForm 是在src/components/laison/LaisonCustomeFormShow2.vue中
-           * 注册的根表单实例
-           */
-          return funh(model, this, window.rootKForm || undefined);
-        } else {
-          //this.$set(i.options, 'hidden', funh(model))
-          i.options.hidden = funh(model, this, window.rootKForm || undefined); //不知道怎么回事自定义主键无法监听到变化
-        }
-
-        return false;
-      }
-
-      // 如果有从页面注入dispalyJs字段
-      if (i.options.dispalyJs) {
-        let fund = new Function('return ' + i.options.dispalyJs)();
-        i.options.disabled = fund(model);
-      }
-
-      return false;
-    },
-    handleChange(value, key, model) {
-      // 触发change事件时，去执行fixItem
-      this.$emit('change', value, key);
-      // console.log('[ ]: ', value, key, model);
-      console.log('[ ]: ', this.value);
-      this.cvalue.list.forEach((i, index) => {
-        // console.log(i.options.hiddenJs, model)
-        if (i.columns) {
-          //遍历儿子
-          i.columns.forEach((ci) => {
-            if (ci.list) {
-              ci.list.forEach((cci) => {
-                this.fixItem(cci, key, value, false, model);
-              });
-            }
-          });
-        } else if (i.trs) {
-          //如果是表格
-          //判断下子是否需要隐藏
-
-          let hiddenTable = this.fixItem(i, key, value, true, model);
-          if (!hiddenTable) {
-            i.trs.forEach((ci) => {
-              if (ci.tds) {
-                ci.tds.forEach((cci) => {
-                  if (cci.list) {
-                    cci.list.forEach((ccci) => {
-                      this.fixItem(ccci, key, value, false, model);
-                    });
-                  }
-                });
-              }
-            });
-          }
-        } else {
-          this.fixItem(i, key, value, false, model);
-        }
-      });
-    },
-    /**
-     * that就是this
-     * item=某个节点
-     * model = 这个form表单当前的值
-     */
     doInitJs(that, item, model) {
       // console.log(item.model, this.disabled, '--line467')
 
@@ -544,6 +563,33 @@ export default {
       // }
       // delete value[value.model]
       // this.setData(oldData)
+    },
+
+    handleExpression() {
+      /**
+       * 要动态计算一个表达式,
+       * 1. 首先,要找到目标字段
+       * 2. 获取参数字段值
+       * 3. 将参数字段值赋值给目标字段
+       *
+       */
+      const fieldsObj = this.form.getFieldsValue();
+
+      //bugfix setField 之前必须要getFieldDecorator,否则会报错
+      Object.keys(fieldsObj).forEach((key) => {
+        this.form.getFieldDecorator(key, { initialValue: fieldsObj[key] });
+      });
+
+      const { expressions } = this.value.config;
+      if (!expressions) return;
+      try {
+        const toSetFieldVals = expressionAnalyser(fieldsObj, expressions);
+        toSetFieldVals.forEach((fieldVal) => {
+          this.form.setFieldsValue(fieldVal);
+        });
+      } catch (err) {
+        this.$message.error({ content: '表达式解析错误', duration: 1 });
+      }
     },
   },
 

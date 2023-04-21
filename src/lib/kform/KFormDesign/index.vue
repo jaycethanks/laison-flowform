@@ -111,6 +111,7 @@
             :startType="startType"
             ref="KFCP"
             @handleSetSelectItem="handleSetSelectItem"
+            @handleRemoveRightMenu="handleRemoveRightMenu"
           />
           <!-- 操作区域 start -->
           <k-json-modal ref="jsonModal" />
@@ -124,7 +125,7 @@
         <aside class="right">
           <a-tabs :activeKey="activeKey" @change="changeTab" :tabBarStyle="{ margin: 0 }">
             <a-tab-pane :key="1" tab="表单属性设置">
-              <formProperties :config="data.config" :previewOptions="previewOptions" />
+              <formProperties ref="FP" :config="data.config" :previewOptions="previewOptions" />
             </a-tab-pane>
             <a-tab-pane :key="2" tab="控件属性设置">
               <formItemProperties class="form-item-properties" :selectItem="selectItem" :hideModel="hideModel" />
@@ -563,6 +564,10 @@ export default {
     },
     handleClose() {
       this.$emit('close');
+    },
+    //@jayce 23/04/20-14:43:39 : ----CUS START ----
+    handleRemoveRightMenu(form) {
+      this.$refs.FP.rightPanelClicked(form);
     },
   },
   created() {

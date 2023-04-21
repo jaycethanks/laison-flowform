@@ -75,13 +75,13 @@ export default {
   },
   mounted() {
     // @jayce jsEnhance
-    try {
-      if (this.jsonData.config && this.jsonData.config.jsEnhance) {
-        Function('"use strict";' + this.jsonData.config.jsEnhance)();
-      }
-    } catch (err) {
-      console.error('accur error duaring jsEnhance execution:', err);
-    }
+    // try {
+    //   if (this.jsonData.config && this.jsonData.config.jsEnhance) {
+    //     Function('"use strict";' + this.jsonData.config.jsEnhance)();
+    //   }
+    // } catch (err) {
+    //   console.error('accur error duaring jsEnhance execution:', err);
+    // }
   },
   methods: {
     handleSubmit(p) {

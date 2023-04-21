@@ -119,7 +119,7 @@ export default {
           hideRequiredMark: false,
           customStyle: '',
           enablePrint: false, //@jayce
-          jsEnhance: '', //@jayce
+          expressions: '', //@jayce
         },
       });
     }

@@ -444,6 +444,8 @@ export default {
       return false;
     },
     handleRemoveRightMenu() {
+      //@jayce 23/04/20-14:29:36 : 将form传到父组件,给到兄弟组件  formProperties
+      this.$emit('handleRemoveRightMenu', this.form);
       console.log('handleRemoveRightMenu');
       // 取消右键菜单
       this.showRightMenu = false;
