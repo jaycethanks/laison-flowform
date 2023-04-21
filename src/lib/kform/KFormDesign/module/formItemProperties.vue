@@ -69,28 +69,40 @@
         <!-- 选项配置及动态数据配置 end -->
 
         <!-- radio 条件显示 input start -->
-        <a-form-item label="hiddenJs">
+        <a-alert
+          style="margin-top: 10px"
+          description="hiddenJs 和 disabledJs 在字段发生变化以及表单挂载时触发,他们都需要定义一个匿名函数, 其类型为 (models, currentFormInstance, window.rootKForm<根表单FormInstance> || null)=> true | false"
+          type="info"
+        />
+        <a-form-item label="hiddenJs 脚本增强">
           <a-input
             type="textarea"
-            :auto-size="{ minRows: 5, maxRows: 7 }"
+            :auto-size="{ minRows: 2, maxRows: 7 }"
             v-model="options.hiddenJs"
-            placeholder="用于字段隐藏function(model, [this], [rootKForm])"
-          ></a-input>
-        </a-form-item>
-        <a-form-item label="dispalyJs">
-          <a-input
-            :auto-size="{ minRows: 5, maxRows: 7 }"
-            v-model="options.dispalyJs"
-            placeholder="用于字段禁用"
+            placeholder="function(models,form,rootForm){return models.xxx = 'xxx'}"
           ></a-input>
         </a-form-item>
 
-        <a-form-item label="initJs">
+        <a-form-item label="disabledJs 脚本增强">
+          <a-input
+            type="textarea"
+            :auto-size="{ minRows: 2, maxRows: 7 }"
+            v-model="options.disabledJs"
+            placeholder="function(models,form,rootForm){return models.xxx = 'xxx'}"
+          ></a-input>
+        </a-form-item>
+
+        <a-alert
+          style="margin-top: 10px"
+          description="initJs在表单挂载时,仅触发一次,它需要被定义为一个匿名函数, 其类型为 (models, currentFormInstance, window.rootKForm<根表单FormInstance> || null)=> void"
+          type="info"
+        />
+        <a-form-item label="initJs 脚本增强">
           <a-input
             type="textarea"
             v-model="options.initJs"
             :auto-size="{ minRows: 5, maxRows: 7 }"
-            placeholder="挂载后执行 function(that ,item ,model [,rootForm]) { rootKForm.form.getFieldsValue()//获取全部根表单字段 } //rootForm为根表单实例"
+            placeholder=""
           ></a-input>
         </a-form-item>
         <a-form-item v-if="selectItem.type === 'LaisonRadioWithInput'" label="条件input的宽度（%）">
@@ -592,3 +604,8 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+::v-deep .ant-alert-description {
+  font-size: 12px !important;
+}
+</style>

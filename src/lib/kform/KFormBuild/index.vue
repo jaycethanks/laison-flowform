@@ -10,10 +10,12 @@
       @submit="handleSubmit"
       :style="value.config.customStyle"
     >
+      <!-- v-for="(record, index) in cvalue.list" -->
+
       <buildBlocks
         ref="buildBlocks"
         @handleReset="reset"
-        v-for="(record, index) in cvalue.list"
+        v-for="(record, index) in value.list"
         :record="record"
         :dynamicData="getDynamicData"
         :config="config"
@@ -26,7 +28,6 @@
         :key="index"
         :sunOfProps="sunOfProps"
         @change="handleChange"
-        @input="handleInput"
       />
     </a-form>
   </a-config-provider>
@@ -43,66 +44,66 @@ import { expressionAnalyser } from '@/lib/kform/KExpressions/expressionsHandleFn
 // import moment from "moment";
 export default {
   name: 'KFormBuild',
-  created() {
-    // console.log('lihuaxxx KForm开始渲染', this._uid, new Date())
-    this.form = this.$form.createForm(this);
-    let res = {};
-    if (this.value.list) {
-      res.list = JSON.parse(JSON.stringify(this.value.list));
-      res.list.forEach((v) => {
-        if (v.label) {
-          v.label = this.$t(v.label);
-        }
-        if (v.options) {
-          if (v.options.placeholder) {
-            console.log('我要翻译了', this.$t(v.options.placeholder));
-            v.options.placeholder = this.$t(v.options.placeholder);
-          }
-          if (v.options.options) {
-            v.options.options.forEach((ov) => {
-              ov.label = this.$t(ov.label);
-            });
-          }
-        }
-      });
-    }
+  // created() {
+  //   // console.log('lihuaxxx KForm开始渲染', this._uid, new Date())
+  //   this.form = this.$form.createForm(this);
+  //   let res = {};
+  //   if (this.value.list) {
+  //     res.list = JSON.parse(JSON.stringify(this.value.list));
+  //     res.list.forEach((v) => {
+  //       if (v.label) {
+  //         v.label = this.$t(v.label);
+  //       }
+  //       if (v.options) {
+  //         if (v.options.placeholder) {
+  //           console.log('我要翻译了', this.$t(v.options.placeholder));
+  //           v.options.placeholder = this.$t(v.options.placeholder);
+  //         }
+  //         if (v.options.options) {
+  //           v.options.options.forEach((ov) => {
+  //             ov.label = this.$t(ov.label);
+  //           });
+  //         }
+  //       }
+  //     });
+  //   }
 
-    this.cvalue = res;
-  },
-  watch: {
-    value: {
-      //深度监听，可监听到对象、数组的变化
-      handler(val, oldVal) {
-        let res = {};
-        if (val.list) {
-          res.list = JSON.parse(JSON.stringify(val.list));
-          res.list.forEach((v) => {
-            if (v.label) {
-              v.label = this.$t(v.label);
-            }
-            if (v.options) {
-              if (v.options.placeholder) {
-                v.options.placeholder = this.$t(v.options.placeholder);
-              }
-              if (v.options.options) {
-                v.options.options.forEach((ov) => {
-                  ov.label = this.$t(ov.label);
-                });
-              }
-            }
-          });
-          this.cvalue = res;
-        }
-      },
-      deep: false, //true 深度监听
-    },
-  },
+  //   this.cvalue = res;
+  // },
+  // watch: {
+  //   value: {
+  //     //深度监听，可监听到对象、数组的变化
+  //     handler(val, oldVal) {
+  //       let res = {};
+  //       if (val.list) {
+  //         res.list = JSON.parse(JSON.stringify(val.list));
+  //         res.list.forEach((v) => {
+  //           if (v.label) {
+  //             v.label = this.$t(v.label);
+  //           }
+  //           if (v.options) {
+  //             if (v.options.placeholder) {
+  //               v.options.placeholder = this.$t(v.options.placeholder);
+  //             }
+  //             if (v.options.options) {
+  //               v.options.options.forEach((ov) => {
+  //                 ov.label = this.$t(ov.label);
+  //               });
+  //             }
+  //           }
+  //         });
+  //         this.cvalue = res;
+  //       }
+  //     },
+  //     deep: false, //true 深度监听
+  //   },
+  // },
   data() {
     return {
       form: this.$form.createForm(this),
       validatorError: {},
       defaultDynamicData: {},
-      cvalue: {},
+      // cvalue: {},
       tempModel: null,
     };
   },
@@ -344,184 +345,81 @@ export default {
     // }
 
     // ----------------------------------------------------CUS START --------------------------------
-
-    /**
- * 
-  recModel(model) {
-    //递归触发每个字段的handlechange事件  稍微有点耗性能
-    //因为首次渲染不会调用handleChange 所以要在挂载的时候主动触发
-    // let i =0;
-    for (let prop in model) {
-      if (typeof model[prop] === 'object') {
-        this.recModel(model[prop]);
-        //return
-      }
-      //console.log('属性' + prop, model[prop], prop, this.tempModel)
-      this.handleChange(model[prop], prop, this.tempModel);
-    }
-  },
-*/
-
-    /**
-     * i =item
-     * key =变化的属性名
-     * value =变化的值
-     * istable=是否是table组件
-     * model=当前全部的值
-     */
-    fixItem(i, key, value, istable, model) {
-      // 执行所有的 hiddenjs 和 displayjs
-      // 注： fixItem 的触发来自页面所有组件的变动
-
-      // this.getData().then((res) => {
-
-      //   console.log('[res]: ', res);
-      // });
-
-      if (!model) {
-        model = this.form.getFieldsValue();
-        console.log('[model]: ', model);
-      }
-
-      if (model[key]) {
-        model[key] = value;
-      }
-
-      // 如果有从页面注入hiddenJS 字段
-      if (i.options.hiddenJs) {
-        if (i.label == '套餐业务') {
-          // debugger
-        }
-
-        if (!i.options.hiddenJs.includes(key)) {
-          return;
-        }
-        let funh = new Function('return ' + i.options.hiddenJs)();
-        if (i.model === 'meterInfoDetails') {
-          console.log(model.basicOrderType, '--line430');
-          console.log(funh.toString(), '--line431');
-        }
-        if (istable) {
-          i.options.hidden = funh(model);
-          /**
-           * window.rootKForm 是在src/components/laison/LaisonCustomeFormShow2.vue中
-           * 注册的根表单实例
-           */
-          return funh(model, this, window.rootKForm || undefined);
-        } else {
-          //this.$set(i.options, 'hidden', funh(model))
-          i.options.hidden = funh(model, this, window.rootKForm || undefined); //不知道怎么回事自定义主键无法监听到变化
-        }
-
-        return false;
-      }
-
-      // 如果有从页面注入dispalyJs字段
-      if (i.options.dispalyJs) {
-        let fund = new Function('return ' + i.options.dispalyJs)();
-        i.options.disabled = fund(model);
-      }
-
-      return false;
-    },
-    handleChange(value, key, model) {
-      // 触发change事件时，去执行fixItem
-      this.$emit('change', value, key);
-      this.handleExpression();
-
-      this.cvalue.list.forEach((i, index) => {
-        // console.log(i.options.hiddenJs, model)
-        if (i.columns) {
-          //遍历儿子
-          i.columns.forEach((ci) => {
-            if (ci.list) {
-              ci.list.forEach((cci) => {
-                this.fixItem(cci, key, value, false, model);
-              });
-            }
-          });
-        } else if (i.trs) {
-          //如果是表格
-          //判断下子是否需要隐藏
-
-          let hiddenTable = this.fixItem(i, key, value, true, model);
-          if (!hiddenTable) {
-            i.trs.forEach((ci) => {
-              if (ci.tds) {
-                ci.tds.forEach((cci) => {
-                  if (cci.list) {
-                    cci.list.forEach((ccci) => {
-                      this.fixItem(ccci, key, value, false, model);
-                    });
-                  }
-                });
-              }
-            });
+    triggerHiddenDisabledInjectScript() {
+      this.walkNodes((element) => {
+        // 表单全部字段key:value键值对象
+        const models = this.form.getFieldsValue();
+        const model = element.model;
+        if (element.options.hiddenJs) {
+          // 如果当前控件中有hiddenJs脚本,但是该脚本的执行和当前字段是不相关的,则判断为这个脚本是无效脚本
+          // if (!element.options.hiddenJs.includes(model)) return;
+          let _hiddenJs = new Function('return ' + element.options.hiddenJs)();
+          try {
+            this.$set(element.options, 'hidden', _hiddenJs(models, this, window.rootKForm || null));
+          } catch (e) {
+            console.error(`[控件:${model}] 在执行hiddenJs 的时候遇到了错误:\n ${e}`);
           }
-        } else {
-          this.fixItem(i, key, value, false, model);
+        }
+        if (element.options.disabledJs) {
+          let _disabledJs = new Function('return ' + element.options.disabledJs)();
+          try {
+            this.$set(element.options, 'disabled', _disabledJs(models, this, window.rootKForm || null));
+          } catch (e) {
+            console.error(`[控件:${model}] 在执行 disabledJs 的时候遇到了错误:\n ${e}`);
+          }
         }
       });
     },
-    /**
-     * that就是this
-     * item=某个节点
-     * model = 这个form表单当前的值
-     */
-
-    /**
-     * 执行mounted或者 执行show()的时候应该执行这个方法
-     */
-    exeInitJs(formdataObj) {
-      if (formdataObj) {
-        this.tempModel = formdataObj;
-      } else {
-        this.tempModel = this.form.getFieldsValue();
-      }
-
-      if (this.cvalue && this.cvalue.list) {
-        this.cvalue.list.forEach((i, index) => {
-          //console.log(i.options.hiddenJs, model)
+    triggerInitInjectScript() {
+      this.walkNodes((element) => {
+        // 表单全部字段key:value键值对象
+        const models = this.form.getFieldsValue();
+        const model = element.model;
+        if (element.options.initJs) {
+          // 如果当前控件中有hiddenJs脚本,但是该脚本的执行和当前字段是不相关的,则判断为这个脚本是无效脚本
+          // if (!element.options.hiddenJs.includes(model)) return;
+          let _initJs = new Function('return ' + element.options.initJs)();
           try {
-            if (i.columns) {
-              //栅格布局
-              this.doInitJs(this, i, this.tempModel);
-
-              //遍历儿子
-              i.columns.forEach((ci) => {
-                if (ci.list) {
-                  ci.list.forEach((cci) => {
-                    this.doInitJs(this, cci, this.tempModel);
-                  });
-                }
-              });
-            } else if (i.trs) {
-              //如果是表格
-              //判断下子是否需要隐藏
-              let hiddenTable = this.doInitJs(this, i, this.tempModel);
-              if (!hiddenTable) {
-                i.trs.forEach((ci) => {
-                  if (ci.tds) {
-                    ci.tds.forEach((cci) => {
-                      if (cci.list) {
-                        cci.list.forEach((ccci) => {
-                          this.doInitJs(this, ccci, this.tempModel);
-                        });
-                      }
-                    });
-                  }
-                });
-              }
-            } else {
-              this.doInitJs(this, i, this.tempModel);
-            }
+            _initJs(models, this, window.rootKForm || null);
           } catch (e) {
-            console.error(e, i, 'error when execute initjs');
+            console.error(`[控件:${model}] 在执行hiddenJs 的时候遇到了错误:\n ${e}`);
           }
+        }
+      });
+    },
+    walkNodes(callback) {
+      // 递归遍历控件树
+      const traverse = (array) => {
+        array.forEach((element) => {
+          callback(element);
+          // this.$set(element.options, optionName, value);
 
-          //this.$forceUpdate()
+          if (element.type === 'grid' || element.type === 'tabs') {
+            // 栅格布局 and 标签页
+            element.columns.forEach((item) => {
+              traverse(item.list);
+            });
+          } else if (element.type === 'card' || element.type === 'batch') {
+            // 卡片布局 and  动态表格
+            traverse(element.list);
+          } else if (element.type === 'table') {
+            // 表格布局
+            element.trs.forEach((item) => {
+              item.tds.forEach((val) => {
+                traverse(val.list);
+              });
+            });
+          }
         });
-      }
+      };
+      traverse(this.value.list);
+    },
+
+    handleChange(value, key) {
+      // 触发change事件时，去执行fixItem
+      this.$emit('change', value, key);
+      this.handleExpression();
+      this.triggerHiddenDisabledInjectScript();
     },
     doInitJs(that, item, model) {
       // console.log(item.model, this.disabled, '--line467')
@@ -540,31 +438,6 @@ export default {
         }
       }
     },
-    async handleInput(value) {
-      //这里处理自定义组件的model赋值  这里已经用不到了  自定义组件里都emit change事件
-      console.log('kformitem  监听到了  input事件');
-      // this.$emit('input', value)
-      // let oldData = {}
-
-      // try {
-      //   oldData = await this.getData()
-      // } catch (e) {
-      //   console.error(e)
-      // }
-      // let needAdd = true
-      // for (let key in oldData) {
-      //   if (key == value.model) {
-      //     needAdd = false
-      //     oldData[key] = value
-      //   }
-      // }
-      // if (needAdd) {
-      //   oldData[value.model] = value
-      // }
-      // delete value[value.model]
-      // this.setData(oldData)
-    },
-
     handleExpression() {
       /**
        * 要动态计算一个表达式,
@@ -596,18 +469,9 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.setData(this.defaultValue);
-      this.tempModel = this.form.getFieldsValue();
-      //this.recModel(this.tempModel) //因为递归比较耗性能注释掉   所以凡是有hiddenJs和disablejs的都必须要有 initJs执行首次处理
-      this.exeInitJs();
-      // // @jayce jsEnhance
-      // try {
-      //   if (this.value.config && this.value.config.jsEnhance) {
-      //     Function('"use strict";' + this.value.config.jsEnhance)();
-      //   }
-      // } catch (err) {
-      //   console.error('accur error duaring jsEnhance execution:', err);
-      // }
     });
+    this.triggerHiddenDisabledInjectScript();
+    this.triggerInitInjectScript();
     this.$emit('mount', this);
   },
 };
