@@ -16,16 +16,17 @@
           </template>
           <a-collapse-panel :key="fn.key" :header="fn.type" :style="customStyle" v-for="fn in fns">
             <ul class="expression-function-wrapper">
-              <li @click="handleFnClick(name)" v-for="{ name } in fn.list" :key="name">{{ name }}</li>
+              <li @click="handleFnClick(name, desc)" v-for="{ name, desc } in fn.list" :key="name">{{ name }}</li>
             </ul>
           </a-collapse-panel>
         </a-collapse>
       </aside>
     </div>
+    <a-alert style="margin-top: 10px" :description="desc" type="info" />
     <a-alert
       style="margin-top: 10px"
-      description="注:仅支持简单表达式, 输入参数使用英文逗号','隔开,例如:sum=MULTIPLY(price,count)"
-      type="info"
+      description="注:仅支持简单表达式, 输入参数使用英文逗号','隔开,例如:sum=MULTIPLY(price,count), 不支持嵌套表达式如 'SUM(SUBTRACT())'"
+      type="warning"
     />
   </div>
 </template>
@@ -40,23 +41,31 @@ export default {
           list: [
             {
               name: 'SUM',
+              desc: `加法：将每个参数相加`,
               fn: function () {},
             },
             {
               name: 'SUBTRACT',
+              desc: `减法：将第一个数减去后面所有的数`,
+
               fn: function () {},
             },
             {
               name: 'MULTIPLY',
+              desc: `乘法：将每个参数相乘`,
+
               fn: function () {},
             },
             {
               name: 'DIVIDE',
+              desc: `除法：将第一个数除以后面所有的数`,
+
               fn: function () {},
             },
           ],
         },
       ],
+      desc: '',
       activeKey: undefined,
       expressions: [
         // { expression: '', key: 2 },
@@ -73,7 +82,6 @@ export default {
   watch: {
     expressions: {
       handler: function () {
-        console.log('[this.expressions]: ', this.expressions);
         this.$emit('cusEvent', this.expressions);
       },
       deep: true,
@@ -111,7 +119,8 @@ export default {
       }
     },
 
-    handleFnClick(fnname) {
+    handleFnClick(fnname, desc) {
+      this.desc = desc;
       if (!this.activeKey) return; // 如果当前activeKey 为空,则不继续操作
       const index = this.expressions.findIndex((exp) => exp.key === this.activeKey);
       this.insertContentToCursor(this.$refs['textarea'][index].$el, fnname + '()', index, true);
