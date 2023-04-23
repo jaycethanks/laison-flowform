@@ -14,7 +14,13 @@
     </a-input>
     <br />
     <br />
-    <a-input v-model="exposeFields.price.value" prefix="￥" suffix="RMB" />
+    <a-input
+      v-model="exposeFields.price.value"
+      v-if="!exposeFields.price.hidden"
+      :disabled="exposeFields.price.disabled"
+      prefix="￥"
+      suffix="RMB"
+    />
   </div>
 </template>
 
@@ -23,7 +29,6 @@ export default {
   data() {
     return {
       name: 'CustomFields',
-      userName: '',
       exposeFields: {
         userName: {
           value: '',
@@ -38,9 +43,7 @@ export default {
       },
     };
   },
-  mounted() {
-    console.log('[this]: ', this);
-  },
+
   methods: {
     emitEmpty() {
       this.$refs.userNameInput.focus();

@@ -6,6 +6,7 @@ import FlowFormDesigner from '@/packages/FlowFormDesigner/index.vue';
 import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';
 import FormDesigner from '@/packages/FormDesigner';
+import Test from '../../playground/Test.vue';
 import NotFound from '@/views/NotFound.vue';
 Vue.use(VueRouter);
 
@@ -13,6 +14,8 @@ export default new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', component: FlowFormDesigner },
+    { path: '/test', component: Test },
+
     { path: '/formdesign', component: FormDesigner },
     { path: '/flowdesign', component: FlowDesigner },
     { path: '/formpreviewer', component: FormPreviewer },

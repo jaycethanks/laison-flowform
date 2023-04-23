@@ -1,9 +1,9 @@
 import CustomFields from './CustomFields.vue';
-
 export default {
   label: 'CustomFields', // 标题文字
   icon: 'icon-write',
   component: CustomFields,
+  type: 'CustomFields',
   options: {
     // type: 'text',
     help: '',

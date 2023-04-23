@@ -5,6 +5,8 @@ export default {
   label: 'TestComponent', // 标题文字
   icon: 'icon-write',
   component: TestComponent,
+  type: 'TestComponent',
+
   options: {
     // type: 'text',
     testField: false,

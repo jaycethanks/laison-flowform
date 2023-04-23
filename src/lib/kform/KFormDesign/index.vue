@@ -348,7 +348,6 @@ export default {
       }
     },
     handleListPush(item) {
-      console.log('[item]: ', item);
       // 双击控件按钮push到list
       // 生成key值
       if (!this.selectItem.key) {

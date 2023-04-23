@@ -516,10 +516,7 @@ export default {
         // obj.hidden = it.options.hidden || false
         // obj.disabled = it.options.disabled || false
       }
-      if (it.type === 'custom') {
-        //@jayce 23/04/23-13:41:38 : 如果这个控件是一个自定义组件, 那么就预留一个childern 字段, 让 FormFieldsControl 组件去递归控制自定义组件向外暴露的字段
-        obj.children = [];
-      }
+
       return obj;
     },
     stepChangeListener(from, key) {

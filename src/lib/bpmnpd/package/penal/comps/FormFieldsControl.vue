@@ -24,12 +24,8 @@
       <a-checkbox :checked="!editable" @change="(e) => toggleEditable(e, record)"></a-checkbox>
     </span>
 
-    <!-- <p v-if="record.type === 'custom'" slot="expandedRowRender" slot-scope="record" style="margin: 0">
-      {{ record.type }}
-    </p> -->
-
     <template v-if="!noExpand" slot-scope="props" slot="expandIcon">
-      <a v-if="props.record.type === 'custom'" class="expand-icon" @click="toggleRowExpand(props.record)">
+      <a v-if="ifCustom(props.record.type)" class="expand-icon" @click="toggleRowExpand(props.record)">
         <a-icon :type="expandedRows.has(props.record.key) ? 'caret-down' : 'caret-right'" />
       </a>
     </template>
@@ -85,6 +81,7 @@ export default {
       editableAll: false,
       expandedRows: new Set(),
       expandedRowKeys: [],
+      fields: new Map(),
     };
   },
 
@@ -105,12 +102,45 @@ export default {
       deep: true,
     },
   },
+  created() {
+    const f = this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data)));
+    f.forEach((item) => {
+      this.fields.set(item.key, item);
+    });
+  },
   methods: {
+    ifCustom(type) {
+      return ![
+        'input',
+        'textarea',
+        'date',
+        'time',
+        'number',
+        'radio',
+        'checkbox',
+        'select',
+        'rate',
+        'switch',
+        'slider',
+        'uploadImg',
+        'uploadFile',
+        'cascader',
+        'treeSelect',
+        'batch',
+        'editor',
+        'selectInputList',
+        'button',
+        'alert',
+        'text',
+        'html',
+        'divider',
+      ].includes(type);
+    },
     toggleRowExpand(record) {
-      //       let res = this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data)));
-      // console.log('[res]: ', res);
       // 行展开
       const { key } = record;
+      console.log('[key]: ', key);
+      console.log('[this.fields]: ', this.fields);
       if (this.expandedRows.has(key)) {
         this.expandedRows.delete(key);
       } else {
@@ -165,7 +195,7 @@ export default {
         // obj.hidden = it.options.hidden || false
         // obj.disabled = it.options.disabled || false
       }
-      if (it.type === 'custom') {
+      if (this.ifCustom(it.type)) {
         //@jayce 23/04/23-13:41:38 : 如果这个控件是一个自定义组件, 那么就预留一个childern 字段, 让 FormFieldsControl 组件去递归控制自定义组件向外暴露的字段
         obj.children = [];
       }

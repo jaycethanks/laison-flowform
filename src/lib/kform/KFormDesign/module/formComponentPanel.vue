@@ -199,6 +199,7 @@ export default {
     },
     handleSelectItem(record) {
       console.log('handleSelectItem');
+      console.log('[record]: ', record);
       // 修改选择Item
       this.$emit('handleSetSelectItem', record);
     },

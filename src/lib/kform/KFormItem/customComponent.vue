@@ -8,8 +8,20 @@
 <template>
   <a-form-item
     :label="record.label"
-    :label-col="formConfig.layout === 'horizontal' ? (formConfig.labelLayout === 'flex' ? { style: `width:${formConfig.labelWidth}px` } : formConfig.labelCol) : {}"
-    :wrapper-col="formConfig.layout === 'horizontal' ? (formConfig.labelLayout === 'flex' ? { style: 'width:auto;flex:1' } : formConfig.wrapperCol) : {}"
+    :label-col="
+      formConfig.layout === 'horizontal'
+        ? formConfig.labelLayout === 'flex'
+          ? { style: `width:${formConfig.labelWidth}px` }
+          : formConfig.labelCol
+        : {}
+    "
+    :wrapper-col="
+      formConfig.layout === 'horizontal'
+        ? formConfig.labelLayout === 'flex'
+          ? { style: 'width:auto;flex:1' }
+          : formConfig.wrapperCol
+        : {}
+    "
     :style="formConfig.layout === 'horizontal' && formConfig.labelLayout === 'flex' ? { display: 'flex' } : {}"
   >
     <component
@@ -56,40 +68,46 @@ export default {
   computed: {
     customComponent() {
       // 计算需要显示的组件
-      const customComponentList = {}
+      const customComponentList = {};
       if (window.$customComponentList) {
         // 将数组映射成json
         window.$customComponentList.forEach((item) => {
-          customComponentList[item.type] = item.component
-        })
+          customComponentList[item.type] = item.component;
+        });
       }
-      window.re = customComponentList[this.record]
-      window.cm = customComponentList[this.record.type]
-      return customComponentList[this.record.type]
+      window.re = customComponentList[this.record];
+      window.cm = customComponentList[this.record.type];
+      return customComponentList[this.record.type];
     },
     cd() {
       try {
         if (this.record.options.data) {
-          return JSON.parse(this.record.options.data)
+          return JSON.parse(this.record.options.data);
         }
       } catch (error) {
-        console.error('JSON.parse(this.record.options.data) 发生错误', this.record)
+        console.error('JSON.parse(this.record.options.data) 发生错误', this.record);
       }
     },
   },
   methods: {
     handleChange(value, key) {
       // console.log('自定义组件捕获change传值', value, this.record.model)
-      this.$emit('change', value, this.record.model)
+      this.$emit('change', value, this.record.model);
     },
     handleInput(value, key) {
       //console.log('自定义组件捕获input', value, this.record.model)
-      this.$emit('input', value, this.record.model)
+      this.$emit('input', value, this.record.model);
     },
   },
   mounted() {
+    // cuscomponent.children = [];
+
+    console.log('[this.$refs.actualCusComp.$data]: ', this.$refs.actualCusComp);
+    this.record.children = [];
+    // for (let i in this.$refs.actualCusComp.$data.exposeFields || {}) {
+    //   this.record.children.push({ key: i, disabled: false, hidden: false });
+    // }
     //console.log("customer compnent mounted",this.record)
   },
-}
+};
 </script>
-
