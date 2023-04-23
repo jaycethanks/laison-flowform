@@ -13,7 +13,7 @@
       group: { name: 'form-draggable', pull: 'clone', put: false },
       sort: false,
       animation: 180,
-      ghostClass: 'moving'
+      ghostClass: 'moving',
     }"
     @start="handleStart($event, list)"
   >
@@ -31,17 +31,18 @@
   </draggable>
 </template>
 <script>
-import draggable from "vuedraggable";
+import draggable from 'vuedraggable';
 export default {
-  name: "collapseItem",
-  props: ["list"],
+  name: 'collapseItem',
+  props: ['list'],
   components: {
-    draggable
+    draggable,
   },
+
   methods: {
     handleStart(e, list) {
-      this.$emit("start", list[e.oldIndex].type);
-    }
-  }
+      this.$emit('start', list[e.oldIndex].type);
+    },
+  },
 };
 </script>

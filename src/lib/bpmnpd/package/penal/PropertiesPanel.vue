@@ -90,10 +90,10 @@
         v-if="elementType === 'UserTask'"
       >
         <div slot="title" class="panel-tab__title"><i class="el-icon-share"></i>审批配置</div>
-        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
+        <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
-        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox>
+        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
         <p class="field-label-text"><i class="el-icon-s-check"></i>审批人</p>
         <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
         <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
@@ -515,6 +515,10 @@ export default {
         obj.disabled = false;
         // obj.hidden = it.options.hidden || false
         // obj.disabled = it.options.disabled || false
+      }
+      if (it.type === 'custom') {
+        //@jayce 23/04/23-13:41:38 : 如果这个控件是一个自定义组件, 那么就预留一个childern 字段, 让 FormFieldsControl 组件去递归控制自定义组件向外暴露的字段
+        obj.children = [];
       }
       return obj;
     },

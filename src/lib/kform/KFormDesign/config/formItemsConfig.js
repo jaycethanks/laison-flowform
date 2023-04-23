@@ -585,6 +585,7 @@ export const customComponents = {
   title: '自定义组件',
   list: cuscomponents.map((cuscomponent) => {
     cuscomponent.options.isCustom = true;
+    cuscomponent.type = 'custom';
     cuscomponent.options.type = 'custom';
     return cuscomponent;
   }),

@@ -176,6 +176,8 @@ export default {
     },
     submit() {
       let valid = this.requiredFieldsValidate();
+      valid = true;
+      // todo: 记得去除 valid = true
       if (valid) {
         this.submitDataJoint();
       } else {
@@ -251,6 +253,8 @@ export default {
       return JSON.parse(processJson).elements[0].attributes.id;
     },
     async doSubmit(submitdata) {
+      console.log('[submitdata]: ', submitdata);
+      return;
       let res = await API.editErpConfig({
         status: 2, //0-创建 1-更新 2-部署 <Number>
         erpConfig: submitdata,

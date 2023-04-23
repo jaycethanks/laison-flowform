@@ -22,6 +22,7 @@
 export default {
   data() {
     return {
+      name: 'CustomFields',
       userName: '',
       exposeFields: {
         userName: {
