@@ -32,7 +32,8 @@
 
     <template v-if="!noExpand" slot="expandedRowRender" slot-scope="record">
       <!-- 渲染可展开的行 -->
-      <FormFieldsControl noExpand v-model="record.children" style="padding: 2px 0px" />
+      {{ noExpand }}
+      <FormFieldsControl noExpand v-model="record.exposeFields" style="padding: 2px 0px" />
     </template>
   </a-table>
 </template>
@@ -43,7 +44,8 @@ const columns = [
     dataIndex: 'label',
     // key: 'key',
     scopedSlots: { customRender: 'name' },
-    align: 'center',
+    // align: 'center',
+    ellipsis: true,
   },
 
   {
@@ -51,20 +53,24 @@ const columns = [
     // key: 'model',
     slots: { title: 'visibleTitleSlot' },
     scopedSlots: { customRender: 'visible' },
-    align: 'center',
+    width: '80px',
+
+    // align: 'center',
   },
   {
     // key: 'model'.slice(6),
     dataIndex: 'disabled',
     slots: { title: 'editableTitleSlot' },
     scopedSlots: { customRender: 'editable' },
-    align: 'center',
+    // align: 'center',
+    width: '80px',
   },
   {
     title: '类型',
     dataIndex: 'type',
     // key: 'key',
-    width: '120px',
+    ellipsis: true,
+    width: '100px',
   },
 ];
 /**
@@ -81,7 +87,6 @@ export default {
       editableAll: false,
       expandedRows: new Set(),
       expandedRowKeys: [],
-      fields: new Map(),
     };
   },
 
@@ -104,9 +109,6 @@ export default {
   },
   created() {
     const f = this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data)));
-    f.forEach((item) => {
-      this.fields.set(item.key, item);
-    });
   },
   methods: {
     ifCustom(type) {
@@ -139,8 +141,7 @@ export default {
     toggleRowExpand(record) {
       // 行展开
       const { key } = record;
-      console.log('[key]: ', key);
-      console.log('[this.fields]: ', this.fields);
+
       if (this.expandedRows.has(key)) {
         this.expandedRows.delete(key);
       } else {
@@ -267,3 +268,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+::v-deep .ant-table {
+  font-size: 12px;
+}
+</style>

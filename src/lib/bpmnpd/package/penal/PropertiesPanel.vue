@@ -516,6 +516,9 @@ export default {
         // obj.hidden = it.options.hidden || false
         // obj.disabled = it.options.disabled || false
       }
+      if (it.exposeFields) {
+        obj.exposeFields = it.exposeFields;
+      }
 
       return obj;
     },

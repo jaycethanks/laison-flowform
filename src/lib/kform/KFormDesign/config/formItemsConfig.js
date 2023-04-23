@@ -584,9 +584,6 @@ export const basicsList = [
 export const customComponents = {
   title: '自定义组件',
   list: cuscomponents.map((cuscomponent) => {
-    //! @jayce 23/04/23-14:37:19 :这里的文件是异步加载的,仅用户点击该控件时,才会去渲染,
-    //! 所不不能在这里拿到自定义组件中的 $data.exposeFields, 应该在用户点击控件的时候,去handle
-    //! 具体的在 src/lib/kform/KFormItem/customComponent.vue mounted 阶段
     const requiredFields = ['component', 'label', 'type'];
     console.log('[cuscomponent]: ', cuscomponent);
     requiredFields.forEach((field) => {
@@ -601,7 +598,9 @@ ${requiredFields
         );
       }
     });
-
+    //! @jayce 23/04/23-14:37:19 :这里的文件是异步加载的,仅用户点击该控件时,才会去渲染,
+    //! 所不不能在这里拿到自定义组件中的 $data.exposeFields, 应该在用户点击控件的时候,去handle
+    //! 具体的在 src/lib/kform/KFormItem/customComponent.vue mounted 阶段
     // cuscomponent.children = [];
     // console.log(cuscomponent.component);
     // for (let key in cuscomponent.component.$data.exposeFields) {

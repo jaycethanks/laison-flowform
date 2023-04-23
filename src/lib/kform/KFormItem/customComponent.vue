@@ -102,11 +102,24 @@ export default {
   mounted() {
     // cuscomponent.children = [];
 
-    console.log('[this.$refs.actualCusComp.$data]: ', this.$refs.actualCusComp);
-    this.record.children = [];
+    //@jayce 23/04/23-16:20:27 : 初始化自定义组件中的 children
+    const exposeFields = this.$refs.actualCusComp.$data.exposeFields;
+    this.record.exposeFields = [];
+    if (exposeFields) {
+      for (let field in exposeFields) {
+        this.record.exposeFields.push({
+          label: field,
+          disabled: true,
+          hidden: true,
+          type: field,
+        });
+      }
+    }
+    // this.record.children = [];
     // for (let i in this.$refs.actualCusComp.$data.exposeFields || {}) {
     //   this.record.children.push({ key: i, disabled: false, hidden: false });
     // }
+
     //console.log("customer compnent mounted",this.record)
   },
 };
