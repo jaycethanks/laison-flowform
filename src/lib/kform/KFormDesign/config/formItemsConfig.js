@@ -587,6 +587,21 @@ export const customComponents = {
     //! @jayce 23/04/23-14:37:19 :这里的文件是异步加载的,仅用户点击该控件时,才会去渲染,
     //! 所不不能在这里拿到自定义组件中的 $data.exposeFields, 应该在用户点击控件的时候,去handle
     //! 具体的在 src/lib/kform/KFormItem/customComponent.vue mounted 阶段
+    const requiredFields = ['component', 'label', 'type'];
+    console.log('[cuscomponent]: ', cuscomponent);
+    requiredFields.forEach((field) => {
+      if (!cuscomponent[field]) {
+        throw Error(
+          `检测到你的自定义组件不符合必要注册条件: 以下字段为必要字段,不可为空,参考信息:\n
+${requiredFields
+  .map((field) => {
+    return `${field}: ${field === 'component' ? cuscomponent['component']?.__file || undefined : cuscomponent[field]}`;
+  })
+  .join('\n')} 均为必须字段.\n`,
+        );
+      }
+    });
+
     // cuscomponent.children = [];
     // console.log(cuscomponent.component);
     // for (let key in cuscomponent.component.$data.exposeFields) {
