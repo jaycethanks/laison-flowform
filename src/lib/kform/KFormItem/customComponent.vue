@@ -112,6 +112,7 @@ export default {
           disabled: true,
           hidden: true,
           type: field,
+          key: field,
         });
       }
     }

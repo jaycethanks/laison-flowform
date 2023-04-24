@@ -32,7 +32,6 @@
 
     <template v-if="!noExpand" slot="expandedRowRender" slot-scope="record">
       <!-- 渲染可展开的行 -->
-      {{ noExpand }}
       <FormFieldsControl noExpand v-model="record.exposeFields" style="padding: 2px 0px" />
     </template>
   </a-table>
@@ -79,7 +78,15 @@ const columns = [
 
 export default {
   name: 'FormFieldsControl',
-  props: ['cusProp', 'noExpand'],
+  props: {
+    cusProp: {
+      type: Array,
+    },
+    noExpand: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       columns,

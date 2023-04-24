@@ -1,26 +1,14 @@
 <style lang="less"></style>
 <template>
-  <j-modal
-    :visible="visible"
-    :title="title"
-    width="90vw"
-    switchFullscreen
-    @cancel="closeModal"
-    @ok="$emit('ok')"
-    @fullScreenEvent="isFullScreen = $event"
-    :maskClosable="false"
-    :footer="footer"
-    :body-style="{ maxHeight: isFullScreen ? '' : '70vh', overflowY: 'auto' }"
-  >
-    <!--流程图-->
+  <!--流程图-->
 
-    <div class="containers" style="min-height: 400px">
-      <div id="canvas" ref="canvas"></div>
-      <div id="js-properties-panel" class="panel" style="visibility: hidden"></div>
-    </div>
-    <!--实时备注信息 时间轴  #00DB00-->
+  <div class="containers" style="min-height: 400px">
+    <div id="canvas" ref="canvas"></div>
+    <div id="js-properties-panel" class="panel" style="visibility: hidden"></div>
+  </div>
+  <!--实时备注信息 时间轴  #00DB00-->
 
-    <!--
+  <!--
      type:
       0:创建-applyOrder
       1-翻单
@@ -29,25 +17,24 @@
       4-查看-DoneTask
       5-审批-TodoTask
      -->
-  </j-modal>
 </template>
 
 <script>
 import JModal from '@/components/jeecg/JModal/index.vue';
 import BpmnViewer from 'bpmn-js/lib/Viewer';
 import ModelingModule from 'bpmn-js/lib/features/modeling';
-
+import mock from './mock2';
 // bpmnviewer 拖动
 // https://www.modb.pro/db/32324
 
 export default {
   name: 'FlowPreviewer',
   props: {
-    value: {
-      type: Object,
-      default: () => null,
-      required: true,
-    },
+    // value: {
+    //   type: Object,
+    //   default: () => null,
+    //   required: true,
+    // },
     visible: {
       type: Boolean,
       default: false,
@@ -65,15 +52,6 @@ export default {
   data() {
     return {
       modalVisible: true,
-      isFullScreen: false,
-
-      cardBodyStyle: {
-        padding: '5px',
-        marginTop: '10px',
-      },
-      cardHeadStyle: {
-        fontWeight: 'bold',
-      },
       showHistory: false,
       showProcess: false,
       showRecord: false,
@@ -105,30 +83,37 @@ export default {
       }
     },
   },
+  created() {
+    console.log('[mock]: ', mock);
+    this.xmlUrl = mock.procModelXml;
+  },
+  mounted() {
+    this.init();
+  },
   methods: {
     init() {
       /**
        * 备注信息
        */
-      if (this.value) {
-        this.orderResult = !this.value.orderInfo ? 1 : this.value.orderInfo.result;
-        //历史任务
-        this.taskList = this.value.taskProgress;
-        this.showHistory = !!this.taskList && this.taskList.length > 0;
-        //bpmn的xml
-        this.xmlUrl = this.value.procBpmn;
-        this.showProcess = !!this.xmlUrl;
-        //记录信息
-        this.taskRecords = this.value.operateRecord;
-        this.showRecord = !!this.taskRecords && this.taskRecords.length > 0;
-        //高亮flows
-        if (this.value.procHighLight) {
-          this.highLightedFlows = this.value.procHighLight.highLightedFlows;
-          this.highLightedToDoActivities = this.value.procHighLight.highLightedToDoActivities;
-          this.highLightedDoneActivities = this.value.procHighLight.highLightedDoneActivities;
-          this.highLightedActivities = this.value.procHighLight.highLightedActivities;
-        }
-      }
+      // if (this.value) {
+      //   this.orderResult = !this.value.orderInfo ? 1 : this.value.orderInfo.result;
+      //   //历史任务
+      //   this.taskList = this.value.taskProgress;
+      //   this.showHistory = !!this.taskList && this.taskList.length > 0;
+      //   //bpmn的xml
+      //   this.xmlUrl = this.value.procBpmn;
+      //   this.showProcess = !!this.xmlUrl;
+      //   //记录信息
+      //   this.taskRecords = this.value.operateRecord;
+      //   this.showRecord = !!this.taskRecords && this.taskRecords.length > 0;
+      //   //高亮flows
+      //   if (this.value.procHighLight) {
+      //     this.highLightedFlows = this.value.procHighLight.highLightedFlows;
+      //     this.highLightedToDoActivities = this.value.procHighLight.highLightedToDoActivities;
+      //     this.highLightedDoneActivities = this.value.procHighLight.highLightedDoneActivities;
+      //     this.highLightedActivities = this.value.procHighLight.highLightedActivities;
+      //   }
+      // }
       this.initBpmn();
     },
     closeModal: function () {
@@ -175,7 +160,7 @@ export default {
       //点击事件
       this.clickModelerListener();
       //需要渲染的列表
-      this.setNodeColor();
+      // this.setNodeColor();
     },
     //添加点击事件
     clickModelerListener() {

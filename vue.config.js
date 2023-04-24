@@ -26,6 +26,9 @@ module.exports = defineConfig({
         },
         javascriptEnabled: true, // 解决，antd less 样式引入报错问题
       },
+      // sass: {
+      //   data: `@import "@/styles/_variables.scss";`
+      // }
     },
   },
   configureWebpack: {
