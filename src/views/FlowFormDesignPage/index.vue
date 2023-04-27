@@ -1,14 +1,26 @@
 <template>
   <div class="flowform-design-page">
-    <!-- <h1>流程表单设计</h1> -->
-    <FlowFormDesigner />
+    <div v-if="showIndex" class="flow_form_index_page" style="height: 100%">
+      <a-button @click="showIndex = false">新建流程表单</a-button>
+      <ProcessList style="height: calc(100% - 62px)" @edit="showIndex = false" />
+    </div>
+    <FlowFormDesigner v-else @back="showIndex = true" />
   </div>
 </template>
+
 <script>
+import ProcessList from '@/components/ProcessList/ProcessList.vue';
 import FlowFormDesigner from '@/packages/FlowFormDesigner/index.vue';
 export default {
+  name: 'FlowFormDesignPage',
   components: {
     FlowFormDesigner,
+    ProcessList,
+  },
+  data() {
+    return {
+      showIndex: true,
+    };
   },
 };
 </script>

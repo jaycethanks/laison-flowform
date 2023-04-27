@@ -52,14 +52,14 @@ let icons = [
   'siteinformation.png',
   'supervisionscreen.png',
   'uploaddoc.png',
-]
+];
 
 let arr = icons.map((it) => {
-  let icon_name = it.split('.')[0]
+  let icon_name = it.split('.')[0];
   return {
     name: icon_name,
-    file: require('./icons/' + it),
-  }
-})
+    file: require('./' + it),
+  };
+});
 
-export default arr
+export default arr;

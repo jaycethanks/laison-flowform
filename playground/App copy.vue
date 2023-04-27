@@ -24,7 +24,7 @@
 
 <script>
 import FormPreviewer from '@/packages/FormPreviewer';
-import ProcessList from '@/packages/FlowFormDesigner/comps/ProcessList.vue';
+import ProcessList from '@/components/ProcessList/ProcessList.vue';
 import FlowFormDesigner from '@/packages/FlowFormDesigner/index.vue';
 import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';

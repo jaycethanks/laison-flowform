@@ -59,8 +59,8 @@
 </template>
 <script>
 import API from '@/api/ErpConfig.js';
-import icons from '@/packages/FlowFormDesigner/statics/index.js';
-
+import icons from '@/assets/formdesign_icons/index.js';
+import mock from './mock';
 export default {
   data() {
     return {
@@ -71,10 +71,11 @@ export default {
   },
   methods: {
     async loadList() {
-      let res = await API.processFormList();
-      if (res.code === 0) {
-        this.list = res.data;
-      }
+      // let res = await API.processFormList();
+      // if (res.code === 0) {
+      //   this.list = res.data;
+      // }
+      this.list = mock.data;
     },
     getIcon(iconName) {
       console.log(iconName, '--line69');

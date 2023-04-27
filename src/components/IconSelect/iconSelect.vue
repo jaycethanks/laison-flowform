@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import icons from '@/packages/FlowFormDesigner/statics/index.js';
+import icons from '@/assets/formdesign_icons/index.js';
 
 export default {
   name: 'iconSelect',

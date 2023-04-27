@@ -4,7 +4,7 @@
  * description 表单控件项
  */
 
-import cuscomponents from '@/components/CusCompsForFormDesign/index.js';
+import cuscomponents from '@/CusComponents4FormDesign/index.js';
 // 基础控件
 export const basicsList = [
   {
