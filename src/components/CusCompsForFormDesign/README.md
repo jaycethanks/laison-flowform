@@ -37,3 +37,25 @@ message: 'common.please_input',
 
 }
 ```
+
+在自定义一个组件时， 数据的绑定是通过 v-model 来实现的。
+
+prop: value
+event: change/input
+
+也就是说，你需要自己去接收 value 值 完成初始化， 同时在组件的数据发生变化是， 你需要 emit input 或者 change 事件。
+
+如果你自定的组件中，有些字段需要在流程设计中，得到控制， 你需要在 data 中定义一个名为 exposeFields 的属性， 以下是一个示例：
+
+```js
+exposeFields: {
+  userName: {
+    disabled: false,
+    hidden: false,
+  },
+  price: {
+    disabled: false,
+    hidden: false,
+  },
+},
+```

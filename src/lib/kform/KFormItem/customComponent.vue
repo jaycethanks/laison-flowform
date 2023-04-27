@@ -110,7 +110,7 @@ export default {
         this.record.exposeFields.push({
           label: field,
           disabled: true,
-          hidden: true,
+          hidden: false,
           type: field,
           key: field,
         });
