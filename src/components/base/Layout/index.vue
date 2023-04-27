@@ -6,7 +6,7 @@
     </a-layout-sider>
     <a-layout>
       <LayoutHeader :collapsed="collapsed" @toggleSideEvent="collapsed = !collapsed" />
-      <a-layout-content :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }">
+      <a-layout-content :style="{ margin: '10px 10px', padding: '10px', background: '#fff', minHeight: '280px' }">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>

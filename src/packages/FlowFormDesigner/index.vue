@@ -1,21 +1,6 @@
 <template>
-  <a-card
-    :bordered="false"
-    :body-style="{
-      width: '100%',
-      height: '100%',
-      padding: '0px',
-    }"
-  >
-    <p
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-bottom: 1px solid #d6d6d6;
-        user-select: none;
-      "
-    >
+  <div class="flow-form-designer-root">
+    <p class="flow-form-designer-header">
       <a-button style="position: absolute; left: 10px" @click="$emit('back')">返回</a-button>
       <a-steps
         ref="steps"
@@ -36,23 +21,17 @@
         </a-step>
       </a-steps>
     </p>
-    <div class="step-container">
-      <div v-show="current === 0">
-        <form-design :height="propHeight" ref="formDesignView"></form-design>
-      </div>
-      <div v-show="current === 1">
-        <flow-design :height="propHeight" :bpmnEditDataInit="bpmnEditDataInit"></flow-design>
-      </div>
-      <div v-show="current === 2">
-        <flow-form-publish
-          :height="propHeight"
-          @submit="sumbitHandler"
-          :publishEditDataInit="publishEditDataInit"
-          @success="$emit('back')"
-        ></flow-form-publish>
-      </div>
+    <div class="flow-form-designer-container">
+      <form-design v-show="current === 0" ref="formDesignView"></form-design>
+      <flow-design v-show="current === 1" :bpmnEditDataInit="bpmnEditDataInit"></flow-design>
+      <flow-form-publish
+        v-show="current === 2"
+        @submit="sumbitHandler"
+        :publishEditDataInit="publishEditDataInit"
+        @success="$emit('back')"
+      ></flow-form-publish>
     </div>
-  </a-card>
+  </div>
 </template>
 
 <script>
@@ -77,7 +56,6 @@ export default {
     return {
       current: 0,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
-      propHeight: 'calc(100vh - 66px)',
       isSubmit: false, // 用于判断路由切换时，提示控制
       bpmnEditDataInit: null, // 用于edit的回显初始化
       publishEditDataInit: null, // 用于edit的回显初始化
@@ -202,7 +180,23 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="css">
+.flow-form-designer-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #d6d6d6;
+  user-select: none;
+  height: 50px;
+  margin-bottom: 14px;
+}
+.flow-form-designer-root {
+  height: 100%;
+  width: 100%;
+}
+.flow-form-designer-container {
+  height: calc(100% - 64px);
+}
 >>> .ant-steps-navigation .ant-steps-item.ant-steps-item-active::before {
   transform: translateX(-50%);
   left: 50%;

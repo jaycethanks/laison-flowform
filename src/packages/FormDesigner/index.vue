@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="k-form-design-wrapper">
     <k-form-design
       :propModalHeight="propModalHeight"
       :showHead="false"
@@ -116,3 +116,9 @@ export default {
   mounted() {},
 };
 </script>
+<style scoped lang="css">
+.k-form-design-wrapper {
+  height: 100%;
+  width: 100%;
+}
+</style>

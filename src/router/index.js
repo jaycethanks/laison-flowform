@@ -12,16 +12,17 @@ Vue.use(VueRouter);
 export const systemRoutes = {
   path: '/',
   component: () => import('@/views/HomePage'),
+
   children: [
     {
       path: 'system_registration_page',
       name: '业务系统注册',
-      icon: 'close', //antd-icon name
+      icon: 'api', //antd-icon name
       component: () => import('@/views/SystemRegistrationPage/index.vue'),
     },
     {
       path: 'flowform_design_page',
-      icon: 'close', //antd-icon name
+      icon: 'pull-request', //antd-icon name
       name: '流程设计',
       component: FlowFormDesignPage,
     },
@@ -36,6 +37,6 @@ export default new VueRouter({
     { path: '/flowdesign', component: FlowDesigner },
     { path: '/formpreviewer', component: FormPreviewer },
     { path: '/flowpreviewer', component: FlowPreviewer },
-    // { path: '*', component: NotFound },
+    { path: '*', component: NotFound },
   ],
 });
