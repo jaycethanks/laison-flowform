@@ -116,12 +116,14 @@ export default {
         });
       }
     }
-    // this.record.children = [];
-    // for (let i in this.$refs.actualCusComp.$data.exposeFields || {}) {
-    //   this.record.children.push({ key: i, disabled: false, hidden: false });
-    // }
 
-    //console.log("customer compnent mounted",this.record)
+    //@jayce 23/04/27-15:35:49 : 将服务器返回的值，set到组件去渲染
+    if (typeof this.record._exposeFields !== 'undefined') {
+      this.record._exposeFields.forEach(({ key, hidden, disabled }) => {
+        this.$refs.actualCusComp.$data.exposeFields[key].hidden = hidden;
+        this.$refs.actualCusComp.$data.exposeFields[key].disabled = disabled;
+      });
+    }
   },
 };
 </script>

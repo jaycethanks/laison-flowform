@@ -5,10 +5,10 @@
       class="container form-previewer"
       @mount="handleMount"
       :value="formInfo"
-      :rootCompent="this"
       ref="kfb"
       :disabled="false"
     />
+    <!-- :rootCompent="this" -->
     <!-- :disabled="allDisabled"
       :showType="0" -->
   </div>
@@ -20,6 +20,8 @@
 import KFormBuild from '@/lib/kform/KFormBuild/index';
 import JModal from '@/components/jeecg/JModal/index.vue';
 import { message } from 'ant-design-vue';
+import mock from './mock';
+import { parseFormWidthNodeConfig } from '@/utils/kformRelatedUtils.js';
 //import '@/assets/SourceHanSansCN-Regular-normal'
 export default {
   name: 'FormPreviewer',
@@ -58,91 +60,7 @@ export default {
     return {
       okBtnDisabled: true,
       allDisabled: true,
-      formInfo: {
-        list: [
-          {
-            type: 'time',
-            label: '时间选择框',
-            options: {
-              width: '100%',
-              defaultValue: '',
-              disabled: false,
-              hidden: false,
-              clearable: false,
-              placeholder: '请选择',
-              format: 'HH:mm:ss',
-            },
-            model: 'time_1680769956368',
-            key: 'time_1680769956368',
-            help: '',
-            rules: [
-              {
-                required: false,
-                message: 'common.please_input',
-              },
-            ],
-          },
-          {
-            type: 'radio',
-            label: '单选框',
-            options: {
-              disabled: false,
-              hidden: false,
-              defaultValue: '',
-              dynamicKey: '',
-              dynamic: false,
-              options: [
-                {
-                  value: '1',
-                  label: '选项1',
-                },
-                {
-                  value: '2',
-                  label: '选项2',
-                },
-                {
-                  value: '3',
-                  label: '选项3',
-                },
-              ],
-            },
-            model: 'radio_1680769990773',
-            key: 'radio_1680769990773',
-            help: '',
-            rules: [
-              {
-                required: false,
-                message: 'common.please_input',
-              },
-            ],
-          },
-        ],
-        config: {
-          layout: 'horizontal',
-          labelCol: {
-            xs: 4,
-            sm: 4,
-            md: 4,
-            lg: 4,
-            xl: 4,
-            xxl: 4,
-          },
-          labelWidth: 100,
-          labelLayout: 'flex',
-          wrapperCol: {
-            xs: 18,
-            sm: 18,
-            md: 18,
-            lg: 18,
-            xl: 18,
-            xxl: 18,
-          },
-          hideRequiredMark: false,
-          customStyle: '',
-          enablePrint: false,
-          jsEnhance: '',
-        },
-      }, //表单定义
+      formInfo: null, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
       style: {
@@ -151,38 +69,18 @@ export default {
       },
     };
   },
-  watch: {
-    value(newVal, oldVal) {
-      //console.log('LAISONcustoemrFormShow2 value变了', this.value, oldVal)
-      //this.fixData()
-    },
-    visible(newVal, oldVal) {
-      if (this.visible) {
-        // console.log('StockList push  CustomerShow 开始渲染', new Date())
-
-        this.$nextTick(() => {
-          //console.log('StockList push   CustomerShow 完成渲染', new Date())
-        });
-      }
-    },
-  },
-  computed: {
-    title() {
-      if (!this.value) {
-        return '';
-      }
-      return this.value.title;
-    },
-  },
 
   created() {
     const { query } = this.$route;
     const { maxWidth, minWidth } = query;
     this.style.maxWidth = maxWidth;
     this.style.minWidth = minWidth;
+    // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
+    // 解析示例：
+    const parsedFormInfo = parseFormWidthNodeConfig(mock);
+    console.log('[parsedFormInfo]: ', parsedFormInfo);
+    this.formInfo = parsedFormInfo;
   },
-
-  destroyed() {},
   methods: {
     closeModal: function () {
       this.$emit('close');
@@ -218,59 +116,6 @@ export default {
           this.allDisabled = true;
           break;
       }
-    },
-    show() {
-      this.typeHandler(this.opts.type);
-      this.visible = true;
-      // k-form-design 的表单设计数据
-      if (this.value.formInfo) {
-        this.$set(this, 'formInfo', JSON.parse(this.value.formInfo));
-      }
-
-      if (this.value.erpFormVal && this.value.erpFormVal.formData) {
-        try {
-          this.formdataObj = JSON.parse(this.value.erpFormVal.formData);
-        } catch (e) {
-          console.log('formShowError', JSON.stringify(e));
-        }
-      } else {
-        this.formdataObj = {};
-      }
-      // console.log(this.formdataObj.LaisonStockList.tableData[0].orderProps.exeStdName, '--line147')
-      // k-form-design 的表单值数据
-      if (!this.formdataObj.LaisonStockList) {
-        this.formdataObj.LaisonStockList = {
-          tableData: [],
-          calculateAmount: 0.0,
-          freightCharge: 0.0, //运费
-          isFandan: false,
-        };
-        //this.formdataObj.LaisonStockList.showType = this.opts.type
-        // 根据前台操作的权限，以控制是不似乎申请者（只申请者，才能有这些特有的操作能力）
-      }
-      this.formdataObj.LaisonStockList.showType = this.opts.type;
-      this.$nextTick(() => {
-        window.kformd = [];
-        if (this.$refs.kfb && this.$refs.kfb.form) {
-          // console.log(,'--line162');
-          window.aform = this.$refs.kfb.form;
-          // console.log(this.formdataObj.LaisonStockList.tableData[0].orderProps.exeStdName, '--line162')
-          if (this.formdataObj) {
-            this.$refs.kfb.form.resetFields();
-            //@jayce 22/06/30-14:41:20 :
-            //【解决报错】 Warning: You cannot set a form field before rendering a field associated with the value. You can use `getFieldDecorator(id, options)` instead `v-decorator="[id, options]"` to register it before render.
-
-            for (let field in this.formdataObj) {
-              this.$refs.kfb.form.getFieldDecorator(field, { initialValue: '' });
-            }
-            this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
-            this.$refs.kfb.exeInitJs();
-            this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
-          }
-        }
-      });
-
-      //this.fixData()
     },
 
     async handleOk() {
