@@ -1,7 +1,7 @@
 <template>
   <div class="flow-form-designer-root">
     <p class="flow-form-designer-header">
-      <a-button style="position: absolute; left: 10px" @click="$emit('back')">返回</a-button>
+      <a-button style="position: absolute; left: 0" @click="$emit('back')">返回</a-button>
       <a-steps
         ref="steps"
         style="margin-bottom: 0; width: 550px"
@@ -187,7 +187,7 @@ export default {
   align-items: center;
   border-bottom: 1px solid #d6d6d6;
   user-select: none;
-  height: 50px;
+  height: 40px;
   position: relative;
   margin-bottom: 14px;
 }
@@ -196,7 +196,7 @@ export default {
   width: 100%;
 }
 .flow-form-designer-container {
-  height: calc(100% - 64px);
+  height: calc(100% - 54px);
 }
 >>> .ant-steps-navigation .ant-steps-item.ant-steps-item-active::before {
   transform: translateX(-50%);
