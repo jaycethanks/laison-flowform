@@ -188,6 +188,7 @@ export default {
   border-bottom: 1px solid #d6d6d6;
   user-select: none;
   height: 50px;
+  position: relative;
   margin-bottom: 14px;
 }
 .flow-form-designer-root {
