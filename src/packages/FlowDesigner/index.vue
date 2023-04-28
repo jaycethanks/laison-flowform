@@ -10,6 +10,19 @@
       @element-click="elementClick"
       @init-finished="initModeler"
     />
+
+    <!-- <a-drawer
+      title="Basic Drawer"
+      placement="right"
+      :closable="false"
+      :visible="visible"
+      :after-visible-change="afterVisibleChange"
+      @close="onClose"
+    >
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+      <p>Some contents...</p>
+    </a-drawer> -->
     <my-properties-panel
       :key="`penal-${reloadIndex}`"
       :bpmn-modeler="modeler"

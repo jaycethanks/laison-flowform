@@ -45,10 +45,7 @@ export default {
       type: String,
       default: 'title is not defined',
     },
-    footer: {
-      type: [String, Object],
-      // default: null,
-    },
+
     opts: {
       type: Object,
       default: () => {

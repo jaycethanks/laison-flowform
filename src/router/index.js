@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import FormPreviewer from '@/packages/FormPreviewer';
 import ProcessList from '@/components/ProcessList/ProcessList.vue';
-import FlowFormDesignPage from '@/views/FlowFormDesignPage/index.vue';
+
 import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';
 import FormDesigner from '@/packages/FormDesigner';
@@ -21,10 +21,16 @@ export const systemRoutes = {
       component: () => import('@/views/SystemRegistrationPage/index.vue'),
     },
     {
+      path: 'flowform_template_design_page',
+      icon: 'pull-request', //antd-icon name
+      name: '流程模板',
+      component: () => import('@/views/FlowFormTemplateDesignPage/index.vue'),
+    },
+    {
       path: 'flowform_design_page',
       icon: 'pull-request', //antd-icon name
       name: '流程设计',
-      component: FlowFormDesignPage,
+      component: () => import('@/views/FlowFormDesignPage/index.vue'),
     },
   ],
 };

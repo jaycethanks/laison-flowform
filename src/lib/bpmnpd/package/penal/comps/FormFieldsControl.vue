@@ -2,7 +2,6 @@
   <a-table
     style="user-select: none"
     size="small"
-    :bordered="false"
     :columns="columns"
     rowKey="key"
     :pagination="false"
@@ -278,5 +277,8 @@ export default {
 <style scoped>
 ::v-deep .ant-table {
   font-size: 12px;
+}
+::v-deep .ant-table-small {
+  border: none;
 }
 </style>

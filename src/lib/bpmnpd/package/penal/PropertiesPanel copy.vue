@@ -6,85 +6,90 @@
   > -->
   <!-- <a-tab-pane key="1" tab="节点属性"> -->
   <div class="process-panel__container" :style="{ width: `${this.width}px` }">
-    <a-collapse accordion v-model="activeTab">
-      <a-collapse-panel key="base">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-info"></i>常规</div>
+    <el-collapse accordion v-model="activeTab">
+      <el-collapse-item name="base">
+        <div slot="title" class="panel-tab__title"><i class="el-icon-info"></i>常规</div>
         <element-base-info
           :id-edit-disabled="idEditDisabled"
           :business-object="elementBusinessObject"
           :type="elementType"
         />
-      </a-collapse-panel>
-      <!-- <a-collapse-panel
-            key="condition"
+      </el-collapse-item>
+      <!-- <el-collapse-item
+            name="condition"
             v-if="elementType === 'Process'"
             key="message"
           >
-            <div slot="header" class="panel-tab__title">
+            <div slot="title" class="panel-tab__title">
               <i class="el-icon-s-comment"></i>消息与信号
             </div>
             <signal-and-massage />
-          </a-collapse-panel> -->
-      <a-collapse-panel key="condition" v-if="conditionFormVisible">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-s-promotion"></i>流转条件</div>
+          </el-collapse-item> -->
+      <el-collapse-item name="condition" v-if="conditionFormVisible" key="condition">
+        <div slot="title" class="panel-tab__title"><i class="el-icon-s-promotion"></i>流转条件</div>
         <flow-condition :business-object="elementBusinessObject" :type="elementType" />
-      </a-collapse-panel>
-      <!-- <a-collapse-panel key="condition" v-if="formVisible" key="form">
-            <div slot="header" class="panel-tab__title">
+      </el-collapse-item>
+      <!-- <el-collapse-item name="condition" v-if="formVisible" key="form">
+            <div slot="title" class="panel-tab__title">
               <i class="el-icon-s-order"></i>表单
             </div>
             <element-form :id="elementId" :type="elementType" />
-          </a-collapse-panel> -->
-      <!-- <a-collapse-panel
-            key="task"
+          </el-collapse-item> -->
+      <!-- <el-collapse-item
+            name="task"
             v-if="elementType.indexOf('Task') !== -1"
             key="task"
           >
-            <div slot="header" class="panel-tab__title">
+            <div slot="title" class="panel-tab__title">
               <i class="el-icon-s-claim"></i>任务
             </div>
             <element-task :id="elementId" :type="elementType" />
-          </a-collapse-panel> -->
-      <!-- <a-collapse-panel
-            key="multiInstance"
+          </el-collapse-item> -->
+      <!-- <el-collapse-item
+            name="multiInstance"
             v-if="elementType.indexOf('Task') !== -1"
             key="multiInstance"
           >
-            <div slot="header" class="panel-tab__title">
+            <div slot="title" class="panel-tab__title">
               <i class="el-icon-s-help"></i>多实例
             </div>
             <element-multi-instance
               :business-object="elementBusinessObject"
               :type="elementType"
             />
-          </a-collapse-panel> -->
-      <!--      <a-collapse-panel key="listeners" key="listeners">-->
-      <!--        <div slot="header" class="panel-tab__title">-->
+          </el-collapse-item> -->
+      <!--      <el-collapse-item name="listeners" key="listeners">-->
+      <!--        <div slot="title" class="panel-tab__title">-->
       <!--          <i class="el-icon-message-solid"></i>定时器-->
       <!--          &lt;!&ndash; <i class="el-icon-message-solid"></i>执行监听器 &ndash;&gt;-->
       <!--        </div>-->
       <!--        <element-listeners :id="elementId" :type="elementType" />-->
-      <!--      </a-collapse-panel>-->
-      <a-collapse-panel key="taskListeners" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-message-solid"></i>任务监听器</div>
+      <!--      </el-collapse-item>-->
+      <el-collapse-item name="taskListeners" v-if="elementType === 'UserTask'" key="taskListeners">
+        <div slot="title" class="panel-tab__title"><i class="el-icon-message-solid"></i>任务监听器</div>
         <user-task-listeners :id="elementId" :type="elementType" />
-      </a-collapse-panel>
+      </el-collapse-item>
 
-      <!-- <a-collapse-panel key="extensions" key="extensions">
-            <div slot="header" class="panel-tab__title">
+      <!-- <el-collapse-item name="extensions" key="extensions">
+            <div slot="title" class="panel-tab__title">
               <i class="el-icon-circle-plus"></i>扩展属性
             </div>
             <element-properties :id="elementId" :type="elementType" />
-          </a-collapse-panel> -->
-      <!-- <a-collapse-panel key="other" key="other">
-            <div slot="header" class="panel-tab__title">
+          </el-collapse-item> -->
+      <!-- <el-collapse-item name="other" key="other">
+            <div slot="title" class="panel-tab__title">
               <i class="el-icon-s-promotion"></i>其他
             </div>
             <element-other-config :id="elementId" />
-          </a-collapse-panel> -->
+          </el-collapse-item> -->
 
-      <a-collapse-panel class="person-incarge-item" key="peopleInchage" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-share"></i>审批配置</div>
+      <el-collapse-item
+        class="person-incarge-item"
+        name="peopleInchage"
+        key="peopleInchage"
+        v-if="elementType === 'UserTask'"
+      >
+        <div slot="title" class="panel-tab__title"><i class="el-icon-share"></i>审批配置</div>
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
@@ -93,26 +98,36 @@
         <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
         <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
         <FormFieldsControl v-model="currentExtendNodeConfig.taskConfig.columnConfigs" />
-      </a-collapse-panel>
+      </el-collapse-item>
 
-      <a-collapse-panel class="person-incarge-item" key="copyConfig" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-s-promotion"></i>抄送配置</div>
+      <el-collapse-item
+        class="person-incarge-item"
+        name="copyConfig"
+        key="copyConfig"
+        v-if="elementType === 'UserTask'"
+      >
+        <div slot="title" class="panel-tab__title"><i class="el-icon-s-promotion"></i>抄送配置</div>
         <p class="field-label-text"><i class="el-icon-s-tools"></i>抄送类型</p>
 
-        <a-radio-group v-model="currentExtendNodeConfig.copyConfig.type">
-          <a-radio value="start">节点审批前</a-radio>
-          <a-radio value="end">节点审批后</a-radio>
-        </a-radio-group>
+        <el-radio-group v-model="currentExtendNodeConfig.copyConfig.type" size="mini">
+          <el-radio label="start">节点审批前</el-radio>
+          <el-radio label="end">节点审批后</el-radio>
+        </el-radio-group>
 
         <p class="field-label-text"><i class="el-icon-s-custom"></i>抄送人</p>
         <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" />
         <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
 
         <FormFieldsControl v-model="currentExtendNodeConfig.copyConfig.columnConfigs" />
-      </a-collapse-panel>
+      </el-collapse-item>
 
-      <a-collapse-panel class="person-incarge-item" key="flowCheckConfig" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title">
+      <el-collapse-item
+        class="person-incarge-item"
+        name="flowCheckConfig"
+        key="flowCheckConfig"
+        v-if="elementType === 'UserTask'"
+      >
+        <div slot="title" class="panel-tab__title">
           <i class="el-icon-view"></i><span style="margin-right: 20px">查看配置</span>
         </div>
         <div class="common-config">
@@ -124,12 +139,13 @@
                   <el-checkbox label="显示最新"></el-checkbox>
                 </el-checkbox-group></div
             ></el-col>
-            <!-- <el-col :span="8"
+            <el-col :span="8"
               ><div class="grid-content bg-purple">
+                <!-- <p class="field-label-text"><i class="el-icon-edit"></i>不可编辑</p> -->
                 <el-checkbox-group v-model="currentExtendNodeConfig.viewConfig.commonConfig.disabled">
                   <el-checkbox label="不可编辑"></el-checkbox>
                 </el-checkbox-group></div
-            ></el-col> -->
+            ></el-col>
             <!-- <el-col :span="8">
               <div class="grid-content bg-purple">
                 <el-checkbox-group v-model="currentExtendNodeConfig.viewConfig.commonConfig.hidden">
@@ -144,18 +160,18 @@
           <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
           <FormFieldsControl v-model="currentExtendNodeConfig.viewConfig.userConfig.columnConfigs" />
         </div> -->
-      </a-collapse-panel>
-      <!-- <a-collapse-panel
-            key="formFieldControl"
+      </el-collapse-item>
+      <!-- <el-collapse-item
+            name="formFieldControl"
             key="formFieldControl"
             v-if="elementType === 'UserTask'"
           >
-            <div slot="header" class="panel-tab__title">
+            <div slot="title" class="panel-tab__title">
               <i class="el-icon-s-order"></i>表单属性
             </div>
             <FormFieldsControl v-model="fieldsControl_peopleInCharge" />
-          </a-collapse-panel> -->
-    </a-collapse>
+          </el-collapse-item> -->
+    </el-collapse>
     <!-- <a-button @click="testbtn">click test</a-button> -->
   </div>
   <!-- </a-tab-pane> -->
@@ -256,8 +272,8 @@ export default {
         viewConfig: {
           commonConfig: {
             newest: true,
-            // disabled: false,
-            // hidden: true,
+            disabled: false,
+            hidden: true,
           },
           userConfig: {
             columnConfigs: [],
@@ -581,7 +597,7 @@ export default {
 };
 </script>
 <style scoped>
->>> .person-incarge-item .a-collapse-panel__content {
+>>> .person-incarge-item .el-collapse-item__content {
   margin-bottom: 10px;
 }
 

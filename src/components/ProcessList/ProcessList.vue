@@ -9,13 +9,13 @@
       </template>
       <div class="form-list-groups">
         <div class="group-item" v-for="(item, index) in list" :key="index">
-          <div class="group-item-title">{{ item.groupName }} ({{ item.erpFormDesigns.length }})</div>
+          <div class="group-item-title">{{ item.groupName }} ({{ item.formTemplates.length }})</div>
           <div class="title-hr"></div>
           <div class="group-item-desc"></div>
           <div class="group-item-body">
             <div class="process-items">
               <!-- prettier-ignore -->
-              <template v-for="(_item, _index) in item.erpFormDesigns">
+              <template v-for="(_item, _index) in item.formTemplates">
               <div class="process-item" :key="_index">
                 <div :class="{'disabled-status':!_item.enable}" class="disabled-status-mask"></div>
                 <div class="process-item-edit-icon">
@@ -258,8 +258,8 @@ export default {
               transition: all 0.1s ease-out;
 
               &:hover {
-                transform: scale(1.02);
-                box-shadow: 0 2px 20px 0 rgb(0 0 0 / 20%);
+                transform: scale(1.01);
+                box-shadow: 0 2px 10px 0 rgba(106, 106, 106, 0.2);
                 transition: all 0.2s ease-in-out;
               }
               &:hover .process-item-operation {

@@ -189,14 +189,14 @@ export default {
   user-select: none;
   height: 40px;
   position: relative;
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 .flow-form-designer-root {
   height: 100%;
   width: 100%;
 }
 .flow-form-designer-container {
-  height: calc(100% - 54px);
+  height: calc(100% - 40px);
 }
 >>> .ant-steps-navigation .ant-steps-item.ant-steps-item-active::before {
   transform: translateX(-50%);
