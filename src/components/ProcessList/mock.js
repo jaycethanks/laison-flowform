@@ -9,7 +9,7 @@ export default {
           designKey: 'diagram_Process_1645063945182',
           designName: '请假申请',
           designDes: '请假申请(第二版本)',
-          designIcon: 'databasetype',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#00c458',
         },
         {
@@ -17,7 +17,7 @@ export default {
           designKey: 'diagram_Process_1645063945181',
           designName: '补卡申请',
           designDes: '忘记打卡可申请补卡',
-          designIcon: 'databasetype',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#00c458',
         },
         {
@@ -25,7 +25,7 @@ export default {
           designKey: 'diagram_Process_164506394511',
           designName: '出差',
           designDes: '',
-          designIcon: 'databasetype',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#00c458',
         },
         {
@@ -33,7 +33,7 @@ export default {
           designKey: 'diagram_Process_164506394519',
           designName: '加班',
           designDes: '',
-          designIcon: 'databasetype',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#00c458',
         },
       ],
@@ -47,7 +47,7 @@ export default {
           designKey: 'diagram_Process_1645063945182',
           designName: '销售订单',
           designDes: '销售下单系统(第二版本)',
-          designIcon: 'databasetype',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#00c458',
           designGroupName: '订单',
           formInfo:
@@ -76,7 +76,7 @@ export default {
           designKey: 'diagram_Process_1645063945182',
           designName: '订单流程',
           designDes: '销售下单系统',
-          designIcon: 'flow',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#fb602d',
           designGroupName: '订单',
           formInfo:
@@ -110,7 +110,7 @@ export default {
           designKey: 'diagram_Process_1653470206004',
           designName: '售后工单',
           designDes: '市场部门发起售后工单',
-          designIcon: 'docindex',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#fb602d',
           designGroupName: '售后',
           formInfo:
@@ -139,7 +139,7 @@ export default {
           designKey: 'diagram_Process_1654072250209',
           designName: '品质长期工单',
           designDes: '售后提交工单，品质将其视为长期问题，则需要录入长期问题',
-          designIcon: 'docindex',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#ff9f00',
           designGroupName: '售后',
           formInfo:
@@ -168,7 +168,7 @@ export default {
           designKey: 'diagram_Process_1654072250209',
           designName: '品质长期工单backup',
           designDes: '售后提交工单，品质将其视为长期问题，则需要录入长期问题',
-          designIcon: 'docindex',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#ff9f00',
           designGroupName: '售后',
           formInfo:
@@ -197,7 +197,7 @@ export default {
           designKey: 'diagram_Process_1654071757769',
           designName: '售后工单',
           designDes: '售后工单，及时处理客户问题或者录入临时措施',
-          designIcon: 'docindex',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#fb602d',
           designGroupName: '售后',
           formInfo:
@@ -231,7 +231,7 @@ export default {
           designKey: 'diagram_Process_1653464570603',
           designName: '售后工单创建',
           designDes: '',
-          designIcon: 'dataapi',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#0089ff',
           designGroupName: '测试',
           formInfo:
@@ -260,7 +260,7 @@ export default {
           designKey: 'diagram_Process_1654158314158',
           designName: '单流程节点——组件测试',
           designDes: '',
-          designIcon: 'siteinformation',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#fb602d',
           designGroupName: '测试',
           formInfo:
@@ -289,7 +289,7 @@ export default {
           designKey: 'diagram_Process_1648785165458',
           designName: '1111',
           designDes: '搜索',
-          designIcon: 'atomproject_1',
+          designIcon: 'zhaobiaoshenqingliucheng',
           designColor: '#0089ff',
           designGroupName: '测试',
           formInfo:

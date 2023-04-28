@@ -59,7 +59,7 @@
 </template>
 <script>
 import API from '@/api/ErpConfig.js';
-import icons from '@/assets/formdesign_icons/index.js';
+import icons from '@/assets/flowform_icons/index.js';
 import mock from './mock';
 export default {
   data() {
@@ -80,6 +80,7 @@ export default {
     getIcon(iconName) {
       console.log(iconName, '--line69');
       let iconObj = this.icons.find((it) => it.name === iconName);
+      console.log('[iconObj]: ', iconObj);
       return iconObj.file;
     },
     onSwitchChange(status, id) {
