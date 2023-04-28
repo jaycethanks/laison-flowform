@@ -37,6 +37,10 @@ export default new VueRouter({
     { path: '/flowdesign', component: FlowDesigner },
     { path: '/formpreviewer', component: FormPreviewer },
     { path: '/flowpreviewer', component: FlowPreviewer },
+    {
+      path: '/login',
+      component: () => import('@/views/Login/index.vue'),
+    },
     { path: '*', component: NotFound },
   ],
 });

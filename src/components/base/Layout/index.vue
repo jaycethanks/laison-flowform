@@ -13,8 +13,8 @@
   </a-layout>
 </template>
 <script>
+import Logo from '@/assets/svg_logo/FlowFormSvgIcon.vue';
 import LayoutHeader from '../LayoutHeader';
-import Logo from '../Logo';
 import Menu from '../Menu';
 export default {
   components: {
