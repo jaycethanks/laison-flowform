@@ -26,12 +26,13 @@
         <div class="color-btn" v-for="(item, index) in colors" :key="index">
           <div @click="setColor(item)" :style="{ backgroundColor: item }" class="color-item"></div>
         </div>
-        <a-input placeholder="过滤 （输入拼音）" type="text" v-model="searchText" />
+        <a-input size="small" placeholder="过滤 （输入拼音）" type="text" v-model="searchText" />
       </div>
 
       <div class="icon-selected-modal-wrapper">
         <template v-for="(item, index) in filterIcons">
           <div
+            :title="item.name"
             class="icon-box"
             :key="index"
             :style="{ backgroundColor: target.color }"
@@ -83,7 +84,7 @@ export default {
       searchText: '',
       visible: true,
       icons: icons,
-      colors: ['#0089ff', '#00c458', '#fc943d', '#fb602d', '#ff9f00'],
+      colors: ['#0089ff', '#00c458', '#fc943d', '#f1441d', '#ed2f6a'],
       target: {
         name: '',
         color: '#0089ff',

@@ -1,6 +1,19 @@
 <template>
   <div class="form-list-wrapper">
     <div class="head-operation-wrapper"></div>
+
+    <a-collapse :bordered="false">
+      <template #expandIcon="props">
+        <a-icon type="caret-right" :rotate="props.isActive ? 90 : 0" />
+      </template>
+      <a-collapse-panel v-for="group in list" :key="group.groupName" :header="group.groupName" :style="customStyle">
+        <a-table :columns="columns" :data-source="group.formTemplates" :rowKey="group.formTemplates.designKey">
+          <a slot="designName" slot-scope="text">{{ text }}</a>
+          <a slot="enable" slot-scope="text">{{ text ? '启用' : '禁用' }}</a>
+        </a-table>
+      </a-collapse-panel>
+    </a-collapse>
+
     <div class="form-list">
       <template v-if="list.length == 0">
         <a-empty
@@ -18,16 +31,20 @@
               <template v-for="(_item, _index) in item.formTemplates">
               <div class="process-item" :key="_index">
                 <div :class="{'disabled-status':!_item.enable}" class="disabled-status-mask"></div>
-                <div class="process-item-edit-icon">
-                  启用状态
-                  <a-switch :loading="loadingSwitch" @change="(e)=>onSwitchChange(e,_item.formDesignId)" :checked="_item.enable" size="small"/>
-                </div>
+  
 
                 <div class="process-item-icon-title-wrap">
+                  <div class="process-item-icon">
+
                   <div class="icon-box" :style="{backgroundColor:_item.designColor}">
                     <img :src="getIcon(_item.designIcon)" alt="" />
                   </div>
                   <div class="process-item-title">{{ _item.designName }}</div>
+                  </div>
+                  <div class="process-item-edit-icon">
+                  {{_item.enable ? "启用" :"禁用"}}
+                  <a-switch :loading="loadingSwitch" @change="(e)=>onSwitchChange(e,_item.formDesignId)" :checked="_item.enable" size="small"/>
+                </div>
                 </div>
                 <div class="process-item-desc">
                     <a-tooltip placement="right">
@@ -61,12 +78,72 @@
 import API from '@/api/ErpConfig.js';
 import icons from '@/assets/flowform_icons/index.js';
 import mock from './mock';
+const columns = [
+  {
+    title: '模板名称',
+    dataIndex: 'designName',
+    key: 'designName',
+    scopedSlots: { customRender: 'designName' },
+  },
+  {
+    title: '描述',
+    dataIndex: 'designDes',
+    key: 'designDes',
+    width: 80,
+    ellipsis: true,
+  },
+  {
+    title: '版本号',
+    dataIndex: 'version',
+    key: 'version',
+  },
+  {
+    title: '启用状态',
+    dataIndex: 'enable',
+    key: 'enable',
+    scopedSlots: { customRender: 'enable' },
+  },
+  {
+    title: '操作',
+    dataIndex: 'action',
+    key: 'action',
+    scopedSlots: { customRender: 'action' },
+  },
+];
+
+const data = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park, New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 2 Lake Park, London No. 2 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park, Sidney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+];
+
 export default {
   data() {
     return {
+      data,
+      columns,
       list: [],
       icons,
       loadingSwitch: false,
+      customStyle: 'background: #f7f7f7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden',
     };
   },
   methods: {
@@ -78,9 +155,7 @@ export default {
       this.list = mock.data;
     },
     getIcon(iconName) {
-      console.log(iconName, '--line69');
       let iconObj = this.icons.find((it) => it.name === iconName);
-      console.log('[iconObj]: ', iconObj);
       return iconObj.file;
     },
     onSwitchChange(status, id) {
@@ -163,9 +238,9 @@ export default {
           text-overflow: ellipsis;
         }
         .title-hr {
-          border: 1px solid rgb(221, 221, 221);
-          height: 2px;
-          width: 100%;
+          // border: 1px solid rgb(221, 221, 221);
+          // height: 2px;
+          // width: 100%;
           margin-top: 10px;
         }
         .group-item-desc {
@@ -184,11 +259,11 @@ export default {
               background: #fff;
               border-radius: 5px;
               position: relative;
-              margin: 20px;
+              // margin: 10px;
               box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
               width: 270px;
-              height: 120px;
-              padding: 18px;
+              height: 100px;
+              padding: 10px;
               position: relative;
               .disabled-status {
                 z-index: 1;
@@ -201,36 +276,43 @@ export default {
                 left: 0;
                 right: 0;
               }
-              .process-item-edit-icon {
-                position: absolute;
-                z-index: 2;
-                display: flex;
-                justify-content: center;
-                gap: 10px;
-                align-items: center;
-                right: 12px;
-                top: 10px;
-                // border: 1px solid red;
-              }
+              // .process-item-edit-icon {
+              //   position: absolute;
+              //   z-index: 2;
+              //   display: flex;
+              //   justify-content: center;
+              //   gap: 10px;
+              //   align-items: center;
+              //   right: 12px;
+              //   top: 10px;
+              //   // border: 1px solid red;
+              // }
               .process-item-icon-title-wrap {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: 10px;
-                .icon-box {
-                  width: 48px;
-                  height: 48px;
+                .process-item-icon {
                   display: flex;
-                  justify-content: center;
                   align-items: center;
-                  border-radius: 5px;
-                  position: relative;
-                  img {
-                    width: 24px;
+                  gap: 10px;
+
+                  .icon-box {
+                    width: 48px;
+                    height: 48px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 5px;
+                    position: relative;
+                    img {
+                      width: 24px;
+                    }
                   }
-                }
-                .process-item-title {
-                  font-size: 14px;
-                  margin-right: 16px;
+                  .process-item-title {
+                    font-size: 14px;
+                    margin-right: 16px;
+                  }
                 }
               }
               .process-item-desc {
@@ -259,7 +341,7 @@ export default {
               transition: all 0.1s ease-out;
 
               &:hover {
-                transform: scale(1.01);
+                // transform: scale(1.01);
                 box-shadow: 0 2px 10px 0 rgba(106, 106, 106, 0.2);
                 transition: all 0.2s ease-in-out;
               }

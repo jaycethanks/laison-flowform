@@ -2,43 +2,6 @@ export default {
   code: 0,
   data: [
     {
-      groupName: '假勤管理',
-      formTemplates: [
-        {
-          version: '43',
-          designKey: 'diagram_Process_1645063945182',
-          designName: '请假申请',
-          designDes: '请假申请(第二版本)',
-          designIcon: 'zhaobiaoshenqingliucheng',
-          designColor: '#00c458',
-        },
-        {
-          version: '43',
-          designKey: 'diagram_Process_1645063945181',
-          designName: '补卡申请',
-          designDes: '忘记打卡可申请补卡',
-          designIcon: 'zhaobiaoshenqingliucheng',
-          designColor: '#00c458',
-        },
-        {
-          version: '43',
-          designKey: 'diagram_Process_164506394511',
-          designName: '出差',
-          designDes: '',
-          designIcon: 'zhaobiaoshenqingliucheng',
-          designColor: '#00c458',
-        },
-        {
-          version: '43',
-          designKey: 'diagram_Process_164506394519',
-          designName: '加班',
-          designDes: '',
-          designIcon: 'zhaobiaoshenqingliucheng',
-          designColor: '#00c458',
-        },
-      ],
-    },
-    {
       groupName: '订单',
       formTemplates: [
         {
