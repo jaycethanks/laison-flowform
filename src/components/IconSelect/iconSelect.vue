@@ -19,17 +19,18 @@
       :mask="false"
       ok-text="确认"
       cancel-text="取消"
-      width="556px"
+      width="500px"
     >
       <div class="color-select-wrapper">
-        <span style="font-weight: 600">背景色:</span>
+        <span style="font-weight: 600; width: 12em; display: inline-block">背景色:</span>
         <div class="color-btn" v-for="(item, index) in colors" :key="index">
           <div @click="setColor(item)" :style="{ backgroundColor: item }" class="color-item"></div>
         </div>
+        <a-input placeholder="过滤 （输入拼音）" type="text" v-model="searchText" />
       </div>
 
       <div class="icon-selected-modal-wrapper">
-        <template v-for="(item, index) in icons">
+        <template v-for="(item, index) in filterIcons">
           <div
             class="icon-box"
             :key="index"
@@ -66,9 +67,21 @@ export default {
     prop: 'value',
     event: 'cusEvent',
   },
+  computed: {
+    filterIcons() {
+      const { searchText, icons } = this;
+      let filterArr = new Array();
+
+      // 过滤数组
+      filterArr = icons.filter((p) => p.name.indexOf(searchText) !== -1);
+
+      return filterArr;
+    },
+  },
   data() {
     return {
-      visible: false,
+      searchText: '',
+      visible: true,
       icons: icons,
       colors: ['#0089ff', '#00c458', '#fc943d', '#fb602d', '#ff9f00'],
       target: {
@@ -110,6 +123,24 @@ export default {
   },
 };
 </script>
+<style lang="css" scoped>
+::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: rgb(151, 151, 151);
+}
+::-webkit-scrollbar-track {
+  border-radius: 50px;
+  background: rgba(242, 242, 242, 0.492);
+}
+::-webkit-scrollbar {
+  border-radius: 50px;
+  width: 5px;
+  height: 5px;
+  overflow: auto;
+  float: left;
+  margin: 0 10px;
+}
+</style>
 <style scoped lang="scss">
 .icon-wrapper {
   position: relative;
@@ -171,12 +202,17 @@ export default {
 }
 .icon-selected-modal-wrapper {
   display: flex;
+  overflow-y: scroll;
+  max-height: 50rem;
+  // width: 500px;
+  // border: 1px solid red;
   // justify-content: space-between;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
   .icon-box {
+    cursor: pointer;
     background-color: rgb(199, 199, 199);
     border: 1px solid rgb(238, 238, 238);
     width: 64px;
@@ -206,6 +242,7 @@ export default {
   flex-wrap: nowrap;
   padding: 10px;
   gap: 10px;
+
   .color-btn {
     .color-item {
       width: 32px;
