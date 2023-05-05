@@ -7,7 +7,7 @@ export default {
         {
           formDesignId: '1494137881411715083',
           version: '43',
-          designKey: 'diagram_Process_1645063945182',
+          designKey: 'diagram_Process_1645063dsa945182',
           designName: '销售订单',
           designDes: '销售下单系统(第二版本)',
           designIcon: 'zhaobiaoshenqingliucheng',
@@ -36,7 +36,7 @@ export default {
         {
           formDesignId: '1494137881411715072',
           version: '18',
-          designKey: 'diagram_Process_1645063945182',
+          designKey: 'diagram_Process_16das45063945182',
           designName: '订单流程',
           designDes: '销售下单系统',
           designIcon: 'zhaobiaoshenqingliucheng',
@@ -99,7 +99,7 @@ export default {
         {
           formDesignId: '1531917059976331264',
           version: '47',
-          designKey: 'diagram_Process_1654072250209',
+          designKey: 'diagram_Process_16540722502asd09',
           designName: '品质长期工单',
           designDes: '售后提交工单，品质将其视为长期问题，则需要录入长期问题',
           designIcon: 'zhaobiaoshenqingliucheng',
@@ -128,7 +128,7 @@ export default {
         {
           formDesignId: '1531917059976331264x',
           version: '31',
-          designKey: 'diagram_Process_1654072250209',
+          designKey: 'diagram_Process_1654asdd072250209',
           designName: '品质长期工单backup',
           designDes: '售后提交工单，品质将其视为长期问题，则需要录入长期问题',
           designIcon: 'zhaobiaoshenqingliucheng',
