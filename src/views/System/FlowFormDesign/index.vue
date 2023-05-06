@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import ProcessList from '@/components/ProcessList/ProcessList.vue';
+import ProcessList from '@/components/FlowForm/ProcessList/ProcessList.vue';
 import FlowFormDesigner from '@/packages/FlowFormDesigner/index.vue';
 export default {
   name: 'FlowFormDesignPage',

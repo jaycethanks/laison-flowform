@@ -106,7 +106,7 @@
 </template>
 <script>
 // import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
-import iconSelect from '@/components/IconSelect/iconSelect.vue';
+import iconSelect from '@/components/FlowForm/IconSelect/iconSelect.vue';
 import API from '@/api/ErpConfig.js';
 // 引入json转换与高亮
 import convert from 'xml-js';

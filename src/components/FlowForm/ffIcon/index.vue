@@ -28,25 +28,16 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.process-item-icon {
+.icon-box {
+  width: 48px;
+  height: 48px;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  .icon-box {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    position: relative;
-    img {
-      width: 24px;
-    }
-  }
-  .process-item-title {
-    font-size: 14px;
-    margin-right: 16px;
+  border-radius: 5px;
+  position: relative;
+  img {
+    width: 24px;
   }
 }
 </style>

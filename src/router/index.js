@@ -1,54 +1,51 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import FormPreviewer from '@/packages/FormPreviewer';
-import ProcessList from '@/components/ProcessList/ProcessList.vue';
+import ProcessList from '@/components/FlowForm/ProcessList/ProcessList.vue';
 
 import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';
 import FormDesigner from '@/packages/FormDesigner';
 import Test from '../../playground/Test.vue';
-import NotFound from '@/views/NotFound.vue';
 Vue.use(VueRouter);
 export const systemRoutes = {
   path: '/',
-  component: () => import('@/views/HomePage'),
+  component: () => import('@/views/System/HomePage'),
 
   children: [
     {
-      path: 'system_registration_page',
+      path: 'systemRegistration',
       name: '业务系统注册',
       icon: 'api', //antd-icon name
-      component: () => import('@/views/SystemRegistrationPage/index.vue'),
+      component: () => import('@/views/System/SystemRegistration/index.vue'),
     },
     {
-      path: 'flowform_template_design_page',
+      path: 'flowformDesign',
       icon: 'pull-request', //antd-icon name
-      name: '流程模板',
-      component: () => import('@/views/FlowFormTemplateDesignPage/index.vue'),
-    },
-    {
-      path: 'flowform_design_page',
-      icon: 'pull-request', //antd-icon name
-      name: '流程设计',
-      component: () => import('@/views/FlowFormDesignPage/index.vue'),
+      name: '流程模板设计',
+      component: () => import('@/views/System/FlowFormDesign/index.vue'),
     },
   ],
 };
+
+const platformRoutes = [
+  { path: '/test', component: Test },
+  { path: '/formDesign', component: FormDesigner },
+  // { path: '/flowDesign', component: FlowDesigner },
+  { path: '/formPreviewer', component: FormPreviewer },
+  { path: '/flowPreviewer', component: FlowPreviewer },
+  { path: '/flowDesign', component: () => import('@/views/Platform/FlowDesign/index.vue') },
+];
 export default new VueRouter({
   mode: 'history',
   routes: [
     systemRoutes,
-    { path: '/test', component: Test },
-    { path: '/formDesign', component: FormDesigner },
-    // { path: '/flowDesign', component: FlowDesigner },
-    { path: '/formPreviewer', component: FormPreviewer },
-    { path: '/flowPreviewer', component: FlowPreviewer },
-    { path: '/flowDesign', component: () => import('@/views/Platform/FlowDesign/index.vue') },
+    ...platformRoutes,
 
     {
       path: '/login',
-      component: () => import('@/views/Login/index.vue'),
+      component: () => import('@/views/System/Login/index.vue'),
     },
-    { path: '*', component: NotFound },
+    { path: '*', component: () => import('@/views/System/404/NotFound.vue') },
   ],
 });

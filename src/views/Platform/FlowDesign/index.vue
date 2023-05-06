@@ -1,154 +1,80 @@
 <template>
-  <div class="form-list-wrapper">
-    <div class="form-list">
-      <template v-if="list.length == 0">
-        <a-empty
-          style="height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column"
-        />
-      </template>
-      <div class="form-list-groups">
-        <div class="group-item" v-for="(item, index) in list" :key="index">
-          <div class="group-item-title">{{ item.groupName }} ({{ item.formTemplates.length }})</div>
-          <div class="title-hr"></div>
-          <div class="group-item-desc"></div>
-          <div class="group-item-body">
-            <div class="process-items">
-              <template v-for="(_item, _index) in item.formTemplates">
-                <div class="process-item" :key="_index">
-                  <div :class="{ 'disabled-status': !_item.enable }" class="disabled-status-mask"></div>
-                  <div class="process-item-icon-title-wrap">
-                    <div class="process-item-icon">
-                      <ff-icon :icon="_item.designIcon" :bgc="_item.designColor" />
-                      <div class="process-item-title">{{ _item.designName }}</div>
+  <div class="flow-design-root">
+    <a-space direction="vertical" size="large" style="width: 100%; display: block">
+      <a-card title="已选择模板" :bordered="false">
+        <a-button type="primary" slot="extra" icon="appstore">添加模板</a-button>
+        <section class="my-template">
+          <div class="my-template-content">
+            <template v-if="list.length == 0">
+              <a-empty
+                style="
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-direction: column;
+                "
+              />
+            </template>
+
+            <template v-for="(_item, _index) in list">
+              <div class="process-item-wrapper" :key="_index">
+                <div class="process-item">
+                  <div class="process-item-content">
+                    <ff-icon :icon="_item.designIcon" :bgc="_item.designColor" />
+                    <div class="process-item-label">
+                      <p class="process-item-lable-title">{{ ellipsis(_item.designName, 8) }}</p>
+                      <!-- description -->
+                      <a-tooltip placement="top">
+                        <template slot="title">
+                          {{ _item.designDes }}
+                        </template>
+                        <p class="process-item-lable-subtitle">{{ ellipsis(_item.designDes, 10) }}</p>
+                      </a-tooltip>
                     </div>
-                    <a-dropdown slot="extra">
-                      <a-button type="link">
-                        <a-icon type="setting" />
-                      </a-button>
-                      <a-menu slot="overlay">
-                        <a-menu-item>
-                          <a-switch
-                            :loading="loadingSwitch"
-                            @change="(e) => onSwitchChange(e, _item.formDesignId)"
-                            :checked="_item.enable"
-                            size="small"
-                          />
-                        </a-menu-item>
-                      </a-menu>
-                    </a-dropdown>
-                    <!-- <div class="process-item-edit-icon">
-                  {{_item.enable ? "启用" :"禁用"}}
-                  <a-switch :loading="loadingSwitch" @change="(e)=>onSwitchChange(e,_item.formDesignId)" :checked="_item.enable" size="small"/>
-                </div> -->
-                  </div>
-                  <div class="process-item-desc">
-                    <a-tooltip placement="right">
-                      <template slot="title">
-                        {{ _item.designDes }}
-                      </template>
-                      {{ omit(_item.designDes) }}
-                    </a-tooltip>
-                  </div>
-                  <div class="process-item-operation">
-                    <a-button type="link" icon="edit" size="small" @click="handleEdit(_item)">编辑</a-button>
-                    <a-popconfirm
-                      placement="rightBottom"
-                      ok-text="Yes"
-                      cancel-text="No"
-                      @confirm="handleDelete(_item.formDesignId)"
-                    >
-                      <template slot="title"> 确定删除？ </template>
-                      <a-button style="color: #ff4d4f" type="link" icon="delete" size="small">删除</a-button>
-                    </a-popconfirm>
                   </div>
                 </div>
-              </template>
-            </div>
+
+                <!-- settings -->
+                <a-space direction="vertical">
+                  <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"></a-button>
+                  <a-popconfirm
+                    placement="rightBottom"
+                    ok-text="Yes"
+                    cancel-text="No"
+                    @confirm="handleDelete(_item.formDesignId)"
+                  >
+                    <template slot="title"> 确定删除？ </template>
+                    <a-button style="color: #ff4d4f" type="link" icon="delete" size="small"></a-button>
+                  </a-popconfirm>
+                </a-space>
+              </div>
+            </template>
           </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      </a-card>
+
+      <a-card title="已启用流程" :bordered="false">
+        <section class="enabled-flow">已启用流程</section>
+      </a-card>
+    </a-space>
   </div>
 </template>
 <script>
+import ellipsis from '@/utils/ellipsis.js';
 import API from '@/api/ErpConfig.js';
 import mock from './mock';
 import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
-const columns = [
-  {
-    title: '',
-    dataIndex: 'formDesignId',
-    key: 'formDesignId',
-    scopedSlots: { customRender: 'formDesignId' },
-  },
-  {
-    title: '模板名称',
-    dataIndex: 'designName',
-    key: 'designName',
-    scopedSlots: { customRender: 'designName' },
-  },
-  {
-    title: '描述',
-    dataIndex: 'designDes',
-    key: 'designDes',
-    width: 80,
-    ellipsis: true,
-  },
-  {
-    title: '版本号',
-    dataIndex: 'version',
-    key: 'version',
-  },
-  {
-    title: '启用状态',
-    dataIndex: 'enable',
-    key: 'enable',
-    scopedSlots: { customRender: 'enable' },
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    scopedSlots: { customRender: 'action' },
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park, New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 2 Lake Park, London No. 2 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park, Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
 
 export default {
   components: { ffIcon },
   data() {
     return {
-      data,
-      columns,
       list: [],
-      loadingSwitch: false,
-      customStyle: 'background: #f7f7f7;border-radius: 4px;margin-bottom: 24px;border: 0;overflow: hidden',
     };
   },
   methods: {
+    ellipsis: (str, max) => ellipsis(str, max),
     async loadList() {
       // let res = await API.processFormList();
       // if (res.code === 0) {
@@ -157,20 +83,6 @@ export default {
       this.list = mock.data;
     },
 
-    onSwitchChange(status, id) {
-      this.changeStatus(status, id);
-    },
-    async changeStatus(status, id) {
-      this.loadingSwitch = true;
-      let res = await API.editConfigStatus({ enable: status, formDesignId: id });
-      if (res.code === 0) {
-        this.$message.success('修改状态成功');
-      } else {
-        this.$message.error('修改状态失败!');
-      }
-      this.loadList();
-      this.loadingSwitch = false;
-    },
     async handleDelete(id) {
       let res = await API.realDeleteConfigById(id);
       this.loadList();
@@ -210,150 +122,65 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.form-list-wrapper {
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 2px;
-    height: 6px;
-  }
-  .head-operation-wrapper {
-  }
-  .form-list {
-    // border: 1px solid red;
-    padding: 20px;
-    width: 50%;
-    height: 100%;
-    max-width: 1300px;
-    min-width: 1200px;
-    .form-list-groups {
-      .group-item {
-        padding-top: 32px;
-        .group-item-title {
-          color: #1f2d3d;
-          line-height: 22px;
-          font-size: 14px;
-          font-weight: 600;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        .title-hr {
-          // border: 1px solid rgb(221, 221, 221);
-          // height: 2px;
-          // width: 100%;
-          margin-top: 10px;
-        }
-        .group-item-desc {
-          margin-bottom: 4px;
-          color: #a1a1a1;
-          font-size: 12px;
-          line-height: 18px;
-        }
-        .group-item-body {
-          .process-items {
-            // border: 1px solid blue;
+.flow-design-root {
+  background-color: #ececec;
+  padding: 20px;
+  height: 100vh;
+  overflow: hidden;
+  .my-template {
+    .my-template-content {
+      // border: 1px solid green;
+      // padding: 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      .process-item-wrapper {
+        flex-shrink: 0;
+        background: #fff;
+        border-radius: 5px;
+        position: relative;
+        // margin: 10px;
+        box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
+        width: 220px;
+        // height: 100px;
+        padding: 10px;
+        // border: 1px solid red;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .process-item {
+          // border: 1px solid black;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          .process-item-content {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            .process-item {
-              background: #fff;
-              border-radius: 5px;
-              position: relative;
-              // margin: 10px;
-              box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
-              width: 270px;
-              height: 100px;
-              padding: 10px;
-              position: relative;
-              .disabled-status {
-                z-index: 1;
-                background: #ffffff9c;
-              }
-              .disabled-status-mask {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-              }
-              // .process-item-edit-icon {
-              //   position: absolute;
-              //   z-index: 2;
-              //   display: flex;
-              //   justify-content: center;
-              //   gap: 10px;
-              //   align-items: center;
-              //   right: 12px;
-              //   top: 10px;
-              //   // border: 1px solid red;
-              // }
-              .process-item-icon-title-wrap {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 10px;
-                .process-item-icon {
-                  display: flex;
-                  align-items: center;
-                  gap: 10px;
-                  .icon-box {
-                    width: 48px;
-                    height: 48px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 5px;
-                    position: relative;
-                    img {
-                      width: 24px;
-                    }
-                  }
-                  .process-item-title {
-                    font-size: 14px;
-                    margin-right: 16px;
-                  }
-                }
-              }
-              .process-item-desc {
-                margin-top: 5px;
-                font-size: 12px;
-                color: rgb(179, 179, 179);
-                word-break: break-all;
-              }
-              .process-item-operation {
-                width: 100%;
-                position: absolute;
-                z-index: 2;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-                gap: 5px;
-                opacity: 0;
-                transform: translateY(10px);
-                border-bottom-left-radius: 5px;
-                border-bottom-right-radius: 5px;
-                transition: all 0.1s ease-out;
-              }
-              transition: all 0.1s ease-out;
-
-              &:hover {
-                // transform: scale(1.01);
-                box-shadow: 0 2px 10px 0 rgba(106, 106, 106, 0.2);
-                transition: all 0.2s ease-in-out;
-              }
-              &:hover .process-item-operation {
-                opacity: 1;
-                transform: translateY(0);
-                transition: all 0.3s ease-in-out;
-                background: linear-gradient(270deg, white, transparent);
-              }
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            .process-item-label {
+              margin-right: 16px;
+            }
+            p {
+              margin: 0;
+            }
+            .process-item-lable-title {
+              color: #2f2f2f;
+              font-size: 16px;
+              line-height: 32px;
+            }
+            .process-item-lable-subtitle {
+              font-size: 12px;
+              line-height: 16px;
             }
           }
         }
       }
     }
+  }
+  .enabled-flow {
+    border: 2px solid purple;
   }
 }
 </style>
