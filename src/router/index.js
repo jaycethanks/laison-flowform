@@ -39,10 +39,12 @@ export default new VueRouter({
   routes: [
     systemRoutes,
     { path: '/test', component: Test },
-    { path: '/formdesign', component: FormDesigner },
-    { path: '/flowdesign', component: FlowDesigner },
-    { path: '/formpreviewer', component: FormPreviewer },
-    { path: '/flowpreviewer', component: FlowPreviewer },
+    { path: '/formDesign', component: FormDesigner },
+    // { path: '/flowDesign', component: FlowDesigner },
+    { path: '/formPreviewer', component: FormPreviewer },
+    { path: '/flowPreviewer', component: FlowPreviewer },
+    { path: '/flowDesign', component: () => import('@/views/Platform/FlowDesign/index.vue') },
+
     {
       path: '/login',
       component: () => import('@/views/Login/index.vue'),

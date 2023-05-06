@@ -1,119 +1,121 @@
 // TODO: 组件中的操作按钮需要增加权限控制， 仅登陆的管理员用户可操作
 <template>
-  <div class="process-list-root" ref="process-list-root">
-    <div class="head-operation-wrapper"></div>
-    <section class="collapse-wrapper">
-      <a-collapse :bordered="false" v-model="activeKey">
-        <a-collapse-panel v-for="group in list" :key="group.groupId" :style="customStyle">
-          <template slot="header">
-            <a-space>
-              <a-input
-                size="small"
-                :style="{ border: group.notEditable ? 'none' : '', useSelect: 'none' }"
-                :disabled="group.notEditable"
-                @click.prevent.stop
-                @change.stop.prevent
-                v-model="group.groupName"
-              />
-              <a-button
-                v-show="group.notEditable"
-                icon="edit"
-                type="link"
-                @click.prevent.stop="group.notEditable = false"
-              ></a-button>
-              <a-button
-                v-show="!group.notEditable"
-                icon="check"
-                type="link"
-                :loading="ifloadingCheck"
-                @click.prevent.stop="handleGroupNameEdit(group)"
-              ></a-button>
-            </a-space>
-          </template>
-          <a-table
-            :row-selection="{
-              selectedRowKeys: group.selectedRowKeys,
-              onChange: (selects) => onSelectChange(group, selects),
-            }"
-            :columns="columns"
-            :data-source="group.formTemplates"
-            rowKey="designKey"
-            size="small"
-            :pagination="false"
-          >
-            <template slot="formDesignId" slot-scope="text, record">
-              <div class="icon-box" :style="{ backgroundColor: record.designColor }">
-                <img :src="getIcon(record.designIcon)" alt="" />
-              </div>
-            </template>
-            <a slot="enable" slot-scope="text, record">
-              <a-switch
-                :loading="loadingSwitch"
-                @change="(e) => onSwitchChange(e, record.formDesignId)"
-                :checked="record.enable"
-                size="small"
-              />
-            </a>
-            <a slot="action" slot-scope="text">
-              <a-space>
-                <a-button type="link" icon="edit" size="small" @click="handleEdit(_item)">编辑</a-button>
-                <a-popconfirm
-                  placement="rightBottom"
-                  ok-text="Yes"
-                  cancel-text="No"
-                  @confirm="handleDelete(_item.formDesignId)"
-                >
-                  <template slot="title"> 确定删除？ </template>
-                  <a-button style="color: #ff4d4f" type="link" icon="delete" size="small">删除</a-button>
-                </a-popconfirm>
-              </a-space>
-            </a>
-          </a-table>
-        </a-collapse-panel>
-      </a-collapse>
-    </section>
+  <div class="process-list-root" ref="process-list-root" :style="{ height: 'calc(100% - 32px)' }">
+    <div class="head-operation-wrapper">
+      <a-button type="link">已选中：{{ allSelectedRowKeys.length }}</a-button>
 
-    <a-drawer
-      :mask="false"
-      wrapClassName="a-drawer-wapper"
-      :wrap-style="{ position: 'absolute' }"
-      :get-container="() => $refs['process-list-root']"
-      placement="bottom"
-      :closable="false"
-      :visible="drawer.visible"
-      @close="onDrawerClose"
-      :bodyStyle="{
-        height: 'calc(100% - 34px)',
-        padding: '0 24px',
-        overflow: 'hidden',
-        overflowY: 'auto',
-      }"
-    >
-      <template slot="title">
-        <div class="show-details-wrap drawer-title" @click="drawer.visible = false">
-          <a-icon type="down"></a-icon> 已选中：{{ allSelectedRowKeys.length }}
-        </div>
-      </template>
-      <a-list item-layout="horizontal" :data-source="filteredSelectedRow">
+      <a-list size="small" item-layout="horizontal" :data-source="filteredSelectedRow">
         <a-list-item slot="renderItem" slot-scope="item, index">
-          <a-list-item-meta :description="item.designDes">
-            <span slot="title">{{ item.designName }}</span>
+          <a-button @click="handleRemoveListItem(item.designKey)" slot="actions" type="link" title="从选中列表移除">
+            <a-icon type="delete" style="color: #ff4d4f"></a-icon>
+          </a-button>
+          <a-list-item-meta :description="ellipsis(item.designDes, 10)">
+            <span slot="title" :title="item.designName" style="white-space: nowrap">{{
+              ellipsis(item.designName, 8)
+            }}</span>
             <div slot="avatar" class="icon-box" :style="{ backgroundColor: item.designColor }">
               <img :src="getIcon(item.designIcon)" alt="" />
             </div>
           </a-list-item-meta>
         </a-list-item>
       </a-list>
-    </a-drawer>
-    <div class="show-details-wrap" @click="drawer.visible = true">
-      <a-icon type="up"></a-icon>已选中：{{ allSelectedRowKeys.length }}
     </div>
+    <section class="collapse-wrapper">
+      <!-- <div class="search-box">
+        <a-input></a-input>
+      </div> -->
+      <!-- todo: 卷动下方内容 -->
+      <div class="collapse-content">
+        <a-collapse :bordered="false" v-model="activeKey">
+          <a-collapse-panel v-for="group in list" :key="group.groupId" :style="customStyle">
+            <!-- group 设置 -->
+            <a-dropdown slot="extra">
+              <a-button type="link">
+                <a-icon type="setting" />
+              </a-button>
+              <a-menu slot="overlay">
+                <a-menu-item>
+                  <a-button
+                    size="small"
+                    v-show="group.notEditable"
+                    icon="edit"
+                    type="link"
+                    @click.prevent.stop="group.notEditable = false"
+                    >重命名</a-button
+                  >
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+            <template slot="header">
+              <a-space>
+                <a-input
+                  size="small"
+                  :style="{ border: group.notEditable ? 'none' : '', useSelect: 'none' }"
+                  :disabled="group.notEditable"
+                  @click.prevent.stop
+                  @change.stop.prevent
+                  v-model="group.groupName"
+                />
+
+                <a-button
+                  v-show="!group.notEditable"
+                  icon="check"
+                  type="link"
+                  :loading="ifloadingCheck"
+                  @click.prevent.stop="handleGroupNameEdit(group)"
+                ></a-button>
+              </a-space>
+            </template>
+            <a-table
+              :row-selection="{
+                selectedRowKeys: group.selectedRowKeys,
+                onChange: (selects) => onSelectChange(group, selects),
+              }"
+              :columns="columns"
+              :data-source="group.formTemplates"
+              rowKey="designKey"
+              size="small"
+              :pagination="false"
+            >
+              <template slot="formDesignId" slot-scope="text, record">
+                <div class="icon-box" :style="{ backgroundColor: record.designColor }">
+                  <img :src="getIcon(record.designIcon)" alt="" />
+                </div>
+              </template>
+              <a slot="enable" slot-scope="text, record">
+                <a-switch
+                  :loading="loadingSwitch"
+                  @change="(e) => onSwitchChange(e, record.formDesignId)"
+                  :checked="record.enable"
+                  size="small"
+                />
+              </a>
+              <a slot="action" slot-scope="text">
+                <a-space>
+                  <a-button type="link" icon="edit" size="small" @click="handleEdit(_item)">编辑</a-button>
+                  <a-popconfirm
+                    placement="rightBottom"
+                    ok-text="Yes"
+                    cancel-text="No"
+                    @confirm="handleDelete(_item.formDesignId)"
+                  >
+                    <template slot="title"> 确定删除？ </template>
+                    <a-button style="color: #ff4d4f" type="link" icon="delete" size="small">删除</a-button>
+                  </a-popconfirm>
+                </a-space>
+              </a>
+            </a-table>
+          </a-collapse-panel>
+        </a-collapse>
+      </div>
+    </section>
   </div>
 </template>
 <script>
 import API from '@/api/ErpConfig.js';
 import icons from '@/assets/flowform_icons/index.js';
 import mock from './mock';
+import ellipsis from '@/utils/ellipsis';
 const columns = [
   {
     title: '',
@@ -166,7 +168,7 @@ export default {
       list: [],
       icons,
       loadingSwitch: false,
-      customStyle: 'background-color:#fff;border: 0;overflow: hidden',
+      customStyle: 'background-color:#fff;border-bottom:1px solid #e5e5e5;overflow: hidden;padding:0',
       drawer: {
         visible: false,
       },
@@ -190,6 +192,15 @@ export default {
     },
   },
   methods: {
+    ellipsis: (str, max) => ellipsis(str, max),
+    handleRemoveListItem(designKey) {
+      this.list.forEach((group) => {
+        const index = group.selectedRowKeys.findIndex((key) => key === designKey);
+        if (index !== -1) {
+          group.selectedRowKeys.splice(index, 1);
+        }
+      });
+    },
     onDrawerClose() {
       this.drawer.visible = false;
     },
@@ -260,12 +271,15 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-::v-deep .ant-collapse {
-  overflow-y: auto;
+// ::v-deep .ant-collapse {
+//   overflow-y: auto;
+// }
+::v-deep .ant-collapse-header {
+  padding: 0;
 }
 ::v-deep .ant-input[disabled] {
   color: unset;
-
+  width: auto;
   background-color: unset;
   cursor: unset;
   opacity: unset;
@@ -275,16 +289,32 @@ export default {
   user-select: none;
 }
 .process-list-root {
+  padding-top: 10px;
+  display: flex;
   position: relative;
   user-select: none;
-  overflow: hidden;
+  // overflow-y: scroll;
+  .head-operation-wrapper {
+    overflow-y: scroll;
+    width: 30%;
+    min-width: 300px;
+    flex: 1;
+    padding: 4px 12px;
+    position: relative;
+  }
   .collapse-wrapper {
-    height: calc(100% - 48px);
-    border: 1px solid red !important;
+    height: 100%;
+    overflow-y: scroll;
+    .collapse-content {
+      // border: 1px solid red;
+      // overflow-y: scroll;
+    }
+
+    flex: 3;
+    // border: 1px solid red !important;
   }
 
   .a-drawer-wapper {
-    // border: 1px solid red;
   }
   .show-details-wrap {
     font-size: 14px;
@@ -304,8 +334,7 @@ export default {
     width: 2px;
     height: 6px;
   }
-  .head-operation-wrapper {
-  }
+
   .icon-box {
     width: 36px;
     height: 36px;

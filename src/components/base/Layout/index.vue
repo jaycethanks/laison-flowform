@@ -4,9 +4,12 @@
       <div class="logo"><Logo /></div>
       <Menu />
     </a-layout-sider>
-    <a-layout>
+    <a-layout id="layout-content-root">
       <LayoutHeader :collapsed="collapsed" @toggleSideEvent="collapsed = !collapsed" />
-      <a-layout-content :style="{ margin: '10px 10px', padding: '10px', background: '#fff', minHeight: '280px' }">
+      <a-layout-content
+        id="layout-content"
+        :style="{ margin: '10px 10px', padding: '10px', background: '#fff', minHeight: '280px' }"
+      >
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
