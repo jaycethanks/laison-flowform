@@ -31,10 +31,10 @@ export const systemRoutes = {
 const platformRoutes = [
   { path: '/test', component: Test },
   { path: '/formDesign', component: FormDesigner },
-  // { path: '/flowDesign', component: FlowDesigner },
   { path: '/formPreviewer', component: FormPreviewer },
   { path: '/flowPreviewer', component: FlowPreviewer },
-  { path: '/flowDesign', component: () => import('@/views/Platform/FlowDesign/index.vue') },
+  { path: '/flowformDesigner', component: ()=>import('@/packages/FlowFormDesigner/index.vue') },
+  { path: '/flowformManagement', component: () => import('@/views/Platform/FlowFormManagement/index.vue') },
 ];
 export default new VueRouter({
   mode: 'history',

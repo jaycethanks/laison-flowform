@@ -1,7 +1,7 @@
 // TODO: 组件中的操作按钮需要增加权限控制， 仅登陆的管理员用户可操作
 <template>
   <div class="process-list-root" ref="process-list-root" :style="{ height: 'calc(100% - 32px)' }">
-    <div class="head-operation-wrapper">
+    <!-- <div class="head-operation-wrapper">
       <a-button type="link">已选中：{{ allSelectedRowKeys.length }}</a-button>
 
       <a-list size="small" item-layout="horizontal" :data-source="filteredSelectedRow">
@@ -19,7 +19,7 @@
           </a-list-item-meta>
         </a-list-item>
       </a-list>
-    </div>
+    </div> -->
     <section class="collapse-wrapper">
       <!-- <div class="search-box">
         <a-input></a-input>
@@ -67,10 +67,7 @@
               </a-space>
             </template>
             <a-table
-              :row-selection="{
-                selectedRowKeys: group.selectedRowKeys,
-                onChange: (selects) => onSelectChange(group, selects),
-              }"
+
               :columns="columns"
               :data-source="group.formTemplates"
               rowKey="designKey"
@@ -175,44 +172,42 @@ export default {
     };
   },
   computed: {
-    allSelectedRowKeys: function () {
-      return this.list
-        .map((group) => group.selectedRowKeys)
-        .reduce((prev, curr) => {
-          return prev.concat(curr);
-        }, []);
-    },
-    filteredSelectedRow: function () {
-      return this.list
-        .map((item) => item.formTemplates)
-        .reduce((prev, curr) => {
-          return prev.concat(curr);
-        }, [])
-        .filter((formTemplate) => this.allSelectedRowKeys.includes(formTemplate.designKey));
-    },
+    // allSelectedRowKeys: function () {
+    //   return this.list
+    //     .map((group) => group.selectedRowKeys)
+    //     .reduce((prev, curr) => {
+    //       return prev.concat(curr);
+    //     }, []);
+    // },
+    // filteredSelectedRow: function () {
+    //   return this.list
+    //     .map((item) => item.formTemplates)
+    //     .reduce((prev, curr) => {
+    //       return prev.concat(curr);
+    //     }, [])
+    //     .filter((formTemplate) => this.allSelectedRowKeys.includes(formTemplate.designKey));
+    // },
   },
   methods: {
     ellipsis: (str, max) => ellipsis(str, max),
-    handleRemoveListItem(designKey) {
-      this.list.forEach((group) => {
-        const index = group.selectedRowKeys.findIndex((key) => key === designKey);
-        if (index !== -1) {
-          group.selectedRowKeys.splice(index, 1);
-        }
-      });
-    },
+    // handleRemoveListItem(designKey) {
+    //   this.list.forEach((group) => {
+    //     const index = group.selectedRowKeys.findIndex((key) => key === designKey);
+    //     if (index !== -1) {
+    //       group.selectedRowKeys.splice(index, 1);
+    //     }
+    //   });
+    // },
     onDrawerClose() {
       this.drawer.visible = false;
     },
-    onSelectChange(group, selects) {
-      group.selectedRowKeys = selects;
-    },
+
     async loadList() {
       // TODO：  返回的数据中要求新增 groupId 字段
       mock.data.forEach((item) => {
         // !!notEditable & selectedRowKeys 仅前端运行时有效，提交后台之前，数据中的这两个字段应该移除
         item.notEditable = true;
-        item.selectedRowKeys = [];
+        // item.selectedRowKeys = [];
 
         item.groupId = Math.random().toString(36).substr(2);
 
@@ -294,14 +289,14 @@ export default {
   position: relative;
   user-select: none;
   // overflow-y: scroll;
-  .head-operation-wrapper {
-    overflow-y: scroll;
-    width: 30%;
-    min-width: 300px;
-    flex: 1;
-    padding: 4px 12px;
-    position: relative;
-  }
+  // .head-operation-wrapper {
+  //   overflow-y: scroll;
+  //   width: 30%;
+  //   min-width: 300px;
+  //   flex: 1;
+  //   padding: 4px 12px;
+  //   position: relative;
+  // }
   .collapse-wrapper {
     height: 100%;
     overflow-y: scroll;

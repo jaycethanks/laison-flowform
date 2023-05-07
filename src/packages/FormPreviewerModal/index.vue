@@ -81,7 +81,6 @@ export default {
   data() {
     return {
       // title:'',
-      visible: true,
       okBtnDisabled: true,
       allDisabled: true,
       formInfo: {
@@ -189,14 +188,7 @@ export default {
     },
   },
 
-  computed: {
-    title() {
-      if (!this.value) {
-        return '';
-      }
-      return this.value.title;
-    },
-  },
+
   created() {
     //this.value  就是使用方穿进来打 node信息
     //this.fixData()

@@ -1,7 +1,7 @@
 <template>
   <div class="flow-form-designer-root">
     <p class="flow-form-designer-header">
-      <a-button style="position: absolute; left: 0" @click="$emit('back')">返回</a-button>
+      <a-button v-if="!noBack" style="position: absolute; left: 0" @click="$emit('back')">返回</a-button>
       <a-steps
         ref="steps"
         style="margin-bottom: 0; width: 550px"
@@ -10,22 +10,22 @@
         type="navigation"
         @change="onStepChange"
       >
-        <a-step status="finish" :title="this.$t('erp.formDesign')">
+        <a-step v-if="!noFormDesign" status="finish" :title="this.$t('t.formDesign')">
           <a-icon slot="icon" type="form" />
         </a-step>
-        <a-step status="finish" :title="this.$t('erp.formSet')">
+        <a-step status="finish" :title="this.$t('t.flowDesign')">
           <a-icon slot="icon" type="branches" />
         </a-step>
-        <a-step status="process" :title="this.$t('erp.formPublish')">
+        <a-step status="process" :title="this.$t('t.flowformPublish')">
           <a-icon slot="icon" type="cloud-upload" />
         </a-step>
       </a-steps>
     </p>
     <div class="flow-form-designer-container">
-      <form-design v-show="current === 0" ref="formDesignView"></form-design>
-      <flow-design v-show="current === 1" :bpmnEditDataInit="bpmnEditDataInit"></flow-design>
+      <form-design v-if="!noFormDesign" v-show="current === 0" ref="formDesignView"></form-design>
+      <flow-design v-show="noFormDesign ? current === 0 : current === 1" :bpmnEditDataInit="bpmnEditDataInit"></flow-design>
       <flow-form-publish
-        v-show="current === 2"
+        v-show="noFormDesign ? current === 1 : current === 2"
         @submit="sumbitHandler"
         :publishEditDataInit="publishEditDataInit"
         @success="$emit('back')"
@@ -41,7 +41,12 @@ import FlowFormPublish from './FlowFormPublish';
 
 export default {
   name: 'FlowFormDesigner',
-  props: ['editRecord'],
+  props: {
+    editRecord:{
+      type:Object
+    },
+
+  },
   components: {
     FormDesign,
     FlowDesign,
@@ -54,6 +59,8 @@ export default {
   },
   data() {
     return {
+      noBack:false,
+      noFormDesign:false,
       current: 0,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
       isSubmit: false, // 用于判断路由切换时，提示控制
@@ -62,6 +69,13 @@ export default {
     };
   },
   created() {
+    const { type } = this.$route.query
+    switch(type){
+      case "flowdesign":
+        this.noFormDesign = true
+        this.noBack = true
+      break;
+    }
     // 尝试数据初始化
     if (this.editRecord != null) {
       // init k-form-design
@@ -122,21 +136,23 @@ export default {
       let _this = this;
       // let res = this.$refs.formDesignView.fetchFormData()
       let currentFormInfo = this.$store.state.kform.data;
-      if (key === 1 && !currentFormInfo.list.length) {
-        this.$warning({
-          content: '表单设计为空，请先完成表单设计',
-          onOk() {
-            _this.current = 0;
-          },
-        });
-      } else if (key === 2 && !window.historyExtendConfig.length) {
-        this.$warning({
-          content: '设计流程不可为空，请先完成流程设计',
-          onOk() {
-            _this.current = 1;
-          },
-        });
-      }
+
+      // !! 临时禁用验证
+      // if (key === 1 && !currentFormInfo.list.length) {
+      //   this.$warning({
+      //     content: '表单设计为空，请先完成表单设计',
+      //     onOk() {
+      //       _this.current = 0;
+      //     },
+      //   });
+      // } else if (key === 2 && !window.historyExtendConfig.length) {
+      //   this.$warning({
+      //     content: '设计流程不可为空，请先完成流程设计',
+      //     onOk() {
+      //       _this.current = 1;
+      //     },
+      //   });
+      // }
 
       // if(from === 0 && to === 1){
       //   this.$warning({
