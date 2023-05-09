@@ -12,6 +12,29 @@ handleQuery 提供了两个值：
   > 2. 对于必传 query 字段， 实际的路由中是否传入了对应的 query 字段
   > 3. 获取到路由传入的字段
 
+  这个组件最终返回一个拍平的 data.query 对象，例如 data.query 如下定义：
+
+  ```js
+   query:{
+      // 必须字段
+        maxWidth: 'auto',//示例字段
+        minWidth: 'auto',//示例字段
+        type: { //示例字段
+          value: undefined,
+        },
+    }
+  ```
+
+  computedQuery 值将会是：
+
+  ```json
+   {
+    maxWidth: 'auto',//示例字段
+    minWidth: 'auto',//示例字段
+    type: 路由传入的type参数
+   }
+  ```
+
 - data 值:`wrongPage:Booelean`
   > 这个值默认为 false, 在 computed 的过程中，遇到了不合法的情况，这个值将会是 true. 可以利用这个字段去做一些渲染相关的逻辑。
 
@@ -37,6 +60,15 @@ export deafault {
 }
 
 ```
+
+### 注意：
+
+#### 1
+
+必传字段的 value 属性其实可以是任意类型，因为他会被忽略。
+作为必传字段，它一定会被实际的路由参数所覆盖。
+
+#### 2.
 
 如果你要指定某个 query 字段是这个页面组件在访问时，所必须传递的， 那么你一定要将其指定为 **一个对象**.
 
