@@ -1,116 +1,108 @@
 <template>
   <div class="form-previewer-root">
+    <EmptyPage v-if="wrongPage" description="wrong page" />
+
     <k-form-build
-      :style="style"
+      v-if="!wrongPage"
+      :style="computedQuery.style"
       class="container form-previewer"
       @mount="handleMount"
       :value="formInfo"
       ref="kfb"
       :disabled="false"
     />
-    <!-- :rootCompent="this" -->
-    <!-- :disabled="allDisabled"
-      :showType="0" -->
+
+    <footer v-if="!wrongPage" id="operation-footer-row">
+      <a-button icon="check" type="primary">发起 / 审批通过</a-button>
+    </footer>
   </div>
 </template>
 
 <script>
-// import { JeecgListMixin } from '@/mixins/JeecgListMixin';
-// import { activitiMixin } from '@/views/activiti/mixins/activitiMixin';
 import KFormBuild from '@/lib/kform/KFormBuild/index';
 import JModal from '@/components/jeecg/JModal/index.vue';
-import { message } from 'ant-design-vue';
 import mock from './mock';
 import { parseFormWidthNodeConfig } from '@/utils/kformRelatedUtils.js';
 //import '@/assets/SourceHanSansCN-Regular-normal'
+import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
+import PreviewFormType from '@/constants/PreviewFormType.js';
+import handleQuery from '@/mixins/handleQuery.js';
 export default {
   name: 'FormPreviewer',
-  // mixins: [JeecgListMixin, activitiMixin],
+  mixins: [handleQuery],
   components: {
     KFormBuild,
     JModal,
-  },
-  props: {
-    value: {
-      type: Object,
-      default: function () {
-        return {};
-      },
-    },
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    title: {
-      type: String,
-      default: 'title is not defined',
-    },
-
-    opts: {
-      type: Object,
-      default: () => {
-        type: 0;
-      },
-    },
+    EmptyPage,
   },
   data() {
     return {
-      okBtnDisabled: true,
-      allDisabled: true,
-      formInfo: null, //表单定义
+      formInfo: {
+        list: [],
+        config: {
+          layout: 'horizontal',
+          labelCol: {
+            xs: 4,
+            sm: 4,
+            md: 4,
+            lg: 4,
+            xl: 4,
+            xxl: 4,
+          },
+          labelWidth: 100,
+          labelLayout: 'flex',
+          wrapperCol: {
+            xs: 18,
+            sm: 18,
+            md: 18,
+            lg: 18,
+            xl: 18,
+            xxl: 18,
+          },
+          hideRequiredMark: false,
+          customStyle: '',
+          enablePrint: false,
+          expressions: '',
+        },
+      }, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
-      style: {
+
+      query: {
+        // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
+        // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
         maxWidth: 'auto',
         minWidth: 'auto',
+        type: {
+          value: undefined,
+        },
       },
     };
   },
 
   created() {
-    const { query } = this.$route;
-    const { maxWidth, minWidth } = query;
-    this.style.maxWidth = maxWidth;
-    this.style.minWidth = minWidth;
+    this.handleType(this.computedQuery.type);
     // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
     // 解析示例：
     const parsedFormInfo = parseFormWidthNodeConfig(mock);
-    console.log('[parsedFormInfo]: ', parsedFormInfo);
     this.formInfo = parsedFormInfo;
   },
   methods: {
     closeModal: function () {
       this.$emit('close');
     },
-    typeHandler(type) {
+
+    handleType(type) {
       switch (type) {
-        case 0: //申请 add
-          this.okBtnDisabled = false;
-          this.allDisabled = false; //只要这个属性时true里面所有的字段全部禁用，里面任何逻辑都无法修改这个状态
+        case PreviewFormType.APPLY:
           break;
-        case 1: //申请 edit
-          this.okBtnDisabled = false;
-          this.allDisabled = false;
+        case PreviewFormType.APPROVE:
           break;
-        case 2: //翻单 edit
-          this.okBtnDisabled = false;
-          this.allDisabled = false; //因为审核状态下有些字段可以编辑 ，所以里面的组件要自己写逻辑禁用哪些字段
+        case PreviewFormType.VIEW:
           break;
-        case 3: //审核
-          this.okBtnDisabled = false;
-          this.allDisabled = false; ////因为审核状态下有些字段可以编辑 ，所以里面的组件要自己写逻辑禁用哪些字段
-          break;
-        case 4: //查看-DoneTask
-          this.okBtnDisabled = true;
-          this.allDisabled = true;
-          break;
-        case 5: //订单的补充修改-DoneTask
-          this.okBtnDisabled = false;
-          this.allDisabled = true;
+        case PreviewFormType.ARCHIVE:
           break;
         default:
-          this.okBtnDisabled = true;
-          this.allDisabled = true;
           break;
       }
     },
@@ -157,7 +149,8 @@ export default {
           // prettier-ignore
           // 如果存在LaisonStockList这个组件的前提下，且其存货为空
           if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length == 0) {
-            this.$message.error('请至少选择一个存货')
+      
+      this.$message.error('请至少选择一个存货')
             return
           } else if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length > 0) {
             window.kfkf = this.$refs.kfb.form.formItems.LaisonStockList
@@ -177,16 +170,10 @@ export default {
           this.$emit('input', newValue); //其实这个就是更新value
           console.log(newValue);
           this.$emit('apply_success', newValue);
-          this.visible = false;
         })
         .catch((e) => {
           console.error(e, '--line240');
         });
-    },
-
-    handleCancel() {
-      this.visible = false;
-      window.kfb = this.$refs.kfb;
     },
 
     handleMount(laisonRootFormInstance) {
@@ -203,12 +190,28 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$operation-row-height: 6rem;
 .form-previewer-root {
   width: 100vw;
   padding: 20px;
+  min-height: 100vh;
+  position: relative;
+  #operation-footer-row {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: $operation-row-height;
+    background-color: #fff;
+    box-shadow: 0px 0px 7px 3px #f4f4f4;
+  }
   .form-previewer {
-    padding: 1rem;
-    margin: 0 auto;
+    padding: 8rem;
+    margin: $operation-row-height auto;
     // max-width: 100%;
     box-shadow: 0px 0px 7px 3px #f4f4f4;
   }

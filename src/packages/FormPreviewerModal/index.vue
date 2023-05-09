@@ -1,7 +1,7 @@
 <template>
   <!-- wrapClassName 用于设定modal的最大宽度 -->
   <j-modal
-    width="90vw"
+    width="1200px"
     :visible="visible"
     switchFullscreen
     title="订单详情"
@@ -44,9 +44,10 @@
 import KFormBuild from '@/lib/kform/KFormBuild/index';
 import JModal from '@/components/jeecg/JModal/index.vue';
 import { message } from 'ant-design-vue';
+import mock from './mock';
 //import '@/assets/SourceHanSansCN-Regular-normal'
 export default {
-  name: 'FormPreviewer',
+  name: 'FormPreviewerModal',
   // mixins: [JeecgListMixin, activitiMixin],
   components: {
     KFormBuild,
@@ -83,120 +84,14 @@ export default {
       // title:'',
       okBtnDisabled: true,
       allDisabled: true,
-      formInfo: {
-        list: [
-          {
-            type: 'time',
-            label: '时间选择框',
-            options: {
-              width: '100%',
-              defaultValue: '',
-              disabled: false,
-              hidden: false,
-              clearable: false,
-              placeholder: '请选择',
-              format: 'HH:mm:ss',
-            },
-            model: 'time_1680769956368',
-            key: 'time_1680769956368',
-            help: '',
-            rules: [
-              {
-                required: false,
-                message: 'common.please_input',
-              },
-            ],
-          },
-          {
-            type: 'radio',
-            label: '单选框',
-            options: {
-              disabled: false,
-              hidden: false,
-              defaultValue: '',
-              dynamicKey: '',
-              dynamic: false,
-              options: [
-                {
-                  value: '1',
-                  label: '选项1',
-                },
-                {
-                  value: '2',
-                  label: '选项2',
-                },
-                {
-                  value: '3',
-                  label: '选项3',
-                },
-              ],
-            },
-            model: 'radio_1680769990773',
-            key: 'radio_1680769990773',
-            help: '',
-            rules: [
-              {
-                required: false,
-                message: 'common.please_input',
-              },
-            ],
-          },
-        ],
-        config: {
-          layout: 'horizontal',
-          labelCol: {
-            xs: 4,
-            sm: 4,
-            md: 4,
-            lg: 4,
-            xl: 4,
-            xxl: 4,
-          },
-          labelWidth: 100,
-          labelLayout: 'flex',
-          wrapperCol: {
-            xs: 18,
-            sm: 18,
-            md: 18,
-            lg: 18,
-            xl: 18,
-            xxl: 18,
-          },
-          hideRequiredMark: false,
-          customStyle: '',
-          enablePrint: false,
-          jsEnhance: '',
-        },
-      }, //表单定义
+      formInfo: {}, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
     };
   },
-  watch: {
-    value(newVal, oldVal) {
-      //console.log('LAISONcustoemrFormShow2 value变了', this.value, oldVal)
-      //this.fixData()
-    },
-    visible(newVal, oldVal) {
-      if (this.visible) {
-        // console.log('StockList push  CustomerShow 开始渲染', new Date())
-
-        this.$nextTick(() => {
-          //console.log('StockList push   CustomerShow 完成渲染', new Date())
-        });
-      }
-    },
-  },
-
-
   created() {
-    //this.value  就是使用方穿进来打 node信息
-    //this.fixData()
-
-    window.aaaaaa = this;
+    this.formInfo = mock;
   },
-
-  destroyed() {},
   methods: {
     closeModal: function () {
       this.$emit('close');

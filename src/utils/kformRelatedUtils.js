@@ -6,7 +6,7 @@
 export const parseFormWidthNodeConfig = function (mock) {
   // 渲染一个表单， 需要 当前结点配置的类型： 审批/抄送/查看 + 当前结点的 id
   mock.currentNodeType = 'taskConfig'; // 后端返回的时候，需要标记当前结点的类型
-  mock.currentNodeId = 'Activity_1i14fm4';
+  mock.currentNodeId = 'Activity_12sck8q';
   const { formInfo, currentNodeType, currentNodeId, nodeConfigs } = mock;
   const _formInfo = JSON.parse(formInfo);
   const _config = nodeConfigs.find((config) => config.nodeId === currentNodeId)[currentNodeType]['columnConfigs'];

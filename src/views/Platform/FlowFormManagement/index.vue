@@ -1,10 +1,6 @@
 <template>
   <div class="flow-design-root">
-    <a-space
-      direction="vertical"
-      size="large"
-      style="width: 100%; display: block"
-    >
+    <a-space direction="vertical" size="large" style="width: 100%; display: block">
       <a-card title="已选择模板" :bordered="false">
         <a-button type="primary" slot="extra" icon="appstore" @click="showFlowFormTemplatesSelectModal = true"
           >添加模板</a-button
@@ -28,10 +24,7 @@
               <div class="process-item-wrapper" :key="_index">
                 <div class="process-item">
                   <div class="process-item-content">
-                    <ff-icon
-                      :icon="_item.designIcon"
-                      :bgc="_item.designColor"
-                    />
+                    <ff-icon :icon="_item.designIcon" :bgc="_item.designColor" />
                     <div class="process-item-label">
                       <p class="process-item-lable-title">
                         {{ ellipsis(_item.designName, 8) }}
@@ -51,16 +44,16 @@
 
                 <!-- settings -->
                 <a-dropdown :trigger="['click']">
-                  <!-- <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-                    Click me <a-icon type="down" />
-                  </a> -->
-                  <a-button
+                  <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+                    <a-icon type="ellipsis" style="font-size: 20px" />
+                  </a>
+                  <!-- <a-button
                     type="link"
                     icon="ellipsis"
                     size="small"
 
                     @click="(e) => e.preventDefault()"
-                  ></a-button>
+                  ></a-button> -->
                   <a-menu slot="overlay">
                     <a-menu-item key="0">
                       <a-button
@@ -72,26 +65,21 @@
                         >预览该模板表单</a-button
                       >
                     </a-menu-item>
-                    <a-menu-item key="0">
-                      <a-button
-                        type="link"
-                        icon="edit"
-                        size="small"
-                        title="流程设计"
-                        @click="handleEdit(_item)"
+                    <a-menu-item key="1">
+                      <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"
                         >设计发布该模板</a-button
                       >
-               
                     </a-menu-item>
                     <a-menu-divider />
-                    <a-menu-item key="1">
+                    <a-menu-item key="2">
                       <a-button
-                          style="color: #ff4d4f"
-                          type="link"
-                          icon="delete"
-                          size="small"
-                          @click="handleDelete(_item.formDesignId)"
-                        >删除该模板</a-button>
+                        style="color: #ff4d4f"
+                        type="link"
+                        icon="delete"
+                        size="small"
+                        @click="handleDelete(_item.formDesignId)"
+                        >删除该模板</a-button
+                      >
                     </a-menu-item>
                   </a-menu>
                 </a-dropdown>
@@ -133,10 +121,7 @@
               <div class="process-item-wrapper" :key="_index">
                 <div class="process-item">
                   <div class="process-item-content">
-                    <ff-icon
-                      :icon="_item.designIcon"
-                      :bgc="_item.designColor"
-                    />
+                    <ff-icon :icon="_item.designIcon" :bgc="_item.designColor" />
                     <div class="process-item-label">
                       <p class="process-item-lable-title">
                         {{ ellipsis(_item.designName, 8) }}
@@ -164,29 +149,31 @@
         </section>
       </a-card>
     </a-space>
-    <FormPreviewerModal :visible="showFormPreviewerModal" :footer="null" @close="showFormPreviewerModal = false"/>
-    <FlowFormTemplatesSelectModal :visible="showFlowFormTemplatesSelectModal" @ok="showFlowFormTemplatesSelectModal = false" @close="showFlowFormTemplatesSelectModal = false"/>
+    <FormPreviewerModal :visible="showFormPreviewerModal" :footer="null" @close="showFormPreviewerModal = false" />
+    <FlowFormTemplatesSelectModal
+      :visible="showFlowFormTemplatesSelectModal"
+      @ok="showFlowFormTemplatesSelectModal = false"
+      @close="showFlowFormTemplatesSelectModal = false"
+    />
   </div>
 </template>
 <script>
-import ellipsis from "@/utils/ellipsis.js";
-import API from "@/api/ErpConfig.js";
-import mock from "./mock";
-import FormPreviewerModal from "@/packages/FormPreviewerModal/index.vue"
-import ffIcon from "@/components/FlowForm/ffIcon/index.vue";
-import FlowFormTemplatesSelectModal from '@/components/FlowForm/FlowFormTemplatesSelectModal/index.vue'
-import _mock from "./_mock";
+import ellipsis from '@/utils/ellipsis.js';
+import API from '@/api/ErpConfig.js';
+import mock from './mock';
+import FormPreviewerModal from '@/packages/FormPreviewerModal/index.vue';
+import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
+import FlowFormTemplatesSelectModal from '@/components/FlowForm/FlowFormTemplatesSelectModal/index.vue';
+import _mock from './_mock';
 
 export default {
-  components: { ffIcon,FormPreviewerModal,
-    FlowFormTemplatesSelectModal
-  },
+  components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal },
   data() {
     return {
       list: [],
       enabled_list: [],
-      showFormPreviewerModal:false,
-      showFlowFormTemplatesSelectModal:false
+      showFormPreviewerModal: false,
+      showFlowFormTemplatesSelectModal: false,
     };
   },
   methods: {
@@ -218,27 +205,25 @@ export default {
           console.log('Cancel');
         },
       });
-      return
+      return;
       let res = await API.realDeleteConfigById(id);
       this.loadList();
       if (res.code === 0) {
-        this.$message.success("删除成功");
+        this.$message.success('删除成功');
       } else {
-        this.$message.error("删除失败");
+        this.$message.error('删除失败');
       }
     },
     handleEdit(record) {
-      this.$emit("edit", record);
-      this.$router.push(
-        "/flowformDesigner?type=flowdesign&designKey=asdaasxsf"
-      );
+      this.$emit('edit', record);
+      this.$router.push('/flowformDesigner?type=flowdesign&designKey=asdaasxsf&maxWidth="1200px"');
     },
     /** util function */
     omit(str) {
       let pat = /[^\x00-\xff]/gi;
-      let char = "@";
-      let res = str.replace(pat, char).replace(/\s/gi, "");
-      let arr = res.split("");
+      let char = '@';
+      let res = str.replace(pat, char).replace(/\s/gi, '');
+      let arr = res.split('');
       let tag = arr.filter((it) => it === char);
       let perc = tag.length / arr.length;
       if (!str.length) {
@@ -246,11 +231,11 @@ export default {
       }
       if (tag < 10) {
         // 字符串以非双音节字符为主
-        return str.slice(0, 60) + "...";
+        return str.slice(0, 60) + '...';
       }
       if (perc > 0.3) {
         // 有大量双音节字符
-        return str.slice(0, 28) + "...";
+        return str.slice(0, 28) + '...';
       }
     },
   },

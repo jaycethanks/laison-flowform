@@ -6,8 +6,8 @@
     "moduleResolution": "node",
     "paths": {
       "@/*": ["src/*"],
-      "@packages/*": ["src/lib/bpmnpdv2/packages/*"],
-      "@utils/*": ["src/lib/bpmnpdv2/utils/*"]
+      "@packages/*": ["src/lib/bpmnpd/packages/*"],
+      "@utils/*": ["src/lib/bpmnpd/utils/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
