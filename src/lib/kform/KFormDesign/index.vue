@@ -20,7 +20,7 @@
         :redoList="redoList"
       >
         <template slot="left-action">
-          <slot name="left-action"></slot>
+          <slot name="left-action"> </slot>
         </template>
 
         <template slot="right-action">
@@ -94,11 +94,34 @@
             :redoList="redoList"
           >
             <template slot="left-action">
-              <slot name="left-action"></slot>
+              <slot name="left-action"> </slot>
+            </template>
+
+            <template slot="mid-action">
+              <slot name="mid-action">
+                <a-radio-group v-model="currentLang">
+                  <a-radio-button v-for="lang in selectedLanguage" :value="lang" :key="lang">
+                    {{ languageList.find((it) => it.value === lang).name }}
+                  </a-radio-button>
+                </a-radio-group>
+              </slot>
             </template>
 
             <template slot="right-action">
-              <slot name="right-action"></slot>
+              <slot name="right-action">
+                <a-select
+                  placeholder="多语言"
+                  mode="tags"
+                  style="min-width: 120px"
+                  @select="handleLanguageSelect"
+                  @deselect="handleLanguageDeselect"
+                  v-model="selectedLanguage"
+                >
+                  <a-select-option v-for="{ name, value } in languageList" :key="value" :value="value">{{
+                    name
+                  }}</a-select-option>
+                </a-select>
+              </slot>
             </template>
           </operatingArea>
           <!-- 操作区域 end -->
@@ -260,6 +283,32 @@ export default {
       selectItem: {
         key: '',
       },
+      //@jayce 23/05/09-16:43:47 : custom start
+      languageList: [
+        {
+          name: '中文',
+          value: 'zh',
+        },
+        {
+          name: '英文',
+          value: 'en',
+        },
+        {
+          name: '法语',
+          value: 'fr',
+        },
+        {
+          name: '阿拉伯语',
+          value: 'ar',
+        },
+        {
+          name: '葡萄牙语',
+          value: 'pr',
+        },
+      ],
+      selectedLanguage: ['zh'],
+      currentLang: 'zh',
+      //@jayce 23/05/09-16: custom end
     };
   },
   components: {
@@ -334,6 +383,14 @@ export default {
   },
 
   methods: {
+    //@jayce 23/05/09-16:41:44 :custom Start
+    handleLanguageSelect(e) {
+      console.log('[e]: ', e);
+    },
+    handleLanguageDeselect(e) {},
+
+    //@jayce 23/05/09-16:44:20 : custom End
+
     generateKey(list, index) {
       // 生成key值
       const key = list[index].type + '_' + new Date().getTime();
