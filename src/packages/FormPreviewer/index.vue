@@ -9,13 +9,17 @@
       @mount="handleMount"
       :value="formInfo"
       ref="kfb"
-      :disabled="false"
+      :disabled="kfb.disabled"
     />
 
-    <footer v-if="!wrongPage" id="operation-footer-row">
-      <a-button icon="check" type="primary">
-        <span v-if="computedQuery.type === PreviewFormType.APPLY">发起流程</span>
-        <span v-if="computedQuery.type === PreviewFormType.APPROVE">审批通过</span>
+    <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.VIEW)" id="operation-footer-row">
+      <a-button type="primary">
+        <span v-if="computedQuery.type === PreviewFormType.APPLY"> <SvgIconSend style="height: 14px" /> 发起流程</span>
+        <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+          <a-icon type="check"></a-icon>
+          审批通过</span
+        >
+        <span v-if="computedQuery.type === PreviewFormType.ARCHIVE"><SvgIconArchive style="height: 14px" /> 归档</span>
       </a-button>
     </footer>
   </div>
@@ -30,6 +34,8 @@ import { parseFormWidthNodeConfig } from '@/utils/kformRelatedUtils.js';
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
 import PreviewFormType from '@/constants/PreviewFormType.js';
 import handleQuery from '@/mixins/handleQuery.js';
+import SvgIconSend from '@/assets/svgIcon/SvgIconSend.vue';
+import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
 export default {
   name: 'FormPreviewer',
   mixins: [handleQuery],
@@ -37,6 +43,8 @@ export default {
     KFormBuild,
     JModal,
     EmptyPage,
+    SvgIconSend,
+    SvgIconArchive,
   },
   data() {
     return {
@@ -71,7 +79,9 @@ export default {
       }, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
-
+      kfb: {
+        disabled: false,
+      },
       query: {
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
         // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
@@ -103,6 +113,7 @@ export default {
         case PreviewFormType.APPROVE:
           break;
         case PreviewFormType.VIEW:
+          this.kfb.disabled = true;
           break;
         case PreviewFormType.ARCHIVE:
           break;
@@ -212,6 +223,12 @@ $operation-row-height: 4rem;
     height: $operation-row-height;
     background-color: #fff;
     box-shadow: 0px 0px 7px 3px #f4f4f4;
+    span {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
   }
   .form-previewer {
     padding: 6rem;
