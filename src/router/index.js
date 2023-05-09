@@ -25,6 +25,29 @@ export const systemRoutes = {
       name: '流程模板设计',
       component: () => import('@/views/System/FlowFormDesign/index.vue'),
     },
+    {
+      path: 'demo',
+      icon: 'pull-request', //antd-icon name
+      name: '平台页面测试',
+      // component: Test,
+      redirect: '/test',
+      children: [
+        { name: 'test', redirect: '/test', path: 'test' },
+        { name: 'formDesign', redirect: '/formDesign', path: 'formDesign' },
+        { name: 'formPreviewer', redirect: '/formPreviewer', path: 'formPreviewer' },
+        { name: 'flowPreviewer', redirect: '/flowPreviewer', path: 'flowPreviewer' },
+        {
+          name: 'flowformDesigner',
+          path: 'flowformDesigner',
+          redirect: '/flowformDesigner',
+        },
+        {
+          name: 'flowformManagement',
+          path: 'flowformManagement',
+          redirect: '/flowformManagement',
+        },
+      ],
+    },
   ],
 };
 
@@ -33,7 +56,7 @@ const platformRoutes = [
   { path: '/formDesign', component: FormDesigner },
   { path: '/formPreviewer', component: FormPreviewer },
   { path: '/flowPreviewer', component: FlowPreviewer },
-  { path: '/flowformDesigner', component: ()=>import('@/packages/FlowFormDesigner/index.vue') },
+  { path: '/flowformDesigner', component: () => import('@/packages/FlowFormDesigner/index.vue') },
   { path: '/flowformManagement', component: () => import('@/views/Platform/FlowFormManagement/index.vue') },
 ];
 export default new VueRouter({

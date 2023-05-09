@@ -19,8 +19,8 @@ handleQuery 提供了两个值：
       // 必须字段
         maxWidth: 'auto',//示例字段
         minWidth: 'auto',//示例字段
-        type: { //示例字段
-          value: undefined,
+        example: { //示例字段
+          type: Number,
         },
     }
   ```
@@ -31,7 +31,7 @@ handleQuery 提供了两个值：
    {
     maxWidth: 'auto',//示例字段
     minWidth: 'auto',//示例字段
-    type: 路由传入的type参数
+    example: 路由传入的type参数<Number>
    }
   ```
 
@@ -52,8 +52,8 @@ export deafault {
       // 必须字段
         maxWidth: 'auto',//示例字段
         minWidth: 'auto',//示例字段
-        type: { //示例字段
-          value: undefined,
+        example: { //示例字段
+          type: Number,
         },
     }
   }
@@ -61,14 +61,10 @@ export deafault {
 
 ```
 
+**指定必传字段**
+你需要通过将一个必传字段指定为一个形如 :`{ type: Number | String | Boolean }` 的对象， 其作用除了用于验证字段是否传递之外， 还会将 query 中对应的字段，通过这些构造函数包装转换后返回。
+
 ### 注意：
-
-#### 1
-
-必传字段的 value 属性其实可以是任意类型，因为他会被忽略。
-作为必传字段，它一定会被实际的路由参数所覆盖。
-
-#### 2.
 
 如果你要指定某个 query 字段是这个页面组件在访问时，所必须传递的， 那么你一定要将其指定为 **一个对象**.
 

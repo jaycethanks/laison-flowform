@@ -13,7 +13,10 @@
     />
 
     <footer v-if="!wrongPage" id="operation-footer-row">
-      <a-button icon="check" type="primary">发起 / 审批通过</a-button>
+      <a-button icon="check" type="primary">
+        <span v-if="computedQuery.type === PreviewFormType.APPLY">发起流程</span>
+        <span v-if="computedQuery.type === PreviewFormType.APPROVE">审批通过</span>
+      </a-button>
     </footer>
   </div>
 </template>
@@ -37,6 +40,7 @@ export default {
   },
   data() {
     return {
+      PreviewFormType,
       formInfo: {
         list: [],
         config: {
@@ -74,7 +78,7 @@ export default {
         maxWidth: 'auto',
         minWidth: 'auto',
         type: {
-          value: undefined,
+          type: Number,
         },
       },
     };
@@ -190,7 +194,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-$operation-row-height: 6rem;
+$operation-row-height: 4rem;
 .form-previewer-root {
   width: 100vw;
   padding: 20px;
@@ -210,8 +214,8 @@ $operation-row-height: 6rem;
     box-shadow: 0px 0px 7px 3px #f4f4f4;
   }
   .form-previewer {
-    padding: 8rem;
-    margin: $operation-row-height auto;
+    padding: 6rem;
+    margin: 0 auto;
     // max-width: 100%;
     box-shadow: 0px 0px 7px 3px #f4f4f4;
   }

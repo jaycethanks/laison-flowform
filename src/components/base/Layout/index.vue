@@ -2,7 +2,7 @@
   <a-layout id="layout-root">
     <a-layout-sider theme="dark" id="layout-aside" v-model="collapsed" :trigger="null" collapsible>
       <div class="logo"><Logo /></div>
-      <Menu />
+      <Menu :collapsed="collapsed" />
     </a-layout-sider>
     <a-layout id="layout-content-root">
       <LayoutHeader :collapsed="collapsed" @toggleSideEvent="collapsed = !collapsed" />

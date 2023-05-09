@@ -1,8 +1,7 @@
 import { systemRoutes } from '@/router';
 const { children } = systemRoutes;
-console.log('[children]: ', children);
 export default children.map((route) => {
-  const { path, name, icon } = route;
+  const { path, name, icon, children } = route;
   const requiredFields = ['path', 'name', 'icon'];
   requiredFields.forEach((i) => {
     if (!route[i]) {
@@ -10,8 +9,9 @@ export default children.map((route) => {
     }
   });
   return {
-    key: path,
-    icon: icon,
-    text: name,
+    path,
+    icon,
+    name,
+    children,
   };
 });

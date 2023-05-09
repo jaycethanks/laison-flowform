@@ -22,9 +22,9 @@ export default {
 
         if (typeof value === 'object') {
           // 验证字段初始化合法性
-          const exist = Object.keys(value).includes('value');
+          const exist = Object.keys(value).includes('type');
           if (!exist) {
-            this.$message.error(`必传字段${key}需要初始化为{value:initial-value}!`);
+            this.$message.error(`必传字段${key}需要初始化为{type:Number|String|Boolean}!`);
             this.wrongPage = true;
             return;
           }
@@ -36,13 +36,34 @@ export default {
           }
 
           // 设定默认值,获取路由query参数
-          _value = value.value || routeQuery[key];
+          _value = this.parseType(value.type, routeQuery[key]);
         } else {
           _value = value;
         }
         Obj[key] = _value;
       });
       return Obj;
+    },
+  },
+  methods: {
+    parseType(type, routeVal) {
+      // 如果是数字，则转数字类型返回
+      let temp = routeVal;
+      switch (type.name) {
+        case 'Number':
+          temp = Number(routeVal);
+          break;
+        case 'String':
+          temp = String(routeVal);
+          break;
+        case 'Boolean':
+          temp = routeVal === 'false' ? false : true;
+          break;
+        default:
+          throw Error('query 中必传字段传入的 type不合法， 应该为 Number | Boolean | String');
+      }
+
+      return temp;
     },
   },
 };
