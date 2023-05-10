@@ -355,7 +355,7 @@ export default {
     'data.list': {
       handler: function () {
         console.log('changed!!!!', this.data.config.currentLang);
-        this.data.predefinedLists[this.data.config.currentLang] = this.data.list;
+        this.data.predefinedLists[this.data.config.currentLang] = JSON.parse(JSON.stringify(this.data.list));
         /**
          * 更新规则是什么样的？
          * 1.所有的更新变动都会发生在 this.data.list
@@ -368,7 +368,7 @@ export default {
          *    但是选项配置这种，动态新增/删除的选项应该按值同步
          *  - 组件设计器的其他改动，例如hiddenJs,disabedJs,initJs都需要同步
          */
-        // this.syncPredefinedLists();
+        this.syncPredefinedLists();
       },
       immediate: true,
       deep: true,
@@ -415,21 +415,12 @@ export default {
     );
   },
   beforeDestroy() {
-    console.log('destroyed hook', '--line384');
     // this.$confirm({
     //   content: '离开页面将会清除',
     // })
   },
 
   methods: {
-    // watchPredefiendList() {
-    //   const watchers = this.data.predefinedLists.map((predefinedList) => {
-    //     return $watch(predefinedList, {
-    //       handler: () => {},
-    //       deep: true,
-    //     });
-    //   });
-    // },
     //@jayce 23/05/09-16:41:44 :custom Start
     handleLanguageSelect(e) {
       /**
@@ -446,8 +437,7 @@ export default {
        * 2. 将当前表单数据赋值为 this.data.predefinedLists[lang]
        * 3. 如何保证各个配置独立又同步呢？ 通过watch去实现
        */
-      // this.syncPredefinedLists();
-      // this.data.list = this.data.predefinedLists[value];
+      this.data.list = this.data.predefinedLists[value];
     },
     syncPredefinedLists() {
       console.log('trigger!!!!!!!!!!!!');
@@ -458,6 +448,7 @@ export default {
         if (langKey === currentLang) continue; // 当前语言所对应的predefinedList和this.data.list 是同步的，且最新的，所以应该跳过不处理
 
         const cache = this.data.predefinedLists[langKey]; //当前设计缓存
+        console.log('[cache]: ', cache);
 
         this.data.predefinedLists[langKey] = JSON.parse(JSON.stringify(this.data.list)); //直接复制最新的list
 
@@ -469,6 +460,12 @@ export default {
               noSyncFields.forEach((noSyncField) => {
                 if (latest_element[noSyncField]) {
                   //not undefined
+                  console.log(
+                    'latest_element[noSyncField] = cache_element[noSyncField]:',
+                    latest_element[noSyncField],
+                    '<-lates:old->',
+                    cache_element[noSyncField],
+                  );
                   latest_element[noSyncField] = cache_element[noSyncField];
                 }
               });
@@ -621,6 +618,7 @@ export default {
       this.handleSetSelectItem({ key: '' });
     },
     handleSetSelectItem(record) {
+      console.log('[record]: ', record);
       // 操作间隔不能低于100毫秒
       const newTime = new Date().getTime();
       if (newTime - this.updateTime < 100) {
