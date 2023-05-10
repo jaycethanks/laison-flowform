@@ -362,13 +362,12 @@ export default {
     //@jayce 23/05/10-09:49:06 : TODO: 这里的逻辑看看要不要删除或者优化一下，
     let kformcache = cusLocalStorage.getItem('kform', 'data');
     if (kformcache != null) {
-      this.data = kformcache;
+      // this.data = kformcache;
     }
     //@jayce 21/12/23-13:23:39 : 这个监听器原本时定义在watch 对象中，但是会造成data中初始值覆盖localstorage, 所以需要让监听器在mounted时再生效
     this.$watch(
       'data',
       function (e) {
-        console.log('[this.data.config.currentLang]: ', this.data.config.currentLang);
         this.$store.commit('SET_KFORM_DATA', this.data); //@jayce 21/12/23-09:26:56 : 用于监听数据变化，触发缓存内容到localStorage
         this.$nextTick(() => {
           this.revoke.push(e);

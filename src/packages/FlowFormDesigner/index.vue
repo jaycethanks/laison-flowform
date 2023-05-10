@@ -81,7 +81,8 @@ export default {
     // 尝试数据初始化
     if (this.editRecord != null) {
       // init k-form-design
-      this.$store.commit('SET_KFORM_DATA', JSON.parse(this.editRecord.formInfo));
+      //TODO: @jayce 23/05/10-10:10:08 : 暂时取消缓存相关逻辑
+      // this.$store.commit('SET_KFORM_DATA', JSON.parse(this.editRecord.formInfo));
       // dealwith bpmn process designer init data
       this.bpmnEditDataInit = {
         xmldata: this.editRecord.procModelXml,
@@ -103,7 +104,8 @@ export default {
       };
     } else {
       // TODO: 查看一下这里的逻辑，this.$store.commit('SET_KFORM_DATA',看看能不能删除掉， 不应该这么做， 表单的数据初始化操作是在 KFormDesign 中进行的， 这里会影响到 src/lib/kform/KFormDesign/index.vue的初始化操作， 虽然这里现在是手动添加了自定义字段解决了。
-
+      //TODO: @jayce 23/05/10-10:10:08 : 暂时取消缓存相关逻辑
+      return;
       this.$store.commit('SET_KFORM_DATA', {
         list: [],
         config: {
