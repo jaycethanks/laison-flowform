@@ -23,7 +23,10 @@
     </p>
     <div class="flow-form-designer-container">
       <form-design v-if="!noFormDesign" v-show="current === 0" ref="formDesignView"></form-design>
-      <flow-design v-show="noFormDesign ? current === 0 : current === 1" :bpmnEditDataInit="bpmnEditDataInit"></flow-design>
+      <flow-design
+        v-show="noFormDesign ? current === 0 : current === 1"
+        :bpmnEditDataInit="bpmnEditDataInit"
+      ></flow-design>
       <flow-form-publish
         v-show="noFormDesign ? current === 1 : current === 2"
         @submit="sumbitHandler"
@@ -42,10 +45,9 @@ import FlowFormPublish from './FlowFormPublish';
 export default {
   name: 'FlowFormDesigner',
   props: {
-    editRecord:{
-      type:Object
+    editRecord: {
+      type: Object,
     },
-
   },
   components: {
     FormDesign,
@@ -59,8 +61,8 @@ export default {
   },
   data() {
     return {
-      noBack:false,
-      noFormDesign:false,
+      noBack: false,
+      noFormDesign: false,
       current: 0,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
       isSubmit: false, // 用于判断路由切换时，提示控制
@@ -69,12 +71,12 @@ export default {
     };
   },
   created() {
-    const { type } = this.$route.query
-    switch(type){
-      case "flowdesign":
-        this.noFormDesign = true
-        this.noBack = true
-      break;
+    const { type } = this.$route.query;
+    switch (type) {
+      case 'flowdesign':
+        this.noFormDesign = true;
+        this.noBack = true;
+        break;
     }
     // 尝试数据初始化
     if (this.editRecord != null) {
@@ -100,6 +102,8 @@ export default {
         viewMembers: permissionDesignConfig.viewAllMembers,
       };
     } else {
+      // TODO: 查看一下这里的逻辑，this.$store.commit('SET_KFORM_DATA',看看能不能删除掉， 不应该这么做， 表单的数据初始化操作是在 KFormDesign 中进行的， 这里会影响到 src/lib/kform/KFormDesign/index.vue的初始化操作， 虽然这里现在是手动添加了自定义字段解决了。
+
       this.$store.commit('SET_KFORM_DATA', {
         list: [],
         config: {
@@ -112,6 +116,7 @@ export default {
           customStyle: '',
           enablePrint: false, //@jayce
           expressions: '', //@jayce
+          currentLang: 'zh', //@jayce 23/05/10-09:47:32 :
         },
       });
     }

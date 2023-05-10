@@ -99,7 +99,7 @@
 
             <template slot="mid-action">
               <slot name="mid-action">
-                <a-radio-group v-model="currentLang">
+                <a-radio-group v-model="data.config.currentLang">
                   <a-radio-button v-for="lang in selectedLanguage" :value="lang" :key="lang">
                     {{ languageList.find((it) => it.value === lang).name }}
                   </a-radio-button>
@@ -273,6 +273,7 @@ export default {
           wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
           hideRequiredMark: false,
           customStyle: '',
+          currentLang: 'zh', //@jayce 23/05/10-09:22:11 :
           enablePrint: false, //@jayce
           Expressions: '', //@jayce
         },
@@ -307,7 +308,6 @@ export default {
         },
       ],
       selectedLanguage: ['zh'],
-      currentLang: 'zh',
       //@jayce 23/05/09-16: custom end
     };
   },
@@ -359,6 +359,7 @@ export default {
   },
   mounted() {
     //@jayce 21/12/23-09:35:57 : 优先从localStorage中获取缓存以初始化
+    //@jayce 23/05/10-09:49:06 : TODO: 这里的逻辑看看要不要删除或者优化一下，
     let kformcache = cusLocalStorage.getItem('kform', 'data');
     if (kformcache != null) {
       this.data = kformcache;
@@ -367,6 +368,7 @@ export default {
     this.$watch(
       'data',
       function (e) {
+        console.log('[this.data.config.currentLang]: ', this.data.config.currentLang);
         this.$store.commit('SET_KFORM_DATA', this.data); //@jayce 21/12/23-09:26:56 : 用于监听数据变化，触发缓存内容到localStorage
         this.$nextTick(() => {
           this.revoke.push(e);
@@ -486,6 +488,7 @@ export default {
           wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
           hideRequiredMark: false,
           customStyle: '',
+          currentLang: 'zh', //@jayce 23/05/10-09:22:11 :
           enablePrint: false, //@jayce
           Expressions: '', //@jayce
         },

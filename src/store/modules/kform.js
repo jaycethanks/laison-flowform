@@ -4,10 +4,10 @@ const kform = {
   },
   mutations: {
     SET_KFORM_DATA: (state, data) => {
-      state.data = data
-      cusLocalStorage.setItem('kform', 'data', data)
+      state.data = data;
+      cusLocalStorage.setItem('kform', 'data', data);
     },
   },
-}
+};
 
-export default kform
+export default kform;
