@@ -99,8 +99,8 @@
 
             <template slot="mid-action">
               <slot name="mid-action">
-                <a-radio-group v-model="data.config.currentLang">
-                  <a-radio-button v-for="lang in selectedLanguage" :value="lang" :key="lang">
+                <a-radio-group v-model="data.config.currentLang" @change="handleCurrentLanguageChange">
+                  <a-radio-button v-for="lang in data.config.supportedLanguages" :value="lang" :key="lang">
                     {{ languageList.find((it) => it.value === lang).name }}
                   </a-radio-button>
                 </a-radio-group>
@@ -115,11 +115,15 @@
                   style="min-width: 120px"
                   @select="handleLanguageSelect"
                   @deselect="handleLanguageDeselect"
-                  v-model="selectedLanguage"
+                  v-model="data.config.supportedLanguages"
                 >
-                  <a-select-option v-for="{ name, value } in languageList" :key="value" :value="value">{{
-                    name
-                  }}</a-select-option>
+                  <a-select-option
+                    :disabled="disabled"
+                    v-for="{ name, value, disabled } in languageList"
+                    :key="value"
+                    :value="value"
+                    >{{ name }}</a-select-option
+                  >
                 </a-select>
               </slot>
             </template>
@@ -184,6 +188,7 @@ import { Revoke } from '../core/revoke';
 import { basicsList, layoutList, customComponents } from './config/formItemsConfig';
 import formItemProperties from './module/formItemProperties';
 import formProperties from './module/formProperties';
+import json from 'highlight.js/lib/languages/json';
 export default {
   name: 'KFormDesign',
   props: {
@@ -273,9 +278,14 @@ export default {
           wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
           hideRequiredMark: false,
           customStyle: '',
-          currentLang: 'zh', //@jayce 23/05/10-09:22:11 :
           enablePrint: false, //@jayce
           Expressions: '', //@jayce
+          currentLang: 'zh', //@jayce 23/05/10-09:22:11 :
+          supportedLanguages: ['zh'], //@jayce 23/05/10-10:39:41 :
+        },
+        //@jayce 23/05/10-10:39:50 :
+        predefinedLists: {
+          zh: [],
         },
       },
       previewOptions: {
@@ -286,28 +296,30 @@ export default {
       },
       //@jayce 23/05/09-16:43:47 : custom start
       languageList: [
+        // https://emojipedia.org/flags/
         {
-          name: '中文',
+          name: '🇨🇳中文',
           value: 'zh',
+          disabled: true,
         },
         {
-          name: '英文',
+          name: '🇺🇸英文',
           value: 'en',
         },
         {
-          name: '法语',
+          name: '🇫🇷法语',
           value: 'fr',
         },
         {
-          name: '阿拉伯语',
+          name: '🇦🇪阿拉伯语',
           value: 'ar',
         },
         {
-          name: '葡萄牙语',
+          name: '🇵🇹葡萄牙语',
           value: 'pr',
         },
       ],
-      selectedLanguage: ['zh'],
+
       //@jayce 23/05/09-16: custom end
     };
   },
@@ -326,6 +338,8 @@ export default {
     // LaisonInputCustomerSelect,
   },
   watch: {
+    //@jayce 23/05/10-10:52:23 : custom Start
+    // "data."
     // data: {
     //   handler(e) {
     //     /* prettier-ignore */
@@ -337,6 +351,30 @@ export default {
     //   deep: true,
     //   immediate: true,
     // },
+
+    'data.list': {
+      handler: function () {
+        console.log('changed!!!!', this.data.config.currentLang);
+        this.data.predefinedLists[this.data.config.currentLang] = this.data.list;
+        /**
+         * 更新规则是什么样的？
+         * 1.所有的更新变动都会发生在 this.data.list
+         * 2.this.data.list 可能和this.data.predefinedLists中的任意对象
+         * 3.同步更新的规则是什么？ 并不是直接简单复制，可以列举哪些操作？
+         *  - 新增组件 => 所有对象都应该新增该组件
+         *  - 删除组件 => 所有对象中该组件都应该删除
+         *  - 组件的key修改， 所有对象中对应组件的key都应该同步
+         *  - 组件的其他内容修改， 例如， label,select/radio/checkbox 的选先配置的key,默认值，等某些字段是各个对像组件自维护的，应该是不被同步的
+         *    但是选项配置这种，动态新增/删除的选项应该按值同步
+         *  - 组件设计器的其他改动，例如hiddenJs,disabedJs,initJs都需要同步
+         */
+        // this.syncPredefinedLists();
+      },
+      immediate: true,
+      deep: true,
+    },
+
+    //@jayce 23/05/10-10:52:23 : custom End
   },
   computed: {
     basicsArray() {
@@ -384,11 +422,94 @@ export default {
   },
 
   methods: {
+    // watchPredefiendList() {
+    //   const watchers = this.data.predefinedLists.map((predefinedList) => {
+    //     return $watch(predefinedList, {
+    //       handler: () => {},
+    //       deep: true,
+    //     });
+    //   });
+    // },
     //@jayce 23/05/09-16:41:44 :custom Start
     handleLanguageSelect(e) {
-      console.log('[e]: ', e);
+      /**
+       * 当从 select 组件选中一个新的语言时， 将会拷贝一份 list 到predefinedLists
+       * 1. 从哪里拷贝？ this.data.list 始终是最新的
+       *  */
+      this.data.predefinedLists[e] = JSON.parse(JSON.stringify(this.data.list));
     },
     handleLanguageDeselect(e) {},
+    handleCurrentLanguageChange({ target: { value } }) {
+      /**
+       * 当通过 radio button group 选中某个语言时：
+       * 1. 要修改当前语言，即 this.data.config.currentLang, 它是响应式绑定的，所以无需手动修改
+       * 2. 将当前表单数据赋值为 this.data.predefinedLists[lang]
+       * 3. 如何保证各个配置独立又同步呢？ 通过watch去实现
+       */
+      // this.syncPredefinedLists();
+      // this.data.list = this.data.predefinedLists[value];
+    },
+    syncPredefinedLists() {
+      console.log('trigger!!!!!!!!!!!!');
+      const currentLang = this.data.config.currentLang;
+      // const currentList = this.data.predefinedLists[currentLang];
+      const noSyncFields = ['label', 'placeholder', 'defaultValue']; //指定不需要同步的字段列表
+      for (let langKey in this.data.predefinedLists) {
+        if (langKey === currentLang) continue; // 当前语言所对应的predefinedList和this.data.list 是同步的，且最新的，所以应该跳过不处理
+
+        const cache = this.data.predefinedLists[langKey]; //当前设计缓存
+
+        this.data.predefinedLists[langKey] = JSON.parse(JSON.stringify(this.data.list)); //直接复制最新的list
+
+        // 去遍历 temp 中的组件，根据 noSyncFields<不需要同步的字段列表> ， 同时判断 最新的list中，是否依旧存在该组件，如果存在则将缓存的字段 重新赋值
+        this.walkNodes((cache_element) => {
+          this.walkNodes((latest_element) => {
+            if (latest_element.key === cache_element.key) {
+              // debugger;
+              noSyncFields.forEach((noSyncField) => {
+                if (latest_element[noSyncField]) {
+                  //not undefined
+                  latest_element[noSyncField] = cache_element[noSyncField];
+                }
+              });
+              // 如果有配置选项,将历史已经配置的选项值对应的label还原
+              // if (latest_element.options && latest_element.options.options && latest_element.options.length > 0) {
+              //   latest_element.options.options.forEach((item) => {
+              //     item.label = cache_element.options.options.find((_item) => _item.value === item.value).label;
+              //   });
+              // }
+            }
+          }, this.data.predefinedLists[langKey]);
+        }, cache);
+      }
+    },
+    walkNodes(callback, list) {
+      // 递归遍历控件树
+      const traverse = (array) => {
+        array.forEach((element) => {
+          callback(element);
+          // this.$set(element.options, optionName, value);
+
+          if (element.type === 'grid' || element.type === 'tabs') {
+            // 栅格布局 and 标签页
+            element.columns.forEach((item) => {
+              traverse(item.list);
+            });
+          } else if (element.type === 'card' || element.type === 'batch') {
+            // 卡片布局 and  动态表格
+            traverse(element.list);
+          } else if (element.type === 'table') {
+            // 表格布局
+            element.trs.forEach((item) => {
+              item.tds.forEach((val) => {
+                traverse(val.list);
+              });
+            });
+          }
+        });
+      };
+      traverse(list);
+    },
 
     //@jayce 23/05/09-16:44:20 : custom End
 
@@ -487,9 +608,14 @@ export default {
           wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
           hideRequiredMark: false,
           customStyle: '',
-          currentLang: 'zh', //@jayce 23/05/10-09:22:11 :
           enablePrint: false, //@jayce
           Expressions: '', //@jayce
+          currentLang: 'zh', //@jayce 23/05/10-09:22:11 :
+          supportedLanguages: ['zh'], //@jayce 23/05/10-10:39:41 :
+        },
+        //@jayce 23/05/10-10:39:50 :
+        predefinedLists: {
+          zh: [],
         },
       };
       this.handleSetSelectItem({ key: '' });
@@ -626,6 +752,7 @@ export default {
     },
     //@jayce 23/04/20-14:43:39 : ----CUS START ----
     handleRemoveRightMenu(form) {
+      console.log('xxxxxxxxxxxxxxxxx');
       this.$refs.FP.rightPanelClicked(form);
     },
   },
@@ -636,3 +763,11 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+//@jayce 23/05/10-14:12:53 : custom start
+::v-deep input.ant-select-search__field {
+  display: none;
+}
+//@jayce 23/05/10-14:15:01 : custom end
+</style>
+>
