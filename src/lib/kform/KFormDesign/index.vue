@@ -438,43 +438,76 @@ export default {
        * 3. 如何保证各个配置独立又同步呢？ 通过watch去实现
        */
       this.data.list = this.data.predefinedLists[value];
+      // 切换tab到表单属性设置面版
+      // todo: 可优化，不跳转面版，怎么做模拟点击更新元素
+      this.handleSetSelectItem({
+        key: '',
+      });
     },
     syncPredefinedLists() {
-      console.log('trigger!!!!!!!!!!!!');
       const currentLang = this.data.config.currentLang;
       // const currentList = this.data.predefinedLists[currentLang];
-      const noSyncFields = ['label', 'placeholder', 'defaultValue']; //指定不需要同步的字段列表
+      const noSyncFields = ['label', 'help', 'placeholder', 'defaultValue']; //指定不需要同步的字段列表，(仅对象|嵌套对象字段) & (!数组对象字段,数组单独在callback中去处理)
       for (let langKey in this.data.predefinedLists) {
         if (langKey === currentLang) continue; // 当前语言所对应的predefinedList和this.data.list 是同步的，且最新的，所以应该跳过不处理
-
-        const cache = this.data.predefinedLists[langKey]; //当前设计缓存
-        console.log('[cache]: ', cache);
+        const cache = JSON.parse(JSON.stringify(this.data.predefinedLists[langKey])); //当前设计缓存
 
         this.data.predefinedLists[langKey] = JSON.parse(JSON.stringify(this.data.list)); //直接复制最新的list
 
         // 去遍历 temp 中的组件，根据 noSyncFields<不需要同步的字段列表> ， 同时判断 最新的list中，是否依旧存在该组件，如果存在则将缓存的字段 重新赋值
         this.walkNodes((cache_element) => {
+          // 遍历缓存对象，如果新的对象中有字段的 noSyncField ，即被指定非同步字段，则应该将对应缓存字段值覆盖掉新对象中的对应字段值
           this.walkNodes((latest_element) => {
             if (latest_element.key === cache_element.key) {
-              // debugger;
-              noSyncFields.forEach((noSyncField) => {
-                if (latest_element[noSyncField]) {
-                  //not undefined
-                  console.log(
-                    'latest_element[noSyncField] = cache_element[noSyncField]:',
-                    latest_element[noSyncField],
-                    '<-lates:old->',
-                    cache_element[noSyncField],
-                  );
-                  latest_element[noSyncField] = cache_element[noSyncField];
+              // 找到新对象和缓存对象中都存在的组件
+              // 遍历 cache_element，将需要同步的字段存储在一个 Map 中
+
+              const cacheMap = new Map();
+              this.walkListItem(cache_element, (key, value) => {
+                cacheMap.set(key, value);
+              });
+              console.log('[cacheMap]: ', cacheMap);
+
+              // 遍历 latest_element，根据 cacheMap 中的值更新对应的字段
+              this.walkListItem(latest_element, (key, value, Obj) => {
+                if (cacheMap.has(key)) {
+                  const cacheValue = cacheMap.get(key);
+                  if (key === 'options') {
+                    // options.options 特别处理
+                    // value: Array<{value,label}>
+                    // 带有配置选项的组件应该同步选项，但是不同步 label
+                    const cacheOptions = cacheMap.get(key);
+                    Obj[key].forEach(({ value, label }, index) => {
+                      // value
+                      const findCacheOptionItem = cacheOptions.find((cacheOptionItem) => {
+                        return cacheOptionItem.value === value;
+                      });
+                      if (findCacheOptionItem !== undefined) {
+                        Obj[key][index].label = findCacheOptionItem.label;
+                      }
+                    });
+                  } else if (key === 'rules') {
+                    // rules 特别处理
+                    // value: Array<{message,required|pattern}>
+                    // 同步rule配置项，但是message 不同步
+                    const cacheRules = cacheMap.get(key);
+                    Obj[key].forEach((rule, index) => {
+                      // rule.required 就一个,rule.pattern 可能会有多个
+                      if (typeof rule.required !== 'undefined') {
+                        const findCacheRequiredRule = cacheRules.find(({ required }) => required === rule.required);
+                        Obj[key][index].message = findCacheRequiredRule.message;
+                      }
+                      if (typeof rule.pattern !== 'undefined') {
+                        const findCachePatternRule = cacheRules.find(({ pattern }) => pattern === rule.pattern);
+                        Obj[key][index].message = findCachePatternRule.message;
+                      }
+                    });
+                  } else if (noSyncFields.includes(key)) {
+                    // 存在非同步字段
+                    Obj[key] = cacheValue;
+                  }
                 }
               });
-              // 如果有配置选项,将历史已经配置的选项值对应的label还原
-              // if (latest_element.options && latest_element.options.options && latest_element.options.length > 0) {
-              //   latest_element.options.options.forEach((item) => {
-              //     item.label = cache_element.options.options.find((_item) => _item.value === item.value).label;
-              //   });
-              // }
             }
           }, this.data.predefinedLists[langKey]);
         }, cache);
@@ -506,6 +539,33 @@ export default {
         });
       };
       traverse(list);
+    },
+    /**
+     * @param listItem Object
+     * @param callback Function - callback(key:当前对象的key,value:当前对象的value,Obj:当前对象)
+     */
+    walkListItem(listItem, callback) {
+      // 遍历listItem 对象以及嵌套对象的key， value值
+      // callback 的回调参数是：callback(key,value,Obj)
+      // 返回 value 类型可能是基本值类型或者数组
+      // 针对数组，应该需要进一步处理
+      const traverse = function (Obj) {
+        // callback
+        Object.entries(Obj).forEach(([key, value]) => {
+          if (typeof value === 'object') {
+            if (Array.isArray(value)) {
+              // is array
+              callback(key, value, Obj);
+            } else if (value != null) {
+              // is object & not null
+              traverse(value);
+            }
+          } else {
+            callback(key, value, Obj);
+          }
+        });
+      };
+      traverse(listItem);
     },
 
     //@jayce 23/05/09-16:44:20 : custom End
@@ -618,7 +678,6 @@ export default {
       this.handleSetSelectItem({ key: '' });
     },
     handleSetSelectItem(record) {
-      console.log('[record]: ', record);
       // 操作间隔不能低于100毫秒
       const newTime = new Date().getTime();
       if (newTime - this.updateTime < 100) {
@@ -750,7 +809,8 @@ export default {
     },
     //@jayce 23/04/20-14:43:39 : ----CUS START ----
     handleRemoveRightMenu(form) {
-      console.log('xxxxxxxxxxxxxxxxx');
+      // console.log('xxxxxxxxxxxxxxxxx');
+      // 透传点击事件，去更新增强表达式部分
       this.$refs.FP.rightPanelClicked(form);
     },
   },
