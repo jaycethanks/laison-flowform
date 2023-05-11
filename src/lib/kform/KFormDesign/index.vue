@@ -298,6 +298,7 @@ export default {
       //@jayce 23/05/09-16:43:47 : custom start
       languageList: [
         // https://emojipedia.org/flags/
+        //@jayce 23/05/11-14:43:17 : 注意，如果要新增支持的语言，也需要去支持时间选择器: src/lib/kform/KDatePicker/datePicker.vue
         {
           name: '🇨🇳中文',
           value: 'zh',
@@ -317,7 +318,7 @@ export default {
         },
         {
           name: '🇵🇹葡萄牙语',
-          value: 'pr',
+          value: 'pt',
         },
       ],
 
