@@ -187,6 +187,7 @@
       :disabled="disabled || record.options.disabled"
       :record="record"
       :config="config"
+      :formConfig="formConfig"
       :filterOption="
         record.options.showSearch
           ? (inputValue, option) => {
@@ -248,10 +249,11 @@
   >
     <component
       :ref="['batch', 'selectInputList'].includes(record.type) && 'KBatch'"
-      :style="`width:${record.options.width}`"
+      :style="`width:${record.options.width};border:1px solid red!important`"
       v-bind="componentOption"
       :record="record"
       :config="config"
+      :formConfig="formConfig"
       :parentDisabled="disabled || record.options.disabled"
       :disabled="disabled || record.options.disabled"
       :dynamicData="dynamicData"
