@@ -6,9 +6,12 @@
   > -->
   <!-- <a-tab-pane key="1" tab="节点属性"> -->
   <div class="process-panel__container" :style="{ width: `${this.width}px` }">
-    <a-collapse accordion v-model="activeTab">
+    <a-collapse :bordered="false" accordion v-model="activeTab">
       <a-collapse-panel key="base">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-info"></i>常规</div>
+        <div slot="header" class="panel-tab__title">
+          <a-icon type="info"></a-icon>
+          常规
+        </div>
         <element-base-info
           :id-edit-disabled="idEditDisabled"
           :business-object="elementBusinessObject"
@@ -66,7 +69,7 @@
       <!--        <element-listeners :id="elementId" :type="elementType" />-->
       <!--      </a-collapse-panel>-->
       <a-collapse-panel key="taskListeners" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-message-solid"></i>任务监听器</div>
+        <div slot="header" class="panel-tab__title"><a-icon type="bell"></a-icon>任务监听器</div>
         <user-task-listeners :id="elementId" :type="elementType" />
       </a-collapse-panel>
 
@@ -84,36 +87,36 @@
           </a-collapse-panel> -->
 
       <a-collapse-panel class="person-incarge-item" key="peopleInchage" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-share"></i>审批配置</div>
+        <div slot="header" class="panel-tab__title"><a-icon type="share-alt"></a-icon>审批配置</div>
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
-        <p class="field-label-text"><i class="el-icon-s-check"></i>审批人</p>
+        <p class="field-label-text"><a-icon type="user"></a-icon>审批人</p>
         <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
-        <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
+        <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
         <FormFieldsControl v-model="currentExtendNodeConfig.taskConfig.columnConfigs" />
       </a-collapse-panel>
 
       <a-collapse-panel class="person-incarge-item" key="copyConfig" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-s-promotion"></i>抄送配置</div>
-        <p class="field-label-text"><i class="el-icon-s-tools"></i>抄送类型</p>
+        <div slot="header" class="panel-tab__title"><a-icon type="mail"></a-icon>抄送配置</div>
+        <p class="field-label-text"><a-icon type="border"></a-icon>抄送类型</p>
 
         <a-radio-group v-model="currentExtendNodeConfig.copyConfig.type">
           <a-radio value="start">节点审批前</a-radio>
           <a-radio value="end">节点审批后</a-radio>
         </a-radio-group>
 
-        <p class="field-label-text"><i class="el-icon-s-custom"></i>抄送人</p>
+        <p class="field-label-text"><a-icon type="team"></a-icon>抄送人</p>
         <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" />
-        <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
+        <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
 
         <FormFieldsControl v-model="currentExtendNodeConfig.copyConfig.columnConfigs" />
       </a-collapse-panel>
 
       <a-collapse-panel class="person-incarge-item" key="flowCheckConfig" v-if="elementType === 'UserTask'">
         <div slot="header" class="panel-tab__title">
-          <i class="el-icon-view"></i><span style="margin-right: 20px">查看配置</span>
+          <a-icon type="eye"></a-icon><span style="margin-right: 20px">查看配置</span>
         </div>
         <div class="common-config">
           <el-row :gutter="20">
@@ -580,11 +583,13 @@ export default {
   },
 };
 </script>
-<style scoped>
->>> .person-incarge-item .a-collapse-panel__content {
+<style scoped lang="scss">
+::v-deep .person-incarge-item .a-collapse-panel__content {
   margin-bottom: 10px;
 }
-
+::v-deep .ant-collapse-header {
+  padding: 6px 16px !important;
+}
 .field-label-text {
   margin-top: 10px;
   color: #a4a4a4;
