@@ -15,7 +15,7 @@ export const basicsList = [
       type: 'text',
       width: '100%', // 宽度
       defaultValue: '', // 默认值
-      placeholder: 'common.please_input', // 没有输入时，提示文字
+      placeholder: '请输入', // 没有输入时，提示文字
       clearable: false,
       maxLength: null,
       addonBefore: '',
@@ -30,7 +30,7 @@ export const basicsList = [
       //验证规则
       {
         required: false, // 必须填写
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -47,7 +47,7 @@ export const basicsList = [
       clearable: false,
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false,
-      placeholder: 'common.please_input',
+      placeholder: '请输入',
     },
     model: '', // 数据字段
     key: '',
@@ -55,7 +55,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -72,7 +72,7 @@ export const basicsList = [
       step: 1, // 步长，点击加减按钮时候，加减多少
       hidden: false, // 是否隐藏，false显示，true隐藏
       disabled: false, //是否禁用
-      placeholder: 'common.please_input',
+      placeholder: '请输入',
     },
     model: '', // 数据字段
     key: '',
@@ -80,7 +80,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -117,7 +117,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -152,7 +152,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -187,7 +187,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -214,7 +214,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -237,7 +237,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -258,7 +258,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -283,7 +283,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -313,7 +313,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -341,7 +341,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -389,7 +389,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -435,7 +435,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -490,7 +490,7 @@ export const basicsList = [
     list: [],
     options: {
       height: 300,
-      placeholder: 'common.please_input',
+      placeholder: '请输入',
       defaultValue: '',
       chinesization: true,
       hidden: false, // 是否隐藏，false显示，true隐藏
@@ -504,7 +504,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },
@@ -523,7 +523,7 @@ export const basicsList = [
     rules: [
       {
         required: false,
-        message: 'common.please_input',
+        message: '请输入',
       },
     ],
   },

@@ -189,7 +189,11 @@ import { basicsList, layoutList, customComponents } from './config/formItemsConf
 import formItemProperties from './module/formItemProperties';
 import formProperties from './module/formProperties';
 import json from 'highlight.js/lib/languages/json';
+//@jayce 23/05/11-17:05:42 : custom Start
 import deepCloneObject from '@/utils/deepCloneObject';
+import { translateFields } from './translate/index';
+//@jayce 23/05/11-17:05:42 : custom End
+
 export default {
   name: 'KFormDesign',
   props: {
@@ -567,6 +571,19 @@ export default {
       };
       traverse(listItem);
     },
+    setInitField(record) {
+      this.walkListItem(record, (key, value, Obj) => {
+        switch (key) {
+          case 'placeholder':
+            Obj[key] = translateFields.placeholder[this.data.config.currentLang];
+            break;
+          case 'rules':
+            const findRequiredRule = Obj[key].find((rule) => typeof rule.required !== 'undefined');
+            findRequiredRule.message = translateFields.message[this.data.config.currentLang];
+            break;
+        }
+      });
+    },
 
     //@jayce 23/05/09-16:44:20 : custom End
 
@@ -603,6 +620,9 @@ export default {
         // 删除icon及compoent属性
         delete record.icon;
         delete record.component;
+        //@jayce 23/05/11-16:48:14 : +setInitField
+        this.setInitField(record);
+        //@jayce 23/05/11-16:51:18 : +setInitField
         this.data.list.push(record);
         this.handleSetSelectItem(record);
         return false;
