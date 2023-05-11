@@ -168,8 +168,11 @@
 
 <script>
 // 引入highlight，代码高亮插件
-import { highlightjscomp } from '@/lib/bpmnpd/src/highlight/index.js';
-import 'highlight.js/styles/atom-one-dark-reasonable.css';
+// import hljs from '@/lib/bpmnpd/src/highlight/index.js';
+// import 'highlight.js/styles/atom-one-dark-reasonable.css';
+// import { highlightjscomp } from '@/lib/bpmnpd/src/highlight/index.js';
+
+import HightLightJs from '@/components/FlowForm/HightLightJs/index.vue';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import DefaultEmptyXML from './plugins/defaultEmpty';
@@ -194,7 +197,7 @@ import convert from 'xml-js';
 export default {
   name: 'MyProcessDesigner',
   componentName: 'MyProcessDesigner',
-  components: { highlightjs: highlightjscomp },
+  components: { highlightjs: HightLightJs },
   props: {
     value: String, // xml 字符串
     processId: String,
