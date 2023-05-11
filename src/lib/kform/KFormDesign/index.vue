@@ -189,6 +189,7 @@ import { basicsList, layoutList, customComponents } from './config/formItemsConf
 import formItemProperties from './module/formItemProperties';
 import formProperties from './module/formProperties';
 import json from 'highlight.js/lib/languages/json';
+import deepCloneObject from '@/utils/deepCloneObject';
 export default {
   name: 'KFormDesign',
   props: {
@@ -354,8 +355,7 @@ export default {
 
     'data.list': {
       handler: function () {
-        console.log('changed!!!!', this.data.config.currentLang);
-        this.data.predefinedLists[this.data.config.currentLang] = JSON.parse(JSON.stringify(this.data.list));
+        this.data.predefinedLists[this.data.config.currentLang] = deepCloneObject(this.data.list);
         /**
          * 更新规则是什么样的？
          * 1.所有的更新变动都会发生在 this.data.list
@@ -427,7 +427,7 @@ export default {
        * 当从 select 组件选中一个新的语言时， 将会拷贝一份 list 到predefinedLists
        * 1. 从哪里拷贝？ this.data.list 始终是最新的
        *  */
-      this.data.predefinedLists[e] = JSON.parse(JSON.stringify(this.data.list));
+      this.data.predefinedLists[e] = deepCloneObject(this.data.list);
     },
     handleLanguageDeselect(e) {},
     handleCurrentLanguageChange({ target: { value } }) {
@@ -450,9 +450,9 @@ export default {
       const noSyncFields = ['label', 'help', 'placeholder', 'defaultValue']; //指定不需要同步的字段列表，(仅对象|嵌套对象字段) & (!数组对象字段,数组单独在callback中去处理)
       for (let langKey in this.data.predefinedLists) {
         if (langKey === currentLang) continue; // 当前语言所对应的predefinedList和this.data.list 是同步的，且最新的，所以应该跳过不处理
-        const cache = JSON.parse(JSON.stringify(this.data.predefinedLists[langKey])); //当前设计缓存
+        const cache = deepCloneObject(this.data.predefinedLists[langKey]); //当前设计缓存
 
-        this.data.predefinedLists[langKey] = JSON.parse(JSON.stringify(this.data.list)); //直接复制最新的list
+        this.data.predefinedLists[langKey] = deepCloneObject(this.data.list); //直接复制最新的list
 
         // 去遍历 temp 中的组件，根据 noSyncFields<不需要同步的字段列表> ， 同时判断 最新的list中，是否依旧存在该组件，如果存在则将缓存的字段 重新赋值
         this.walkNodes((cache_element) => {
@@ -466,7 +466,6 @@ export default {
               this.walkListItem(cache_element, (key, value) => {
                 cacheMap.set(key, value);
               });
-              console.log('[cacheMap]: ', cacheMap);
 
               // 遍历 latest_element，根据 cacheMap 中的值更新对应的字段
               this.walkListItem(latest_element, (key, value, Obj) => {
