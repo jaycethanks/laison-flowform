@@ -844,7 +844,7 @@ export default {
 <style lang="scss" scoped>
 //@jayce 23/05/10-14:12:53 : custom start
 ::v-deep input.ant-select-search__field {
-  display: none;
+  // display: none;
 }
 //@jayce 23/05/10-14:15:01 : custom end
 </style>

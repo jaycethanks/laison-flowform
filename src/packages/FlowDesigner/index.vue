@@ -32,7 +32,7 @@
     />
 
     <!-- demo config -->
-    <div v-if="false" class="demo-control-bar">
+    <div v-if="true" class="demo-control-bar">
       <div class="open-control-dialog" @click="controlDrawerVisible = true">
         <i class="el-icon-setting"></i>
       </div>
@@ -121,8 +121,8 @@ export default {
         simulation: true,
         labelEditing: false,
         labelVisible: false,
-        prefix: 'activiti', //camunda,activiti
-        headerButtonSize: 'mini',
+        prefix: 'camunda', //camunda,activiti
+        headerButtonSize: 'medium',
         // additionalModel: []
         additionalModel: [CustomContentPadProvider, CustomPaletteProvider],
       },
