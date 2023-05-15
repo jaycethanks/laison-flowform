@@ -6,45 +6,36 @@
   > -->
   <!-- <a-tab-pane key="1" tab="节点属性"> -->
   <div class="process-panel__container" :style="{ width: `${this.width}px` }">
-    <a-collapse accordion v-model="activeTab">
+    <a-collapse :bordered="false" accordion v-model="activeTab">
       <a-collapse-panel key="base">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-info"></i>常规</div>
+        <div slot="header" class="panel-tab__title">
+          <a-icon type="info"></a-icon>
+          常规
+        </div>
         <element-base-info
           :id-edit-disabled="idEditDisabled"
           :business-object="elementBusinessObject"
           :type="elementType"
         />
       </a-collapse-panel>
-      <!-- <a-collapse-panel
-            key="condition"
-            v-if="elementType === 'Process'"
-            key="message"
-          >
-            <div slot="header" class="panel-tab__title">
-              <i class="el-icon-s-comment"></i>消息与信号
-            </div>
-            <signal-and-massage />
-          </a-collapse-panel> -->
+      <a-collapse-panel v-if="elementType === 'Process'" key="message">
+        <div slot="header" class="panel-tab__title"><i class="el-icon-s-comment"></i>消息与信号</div>
+        <signal-and-massage />
+      </a-collapse-panel>
       <a-collapse-panel key="condition" v-if="conditionFormVisible">
         <div slot="header" class="panel-tab__title"><i class="el-icon-s-promotion"></i>流转条件</div>
         <flow-condition :business-object="elementBusinessObject" :type="elementType" />
       </a-collapse-panel>
-      <!-- <a-collapse-panel key="condition" v-if="formVisible" key="form">
-            <div slot="header" class="panel-tab__title">
-              <i class="el-icon-s-order"></i>表单
-            </div>
-            <element-form :id="elementId" :type="elementType" />
-          </a-collapse-panel> -->
-      <!-- <a-collapse-panel
-            key="task"
-            v-if="elementType.indexOf('Task') !== -1"
-            key="task"
-          >
-            <div slot="header" class="panel-tab__title">
-              <i class="el-icon-s-claim"></i>任务
-            </div>
-            <element-task :id="elementId" :type="elementType" />
-          </a-collapse-panel> -->
+      <!-- <a-collapse-panel v-if="formVisible" key="form">
+        <div slot="header" class="panel-tab__title"><i class="el-icon-s-order"></i>表单</div>
+        <element-form :id="elementId" :type="elementType" />
+      </a-collapse-panel> -->
+
+      <!-- <a-collapse-panel key="task" v-if="elementType.indexOf('Task') !== -1">
+        <div slot="header" class="panel-tab__title"><i class="el-icon-s-claim"></i>任务</div>
+        <element-task :id="elementId" :type="elementType" />
+      </a-collapse-panel> -->
+
       <!-- <a-collapse-panel
             key="multiInstance"
             v-if="elementType.indexOf('Task') !== -1"
@@ -58,6 +49,7 @@
               :type="elementType"
             />
           </a-collapse-panel> -->
+
       <!--      <a-collapse-panel key="listeners" key="listeners">-->
       <!--        <div slot="header" class="panel-tab__title">-->
       <!--          <i class="el-icon-message-solid"></i>定时器-->
@@ -65,17 +57,16 @@
       <!--        </div>-->
       <!--        <element-listeners :id="elementId" :type="elementType" />-->
       <!--      </a-collapse-panel>-->
+
       <a-collapse-panel key="taskListeners" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-message-solid"></i>任务监听器</div>
+        <div slot="header" class="panel-tab__title"><a-icon type="bell"></a-icon>任务监听器</div>
         <user-task-listeners :id="elementId" :type="elementType" />
       </a-collapse-panel>
 
-      <!-- <a-collapse-panel key="extensions" key="extensions">
-            <div slot="header" class="panel-tab__title">
-              <i class="el-icon-circle-plus"></i>扩展属性
-            </div>
-            <element-properties :id="elementId" :type="elementType" />
-          </a-collapse-panel> -->
+      <a-collapse-panel key="extensions">
+        <div slot="header" class="panel-tab__title"><i class="el-icon-circle-plus"></i>扩展属性</div>
+        <element-properties :id="elementId" :type="elementType" />
+      </a-collapse-panel>
       <!-- <a-collapse-panel key="other" key="other">
             <div slot="header" class="panel-tab__title">
               <i class="el-icon-s-promotion"></i>其他
@@ -83,37 +74,51 @@
             <element-other-config :id="elementId" />
           </a-collapse-panel> -->
 
-      <a-collapse-panel class="person-incarge-item" key="peopleInchage" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-share"></i>审批配置</div>
+      <a-collapse-panel class="person-incarge-item" key="languages" v-if="elementType === 'UserTask'">
+        <div slot="header" class="panel-tab__title"><a-icon type="tags"></a-icon>结点多语言</div>
+        <LanguageSupport
+          :elementId="elementId"
+          :initValue="currentExtendNodeConfig.lang"
+          ref="language-support"
+          @change="handleLangInputChange"
+        />
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
-        <p class="field-label-text"><i class="el-icon-s-check"></i>审批人</p>
+      </a-collapse-panel>
+
+      <a-collapse-panel class="person-incarge-item" key="peopleInchage" v-if="elementType === 'UserTask'">
+        <div slot="header" class="panel-tab__title"><a-icon type="share-alt"></a-icon>审批配置</div>
+        <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
+        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
+        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
+        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
+        <p class="field-label-text"><a-icon type="user"></a-icon>审批人</p>
         <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
-        <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
+        <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
         <FormFieldsControl v-model="currentExtendNodeConfig.taskConfig.columnConfigs" />
       </a-collapse-panel>
 
       <a-collapse-panel class="person-incarge-item" key="copyConfig" v-if="elementType === 'UserTask'">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-s-promotion"></i>抄送配置</div>
-        <p class="field-label-text"><i class="el-icon-s-tools"></i>抄送类型</p>
+        <div slot="header" class="panel-tab__title"><a-icon type="mail"></a-icon>抄送配置</div>
+        <p class="field-label-text"><a-icon type="border"></a-icon>抄送类型</p>
 
         <a-radio-group v-model="currentExtendNodeConfig.copyConfig.type">
           <a-radio value="start">节点审批前</a-radio>
           <a-radio value="end">节点审批后</a-radio>
         </a-radio-group>
 
-        <p class="field-label-text"><i class="el-icon-s-custom"></i>抄送人</p>
+        <p class="field-label-text"><a-icon type="team"></a-icon>抄送人</p>
         <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" />
-        <p class="field-label-text"><i class="el-icon-tickets"></i>字段控制</p>
+        <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
 
         <FormFieldsControl v-model="currentExtendNodeConfig.copyConfig.columnConfigs" />
       </a-collapse-panel>
 
       <a-collapse-panel class="person-incarge-item" key="flowCheckConfig" v-if="elementType === 'UserTask'">
         <div slot="header" class="panel-tab__title">
-          <i class="el-icon-view"></i><span style="margin-right: 20px">查看配置</span>
+          <a-icon type="eye"></a-icon><span style="margin-right: 20px">查看配置</span>
         </div>
         <div class="common-config">
           <el-row :gutter="20">
@@ -156,7 +161,6 @@
             <FormFieldsControl v-model="fieldsControl_peopleInCharge" />
           </a-collapse-panel> -->
     </a-collapse>
-    <!-- <a-button @click="testbtn">click test</a-button> -->
   </div>
   <!-- </a-tab-pane> -->
 
@@ -180,8 +184,9 @@ import UserTaskListeners from './listeners/UserTaskListeners';
 //@jayce 21/12/20-11:02:31 :
 import FormFieldsControl from './comps/FormFieldsControl.vue';
 import OrgSelectionModal from './comps/OrgSelectionModal.vue';
+import LanguageSupport from './comps/LanguageSupport.vue';
 import convert from 'xml-js';
-
+import deepCloneObject from '@/utils/deepCloneObject.js';
 /**
  * 侧边栏
  * @Author MiyueFE
@@ -203,6 +208,7 @@ export default {
     ElementBaseInfo,
     FormFieldsControl,
     OrgSelectionModal,
+    LanguageSupport,
   },
   componentName: 'MyPropertiesPanel',
   props: {
@@ -241,29 +247,30 @@ export default {
 
       //@jayce 21/12/20-19:24:55 :
       currentExtendNodeConfig: {
-        nodeId: '',
-        taskConfig: {
-          columnConfigs: [],
-          applyerLeader: false, //发起人领导
-          applyer: false,
-          members: [],
-        },
-        copyConfig: {
-          columnConfigs: [],
-          members: [],
-          type: 'end', //'start'/'end'
-        },
-        viewConfig: {
-          commonConfig: {
-            newest: true,
-            // disabled: false,
-            // hidden: true,
-          },
-          userConfig: {
-            columnConfigs: [],
-            members: [],
-          },
-        },
+        // nodeId: '',
+        // lang: { zh: 'Hello' },
+        // taskConfig: {
+        //   columnConfigs: [],
+        //   applyerLeader: false, //发起人领导
+        //   applyer: false,
+        //   members: [],
+        // },
+        // copyConfig: {
+        //   columnConfigs: [],
+        //   members: [],
+        //   type: 'end', //'start'/'end'
+        // },
+        // viewConfig: {
+        //   commonConfig: {
+        //     newest: true,
+        //     // disabled: false,
+        //     // hidden: true,
+        //   },
+        //   userConfig: {
+        //     columnConfigs: [],
+        //     members: [],
+        //   },
+        // },
       },
       historyExtendConfig: [],
     };
@@ -271,12 +278,20 @@ export default {
   watch: {
     elementId: {
       handler() {
-        this.activeTab = ['peopleInchage'];
+        this.activeTab = ['languages'];
       },
     },
     historyExtendConfig: {
       handler: function () {
         window.historyExtendConfig = this.historyExtendConfig;
+      },
+      deep: true,
+      immediate: true,
+    },
+    //@jayce 23/05/12-17:36:52 : + currentExtendNodeConfig watch
+    currentExtendNodeConfig: {
+      handler: function () {
+        this.$store.commit('SET_BPMN_DATA', this.currentExtendNodeConfig);
       },
       deep: true,
       immediate: true,
@@ -302,9 +317,15 @@ export default {
     this.$bus.$on('stepChange', (from, key) => this.stepChangeListener(from, key));
   },
   methods: {
-    testbtn() {
-      // console.log(this.$store.state.kform.data, '--line225')
-      console.log(this.historyExtendConfig, '--line450');
+    handleElementChange(element) {
+      // 结点编辑 change 事件发生后，同步去修改结点多语言配置中的中文项
+      const name = element.businessObject.name;
+      this.currentExtendNodeConfig.lang['zh'] = name;
+    },
+    handleLangInputChange(elementId) {
+      this.currentExtendNodeConfig.lang = this.$refs['language-support'].getValue();
+      const isValid = this.$refs['language-support'].validateForm();
+      console.log('[isValid]: ', isValid);
     },
     initModels() {
       /**
@@ -344,6 +365,7 @@ export default {
       this.bpmnModeler.on('element.changed', ({ element }) => {
         // 保证 修改 "默认流转路径" 类似需要修改多个元素的事件发生的时候，更新表单的元素与原选中元素不一致。
         if (element && element.id === this.elementId) {
+          this.handleElementChange(element);
           this.initFormOnChanged(element);
         }
       });
@@ -376,7 +398,7 @@ export default {
       this.elementId = activatedElement.id;
       this.elementType = activatedElement.type.split(':')[1] || '';
 
-      this.elementBusinessObject = JSON.parse(JSON.stringify(activatedElement.businessObject));
+      this.elementBusinessObject = deepCloneObject(activatedElement.businessObject);
       this.conditionFormVisible = !!(
         this.elementType === 'SequenceFlow' &&
         activatedElement.source &&
@@ -422,14 +444,15 @@ export default {
           //深拷贝一份kform 表单信息，并关联改节点后，放入bpmnUserTaskNodeConfig,将表单的引用响应式绑定到 <FormFieldsControl/>,  实时修改
           let temp = {
             nodeId: this.elementId,
+            lang: {},
             taskConfig: {
-              columnConfigs: this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data))), // 将深拷贝表单信息转为 <FormFieldsControl/> 能直接处理的数据对象,
+              columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)), // 将深拷贝表单信息转为 <FormFieldsControl/> 能直接处理的数据对象,
               members: [],
               applyerLeader: false, // 发起人领导
               applyer: false,
             },
             copyConfig: {
-              columnConfigs: this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data))),
+              columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)),
               members: [],
               type: 'end',
             },
@@ -440,7 +463,7 @@ export default {
                 hidden: true,
               },
               userConfig: {
-                columnConfigs: this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data))),
+                columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)),
                 members: [],
               },
             },
@@ -529,15 +552,15 @@ export default {
         const H = this.historyExtendConfig.length > 0 ? this.historyExtendConfig[0].taskConfig.columnConfigs : [] //获取历史节点，都是一样的随便取一个
         if (this.historyExtendConfig.length === 0 || H.length === 0) return; // 如果压根没有历史节点，或者表单字段为空就不需要做处理
         // N: New Nodes Fields Control Template 生成最新的字段控制模板
-        const N = this.pureFieldsControl(JSON.parse(JSON.stringify(this.$store.state.kform.data)));
+        const N = this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data));
         // 一定要在set 之前， 保留一份历史节点的数据
-        const historyExtendConfig_backup = JSON.parse(JSON.stringify(this.historyExtendConfig)); //历史节点深拷贝
+        const historyExtendConfig_backup = deepCloneObject(this.historyExtendConfig); //历史节点深拷贝
 
         // set 新的最新字段控制模板
         this.historyExtendConfig.forEach((it) => {
-          it.taskConfig.columnConfigs = JSON.parse(JSON.stringify(N));
-          it.copyConfig.columnConfigs = JSON.parse(JSON.stringify(N));
-          it.viewConfig.userConfig.columnConfigs = JSON.parse(JSON.stringify(N));
+          it.taskConfig.columnConfigs = deepCloneObject(N);
+          it.copyConfig.columnConfigs = deepCloneObject(N);
+          it.viewConfig.userConfig.columnConfigs = deepCloneObject(N);
         });
         /**
          * 1. 去做判断， 最新的字段控制模板和历史的字段控制模板有什么差异
@@ -580,11 +603,14 @@ export default {
   },
 };
 </script>
-<style scoped>
->>> .person-incarge-item .a-collapse-panel__content {
+<style scoped lang="scss">
+::v-deep .person-incarge-item .a-collapse-panel__content {
   margin-bottom: 10px;
 }
-
+::v-deep .ant-collapse-header {
+  // padding: 6px 16px !important;
+  user-select: none !important;
+}
 .field-label-text {
   margin-top: 10px;
   color: #a4a4a4;

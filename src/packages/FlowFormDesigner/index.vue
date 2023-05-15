@@ -63,7 +63,7 @@ export default {
     return {
       noBack: false,
       noFormDesign: false,
-      current: 0,
+      current: 1,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
       isSubmit: false, // 用于判断路由切换时，提示控制
       bpmnEditDataInit: null, // 用于edit的回显初始化
