@@ -100,9 +100,11 @@
             <template slot="mid-action">
               <slot name="mid-action">
                 <a-radio-group v-model="data.config.currentLang" @change="handleCurrentLanguageChange">
-                  <a-radio-button v-for="lang in data.config.supportedLanguages" :value="lang" :key="lang">
-                    {{ languageList.find((it) => it.value === lang).name }}
-                  </a-radio-button>
+                  <template v-for="lang in data.config.supportedLanguages">
+                    <a-radio-button v-if="languageList.find((it) => it.value === lang)" :value="lang" :key="lang">
+                      {{ languageList.find((it) => it.value === lang).name }}
+                    </a-radio-button>
+                  </template>
                 </a-radio-group>
               </slot>
             </template>
@@ -115,7 +117,7 @@
                   style="min-width: 120px"
                   @select="handleLanguageSelect"
                   @deselect="handleLanguageDeselect"
-                  v-model="data.config.supportedLanguages"
+                  :value="data.config.supportedLanguages"
                 >
                   <a-select-option
                     :disabled="disabled"
@@ -428,13 +430,32 @@ export default {
   methods: {
     //@jayce 23/05/09-16:41:44 :custom Start
     handleLanguageSelect(e) {
+      // !! 不要用v-model去绑定 data.config.supportedLanguages 有框架层面的bug， ant@3 修复了
       /**
        * 当从 select 组件选中一个新的语言时， 将会拷贝一份 list 到predefinedLists
        * 1. 从哪里拷贝？ this.data.list 始终是最新的
        *  */
-      this.data.predefinedLists[e] = deepCloneObject(this.data.list);
+
+      if (this.languageList.find((language) => language.value === e)) {
+        this.data.predefinedLists[e] = deepCloneObject(this.data.list);
+        this.data.config.supportedLanguages.push(e);
+      }
     },
-    handleLanguageDeselect(e) {},
+    handleLanguageDeselect(e) {
+      this.$confirm({
+        content: `删除后可能无法撤销，确定删除  ${
+          this.languageList.find((language) => language.value === e).name
+        }  的语言配置？`,
+        onOk: () => {
+          const index = this.data.config.supportedLanguages.findIndex((lang) => lang === e);
+          if (index != -1) {
+            this.data.config.supportedLanguages.splice(index, 1);
+          }
+          delete this.data.predefinedLists[e];
+        },
+        onCancel: () => {},
+      });
+    },
     handleCurrentLanguageChange({ target: { value } }) {
       /**
        * 当通过 radio button group 选中某个语言时：
@@ -844,7 +865,7 @@ export default {
 <style lang="scss" scoped>
 //@jayce 23/05/10-14:12:53 : custom start
 ::v-deep input.ant-select-search__field {
-  display: none;
+  // display: none;
 }
 //@jayce 23/05/10-14:15:01 : custom end
 </style>
