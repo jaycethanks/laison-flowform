@@ -19,6 +19,7 @@ export default {
     elementId: {
       type: String,
     },
+    businessObject: Object,
   },
   data() {
     return {
@@ -51,7 +52,6 @@ export default {
       ],
     };
   },
-
   computed: mapState({
     supportedLanguages: (state) => state.kform.data.config.supportedLanguages,
   }),
@@ -69,6 +69,9 @@ export default {
     handleChange(lang, { target: { value } }) {
       this.form.setFieldsValue({ [lang]: value });
       this.$emit('change', this.elementId);
+      if (lang === 'zh') {
+        this.setModalElement(value);
+      }
     },
     getValue() {
       let result = null;
@@ -76,6 +79,21 @@ export default {
         result = values;
       });
       return result;
+    },
+    validateForm() {
+      let valid = true;
+      this.form.validateFields((err) => {
+        if (err !== null) {
+          valid = false;
+        }
+      });
+      return valid;
+    },
+    setModalElement(nameValue) {
+      const bpmnElement = window?.bpmnInstances?.bpmnElement;
+      const attrObj = Object.create(null);
+      attrObj['name'] = nameValue;
+      window.bpmnInstances.modeling.updateProperties(bpmnElement, attrObj);
     },
   },
 };

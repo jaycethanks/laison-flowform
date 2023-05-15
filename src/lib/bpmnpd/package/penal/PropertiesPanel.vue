@@ -82,7 +82,6 @@
           ref="language-support"
           @change="handleLangInputChange"
         />
-        <a-button @click="handleGetLang">获取数据</a-button>
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
@@ -162,7 +161,6 @@
             <FormFieldsControl v-model="fieldsControl_peopleInCharge" />
           </a-collapse-panel> -->
     </a-collapse>
-    <!-- <a-button @click="testbtn">click test</a-button> -->
   </div>
   <!-- </a-tab-pane> -->
 
@@ -319,15 +317,15 @@ export default {
     this.$bus.$on('stepChange', (from, key) => this.stepChangeListener(from, key));
   },
   methods: {
-    handleGetLang() {
-      const value = this.$refs['language-support'].getValue();
+    handleElementChange(element) {
+      // 结点编辑 change 事件发生后，同步去修改结点多语言配置中的中文项
+      const name = element.businessObject.name;
+      this.currentExtendNodeConfig.lang['zh'] = name;
     },
     handleLangInputChange(elementId) {
       this.currentExtendNodeConfig.lang = this.$refs['language-support'].getValue();
-    },
-    testbtn() {
-      // console.log(this.$store.state.kform.data, '--line225')
-      console.log(this.historyExtendConfig, '--line450');
+      const isValid = this.$refs['language-support'].validateForm();
+      console.log('[isValid]: ', isValid);
     },
     initModels() {
       /**
@@ -367,6 +365,7 @@ export default {
       this.bpmnModeler.on('element.changed', ({ element }) => {
         // 保证 修改 "默认流转路径" 类似需要修改多个元素的事件发生的时候，更新表单的元素与原选中元素不一致。
         if (element && element.id === this.elementId) {
+          this.handleElementChange(element);
           this.initFormOnChanged(element);
         }
       });
@@ -380,7 +379,6 @@ export default {
     initFormOnChanged(element) {
       //@jayce 21/12/22-15:38:48 : 节点点击事件
       let activatedElement = element;
-      console.log('[element]: ', element);
       if (!activatedElement) {
         activatedElement =
           window.bpmnInstances.elementRegistry.find((el) => el.type === 'bpmn:Process') ??
@@ -425,9 +423,7 @@ export default {
       this.historyExtendConfig.splice(i, 1); // 移除该节点
     },
     clickEventCustomHandle() {
-      console.time();
       this.initFieldsControl(); // 初始化表单字段控制组件
-      console.timeEnd();
     },
     //@jayce 21/12/28-16:26:41 :
     initFieldsControl() {
