@@ -40,14 +40,23 @@
 <script>
 import FormDesign from '@/packages/FormDesigner/index.vue';
 import FlowDesign from '@/packages/FlowDesigner/index.vue';
+import handleQuery from '@/mixins/handleQuery.js';
+
 import FlowFormPublish from './FlowFormPublish';
+import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 
 export default {
   name: 'FlowFormDesigner',
+  mixins: [handleQuery],
+
   props: {
     editRecord: {
       type: Object,
     },
+    // type: {
+    //   type: Number,
+    //   default: FlowFormDesignerType.INTEGRATION_SYSTEM,
+    // },
   },
   components: {
     FormDesign,
@@ -61,23 +70,33 @@ export default {
   },
   data() {
     return {
-      noBack: false,
-      noFormDesign: false,
+      noBack: true,
+      noFormDesign: true,
       current: 1,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
       isSubmit: false, // 用于判断路由切换时，提示控制
       bpmnEditDataInit: null, // 用于edit的回显初始化
       publishEditDataInit: null, // 用于edit的回显初始化
+      query: {
+        // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
+        // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
+        type: {
+          type: Number,
+        },
+      },
     };
   },
+
   created() {
-    const { type } = this.$route.query;
-    switch (type) {
-      case 'flowdesign':
-        this.noFormDesign = true;
-        this.noBack = true;
-        break;
-    }
+    // const { type } = this.$route.query;
+    // switch (type) {
+    //   case 'flowdesign':
+    //     this.noFormDesign = true;
+    //     this.noBack = true;
+    //     break;
+    // }
+
+    this.handleType(this.computedQuery.type);
     // 尝试数据初始化
     if (this.editRecord != null) {
       // init k-form-design
@@ -179,6 +198,20 @@ export default {
     },
     sumbitHandler() {
       this.isSubmit = true;
+    },
+    handleType(type) {
+      switch (type) {
+        case FlowFormDesignerType.PLATFORM: //1
+          this.noFormDesign = false;
+          this.noBack = false;
+          break;
+        case FlowFormDesignerType.INTEGRATION_SYSTEM: //2
+          this.noFormDesign = true;
+          this.noBack = true;
+          break;
+        default:
+          break;
+      }
     },
   },
 

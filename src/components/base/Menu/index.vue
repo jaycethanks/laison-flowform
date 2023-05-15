@@ -1,21 +1,20 @@
 <template>
   <a-menu :inline-collapsed="collapsed" theme="dark" class="menu-root" mode="inline" :default-selected-keys="['1']">
     <template v-for="{ path, icon, name, children } in menuConfig">
-      <a-menu-item class="menu-item" :key="path" v-if="children === undefined">
+      <a-menu-item class="menu-item" :key="path" v-if="children.length === 0">
         <router-link :to="path">
           <a-icon :type="icon" />
           <span>{{ name }}</span>
         </router-link>
       </a-menu-item>
 
-      <!-- 二级菜单 -->
-      <a-sub-menu class="menu-root" v-if="children" :key="path">
+      <a-sub-menu class="menu-root" v-if="children.length > 0" :key="path">
         <span slot="title"><a-icon :type="icon" />{{ collapsed ? '' : name }} </span>
-        <template v-for="{ path, icon, name } in children">
-          <a-menu-item class="menu-item" :key="path">
-            <router-link :to="path">
-              <a-icon :type="icon ? icon : 'file'" />
-              <span>{{ name }}</span>
+        <template v-for="{ path: _path, icon: _icon, name: _name, hidden } in children">
+          <a-menu-item class="menu-item" :key="_path" v-if="!hidden">
+            <router-link :to="path + '/' + _path">
+              <a-icon :type="_icon ? _icon : 'file'" />
+              <span>{{ _name }}</span>
             </router-link>
           </a-menu-item>
         </template>
@@ -25,7 +24,7 @@
 </template>
 <script>
 import menuConfig from './menu.config';
-
+console.log('[menuConfig]: ', menuConfig);
 export default {
   props: ['collapsed'],
   components: {},
