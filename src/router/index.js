@@ -26,14 +26,14 @@ export const systemRoutes = [
   },
   {
     path: 'flowformDesign',
-    icon: 'pull-request', //antd-icon name
+    icon: 'share-alt', //antd-icon name
     name: '流程模板设计',
     component: () => import('@/views/System/FlowFormDesign/index.vue'),
     hiddenChild: true,
     children: [
       {
         path: 'flowformDesigner',
-        icon: 'pull-request', //antd-icon name
+        icon: 'file-add', //antd-icon name
         name: '新增流程模板',
         beforeEnter: (to, from, next) => {
           if (!to.query.type) {
