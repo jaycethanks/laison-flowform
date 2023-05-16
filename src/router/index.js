@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import FormPreviewer from '@/packages/FormPreviewer';
-import ProcessList from '@/components/FlowForm/ProcessList/ProcessList.vue';
+import FlowFormTemplatesList from '@/components/FlowForm/FlowFormTemplatesList/index.vue';
 
 import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';
@@ -31,10 +31,6 @@ export const systemRoutes = [
     component: () => import('@/views/System/FlowFormDesign/index.vue'),
     hiddenChild: true,
     children: [
-      // {
-      //   path: '',
-      //   component: () => import('@/views/System/FlowFormDesign/index.vue'),
-      // },
       {
         path: 'flowformDesigner',
         icon: 'pull-request', //antd-icon name
@@ -54,10 +50,10 @@ export const systemRoutes = [
         // component: () => import('@/packages/FlowFormDesigner/index.vue'),
       },
       {
-        path: 'processList',
-        icon: 'pull-request', //antd-icon name
+        path: 'flowformTemplatesList',
+        icon: 'appstore', //antd-icon name
         name: '流程模板管理列表',
-        component: () => import('@/components/FlowForm/ProcessList/ProcessList.vue'),
+        component: () => import('@/components/FlowForm/FlowFormTemplatesList/index.vue'),
       },
     ],
   },
@@ -75,7 +71,6 @@ export const systemRoutes = [
       {
         name: 'flowformDesigner',
         path: 'flowformDesigner',
-
         redirect: '/platform/flowformDesigner',
       },
       {

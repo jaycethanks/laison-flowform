@@ -291,7 +291,7 @@ export default {
     //@jayce 23/05/12-17:36:52 : + currentExtendNodeConfig watch
     currentExtendNodeConfig: {
       handler: function () {
-        this.$store.commit('SET_BPMN_DATA', this.currentExtendNodeConfig);
+        this.$store.commit('SET_BPMN_DATA', this.historyExtendConfig);
       },
       deep: true,
       immediate: true,

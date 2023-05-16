@@ -1,7 +1,6 @@
 <template>
   <div class="flow-form-designer-root">
     <p class="flow-form-designer-header">
-      <a-button v-if="!noBack" style="position: absolute; left: 0" @click="$emit('back')">返回</a-button>
       <a-steps
         ref="steps"
         style="margin-bottom: 0; width: 550px"
@@ -72,7 +71,7 @@ export default {
     return {
       noBack: true,
       noFormDesign: true,
-      current: 1,
+      current: 0,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
       isSubmit: false, // 用于判断路由切换时，提示控制
       bpmnEditDataInit: null, // 用于edit的回显初始化
