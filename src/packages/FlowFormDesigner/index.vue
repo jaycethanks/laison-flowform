@@ -9,14 +9,14 @@
         type="navigation"
         @change="onStepChange"
       >
-        <a-step v-if="!noFormDesign" status="finish" :title="this.$t('t.formDesign')">
-          <a-icon slot="icon" type="form" />
+        <a-step status="finish" title="表单设计">
+          <SvgIconFormDesign style="width: 24px; height: 24px" slot="icon" />
         </a-step>
-        <a-step status="finish" :title="this.$t('t.flowDesign')">
-          <a-icon slot="icon" type="branches" />
+        <a-step status="finish" title="流程设计">
+          <SvgIconFlowDesign style="width: 24px; height: 24px" slot="icon" />
         </a-step>
-        <a-step status="process" :title="this.$t('t.flowformPublish')">
-          <a-icon slot="icon" type="cloud-upload" />
+        <a-step status="process" title="流程发布">
+          <SvgIconFFPublish style="width: 24px; height: 24px" slot="icon" />
         </a-step>
       </a-steps>
     </p>
@@ -44,6 +44,9 @@ import handleQuery from '@/mixins/handleQuery.js';
 import FlowFormPublish from './FlowFormPublish';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 
+import SvgIconFormDesign from '@/assets/svgIcon/SvgIconFormDesign.vue';
+import SvgIconFlowDesign from '@/assets/svgIcon/SvgIconFlowDesign.vue';
+import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
 export default {
   name: 'FlowFormDesigner',
   mixins: [handleQuery],
@@ -61,6 +64,9 @@ export default {
     FormDesign,
     FlowDesign,
     FlowFormPublish,
+    SvgIconFormDesign,
+    SvgIconFlowDesign,
+    SvgIconFFPublish,
   },
   provide: function () {
     return {
