@@ -531,7 +531,6 @@ export default {
     },
     stepChangeListener(from, key) {
       let _this = this;
-      console.time('计时器1');
       if (from === 0 && key == 1) {
         // 如果从表单设计跳转到流程设定step
         /**

@@ -31,7 +31,7 @@
 
     <template v-if="!noExpand" slot="expandedRowRender" slot-scope="record">
       <!-- 渲染可展开的行 -->
-      <FormFieldsControl noExpand v-model="record.exposeFields" style="padding: 2px 0px" />
+      <FormFieldsControl noExpand v-model="record.exposeFields" style="padding: 2px 0px; background-color: #f3f3f3" />
     </template>
   </a-table>
 </template>
@@ -280,5 +280,13 @@ export default {
 }
 ::v-deep .ant-table-small {
   border: none;
+}
+::v-deep col.ant-table-expand-icon-col {
+  width: 20px;
+  padding: 0;
+}
+
+::v-deep td.ant-table-row-expand-icon-cell {
+  padding: 0 !important;
 }
 </style>
