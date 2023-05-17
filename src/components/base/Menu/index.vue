@@ -41,6 +41,7 @@ export default {
   color: inherit;
 }
 .menu-root {
+  user-select: none;
   background-color: inherit;
   border: unset;
   color: inherit;

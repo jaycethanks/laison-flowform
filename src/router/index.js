@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import FormPreviewer from '@/packages/FormPreviewer';
 import FlowFormTemplatesList from '@/components/FlowForm/FlowFormTemplatesList/index.vue';
-
+import RouteView from '@/components/base/RouteView/index.vue';
 import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';
 import FormDesigner from '@/packages/FormDesigner';
@@ -18,18 +18,11 @@ export const systemRoutes = [
     component: () => import('@/views/System/HomePage'), //默认sub路由页面
   },
   {
-    path: 'systemRegistration',
-    name: '业务系统注册',
-    hidden: false,
-    icon: 'api', //antd-icon name
-    component: () => import('@/views/System/SystemRegistration/index.vue'),
-  },
-  {
     path: 'flowformDesign',
     icon: 'share-alt', //antd-icon name
-    name: '流程模板设计',
-    component: () => import('@/views/System/FlowFormDesign/index.vue'),
-    hiddenChild: true,
+    name: '流程模板',
+    component: RouteView,
+    // hiddenChild: true,
     children: [
       {
         path: 'flowformDesigner',
@@ -57,6 +50,127 @@ export const systemRoutes = [
       },
     ],
   },
+
+  {
+    path: 'configManagement',
+    name: '配置管理',
+    hidden: false,
+    icon: 'api', //antd-icon name
+    component: () => import('@/views/System/ConfigManagement/index.vue'),
+  },
+
+  {
+    path: 'systemManagement',
+    name: '系统管理',
+    hidden: false,
+    icon: 'api', //antd-icon name
+    component: RouteView,
+    children: [
+      {
+        path: 'department',
+        icon: 'appstore', //antd-icon name
+        name: '部门管理',
+        component: () => import('@/views/System/SystemManagement/Department/index.vue'),
+      },
+      {
+        path: 'menu',
+        icon: 'appstore', //antd-icon name
+        name: '菜单管理',
+        component: () => import('@/views/System/SystemManagement/Menu/index.vue'),
+      },
+      {
+        path: 'role',
+        icon: 'appstore', //antd-icon name
+        name: '角色管理',
+        component: () => import('@/views/System/SystemManagement/Role/index.vue'),
+      },
+      {
+        path: 'user',
+        icon: 'appstore', //antd-icon name
+        name: '用户管理',
+        component: () => import('@/views/System/SystemManagement/User/index.vue'),
+      },
+    ],
+  },
+
+  {
+    path: 'platformManagement',
+    name: '平台管理',
+    hidden: false,
+    icon: 'api', //antd-icon name
+    component: RouteView,
+    children: [
+      {
+        path: 'platformRegistration',
+        icon: 'appstore', //antd-icon name
+        name: '平台注册',
+        component: () => import('@/views/System/PlatformManagement/PlatformRegistration/index.vue'),
+      },
+      {
+        path: 'userRegistration',
+        icon: 'appstore', //antd-icon name
+        name: '用户注册',
+        component: () => import('@/views/System/PlatformManagement/UserRegistration/index.vue'),
+      },
+    ],
+  },
+
+  {
+    path: 'statisticAnalysis',
+    name: '统计分析',
+    hidden: false,
+    icon: 'api', //antd-icon name
+    component: RouteView,
+    children: [
+      {
+        path: 'workOrder',
+        icon: 'appstore', //antd-icon name
+        name: '工单统计',
+        component: () => import('@/views/System/StatisticAnalysis/WorkOrder/index.vue'),
+      },
+      {
+        path: 'workOrderResolutionRate',
+        icon: 'appstore', //antd-icon name
+        name: '工单解决率统计',
+        component: () => import('@/views/System/StatisticAnalysis/WorkOrderResolutionRate/index.vue'),
+      },
+      {
+        path: 'workOrderStatus',
+        icon: 'appstore', //antd-icon name
+        name: '工单状态统计',
+        component: () => import('@/views/System/StatisticAnalysis/WorkOrderStatus/index.vue'),
+      },
+      {
+        path: 'workOrderType',
+        icon: 'appstore', //antd-icon name
+        name: '工单类型统计',
+        component: () => import('@/views/System/StatisticAnalysis/WorkOrderType/index.vue'),
+      },
+    ],
+  },
+
+  {
+    path: 'notificationCenter',
+    name: '通知中心',
+    hidden: false,
+    icon: 'api', //antd-icon name
+    component: RouteView,
+    children: [
+      {
+        path: 'params',
+        icon: 'appstore', //antd-icon name
+        name: '通知参数配置',
+        component: () => import('@/views/System/NotificationCenter/Params/index.vue'),
+      },
+      {
+        path: 'template',
+        icon: 'appstore', //antd-icon name
+        name: '通知模板配置',
+        component: () => import('@/views/System/NotificationCenter/Template/index.vue'),
+      },
+    ],
+  },
+
   {
     path: 'demo',
     icon: 'pull-request', //antd-icon name
@@ -79,6 +193,13 @@ export const systemRoutes = [
         redirect: '/platform/flowformManagement',
       },
     ],
+  },
+  {
+    path: 'userCenter',
+    name: '用户中心',
+    hidden: false,
+    icon: 'api', //antd-icon name
+    component: () => import('@/views/System/UserCenter/index.vue'),
   },
 ];
 

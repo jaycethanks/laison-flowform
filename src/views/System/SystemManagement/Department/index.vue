@@ -1,5 +1,5 @@
 <template>
-  <h2>业务系统注册</h2>
+  <h1>department</h1>
 </template>
 <script>
 export default {};
