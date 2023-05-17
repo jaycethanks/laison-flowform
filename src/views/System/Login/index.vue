@@ -41,11 +41,7 @@
 </template>
 
 <script>
-import Logo from '@/assets/svg_logo/FlowFormSvgIcon.vue';
 export default {
-  components: {
-    Logo,
-  },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'normal_login' });
   },

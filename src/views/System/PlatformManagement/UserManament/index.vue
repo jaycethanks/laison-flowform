@@ -1,5 +1,5 @@
 <template>
-  <h1>user</h1>
+  <h1>user management</h1>
 </template>
 <script>
 export default {};

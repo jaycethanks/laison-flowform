@@ -1,7 +1,7 @@
 <template>
   <a-layout id="layout-root">
     <a-layout-sider theme="dark" id="layout-aside" v-model="collapsed" :trigger="null" collapsible>
-      <div class="logo"><Logo /></div>
+      <div class="logo"><Logo :style="{ width: collapsed ? '24px' : '48px' }" /></div>
       <Menu :collapsed="collapsed" />
     </a-layout-sider>
     <a-layout id="layout-content-root">
@@ -47,5 +47,12 @@ export default {
   // height: 32px;
   // background: rgba(255, 255, 255, 0.2);
   margin: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  font-weight: 600;
+  svg {
+    transition: all 0.3s ease;
+  }
 }
 </style>

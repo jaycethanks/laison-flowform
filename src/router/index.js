@@ -55,7 +55,7 @@ export const systemRoutes = [
     path: 'configManagement',
     name: '配置管理',
     hidden: false,
-    icon: 'api', //antd-icon name
+    icon: 'tool', //antd-icon name
     component: () => import('@/views/System/ConfigManagement/index.vue'),
   },
 
@@ -63,32 +63,26 @@ export const systemRoutes = [
     path: 'systemManagement',
     name: '系统管理',
     hidden: false,
-    icon: 'api', //antd-icon name
+    icon: 'setting', //antd-icon name
     component: RouteView,
     children: [
       {
         path: 'department',
-        icon: 'appstore', //antd-icon name
+        icon: 'apartment', //antd-icon name
         name: '部门管理',
         component: () => import('@/views/System/SystemManagement/Department/index.vue'),
       },
       {
         path: 'menu',
-        icon: 'appstore', //antd-icon name
+        icon: 'menu', //antd-icon name
         name: '菜单管理',
         component: () => import('@/views/System/SystemManagement/Menu/index.vue'),
       },
       {
         path: 'role',
-        icon: 'appstore', //antd-icon name
+        icon: 'solution', //antd-icon name
         name: '角色管理',
         component: () => import('@/views/System/SystemManagement/Role/index.vue'),
-      },
-      {
-        path: 'user',
-        icon: 'appstore', //antd-icon name
-        name: '用户管理',
-        component: () => import('@/views/System/SystemManagement/User/index.vue'),
       },
     ],
   },
@@ -97,20 +91,26 @@ export const systemRoutes = [
     path: 'platformManagement',
     name: '平台管理',
     hidden: false,
-    icon: 'api', //antd-icon name
+    icon: 'deployment-unit', //antd-icon name
     component: RouteView,
     children: [
       {
         path: 'platformRegistration',
-        icon: 'appstore', //antd-icon name
+        icon: 'deployment-unit', //antd-icon name
         name: '平台注册',
         component: () => import('@/views/System/PlatformManagement/PlatformRegistration/index.vue'),
       },
       {
         path: 'userRegistration',
-        icon: 'appstore', //antd-icon name
+        icon: 'user-add', //antd-icon name
         name: '用户注册',
         component: () => import('@/views/System/PlatformManagement/UserRegistration/index.vue'),
+      },
+      {
+        path: 'userManament',
+        icon: 'team', //antd-icon name
+        name: '用户管理',
+        component: () => import('@/views/System/PlatformManagement/UserManament/index.vue'),
       },
     ],
   },
@@ -119,30 +119,30 @@ export const systemRoutes = [
     path: 'statisticAnalysis',
     name: '统计分析',
     hidden: false,
-    icon: 'api', //antd-icon name
+    icon: 'pie-chart', //antd-icon name
     component: RouteView,
     children: [
       {
         path: 'workOrder',
-        icon: 'appstore', //antd-icon name
+        icon: 'bar-chart', //antd-icon name
         name: '工单统计',
         component: () => import('@/views/System/StatisticAnalysis/WorkOrder/index.vue'),
       },
       {
         path: 'workOrderResolutionRate',
-        icon: 'appstore', //antd-icon name
+        icon: 'fund', //antd-icon name
         name: '工单解决率统计',
         component: () => import('@/views/System/StatisticAnalysis/WorkOrderResolutionRate/index.vue'),
       },
       {
         path: 'workOrderStatus',
-        icon: 'appstore', //antd-icon name
+        icon: 'dot-chart', //antd-icon name
         name: '工单状态统计',
         component: () => import('@/views/System/StatisticAnalysis/WorkOrderStatus/index.vue'),
       },
       {
         path: 'workOrderType',
-        icon: 'appstore', //antd-icon name
+        icon: 'radar-chart', //antd-icon name
         name: '工单类型统计',
         component: () => import('@/views/System/StatisticAnalysis/WorkOrderType/index.vue'),
       },
@@ -153,18 +153,18 @@ export const systemRoutes = [
     path: 'notificationCenter',
     name: '通知中心',
     hidden: false,
-    icon: 'api', //antd-icon name
+    icon: 'bell', //antd-icon name
     component: RouteView,
     children: [
       {
         path: 'params',
-        icon: 'appstore', //antd-icon name
+        icon: 'control', //antd-icon name
         name: '通知参数配置',
         component: () => import('@/views/System/NotificationCenter/Params/index.vue'),
       },
       {
         path: 'template',
-        icon: 'appstore', //antd-icon name
+        icon: 'container', //antd-icon name
         name: '通知模板配置',
         component: () => import('@/views/System/NotificationCenter/Template/index.vue'),
       },
@@ -198,7 +198,7 @@ export const systemRoutes = [
     path: 'userCenter',
     name: '用户中心',
     hidden: false,
-    icon: 'api', //antd-icon name
+    icon: 'user', //antd-icon name
     component: () => import('@/views/System/UserCenter/index.vue'),
   },
 ];
