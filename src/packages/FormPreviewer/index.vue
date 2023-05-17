@@ -29,7 +29,7 @@
 import KFormBuild from '@/lib/kform/KFormBuild/index';
 import JModal from '@/components/jeecg/JModal/index.vue';
 import mock from './mock';
-import { parseFormWidthNodeConfig } from '@/utils/kformRelatedUtils.js';
+import { parseFormWithNodeConfig } from '@/utils/kformRelatedUtils.js';
 //import '@/assets/SourceHanSansCN-Regular-normal'
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
 import PreviewFormType from '@/constants/PreviewFormType.js';
@@ -98,7 +98,7 @@ export default {
     this.handleType(this.computedQuery.type);
     // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
     // 解析示例：
-    const parsedFormInfo = parseFormWidthNodeConfig(mock);
+    const parsedFormInfo = parseFormWithNodeConfig(mock);
     this.formInfo = parsedFormInfo;
   },
   methods: {
