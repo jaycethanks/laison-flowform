@@ -47,6 +47,7 @@ import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import SvgIconFormDesign from '@/assets/svgIcon/SvgIconFormDesign.vue';
 import SvgIconFlowDesign from '@/assets/svgIcon/SvgIconFlowDesign.vue';
 import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
+import mock from './mock';
 export default {
   name: 'FlowFormDesigner',
   mixins: [handleQuery],
@@ -93,67 +94,10 @@ export default {
   },
 
   created() {
-    // const { type } = this.$route.query;
-    // switch (type) {
-    //   case 'flowdesign':
-    //     this.noFormDesign = true;
-    //     this.noBack = true;
-    //     break;
-    // }
-
     this.handleType(this.computedQuery.type);
     // 尝试数据初始化
-    if (this.editRecord != null) {
-      // init k-form-design
-      //TODO: @jayce 23/05/10-10:10:08 : 暂时取消缓存相关逻辑
-      // this.$store.commit('SET_KFORM_DATA', JSON.parse(this.editRecord.formInfo));
-      // dealwith bpmn process designer init data
-      this.bpmnEditDataInit = {
-        xmldata: this.editRecord.procModelXml,
-        nodeDesignConfigs: this.editRecord.nodeDesignConfigs,
-      };
-      // dealwith form-design-publish init data
-      let permissionDesignConfig = JSON.parse(this.editRecord.permissionDesignConfig);
-      this.publishEditDataInit = {
-        formDesignId: this.editRecord.formDesignId, // 注意，仅当为编辑状态时需要此id， 如果时新建流程，不需要传这个id
-        iconName: {
-          name: this.editRecord.designIcon,
-          color: this.editRecord.designColor,
-        },
-        flowName: this.editRecord.designName,
-        groupSelected: this.editRecord.designGroupName,
-        remark: this.editRecord.designDes,
-        startMembers: permissionDesignConfig.starterMembers,
-        viewMembers: permissionDesignConfig.viewAllMembers,
-      };
-    } else {
-      // TODO: 查看一下这里的逻辑，this.$store.commit('SET_KFORM_DATA',看看能不能删除掉， 不应该这么做， 表单的数据初始化操作是在 KFormDesign 中进行的， 这里会影响到 src/lib/kform/KFormDesign/index.vue的初始化操作， 虽然这里现在是手动添加了自定义字段解决了。
-      //TODO: @jayce 23/05/10-10:10:08 : 暂时取消缓存相关逻辑
-      return;
-      this.$store.commit('SET_KFORM_DATA', {
-        list: [],
-        config: {
-          layout: 'horizontal',
-          labelCol: { xs: 4, sm: 4, md: 4, lg: 4, xl: 4, xxl: 4 },
-          labelWidth: 100,
-          labelLayout: 'flex',
-          wrapperCol: { xs: 18, sm: 18, md: 18, lg: 18, xl: 18, xxl: 18 },
-          hideRequiredMark: false,
-          customStyle: '',
-          enablePrint: false, //@jayce
-          expressions: '', //@jayce
-          currentLang: 'zh', //@jayce 23/05/10-09:47:32 :
-        },
-      });
-    }
   },
   mounted() {
-    // console.log(this.$route.path, '--line115')
-    // console.log(this.$store.state.kform, '--line89')
-    // console.log(this.$store.state.bpmn, '--line90')
-    // console.log(this.$store, '--line91')
-    // this.$store.commit('SET_KFORM_DATA', 'HELLO')
-    // console.log(this.$store.state, '--line93')
     this.$refs.steps.historyStack = [];
   },
   methods: {
@@ -209,14 +153,72 @@ export default {
         case FlowFormDesignerType.PLATFORM: //1
           this.noFormDesign = false;
           this.noBack = false;
+          this.fetchTemplateData('template_design_idxxxxxxx'); //TODO: 参数handle
           break;
         case FlowFormDesignerType.INTEGRATION_SYSTEM: //2
           this.noFormDesign = true;
           this.noBack = true;
+          this.fetchFlowFormDesignData('template_design_idxxxxxxx'); //TODO: 参数handle
           break;
         default:
           break;
       }
+    },
+
+    // 平台管理员会进行模板的设计， 编辑的时候，回去拉取该模板的设计数据
+    fetchTemplateData(designId) {
+      // todo: 从接口拉取数据
+      this.setFlowFormData(mock);
+    },
+    // 业务系统设计流程时，会拉取整个设计数据
+    fetchFlowFormDesignData(designId) {
+      // todo: 从接口拉取数据
+      this.setFlowFormData(mock);
+    },
+    setFlowFormData(fetchData) {
+      const { formInfo, procModelXml, nodeConfigs } = fetchData;
+      this.setKformStore(formInfo);
+      this.setFlowDesignData({ procModelXml, nodeConfigs });
+      this.setFlowFormPublishData(fetchData);
+    },
+    setKformStore(formInfo) {
+      let _formInfo;
+      if (typeof formInfo === 'string') {
+        _formInfo = JSON.parse(mock.formInfo);
+      }
+
+      this.$store.commit('SET_KFORM_DATA', _formInfo);
+    },
+    setFlowDesignData({ procModelXml, nodeConfigs }) {
+      this.bpmnEditDataInit = {
+        xmldata: procModelXml,
+        nodeDesignConfigs: nodeConfigs,
+      };
+      console.log('[this.bpmnEditDataInit]: ', this.bpmnEditDataInit);
+    },
+    setFlowFormPublishData(fetchData) {
+      const {
+        permissionDesignConfig = null,
+        formDesignId,
+        designIcon,
+        designColor,
+        designName,
+        designGroupName,
+        designDes,
+      } = fetchData;
+      let _permissionDesignConfig = JSON.parse(permissionDesignConfig);
+      this.publishEditDataInit = {
+        formDesignId: formDesignId, // 注意，仅当为编辑状态时需要此id， 如果时新建流程，不需要传这个id
+        iconName: {
+          name: designIcon,
+          color: designColor,
+        },
+        flowName: designName,
+        groupSelected: designGroupName,
+        remark: designDes,
+        startMembers: _permissionDesignConfig ? _permissionDesignConfig.starterMembers : [],
+        viewMembers: _permissionDesignConfig ? _permissionDesignConfig.viewAllMembers : [],
+      };
     },
   },
 

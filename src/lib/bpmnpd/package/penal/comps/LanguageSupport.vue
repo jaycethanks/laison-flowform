@@ -1,4 +1,5 @@
 <template>
+  <!-- // ToDo: 这个组件逻辑写的很繁琐， 有空优化下， 做成双向绑定 -->
   <a-form :form="form" ref="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
     <a-form-item :label="getLanguages(lang).name" v-for="lang in supportedLanguages" :key="lang">
       <a-input
@@ -55,13 +56,23 @@ export default {
   computed: mapState({
     supportedLanguages: (state) => state.kform.data.config.supportedLanguages,
   }),
-  mounted() {
-    if (this.initValue) {
-      // 如果有初始值，则回显
-      console.log('[this.initValue]: ', this.initValue);
-      this.form.setFieldsValue(this.initValue);
-    }
+  watch: {
+    initValue: {
+      handler: function () {
+        this.form.setFieldsValue(this.initValue);
+      },
+    },
   },
+  mounted() {
+    this.form.setFieldsValue(this.initValue);
+  },
+  // mounted() {
+  //   if (this.initValue) {
+  //     // 如果有初始值，则回显
+  //     console.log('[this.initValue]: ', this.initValue);
+  //     this.form.setFieldsValue(this.initValue);
+  //   }
+  // },
   methods: {
     getLanguages(lang) {
       return this.languageList.find((it) => it.value === lang);

@@ -300,7 +300,10 @@ export default {
   created() {
     // try init edit data
     if (this.bpmnEditDataInit != null && !!this.bpmnEditDataInit.nodeDesignConfigs) {
-      this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeDesignConfigs);
+      if (typeof this.bpmnEditDataInit.nodeDesignConfigs === 'string') {
+        this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeDesignConfigs);
+      }
+      this.historyExtendConfig = this.bpmnEditDataInit.nodeDesignConfigs;
     }
   },
   mounted() {
@@ -424,6 +427,7 @@ export default {
     },
     clickEventCustomHandle() {
       this.initFieldsControl(); // 初始化表单字段控制组件
+      console.log('[this.currentExtendNodeConfig]: ', this.currentExtendNodeConfig);
     },
     //@jayce 21/12/28-16:26:41 :
     initFieldsControl() {

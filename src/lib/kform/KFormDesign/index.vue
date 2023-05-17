@@ -859,6 +859,13 @@ export default {
     this.revoke = new Revoke();
     this.recordList = this.revoke.recordList;
     this.redoList = this.revoke.redoList;
+
+    //@jayce 23/05/16-17:07:06 : custom Start
+    // 从store 恢复数据
+    if (this.$store.state.kform.data) {
+      this.data = this.$store.state.kform.data;
+    }
+    //@jayce 23/05/16-17:07:06 : custom End
   },
 };
 </script>
