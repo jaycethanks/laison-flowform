@@ -1,5 +1,8 @@
 {
-  "hello": {
-    "hello": "helloooooo world"
-  }
+  "templates": [
+    {
+      "templates": "askjdhaksbdkhas",
+      "id": 1
+    }
+  ]
 }

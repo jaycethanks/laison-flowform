@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import test from '@/api/test.js';
+import { add } from '@/api/system/ffTemplate.js';
 export default {
   data() {
     return {
@@ -15,7 +15,7 @@ export default {
 
   methods: {
     test() {
-      test.test().then((r) => {
+      add({ templates: 'askjdhaksbdkhas' }).then((r) => {
         console.log('[r]: ', r);
       });
     },
