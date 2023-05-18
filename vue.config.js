@@ -40,4 +40,27 @@ module.exports = defineConfig({
       },
     },
   },
+
+  devServer: {
+    // disableHostCheck: true,
+    port: 3000,
+    proxy: {
+      '/api': {
+        // target: 'http://192.168.3.47:12345',
+        target: 'http://127.0.0.1:7568',
+        // ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
+        },
+      },
+      // '/file': {
+      //   target: 'http://192.168.0.166:11180', // 请求本地 需要jeecg-boot后台项目
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     '^/file': '/file' // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
+      //   }
+      // }
+    },
+  },
 });

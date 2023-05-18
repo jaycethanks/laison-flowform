@@ -5,7 +5,8 @@
   "main": "dist/laison-flowform.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib index.js --name laison-flowform --dest dist"
+    "build": "vue-cli-service build --target lib index.js --name laison-flowform --dest dist",
+    "mock": "json-server -c ./mock-server/json-server.json  ./mock-server/db.json"
   },
   "dependencies": {
     "ant-design-vue": "1.7.8",
@@ -51,6 +52,7 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "compression-webpack-plugin": "^10.0.0",
+    "json-server": "^0.17.3",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "postcss": "^8.4.21",
