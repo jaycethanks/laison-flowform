@@ -1,18 +1,18 @@
 <template>
   <a-modal
-    :bodyStyle="{ maxHeight: '500px' }"
+    :bodyStyle="{ maxHeight: '500px', overflow: 'scroll' }"
     :visible="visible"
-    title="选择流程模板"
+    title="发起流程"
     @ok="$emit('ok')"
     @cancel="$emit('close')"
   >
     <a-input placeholder="按照名称过滤" @blur="showFilterList = false" @focus="showFilterList = true"></a-input>
 
-    <a-tabs default-active-key="1" tab-position="left" @prevClick="() => {}" @nextClick="() => {}">
+    <!-- <a-tabs default-active-key="1" tab-position="left" @prevClick="() => {}" @nextClick="() => {}">
       <a-tab-pane v-for="i in 30" :key="i" :tab="`Tab-${i}`"> Content of tab {{ i }} </a-tab-pane>
-    </a-tabs>
+    </a-tabs> -->
 
-    <a-list v-show="showFilterList" size="small" item-layout="horizontal" :data-source="flatenArray">
+    <a-list v-show="true" size="small" item-layout="horizontal" :data-source="flatenArray">
       <a-list-item slot="renderItem" slot-scope="item, index">
         <!-- <a-button
           @click="handleRemoveListItem(item.designKey)"
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       list: [],
-      showFilterList: false,
+      showFilterList: true,
       // visible: false,
     };
   },

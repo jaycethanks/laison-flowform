@@ -1,7 +1,13 @@
 <template>
   <a-layout id="layout-root">
     <a-layout-sider theme="dark" id="layout-aside" v-model="collapsed" :trigger="null" collapsible>
-      <div class="logo"><Logo :style="{ width: collapsed ? '24px' : '48px' }" /></div>
+      <div class="logo">
+        <Logo :style="{ width: collapsed ? '18px' : '32px' }" />
+        <div class="logo-text">
+          <!-- 工单系统 -->
+          <!-- <LogoText :style="{ height: collapsed ? '0' : '16px' }" /> -->
+        </div>
+      </div>
       <Menu :collapsed="collapsed" />
     </a-layout-sider>
     <a-layout id="layout-content-root">
@@ -17,11 +23,13 @@
 </template>
 <script>
 import Logo from '@/assets/svg_logo/FlowFormSvgIcon.vue';
+import LogoText from '@/assets/svg_logo/FlowFormSvgText.vue';
 import LayoutHeader from '../LayoutHeader';
 import Menu from '../Menu';
 export default {
   components: {
     Logo,
+    LogoText,
     Menu,
     LayoutHeader,
   },
@@ -44,15 +52,22 @@ export default {
 }
 
 #layout-root .logo {
-  // height: 32px;
+  height: 48px;
   // background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+  // margin: 16px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   font-weight: 600;
   svg {
     transition: all 0.3s ease;
+  }
+  .logo-text {
+    // height: 32px;
+    font-size: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
   }
 }
 </style>

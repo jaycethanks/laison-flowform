@@ -9,7 +9,7 @@
         type="navigation"
         @change="onStepChange"
       >
-        <a-step status="finish" title="表单设计">
+        <a-step status="finish" title="表单设计" v-if="!noFormDesign">
           <SvgIconFormDesign style="width: 24px; height: 24px" slot="icon" />
         </a-step>
         <a-step status="finish" title="流程设计">

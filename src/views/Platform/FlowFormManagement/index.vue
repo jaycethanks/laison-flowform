@@ -165,7 +165,7 @@ import FormPreviewerModal from '@/packages/FormPreviewerModal/index.vue';
 import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
 import FlowFormTemplatesSelectModal from '@/components/FlowForm/FlowFormTemplatesSelectModal/index.vue';
 import _mock from './_mock';
-
+import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 export default {
   components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal },
   data() {
@@ -216,7 +216,9 @@ export default {
     },
     handleEdit(record) {
       this.$emit('edit', record);
-      this.$router.push('/flowformDesigner?type=flowdesign&designKey=asdaasxsf&maxWidth="1200px"');
+      this.$router.push({
+        path: '/platform/flowformDesigner',
+      });
     },
     /** util function */
     omit(str) {

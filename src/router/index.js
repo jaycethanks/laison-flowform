@@ -84,6 +84,12 @@ export const systemRoutes = [
         name: '角色管理',
         component: () => import('@/views/System/SystemManagement/Role/index.vue'),
       },
+      {
+        path: 'userManament',
+        icon: 'team', //antd-icon name
+        name: '用户管理',
+        component: () => import('@/views/System/SystemManagement/UserManament/index.vue'),
+      },
     ],
   },
 
@@ -103,14 +109,8 @@ export const systemRoutes = [
       {
         path: 'userRegistration',
         icon: 'user-add', //antd-icon name
-        name: '用户注册',
+        name: '平台用户',
         component: () => import('@/views/System/PlatformManagement/UserRegistration/index.vue'),
-      },
-      {
-        path: 'userManament',
-        icon: 'team', //antd-icon name
-        name: '用户管理',
-        component: () => import('@/views/System/PlatformManagement/UserManament/index.vue'),
       },
     ],
   },
@@ -176,7 +176,9 @@ export const systemRoutes = [
     icon: 'pull-request', //antd-icon name
     name: '平台页面测试',
     // component: Test,
-    redirect: '/test',
+    component: RouteView,
+
+    // redirect: '/test',
     children: [
       { name: 'test', redirect: '/platform/test', path: 'test' },
       { name: 'formDesign', redirect: '/platform/formDesign', path: 'formDesign' },
@@ -213,7 +215,7 @@ const platformRoutes = [
     beforeEnter: (to, from, next) => {
       if (!to.query.type) {
         // 如果没有传递 query 参数，默认设置 'type'
-        next({ path: to.path, query: { type: 2 } });
+        next({ path: to.path, query: { type: FlowFormDesignerType.INTEGRATION_SYSTEM } });
       } else {
         next();
       }
@@ -238,7 +240,7 @@ const router = new VueRouter({
     {
       path: '/platform',
       name: '平台根路由',
-      component: () => import('@/views/Platform/index.vue'),
+      component: RouteView,
       children: platformRoutes,
     },
     {
