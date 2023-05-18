@@ -194,6 +194,10 @@ export const systemRoutes = [
         path: 'flowformManagement',
         redirect: '/platform/flowformManagement',
       },
+      { name: 'myApply', redirect: '/platform/workorder/myapply', path: 'myApply' },
+      { name: 'myTodo', redirect: '/platform/workorder/mytodo', path: 'myTodo' },
+      { name: 'myDone', redirect: '/platform/workorder/mydone', path: 'myDone' },
+      { name: 'myCopied', redirect: '/platform/workorder/mycopied', path: 'myCopied' },
     ],
   },
   {
@@ -223,6 +227,46 @@ const platformRoutes = [
     component: () => import('@/packages/FlowFormDesigner/index.vue'),
   },
   { path: 'flowformManagement', component: () => import('@/views/Platform/FlowFormManagement/index.vue') },
+  {
+    path: 'workorder',
+    icon: 'share-alt', //antd-icon name
+    component: RouteView,
+    children: [
+      {
+        path: 'myapply',
+        icon: 'file-add', //antd-icon name
+        name: '我的发起',
+        beforeEnter: (to, from, next) => {
+          if (!to.query.type) {
+            // 如果没有传递 query 参数，默认设置 'type'
+            next({ path: to.path, query: { type: 1 } });
+          } else {
+            next();
+          }
+        },
+        component: () => import('@/views/Platform/WorkOrder/MyApply/index.vue'),
+        // component: () => import('@/packages/FlowFormDesigner/index.vue'),
+      },
+      {
+        path: 'mytodo',
+        icon: 'file-add', //antd-icon name
+        name: '我的代办',
+        component: () => import('@/views/Platform/WorkOrder/MyTodo/index.vue'),
+      },
+      {
+        path: 'mydone',
+        icon: 'file-add', //antd-icon name
+        name: '我的已办',
+        component: () => import('@/views/Platform/WorkOrder/MyDone/index.vue'),
+      },
+      {
+        path: 'mycopied',
+        icon: 'file-add', //antd-icon name
+        name: '抄送我的',
+        component: () => import('@/views/Platform/WorkOrder/MyCopied/index.vue'),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({

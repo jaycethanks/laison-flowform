@@ -13,14 +13,33 @@
     />
 
     <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.VIEW)" id="operation-footer-row">
-      <a-button type="primary">
-        <span v-if="computedQuery.type === PreviewFormType.APPLY"> <SvgIconSend style="height: 14px" /> 发起流程</span>
-        <span v-if="computedQuery.type === PreviewFormType.APPROVE">
-          <a-icon type="check"></a-icon>
-          审批通过</span
-        >
-        <span v-if="computedQuery.type === PreviewFormType.ARCHIVE"><SvgIconArchive style="height: 14px" /> 归档</span>
-      </a-button>
+      <a-space>
+        <a-button type="primary">
+          <span v-if="computedQuery.type === PreviewFormType.APPLY">
+            <SvgIconSend style="height: 14px" /> 发起流程</span
+          >
+
+          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+            <a-icon type="check"></a-icon>
+            审批通过</span
+          >
+          <span v-if="computedQuery.type === PreviewFormType.ARCHIVE"
+            ><SvgIconArchive style="height: 14px" /> 归档</span
+          >
+        </a-button>
+        <a-button type="primary">
+          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+            <a-icon type="enter" rotate="180"></a-icon>
+            委托</span
+          >
+        </a-button>
+        <a-button type="danger">
+          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+            <a-icon type="close"></a-icon>
+            驳回</span
+          >
+        </a-button>
+      </a-space>
     </footer>
   </div>
 </template>
