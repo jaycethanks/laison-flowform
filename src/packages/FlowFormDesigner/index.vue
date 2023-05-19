@@ -31,6 +31,7 @@
         @submit="sumbitHandler"
         :publishEditDataInit="publishEditDataInit"
         @success="$emit('back')"
+        @doSubmit="handleSubmit"
       ></flow-form-publish>
     </div>
   </div>
@@ -47,6 +48,10 @@ import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import SvgIconFormDesign from '@/assets/svgIcon/SvgIconFormDesign.vue';
 import SvgIconFlowDesign from '@/assets/svgIcon/SvgIconFlowDesign.vue';
 import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
+
+import { add as system_add } from '@/api/system/ffTemplate.js';
+import { add as platform_add } from '@/api/platform/ffTemplate.js';
+
 import mock from './mock';
 export default {
   name: 'FlowFormDesigner',
@@ -58,7 +63,7 @@ export default {
     },
     // type: {
     //   type: Number,
-    //   default: FlowFormDesignerType.INTEGRATION_SYSTEM,
+    //   default: FlowFormDesignerType.PLATFORM_NEW,
     // },
   },
   components: {
@@ -83,6 +88,9 @@ export default {
       isSubmit: false, // 用于判断路由切换时，提示控制
       bpmnEditDataInit: null, // 用于edit的回显初始化
       publishEditDataInit: null, // 用于edit的回显初始化
+      fn: {
+        add: null,
+      },
       query: {
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
         // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
@@ -149,15 +157,33 @@ export default {
       this.isSubmit = true;
     },
     handleType(type) {
+      // TODO: handle 提交接口 add
       switch (type) {
-        case FlowFormDesignerType.PLATFORM: //1
+        case FlowFormDesignerType.SYSTEM_NEW: //1
           this.noFormDesign = false;
           this.noBack = false;
+          this.fn.add = system_add;
           this.fetchTemplateData('template_design_idxxxxxxx'); //TODO: 参数handle
           break;
-        case FlowFormDesignerType.INTEGRATION_SYSTEM: //2
+        case FlowFormDesignerType.PLATFORM_NEW: //2
           this.noFormDesign = true;
           this.noBack = true;
+          this.fn.add = platform_add;
+
+          this.fetchFlowFormDesignData('template_design_idxxxxxxx'); //TODO: 参数handle
+          break;
+        case FlowFormDesignerType.SYSTEM_EDIT: //3
+          this.noFormDesign = true;
+          this.noBack = true;
+          this.fn.add = platform_add;
+
+          this.fetchFlowFormDesignData('template_design_idxxxxxxx'); //TODO: 参数handle
+          break;
+        case FlowFormDesignerType.PLATFORM_EDIT: //4
+          this.noFormDesign = true;
+          this.noBack = true;
+          this.fn.add = platform_add;
+
           this.fetchFlowFormDesignData('template_design_idxxxxxxx'); //TODO: 参数handle
           break;
         default:
@@ -219,6 +245,12 @@ export default {
         startMembers: _permissionDesignConfig ? _permissionDesignConfig.starterMembers : [],
         viewMembers: _permissionDesignConfig ? _permissionDesignConfig.viewAllMembers : [],
       };
+    },
+
+    // 数据提交
+    async handleSubmit(data) {
+      const res = await this.fn.add(data);
+      console.log('[res]: ', res);
     },
   },
 

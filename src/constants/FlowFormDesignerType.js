@@ -1,4 +1,6 @@
 export default {
-  PLATFORM: 1,
-  INTEGRATION_SYSTEM: 2,
+  SYSTEM_NEW: 1,
+  PLATFORM_NEW: 2,
+  SYSTEM_EDIT: 3,
+  PLATFORM_EDIT: 4,
 };

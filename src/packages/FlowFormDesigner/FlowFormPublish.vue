@@ -253,18 +253,7 @@ export default {
       return JSON.parse(processJson).elements[0].attributes.id;
     },
     async doSubmit(submitdata) {
-      console.log('[submitdata]: ', submitdata);
-      return;
-      let res = await API.editErpConfig({
-        status: 2, //0-创建 1-更新 2-部署 <Number>
-        erpConfig: submitdata,
-      });
-      if (res.code === 0) {
-        this.$message.success('流程提交成功');
-        this.$emit('success');
-      } else {
-        this.$message.error('流程提交失败');
-      }
+      this.$emit('doSubmit', submitdata);
     },
     /** 表单数据处理 */
     previewProcessXML() {

@@ -219,7 +219,7 @@ const platformRoutes = [
     beforeEnter: (to, from, next) => {
       if (!to.query.type) {
         // 如果没有传递 query 参数，默认设置 'type'
-        next({ path: to.path, query: { type: FlowFormDesignerType.INTEGRATION_SYSTEM } });
+        next({ path: to.path, query: { type: FlowFormDesignerType.PLATFORM_NEW } });
       } else {
         next();
       }

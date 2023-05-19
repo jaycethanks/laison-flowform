@@ -2,7 +2,7 @@ import { axios } from '@/utils/request';
 
 export const add = (data) =>
   axios({
-    url: '/processFormTemplate/add',
+    url: 'platform_templates',
     method: 'post',
     data: data,
     headers: {
