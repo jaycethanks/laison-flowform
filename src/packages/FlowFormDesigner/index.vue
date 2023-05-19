@@ -163,7 +163,6 @@ export default {
           this.noFormDesign = false;
           this.noBack = false;
           this.fn.add = system_add;
-          this.fetchTemplateData('template_design_idxxxxxxx'); //TODO: 参数handle
           break;
         case FlowFormDesignerType.PLATFORM_NEW: //2
           this.noFormDesign = true;

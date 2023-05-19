@@ -47,8 +47,8 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         // target: 'http://192.168.3.47:12345',
-        // target: 'http://127.0.0.1:1228',
-        target: 'http://192.168.3.47:1228', // 请求本地 需要jeecg-boot后台项目
+        target: 'http://127.0.0.1:1228',
+        // target: 'http://192.168.3.47:1228', // 请求本地 需要jeecg-boot后台项目
         // ws: true,
         changeOrigin: true,
         logLevel: 'debug',
