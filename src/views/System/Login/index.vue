@@ -1,6 +1,7 @@
 <template>
   <div class="login-page-root">
     <!-- <Logo class="logo" /> -->
+    <FlowFormSvgIcon style="height: 48px" />
     <a-form id="components-form-demo-normal-login" :form="form" class="login-form" @submit="handleSubmit">
       <a-form-item>
         <a-input
@@ -41,7 +42,11 @@
 </template>
 
 <script>
+import FlowFormSvgIcon from '@/assets/svg_logo/FlowFormSvgIcon.vue';
 export default {
+  components: {
+    FlowFormSvgIcon,
+  },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'normal_login' });
   },
@@ -61,7 +66,7 @@ export default {
 .login-page-root {
   height: 100vh;
   width: 100vw;
-  background-color: #ebebeb;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: center;
