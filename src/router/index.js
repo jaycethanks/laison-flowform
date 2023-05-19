@@ -15,6 +15,9 @@ export const systemRoutes = [
     path: '', //默认首页
     name: '首页',
     icon: 'home',
+    meta: {
+      title: '首页',
+    },
     component: () => import('@/views/System/HomePage'), //默认sub路由页面
   },
   {
@@ -28,6 +31,9 @@ export const systemRoutes = [
         path: 'flowformDesigner',
         icon: 'file-add', //antd-icon name
         name: '新增流程模板',
+        meta: {
+          title: '新增流程模板',
+        },
         beforeEnter: (to, from, next) => {
           if (!to.query.type) {
             // 如果没有传递 query 参数，默认设置 'type'
@@ -46,6 +52,9 @@ export const systemRoutes = [
         path: 'flowformTemplatesList',
         icon: 'appstore', //antd-icon name
         name: '流程模板管理列表',
+        meta: {
+          title: '流程模板管理列表',
+        },
         component: () => import('@/components/FlowForm/FlowFormTemplatesList/index.vue'),
       },
     ],
@@ -55,6 +64,9 @@ export const systemRoutes = [
     path: 'configManagement',
     name: '配置管理',
     hidden: false,
+    meta: {
+      title: '配置管理',
+    },
     icon: 'tool', //antd-icon name
     component: () => import('@/views/System/ConfigManagement/index.vue'),
   },
@@ -70,24 +82,36 @@ export const systemRoutes = [
         path: 'department',
         icon: 'apartment', //antd-icon name
         name: '部门管理',
+        meta: {
+          title: '部门管理',
+        },
         component: () => import('@/views/System/SystemManagement/Department/index.vue'),
       },
       {
         path: 'menu',
         icon: 'menu', //antd-icon name
         name: '菜单管理',
+        meta: {
+          title: '菜单管理',
+        },
         component: () => import('@/views/System/SystemManagement/Menu/index.vue'),
       },
       {
         path: 'role',
         icon: 'solution', //antd-icon name
         name: '角色管理',
+        meta: {
+          title: '角色管理',
+        },
         component: () => import('@/views/System/SystemManagement/Role/index.vue'),
       },
       {
         path: 'userManament',
         icon: 'team', //antd-icon name
         name: '用户管理',
+        meta: {
+          title: '用户管理',
+        },
         component: () => import('@/views/System/SystemManagement/UserManament/index.vue'),
       },
     ],
@@ -104,12 +128,18 @@ export const systemRoutes = [
         path: 'platformRegistration',
         icon: 'deployment-unit', //antd-icon name
         name: '平台注册',
+        meta: {
+          title: '平台注册',
+        },
         component: () => import('@/views/System/PlatformManagement/PlatformRegistration/index.vue'),
       },
       {
         path: 'userRegistration',
         icon: 'user-add', //antd-icon name
         name: '平台用户',
+        meta: {
+          title: '平台用户',
+        },
         component: () => import('@/views/System/PlatformManagement/UserRegistration/index.vue'),
       },
     ],
@@ -126,17 +156,26 @@ export const systemRoutes = [
         path: 'workOrder',
         icon: 'bar-chart', //antd-icon name
         name: '工单统计',
+        meta: {
+          title: '工单统计',
+        },
         component: () => import('@/views/System/StatisticAnalysis/WorkOrder/index.vue'),
       },
       {
         path: 'workOrderResolutionRate',
         icon: 'fund', //antd-icon name
         name: '工单解决率统计',
+        meta: {
+          title: '工单解决率统计',
+        },
         component: () => import('@/views/System/StatisticAnalysis/WorkOrderResolutionRate/index.vue'),
       },
       {
         path: 'workOrderStatus',
         icon: 'dot-chart', //antd-icon name
+        meta: {
+          title: '工单状态统计',
+        },
         name: '工单状态统计',
         component: () => import('@/views/System/StatisticAnalysis/WorkOrderStatus/index.vue'),
       },
@@ -144,6 +183,9 @@ export const systemRoutes = [
         path: 'workOrderType',
         icon: 'radar-chart', //antd-icon name
         name: '工单类型统计',
+        meta: {
+          title: '工单类型统计',
+        },
         component: () => import('@/views/System/StatisticAnalysis/WorkOrderType/index.vue'),
       },
     ],
@@ -154,18 +196,27 @@ export const systemRoutes = [
     name: '通知中心',
     hidden: false,
     icon: 'bell', //antd-icon name
+    meta: {
+      title: '通知中心',
+    },
     component: RouteView,
     children: [
       {
         path: 'params',
         icon: 'control', //antd-icon name
         name: '通知参数配置',
+        meta: {
+          title: '通知参数配置',
+        },
         component: () => import('@/views/System/NotificationCenter/Params/index.vue'),
       },
       {
         path: 'template',
         icon: 'container', //antd-icon name
         name: '通知模板配置',
+        meta: {
+          title: '通知模板配置',
+        },
         component: () => import('@/views/System/NotificationCenter/Template/index.vue'),
       },
     ],
@@ -204,6 +255,9 @@ export const systemRoutes = [
     path: 'userCenter',
     name: '用户中心',
     hidden: false,
+    meta: {
+      title: '用户中心',
+    },
     icon: 'user', //antd-icon name
     component: () => import('@/views/System/UserCenter/index.vue'),
   },
@@ -263,6 +317,7 @@ const platformRoutes = [
         path: 'mycopied',
         icon: 'file-add', //antd-icon name
         name: '抄送我的',
+
         component: () => import('@/views/Platform/WorkOrder/MyCopied/index.vue'),
       },
     ],
@@ -289,17 +344,27 @@ const router = new VueRouter({
     },
     {
       path: '/login',
+      meta: {
+        title: '工单中台系统-登录',
+      },
       component: () => import('@/views/System/Login/index.vue'),
     },
-    { path: '*', component: () => import('@/views/System/404/NotFound.vue') },
+    {
+      path: '*',
+      meta: {
+        title: '工单中台系统-404',
+      },
+      component: () => import('@/views/System/404/NotFound.vue'),
+    },
   ],
 });
 
 export default router;
 
-// router.beforeEach((to, from, next) => {
-//   if (to.name === '/system/flowformDesign/flowformDesigner' && !to.query.hasOwnProperty('type')) {
-//     to.query.type = 1;
-//   }
-//   next();
-// });
+// 动态设置标题
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  next();
+});

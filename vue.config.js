@@ -47,20 +47,26 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         // target: 'http://192.168.3.47:12345',
-        target: 'http://127.0.0.1:7568',
+        // target: 'http://127.0.0.1:1228',
+        target: 'http://192.168.3.47:1228', // 请求本地 需要jeecg-boot后台项目
         // ws: true,
         changeOrigin: true,
+        logLevel: 'debug',
         pathRewrite: {
           '^/api': '/', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
         },
       },
-      // '/file': {
-      //   target: 'http://192.168.0.166:11180', // 请求本地 需要jeecg-boot后台项目
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     '^/file': '/file' // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
-      //   }
-      // }
+      '/file': {
+        // target: 'http://127.0.0.1:2456', // 请求本地 需要jeecg-boot后台项目
+        target: 'http://192.168.3.47', // 请求本地 需要jeecg-boot后台项目
+        // target: 'http://192.168.0.166:11180', // 请求本地 需要jeecg-boot后台项目
+        changeOrigin: true,
+        logLevel: 'debug',
+
+        pathRewrite: {
+          '^/file': '/file', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
+        },
+      },
     },
   },
 });

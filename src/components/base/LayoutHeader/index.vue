@@ -5,7 +5,7 @@
       <a-dropdown>
         <a class="ant-dropdown-link" @click="(e) => e.preventDefault()"> 欢迎, 管理员 </a>
         <a-menu class="menu" slot="overlay" @click="handleMenuClick">
-          <a-menu-item key="1"> <a-icon type="logout" /> 退出 </a-menu-item>
+          <a-menu-item key="1" @click="logoutHandle"> <a-icon type="logout" /> 退出 </a-menu-item>
         </a-menu>
       </a-dropdown>
     </aside>
@@ -21,6 +21,12 @@ export default {
   },
   methods: {
     handleMenuClick() {},
+    logoutHandle() {
+      this.$store.commit('SET_TOKEN', undefined);
+      this.$store.commit('SET_USER', null);
+
+      this.$router.push('/login');
+    },
   },
 };
 </script>

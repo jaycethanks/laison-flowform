@@ -1,0 +1,48 @@
+<template>
+  <div class="root">
+    <div class="container">
+      <slot />
+    </div>
+  </div>
+</template>
+
+<style lang="css" scoped>
+.root {
+  height: 100%;
+  width: 100%;
+}
+.container {
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+</style>
