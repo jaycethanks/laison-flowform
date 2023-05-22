@@ -9,3 +9,43 @@ export const add = (data) =>
       'Content-Type': 'application/json;charset=UTF-8',
     },
   });
+
+export const listPlatformGroup = (data) =>
+  axios({
+    url: '/processFormTemplate/listTemplateGroup',
+    method: 'post',
+    data: {},
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+  });
+
+export const listDesignGroup = () =>
+  axios({
+    url: '/processFormTemplate/listDesignGroup',
+    method: 'post',
+    data: {},
+
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+  });
+
+export const update = (data) =>
+  axios({
+    url: '/processFormTemplate/update',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+  });
+
+export const deleteById = (id) =>
+  axios({
+    url: `/processFormTemplate/deleteById/${id}`,
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+  });

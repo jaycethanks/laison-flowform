@@ -20,7 +20,7 @@
         </a-list-item>
       </a-list>
     </div> -->
-    <section class="collapse-wrapper">
+    <section class="collapse-wrapper" v-if="list.length > 0">
       <!-- <div class="search-box">
         <a-input></a-input>
       </div> -->
@@ -66,15 +66,8 @@
                 ></a-button>
               </a-space>
             </template>
-            <a-table
-
-              :columns="columns"
-              :data-source="group.formTemplates"
-              rowKey="designKey"
-              size="small"
-              :pagination="false"
-            >
-              <template slot="formDesignId" slot-scope="text, record">
+            <a-table :columns="columns" :data-source="group.list" rowKey="id" size="small" :pagination="false">
+              <template slot="id" slot-scope="text, record">
                 <div class="icon-box" :style="{ backgroundColor: record.designColor }">
                   <img :src="getIcon(record.designIcon)" alt="" />
                 </div>
@@ -82,19 +75,19 @@
               <a slot="enable" slot-scope="text, record">
                 <a-switch
                   :loading="loadingSwitch"
-                  @change="(e) => onSwitchChange(e, record.formDesignId)"
+                  @change="(e) => onSwitchChange(e, record.id)"
                   :checked="record.enable"
                   size="small"
                 />
               </a>
-              <a slot="action" slot-scope="text">
+              <a slot="action" slot-scope="text, record">
                 <a-space>
-                  <a-button type="link" icon="edit" size="small" @click="handleEdit(_item)">编辑</a-button>
+                  <a-button type="link" icon="edit" size="small" @click="handleEdit(record)">编辑</a-button>
                   <a-popconfirm
                     placement="rightBottom"
                     ok-text="Yes"
                     cancel-text="No"
-                    @confirm="handleDelete(_item.formDesignId)"
+                    @confirm="handleDelete(record.id)"
                   >
                     <template slot="title"> 确定删除？ </template>
                     <a-button style="color: #ff4d4f" type="link" icon="delete" size="small">删除</a-button>
@@ -106,21 +99,24 @@
         </a-collapse>
       </div>
     </section>
+    <EmptyPage v-else />
   </div>
 </template>
 <script>
 import API from '@/api/ErpConfig.js';
+import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
+import { listPlatformGroup, update, deleteById, listDesignGroup } from '@/api/system/ffTemplate.js';
 import icons from '@/assets/flowform_icons/index.js';
 import mock from './mock';
 import ellipsis from '@/utils/ellipsis';
 const columns = [
   {
     title: '',
-    dataIndex: 'formDesignId',
-    key: 'formDesignId',
-    width: 80,
+    dataIndex: 'id',
+    key: 'id',
+    width: 180,
 
-    scopedSlots: { customRender: 'formDesignId' },
+    scopedSlots: { customRender: 'id' },
   },
   {
     title: '模板名称',
@@ -134,12 +130,7 @@ const columns = [
     key: 'designDes',
     ellipsis: true,
   },
-  {
-    title: '版本号',
-    dataIndex: 'version',
-    key: 'version',
-    width: 100,
-  },
+
   {
     title: '启用状态',
     dataIndex: 'enable',
@@ -157,6 +148,7 @@ const columns = [
 ];
 
 export default {
+  components: { EmptyPage },
   data() {
     return {
       activeKey: [],
@@ -204,17 +196,18 @@ export default {
 
     async loadList() {
       // TODO：  返回的数据中要求新增 groupId 字段
-      mock.data.forEach((item) => {
-        // !!notEditable & selectedRowKeys 仅前端运行时有效，提交后台之前，数据中的这两个字段应该移除
-        item.notEditable = true;
-        // item.selectedRowKeys = [];
+      const res = await listPlatformGroup();
+      if (res.status === 200) {
+        res.data.forEach((item) => {
+          // !!notEditable & selectedRowKeys 仅前端运行时有效，提交后台之前，数据中的这两个字段应该移除
+          item.notEditable = true;
+          // item.selectedRowKeys = [];
+          item.groupId = Math.random().toString(36).substr(2);
 
-        item.groupId = Math.random().toString(36).substr(2);
-
-        this.activeKey.push(item.groupId);
-      });
-      this.list = mock.data;
-      console.log('[this.list]: ', this.list);
+          this.activeKey.push(item.groupId);
+        });
+        this.list = res.data;
+      }
     },
     handleGroupNameEdit(group) {
       // TODO：  后端需要新增接口 handle groupName 分组名称的修改
@@ -234,12 +227,13 @@ export default {
       return null;
     },
     onSwitchChange(status, id) {
+      console.log('[id]: ', id);
       this.changeStatus(status, id);
     },
     async changeStatus(status, id) {
       this.loadingSwitch = true;
-      let res = await API.editConfigStatus({ enable: status, formDesignId: id });
-      if (res.code === 0) {
+      let res = await update({ enable: status, id: id });
+      if (res.status === 200) {
         this.$message.success('修改状态成功');
       } else {
         this.$message.error('修改状态失败!');
@@ -248,15 +242,16 @@ export default {
       this.loadingSwitch = false;
     },
     async handleDelete(id) {
-      let res = await API.realDeleteConfigById(id);
-      this.loadList();
-      if (res.code === 0) {
+      let res = await deleteById(id);
+      if (res.status === 200) {
         this.$message.success('删除成功');
       } else {
         this.$message.error('删除失败');
       }
+      this.loadList();
     },
     handleEdit(record) {
+      console.log('[record]: ', record);
       this.$emit('edit', record);
     },
   },
@@ -286,6 +281,7 @@ export default {
 .process-list-root {
   padding-top: 10px;
   display: flex;
+  justify-content: center;
   position: relative;
   user-select: none;
   // overflow-y: scroll;

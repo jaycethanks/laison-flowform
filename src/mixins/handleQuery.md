@@ -16,10 +16,9 @@ handleQuery 提供了两个值：
 
   ```js
    query:{
-      // 必须字段
         maxWidth: 'auto',//示例字段
         minWidth: 'auto',//示例字段
-        example: { //示例字段
+        example: { //必须字段
           type: Number,
         },
     }

@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="field-item">
+      <div class="field-item" v-if="showPeopleConfig">
         <div class="field-title">
           <div class="field-main-title required-field">发起新流程</div>
           <div class="field-sub-title">请在这里配置可以发起该流程的人员</div>
@@ -89,7 +89,7 @@
         </div>
       </div>
 
-      <div class="field-item">
+      <div class="field-item" v-if="showPeopleConfig">
         <div class="field-title">
           <div class="field-main-title required-field">查看全部流程</div>
           <div class="field-sub-title">请在这里配置可以查看全部该流程的人员</div>
@@ -99,7 +99,7 @@
         </div>
       </div>
       <div class="field-item">
-        <a-button @click="submit" type="primary">发布表单</a-button>
+        <a-button @click="submit" type="primary">{{ submitBtnText }}</a-button>
       </div>
     </div>
   </div>
@@ -107,6 +107,9 @@
 <script>
 // import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
 import iconSelect from '@/components/FlowForm/IconSelect/iconSelect.vue';
+import { listPlatformGroup, update, deleteById, listDesignGroup } from '@/api/system/ffTemplate.js';
+import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
+
 import API from '@/api/ErpConfig.js';
 // 引入json转换与高亮
 import convert from 'xml-js';
@@ -118,6 +121,10 @@ export default {
     },
     publishEditDataInit: {
       type: Object,
+    },
+    type: {
+      type: Number,
+      required: true,
     },
   },
   inject: ['jumpTo'],
@@ -140,6 +147,16 @@ export default {
       groupList: [],
     };
   },
+  computed: {
+    showPeopleConfig: function () {
+      return this.type === FlowFormDesignerType.PLATFORM_NEW || this.type === FlowFormDesignerType.PLATFORM_EDIT;
+    },
+    submitBtnText: function () {
+      const isPlatform =
+        this.type === FlowFormDesignerType.PLATFORM_NEW || this.type === FlowFormDesignerType.PLATFORM_EDIT;
+      return isPlatform ? '发布流程' : '发布模板';
+    },
+  },
 
   created() {
     // init edit data
@@ -150,10 +167,10 @@ export default {
   },
   methods: {
     async loadGroupList() {
-      let res = await API.processFormList();
-      try {
-        this.groupList = res.data.map((it) => it.groupName);
-      } catch (e) {}
+      let res = await listDesignGroup();
+      if (res.status === 200) {
+        this.groupList = res.data.map((it) => it.name);
+      }
     },
 
     handleInputClick(e) {
@@ -211,11 +228,11 @@ export default {
         designGroupName: this.sumbitForm.groupSelected,
         formInfo: JSON.stringify(this.$store.state.kform.data),
         procModelXml: processXml,
-        permissionConfig: {
+        permissionConfig: JSON.stringify({
           starterMembers: this.sumbitForm.startMembers,
           viewAllMembers: this.sumbitForm.viewMembers,
-        },
-        nodeConfigs: window.historyExtendConfig,
+        }),
+        nodeConfigs: JSON.stringify(window.historyExtendConfig),
       };
       let _this = this;
       function interceptingValidator() {
@@ -245,7 +262,7 @@ export default {
         return true;
       }
 
-      if (interceptingValidator()) {
+      if (true || interceptingValidator()) {
         this.doSubmit(initDataStructure);
       }
     },

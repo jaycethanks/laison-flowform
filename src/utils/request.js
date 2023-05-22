@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import router from '@/router';
+import { message as $message } from 'ant-design-vue';
 const baseUrl = process.env.VUE_APP_BASE_URL;
 // 创建 axios 实例
 const service = axios.create({
@@ -33,8 +34,9 @@ service.interceptors.response.use(
     // }
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误
-    if (response.data.errorcode === 401) {
-      window.location.href = 'login.html';
+    if (response.data.status === 401) {
+      $message.error(`登录凭证失效，请重新退出登录！`);
+      router.push('/login');
     } else if (response.data.errorcode === 403) {
       // Message({
       //   message: 'The login information has expired. Please login again.',

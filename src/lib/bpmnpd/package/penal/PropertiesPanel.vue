@@ -7,7 +7,7 @@
   <!-- <a-tab-pane key="1" tab="节点属性"> -->
   <div class="process-panel__container" :style="{ width: `${this.width}px` }">
     <a-collapse :bordered="false" accordion v-model="activeTab">
-      <a-collapse-panel key="base">
+      <a-collapse-panel key="base" v-if="isSystem">
         <div slot="header" class="panel-tab__title">
           <a-icon type="info"></a-icon>
           常规
@@ -18,11 +18,11 @@
           :type="elementType"
         />
       </a-collapse-panel>
-      <a-collapse-panel v-if="elementType === 'Process'" key="message">
+      <a-collapse-panel v-if="elementType === 'Process' && isSystem" key="message">
         <div slot="header" class="panel-tab__title"><i class="el-icon-s-comment"></i>消息与信号</div>
         <signal-and-massage />
       </a-collapse-panel>
-      <a-collapse-panel key="condition" v-if="conditionFormVisible">
+      <a-collapse-panel key="condition" v-if="conditionFormVisible && isSystem" v-show="isSystem">
         <div slot="header" class="panel-tab__title"><i class="el-icon-s-promotion"></i>流转条件</div>
         <flow-condition :business-object="elementBusinessObject" :type="elementType" />
       </a-collapse-panel>
@@ -58,12 +58,12 @@
       <!--        <element-listeners :id="elementId" :type="elementType" />-->
       <!--      </a-collapse-panel>-->
 
-      <a-collapse-panel key="taskListeners" v-if="elementType === 'UserTask'">
+      <a-collapse-panel key="taskListeners" v-if="elementType === 'UserTask' && isSystem">
         <div slot="header" class="panel-tab__title"><a-icon type="bell"></a-icon>任务监听器</div>
         <user-task-listeners :id="elementId" :type="elementType" />
       </a-collapse-panel>
 
-      <a-collapse-panel key="extensions">
+      <a-collapse-panel key="extensions" v-if="isSystem">
         <div slot="header" class="panel-tab__title"><i class="el-icon-circle-plus"></i>扩展属性</div>
         <element-properties :id="elementId" :type="elementType" />
       </a-collapse-panel>
@@ -74,7 +74,7 @@
             <element-other-config :id="elementId" />
           </a-collapse-panel> -->
 
-      <a-collapse-panel class="person-incarge-item" key="languages" v-if="elementType === 'UserTask'">
+      <a-collapse-panel class="person-incarge-item" key="languages" v-if="elementType === 'UserTask' && isSystem">
         <div slot="header" class="panel-tab__title"><a-icon type="tags"></a-icon>结点多语言</div>
         <LanguageSupport
           :elementId="elementId"
@@ -94,10 +94,15 @@
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
-        <p class="field-label-text"><a-icon type="user"></a-icon>审批人</p>
-        <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
-        <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
-        <FormFieldsControl v-model="currentExtendNodeConfig.taskConfig.columnConfigs" />
+        <template v-if="isPlatform">
+          <p class="field-label-text"><a-icon type="user"></a-icon>审批人</p>
+          <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
+        </template>
+
+        <template v-if="isSystem">
+          <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
+          <FormFieldsControl v-model="currentExtendNodeConfig.taskConfig.columnConfigs" />
+        </template>
       </a-collapse-panel>
 
       <a-collapse-panel class="person-incarge-item" key="copyConfig" v-if="elementType === 'UserTask'">
@@ -108,12 +113,15 @@
           <a-radio value="start">节点审批前</a-radio>
           <a-radio value="end">节点审批后</a-radio>
         </a-radio-group>
+        <template v-if="isPlatform">
+          <p class="field-label-text"><a-icon type="team"></a-icon>抄送人</p>
+          <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" />
+        </template>
 
-        <p class="field-label-text"><a-icon type="team"></a-icon>抄送人</p>
-        <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" />
-        <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
-
-        <FormFieldsControl v-model="currentExtendNodeConfig.copyConfig.columnConfigs" />
+        <template v-if="isSystem">
+          <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
+          <FormFieldsControl v-model="currentExtendNodeConfig.copyConfig.columnConfigs" />
+        </template>
       </a-collapse-panel>
 
       <a-collapse-panel class="person-incarge-item" key="flowCheckConfig" v-if="elementType === 'UserTask'">
@@ -187,6 +195,8 @@ import OrgSelectionModal from './comps/OrgSelectionModal.vue';
 import LanguageSupport from './comps/LanguageSupport.vue';
 import convert from 'xml-js';
 import deepCloneObject from '@/utils/deepCloneObject.js';
+import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
+
 /**
  * 侧边栏
  * @Author MiyueFE
@@ -229,12 +239,24 @@ export default {
       //@jayce 22/01/18-18:48:13 : 用于edit 模式下。初始化节点配置、抄送配置、查看配置
       type: Object,
     },
+    type: {
+      type: Number,
+      required: true,
+    },
   },
   provide() {
     return {
       prefix: this.prefix,
       width: this.width,
     };
+  },
+  computed: {
+    isPlatform: function () {
+      return this.type === FlowFormDesignerType.PLATFORM_NEW || this.type === FlowFormDesignerType.PLATFORM_EDIT;
+    },
+    isSystem: function () {
+      return this.type === FlowFormDesignerType.SYSTEM_NEW || this.type === FlowFormDesignerType.SYSTEM_EDIT;
+    },
   },
   data() {
     return {

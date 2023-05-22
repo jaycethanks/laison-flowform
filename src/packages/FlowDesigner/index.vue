@@ -1,5 +1,5 @@
 <template>
-  <div id="designer-box" :style="{ height: height }">
+  <div id="designer-box">
     <!-- <my-process-palette /> -->
     <my-process-designer
       :key="`designer-${reloadIndex}`"
@@ -29,6 +29,7 @@
       :prefix="controlForm.prefix"
       class="process-panel"
       :bpmnEditDataInit="bpmnEditDataInit"
+      :type="type"
     />
 
     <!-- demo config -->
@@ -105,7 +106,16 @@ import MyProcessPalette from '@/lib/bpmnpd/package/palette/ProcessPalette';
 export default {
   name: 'FlowDesigner',
   components: { MyProcessPalette, MyProcessDesigner, MyPropertiesPanel },
-  props: ['height', 'bpmnEditDataInit'],
+  props: {
+    bpmnEditDataInit: {
+      type: null,
+    },
+    type: {
+      type: Number,
+      required: true,
+    },
+  },
+
   data() {
     return {
       // prettier-ignore

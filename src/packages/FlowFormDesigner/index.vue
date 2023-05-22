@@ -25,6 +25,7 @@
       <flow-design
         v-show="noFormDesign ? current === 0 : current === 1"
         :bpmnEditDataInit="bpmnEditDataInit"
+        :type="computedQuery.type"
       ></flow-design>
       <flow-form-publish
         v-show="noFormDesign ? current === 1 : current === 2"
@@ -32,6 +33,7 @@
         :publishEditDataInit="publishEditDataInit"
         @success="$emit('back')"
         @doSubmit="handleSubmit"
+        :type="computedQuery.type"
       ></flow-form-publish>
     </div>
   </div>
@@ -66,6 +68,7 @@ export default {
     //   default: FlowFormDesignerType.PLATFORM_NEW,
     // },
   },
+
   components: {
     FormDesign,
     FlowDesign,
