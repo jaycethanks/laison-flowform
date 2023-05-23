@@ -10,15 +10,7 @@
       <template v-for="item in customProp">
         <el-tag
           style="margin: 0 5px 5px 0"
-          :type="
-            item.type === 4
-              ? 'success'
-              : item.type === 2
-              ? 'warning'
-              : item.type === 1
-              ? 'info'
-              : 'error'
-          "
+          :type="item.type === 4 ? 'success' : item.type === 2 ? 'warning' : item.type === 1 ? 'info' : 'error'"
           :key="item.id"
           >{{ item.name }}</el-tag
         >
@@ -30,18 +22,24 @@
     </div>
     <!-- </el-card> -->
 
-    <orga-structure-modal v-model="visible" @ok="handleOk" />
+    <orga-structure-modal
+      :disableDept="disableDept"
+      :disableRole="disableRole"
+      :disablePerson="disablePerson"
+      v-model="visible"
+      @ok="handleOk"
+    />
   </div>
 </template>
 <script>
-import OrgaStructureModal from '@/components/laison/OrgaStructureModal/index.vue'
+import OrgaStructureModal from '@/components/laison/OrgaStructureModal/index.vue';
 
 export default {
   name: 'OrgSelectionModal',
   components: {
     OrgaStructureModal,
   },
-  props: ['customProp', 'minHeight'],
+  props: ['customProp', 'minHeight', 'approvalType'],
   model: {
     prop: 'customProp',
     event: 'customEvent',
@@ -49,48 +47,78 @@ export default {
   data() {
     return {
       visible: false,
-    }
+      disableDept: true,
+      disableRole: true,
+      disablePerson: true,
+    };
   },
+  watch: {
+    approvalType: {
+      handler: function () {
+        this.disablePerson = true;
+        this.disableDept = true;
+        this.disableRole = true;
+        switch (this.approvalType) {
+          case 'applicant':
+            this.disablePerson = false;
+            this.disableDept = false;
+            this.disableRole = false;
+            break;
+          case 'people':
+            this.disablePerson = false;
+            break;
+          case 'role':
+            this.disableRole = false;
+            break;
+          case 'department':
+            this.disableDept = false;
+            break;
+        }
+      },
+      immediate: true,
+    },
+  },
+
   methods: {
     handleOk(data) {
-      let _arr = []
+      let _arr = [];
       data.forEach((it) => {
         //"1-用户类型 2-角色类型 3-部门领导 4-部门 5-发起人 6-发起人领导 格式：Number",
-        let temp = []
+        let temp = [];
         if (it.type === 'dept') {
           temp = it.taglist.map((_it) => {
             return {
               type: 4,
               name: _it.title,
               memberId: _it.id,
-            }
-          })
+            };
+          });
         } else if (it.type === 'role') {
           temp = it.taglist.map((_it) => {
             return {
               type: 2,
               name: _it.name,
               memberId: _it.id,
-            }
-          })
+            };
+          });
         } else if (it.type === 'person') {
           temp = it.taglist.map((_it) => {
             return {
               type: 1,
               name: _it.realname,
               memberId: _it.id,
-            }
-          })
+            };
+          });
         }
-        _arr = _arr.concat(temp)
-      })
-      this.$emit('customEvent', _arr)
+        _arr = _arr.concat(temp);
+      });
+      this.$emit('customEvent', _arr);
     },
     handleClick() {
-      this.visible = true
+      this.visible = true;
     },
   },
-}
+};
 </script>
 <style scoped>
 .person-incharge-wrapper {

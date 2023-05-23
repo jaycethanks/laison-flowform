@@ -169,6 +169,7 @@
             <FormFieldsControl v-model="fieldsControl_peopleInCharge" />
           </a-collapse-panel> -->
     </a-collapse>
+    <NodeApproverConfigModal />
   </div>
   <!-- </a-tab-pane> -->
 
@@ -192,6 +193,7 @@ import UserTaskListeners from './listeners/UserTaskListeners';
 //@jayce 21/12/20-11:02:31 :
 import FormFieldsControl from './comps/FormFieldsControl.vue';
 import OrgSelectionModal from './comps/OrgSelectionModal.vue';
+import NodeApproverConfigModal from './comps/NodeApproverConfigModal.vue';
 import LanguageSupport from './comps/LanguageSupport.vue';
 import convert from 'xml-js';
 import deepCloneObject from '@/utils/deepCloneObject.js';
@@ -219,6 +221,7 @@ export default {
     FormFieldsControl,
     OrgSelectionModal,
     LanguageSupport,
+    NodeApproverConfigModal,
   },
   componentName: 'MyPropertiesPanel',
   props: {

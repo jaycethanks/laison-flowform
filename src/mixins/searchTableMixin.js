@@ -25,7 +25,10 @@ export default {
 
   methods: {
     resetSearch() {
-      this.pageInfo.condition = {};
+      this.pageInfo.condition = {
+        orderByClause: 'create_time desc',
+      };
+      this.loadData();
     },
     async loadData() {
       this.pageInfo.loading = true;

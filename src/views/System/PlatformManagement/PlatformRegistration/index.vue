@@ -69,11 +69,15 @@ import searchTableMixin from '@/mixins/searchTableMixin.js';
 import { findPage, add, update } from '@/api/system/platformManage.js';
 const columns = [
   {
+    title: '平台id',
+    dataIndex: 'id',
+    key: 'id',
+  },
+  {
     title: '平台名称',
     dataIndex: 'name',
     key: 'name',
     width: 120,
-
     scopedSlots: { customRender: 'name' },
   },
   {

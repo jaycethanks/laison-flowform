@@ -1,6 +1,14 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible" :width="width + '%'" :modal-append-to-body="false" :before-close="handleClose" style="padding: 0 !important">
+  <el-dialog
+    :title="title"
+    :visible.sync="visible"
+    :width="width + '%'"
+    :modal-append-to-body="false"
+    :before-close="handleClose"
+    style="padding: 0 !important"
+  >
     <div class="org-container">
+      {{ initType }}
       <el-card
         v-if="selectable"
         style="margin-bottom: 10px"
@@ -25,7 +33,7 @@
           @close="handleTagClose(item.type,tag)"
         >
           <!-- {{ tag.item[tree.filterTargetField] }} -->
-          {{tag[item.type === 'dept' ? 'title' : item.type === 'role' ? 'name' : 'realname']}}
+          {{tag[item.type === 'dept' ? 'name' : item.type === 'role' ? 'name' : 'name']}}
         </el-tag>
         </span>
       </el-card>
@@ -38,12 +46,26 @@
             <el-radio-button v-if="!disableRole" label="role">角色</el-radio-button>
             <el-radio-button v-if="!disablePerson" label="person">人员</el-radio-button>
           </el-radio-group>
-          <el-input style="width: 200px" :placeholder="serachPlaceHolder" prefix-icon="el-icon-search" v-model="tree.filterText" :size="elementSize" clearable @clear="handleSearchClear"> </el-input>
+          <el-input
+            style="width: 200px"
+            :placeholder="serachPlaceHolder"
+            prefix-icon="el-icon-search"
+            v-model="tree.filterText"
+            :size="elementSize"
+            clearable
+            @clear="handleSearchClear"
+          >
+          </el-input>
         </div>
 
         <div :class="{ 'person-display-mode': tree.personControlFlag }">
           <div style="margin: 10px; overflow-y: auto; max-height: 38vh; flex: 1">
-            <div v-if="tree.personControlFlag" style="height: 26px" class="all-member-item" @click="handlerAllMemberItemClick">
+            <div
+              v-if="tree.personControlFlag"
+              style="height: 26px"
+              class="all-member-item"
+              @click="handlerAllMemberItemClick"
+            >
               <!-- <i
                 :style="{
                   color: '#409EFF',
@@ -71,7 +93,12 @@
             >
             </el-tree>
           </div>
-          <div v-if="tree.personControlFlag" class="person-list" style="margin: 10px; overflow-y: auto; max-height: 38vh; flex: 1" :style="{ overflowY: isloading ? 'hidden' : 'auto' }">
+          <div
+            v-if="tree.personControlFlag"
+            class="person-list"
+            style="margin: 10px; overflow-y: auto; max-height: 38vh; flex: 1"
+            :style="{ overflowY: isloading ? 'hidden' : 'auto' }"
+          >
             <div class="person-list-wrapper">
               <!-- prettier-ignore -->
               <el-checkbox-group :min="minPerson" :max="maxPerson"  v-model="tree.data.person.checkedlist" style="font-size: unset;" @change="handlePersonCheckGroupChange">
@@ -81,9 +108,9 @@
                 <!-- 加载状态End -->
 
               <div class="list-item" v-for="i in tree.data.person.checkSrc" :key="i.id">
-                <el-checkbox :label="i"><i :style="{color:i.sex ? '#93b5cf' : '#eea08c',marginRight:'10px'}" class="el-icon-user-solid"></i>{{i.showName}}
+                <el-checkbox :label="i"><i :style="{color:i.sex ? '#93b5cf' : '#93b5cf',marginRight:'10px'}" class="el-icon-user-solid"></i>{{i.name}}
                 </el-checkbox>
-                  <div v-if="ifShowPersonPhone" class="phone-label">{{ i.phone }}</div>
+                  <div v-if="ifShowPersonPhone" class="phone-label">{{ i.phoneNumber }}</div>
                   <div v-if="i.manageFlag" class="position-label">部门领导</div>
               </div>
                 </el-checkbox-group>
@@ -102,13 +129,15 @@
 </template>
 
 <script>
-import API_SysDept from '@/api/SysDept.js'
-import API_SysUser from '@/api/SysUser.js'
-import API_SysRole from '@/api/SysRole.js'
+import API_SysDept from '@/api/SysDept.js';
+import API_SysUser from '@/api/SysUser.js';
+import API_SysRole from '@/api/SysRole.js';
 
-let { getDeptListByType } = API_SysDept
-let { getUserList, getUserListByDeptId } = API_SysUser
-let { getRoleList } = API_SysRole
+let { getDeptListByType } = API_SysDept;
+let { getUserList, getUserListByDeptId } = API_SysUser;
+let { getRoleList } = API_SysRole;
+
+import mock from './mock';
 
 export default {
   name: 'OrgaStructureModal',
@@ -175,15 +204,15 @@ export default {
       type: String,
       default: function () {
         // 如未指定initType prop
-        let arr = ['dept', 'role', 'person']
-        this.disableDept && deleteElement(arr, 'dept')
-        this.disableRole && deleteElement(arr, 'role')
-        this.disablePerson && deleteElement(arr, 'person')
+        let arr = ['dept', 'role', 'person'];
+        this.disableDept && deleteElement(arr, 'dept');
+        this.disableRole && deleteElement(arr, 'role');
+        this.disablePerson && deleteElement(arr, 'person');
         function deleteElement(arr, target) {
-          let _i = arr.findIndex((it) => it === target)
-          arr.splice(_i, 1)
+          let _i = arr.findIndex((it) => it === target);
+          arr.splice(_i, 1);
         }
-        return arr[0]
+        return arr[0];
       }, // 'dept' / 'role' / 'person'
     },
     minPerson: {
@@ -216,7 +245,7 @@ export default {
         dynamicProps: {
           children: 'children',
           label: (data, node) => {
-            return data.title || data.name || data.realname
+            return data.name;
           },
         },
         data: {
@@ -232,81 +261,85 @@ export default {
         { type: 'person', taglist: [] },
       ],
       allUserList: [],
-    }
+    };
   },
   watch: {
     visible: {
       handler: function () {
-        this.loadData()
+        this.loadData();
       },
     },
     'tree.filterText': {
       handler: function (val) {
         if (val == '') {
-          this.tree.data.person.checkSrc = this.allUserList
+          this.tree.data.person.checkSrc = this.allUserList;
         }
         if (this.radio === 'person') {
-          this.tree.data.person.checkSrc = this.allUserList.filter((it) => it.showName.includes(val))
-          return
+          this.tree.data.person.checkSrc = this.allUserList.filter((it) => it.name.includes(val));
+          return;
         }
-        this.$refs.tree.filter(val)
+        this.$refs.tree.filter(val);
       },
     },
     'tree.data.person.checkedlist': {
       //同步person checked list to person taglist
       handler: function (val) {
-        this.tags[this.tags.length - 1].taglist = val
+        this.tags[this.tags.length - 1].taglist = val;
       },
     },
   },
   mounted() {
-    this.loadData()
+    this.loadData();
   },
   methods: {
     async loadData() {
-      let res = (await getDeptListByType({ deptType: this.deptType })).data
-      this.tree.data.dept.src = res
-      this.tree.data.role.src = (await getRoleList()).data
-      this.tree.data.person.src = JSON.parse(JSON.stringify(res))
+      // let res = (await getDeptListByType({ deptType: this.deptType })).data
+      // this.tree.data.dept.src = res
+      // this.tree.data.role.src = (await getRoleList()).data
+      // this.tree.data.person.src = JSON.parse(JSON.stringify(res))
+
+      this.tree.data.dept.src = mock.data.departments;
+      this.tree.data.role.src = mock.data.roles;
+      this.tree.data.person.src = mock.data.departments;
 
       //
-      this.isloading = true
-      this.allUserList = (await getUserList()).data
-      this.tree.data.person.checkSrc = this.allUserList
-      this.isloading = false
-      this.init()
+      this.isloading = true;
+      this.allUserList = mock.data.users;
+      this.tree.data.person.checkSrc = this.allUserList;
+      this.isloading = false;
+      this.init();
     },
     init() {
-      this.tree.nodes = this.tree.data[this.radio].src
-      this.setFilterTargetField(this.initType === 'role' ? 'name' : 'title')
+      this.tree.nodes = this.tree.data[this.radio].src;
+      this.setFilterTargetField(this.initType === 'role' ? 'name' : 'name');
     },
     handleClose(done) {
-      this.$emit('cusEvent', false)
-      this.reset()
+      this.$emit('cusEvent', false);
+      this.reset();
     },
     handleOk() {
-      this.$emit('cusEvent', false)
-      this.$emit('ok', this.tags)
-      this.reset()
+      this.$emit('cusEvent', false);
+      this.$emit('ok', this.tags);
+      this.reset();
     },
     reset() {
-      this.radio = this.initType
-      this.tree.personControlFlag = this.initType === 'person' ? true : false
+      this.radio = this.initType;
+      this.tree.personControlFlag = this.initType === 'person' ? true : false;
       this.tree.data = {
         dept: { src: [], checkedlist: [] },
         role: { src: [], checkedlist: [] },
         person: { src: [], checkSrc: [], checkedlist: [] },
-      }
+      };
       this.tags = [
         { type: 'dept', taglist: [] },
         { type: 'role', taglist: [] },
         { type: 'person', taglist: [] },
-      ]
-      this.setCheckedNodes([])
+      ];
+      this.setCheckedNodes([]);
     },
 
     setFilterTargetField(label) {
-      this.tree.filterTargetField = label
+      this.tree.filterTargetField = label;
     },
     /**
      *
@@ -315,17 +348,19 @@ export default {
      * */
 
     onRadioChange(e) {
-      let label = e === 'dept' ? 'title' : e === 'role' ? 'name' : 'title'
-      this.setFilterTargetField(label) // set label
-      this.tree.nodes = this.tree.data[e].src // set current tree nodes
+      let label = e === 'dept' ? 'name' : e === 'role' ? 'name' : 'name';
+      this.setFilterTargetField(label); // set label
+      this.tree.nodes = this.tree.data[e].src; // set current tree nodes
+      console.log('[this.tree.nodes]: ', this.tree.nodes);
+
       this.$nextTick(() => {
-        this.setCheckedNodes(this.tree.data[e].checkedlist) //回显当前tree 选中状态
-      })
-      this.tree.personControlFlag = e === 'person' ? true : false
+        this.setCheckedNodes(this.tree.data[e].checkedlist); //回显当前tree 选中状态
+      });
+      this.tree.personControlFlag = e === 'person' ? true : false;
     },
     handleSearchClear() {
       if (this.radio === 'person') {
-        this.tree.data.person.checkSrc = mockmember.data
+        this.tree.data.person.checkSrc = mockmember.data;
       }
     },
     /**
@@ -335,40 +370,40 @@ export default {
      * */
 
     nodeExpand(currentNode, nodeStatus, nodeInstance) {
-      let label = currentNode[this.tree.filterTargetField]
+      let label = currentNode[this.tree.filterTargetField];
     },
     nodeCollapse(currentNode, nodeStatus, nodeInstance) {
-      let label = currentNode[this.tree.filterTargetField]
+      let label = currentNode[this.tree.filterTargetField];
     },
     filterNode(value, data) {
       // label 值是变化的
-      if (!value) return true
-      return data[this.tree.filterTargetField].indexOf(value) !== -1
+      if (!value) return true;
+      return data[this.tree.filterTargetField].indexOf(value) !== -1;
     },
     handleNodeCheck(currentNode, nodeStatus) {
       //nodeStatus : checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys
       // prettier-ignore
       this.tree.data[this.radio].checkedlist = this.getCheckedNodes(); //更新checklist
-      let tag = this.tags.find((it) => it.type === this.radio)
-      tag.taglist = nodeStatus.checkedNodes //更新taglist
+      let tag = this.tags.find((it) => it.type === this.radio);
+      tag.taglist = nodeStatus.checkedNodes; //更新taglist
     },
     setCheckedNodes(arr) {
-      this.$refs.tree.setCheckedNodes(arr)
+      this.$refs.tree.setCheckedNodes(arr);
     },
     getCheckedNodes() {
-      this.$forceUpdate()
-      return this.$refs.tree.getCheckedNodes()
+      this.$forceUpdate();
+      return this.$refs.tree.getCheckedNodes();
     },
     async handleNodeClick(currentNode, node, nodeInstance) {
       if (this.radio === 'person') {
         // mock member
-        this.isloading = true
-        this.tree.data.person.checkSrc = []
-        let res = (await getUserListByDeptId(currentNode.id)).data
+        this.isloading = true;
+        this.tree.data.person.checkSrc = [];
+        // let res = (await getUserListByDeptId(currentNode.id)).data;
         // setTimeout(() => {
-        this.isloading = false
-        this.tree.data.person.checkSrc = res
-        this.tree.data.person.checkedlist = this.tags[this.tags.length - 1].taglist
+        this.isloading = false;
+        this.tree.data.person.checkSrc = this.computeUseUnderDepartment(currentNode.id);
+        this.tree.data.person.checkedlist = this.tags[this.tags.length - 1].taglist;
 
         // problem solve
         // checkbox 关联的值是一个个对象， 是引用类型， 接口返回的对象，和已存在taglist 中的对象引用不同，因此无法回显
@@ -376,16 +411,19 @@ export default {
         // 每次点击都会返回一个数组， 长度不定， 但是taglist 已经选择列表是确定的，需要做的是 判断如果taglist 中有元素存在于返回列表，就将返回列表中对应的元素替换掉
         // 本地checklist 和taglist 是同步的，因此无需操作。
         this.tags[this.tags.length - 1].taglist.forEach((it) => {
-          let targetIndex = res.findIndex((_it) => _it.id === it.id)
+          let targetIndex = res.findIndex((_it) => _it.id === it.id);
           if (targetIndex != -1) {
-            res[targetIndex] = it
+            res[targetIndex] = it;
           }
-        })
+        });
         // 以上解决仅解决了 点击tree节点项时的回显 从全部人员list 中选取的情况， 接口返回的和taglist checklist 中选取的不同，
         // 还需要解决 点击全部人员list 从tree节点点击选取的回显，
       }
 
-      return
+      return;
+    },
+    computeUseUnderDepartment(id) {
+      return this.allUserList.filter((it) => it.deptId === id);
     },
 
     /**
@@ -398,15 +436,15 @@ export default {
       // console.log(val, "--line303");
     },
     handlerAllMemberItemClick() {
-      this.tree.data.person.checkSrc = this.allUserList
+      this.tree.data.person.checkSrc = this.allUserList;
       // problem solve
       // 解决 点击全部人员list 从tree节点点击选取的不回显问题
       this.tags[this.tags.length - 1].taglist.forEach((it) => {
-        let targetIndex = this.tree.data.person.checkSrc.findIndex((_it) => _it.id === it.id)
+        let targetIndex = this.tree.data.person.checkSrc.findIndex((_it) => _it.id === it.id);
         if (targetIndex != -1) {
-          this.tree.data.person.checkSrc[targetIndex] = it
+          this.tree.data.person.checkSrc[targetIndex] = it;
         }
-      })
+      });
       // this.tree.data.person.checkSrc.forEach()
     },
     /**
@@ -418,22 +456,22 @@ export default {
     handleTagClose(itemType, targetNode) {
       // problem solve
       // 解决处于其他radio时，删除其他radio 下的tag 问题
-      let currentNodes
+      let currentNodes;
       if (itemType !== this.radio) {
-        currentNodes = this.tree.data[itemType].checkedlist
+        currentNodes = this.tree.data[itemType].checkedlist;
       } else {
-        currentNodes = this.getCheckedNodes()
+        currentNodes = this.getCheckedNodes();
       }
 
       /** 删除某个节点(tag)时有一些规则：*/
       if (itemType === 'person') {
         /** 1.radio 为 person 时的逻辑不同于两外的radio */
-        let index = this.tree.data.person.checkedlist.findIndex((it) => it.id === targetNode.id)
-        this.tree.data.person.checkedlist.splice(index, 1) // tags 中的数据由watch tree.data.person.checkedlist 自动刷新， 因此仅需要删除 checkedlist 中对应的项即可完成同步。 checkbox group 和 tags 都是按值驱动的
+        let index = this.tree.data.person.checkedlist.findIndex((it) => it.id === targetNode.id);
+        this.tree.data.person.checkedlist.splice(index, 1); // tags 中的数据由watch tree.data.person.checkedlist 自动刷新， 因此仅需要删除 checkedlist 中对应的项即可完成同步。 checkbox group 和 tags 都是按值驱动的
       } else if (!targetNode.isLeaf && targetNode.isLeaf != undefined) {
         /** 2.如果删除的是父节点，先删除该父节点，然后删除该节点下的所有子节点 */
-        this.deleteTargetTag(targetNode, itemType)
-        this.deleteCheckedNode(targetNode, currentNodes, itemType)
+        this.deleteTargetTag(targetNode, itemType);
+        this.deleteCheckedNode(targetNode, currentNodes, itemType);
         // prettier-ignore
         targetNode.children != undefined && targetNode.children.forEach((subitem) => {//isLeaf 为false 时， children 属性存在
             this.deleteTargetTag(subitem,itemType);
@@ -444,37 +482,37 @@ export default {
         // let currentNodes = this.getCheckedNodes()
         // prettier-ignore
         let fatherNode = currentNodes.find((it) => it.id === targetNode.parentId); //找到父节点，并删除
-        this.deleteCheckedNode(targetNode, currentNodes, fatherNode, itemType)
-        this.deleteTargetTag(targetNode, itemType, fatherNode)
+        this.deleteCheckedNode(targetNode, currentNodes, fatherNode, itemType);
+        this.deleteTargetTag(targetNode, itemType, fatherNode);
       }
     },
     deleteTargetTag(targetNode, itemType, fatherNode) {
-      let tagObj = this.tags.find((it) => it.type === itemType)
+      let tagObj = this.tags.find((it) => it.type === itemType);
       // let tagObj = this.tags.find((it) => it.type === this.radio)
       // prettier-ignore
       let index;
-      index = tagObj.taglist.findIndex((it) => it.id === targetNode.id)
-      index != -1 && tagObj.taglist.splice(index, 1)
+      index = tagObj.taglist.findIndex((it) => it.id === targetNode.id);
+      index != -1 && tagObj.taglist.splice(index, 1);
       if (fatherNode != undefined) {
-        index = tagObj.taglist.findIndex((it) => it.id === fatherNode.id)
-        console.log(index, '--line289')
-        index != -1 && tagObj.taglist.splice(index, 1)
+        index = tagObj.taglist.findIndex((it) => it.id === fatherNode.id);
+        console.log(index, '--line289');
+        index != -1 && tagObj.taglist.splice(index, 1);
       }
     },
     deleteCheckedNode(targetNode, currentNodes, fatherNode, itemType) {
       // let currentNodes = this.getCheckedNodes()
-      let index
-      index = currentNodes.findIndex((it) => it.id === targetNode.id)
-      index != -1 && currentNodes.splice(index, 1)
+      let index;
+      index = currentNodes.findIndex((it) => it.id === targetNode.id);
+      index != -1 && currentNodes.splice(index, 1);
       if (fatherNode != undefined) {
-        index = currentNodes.findIndex((it) => it.id === fatherNode.id)
-        index != -1 && currentNodes.splice(index, 1)
+        index = currentNodes.findIndex((it) => it.id === fatherNode.id);
+        index != -1 && currentNodes.splice(index, 1);
       }
       this.$nextTick(() => {
         if (itemType === this.radio) {
-          this.setCheckedNodes(currentNodes) // 如果删除的tag是当前radio对应的， 那么就重新setCheckedNodes, 否则， 就不要去set
+          this.setCheckedNodes(currentNodes); // 如果删除的tag是当前radio对应的， 那么就重新setCheckedNodes, 否则， 就不要去set
         }
-      })
+      });
     },
 
     /**
@@ -490,13 +528,13 @@ export default {
      * */
     omit(str) {
       if (str.length > this.breadcrumbOmit) {
-        return str.slice(0, this.breadcrumbOmit) + '...'
+        return str.slice(0, this.breadcrumbOmit) + '...';
       } else {
-        return str
+        return str;
       }
     },
   },
-}
+};
 </script>
 <style scoped>
 >>> .el-dialog__header {
