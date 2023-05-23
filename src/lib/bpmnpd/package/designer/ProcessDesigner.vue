@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <div class="my-process-designer">
-    <div class="my-process-designer__header">
+    <div class="my-process-designer__header" v-if="isSystem">
       <slot name="control-header"></slot>
       <template v-if="!$slots['control-header']">
         <el-button-group key="file-control">
@@ -193,6 +193,8 @@ import activitiModdleExtension from './plugins/extension-moddle/activiti';
 import flowableModdleExtension from './plugins/extension-moddle/flowable';
 // 引入json转换与高亮
 import convert from 'xml-js';
+//@jayce 23/05/22-11:17:38 : custom Start
+import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 
 export default {
   name: 'MyProcessDesigner',
@@ -239,7 +241,13 @@ export default {
       default: 'primary',
       validator: (value) => ['default', 'primary', 'success', 'warning', 'danger', 'info'].indexOf(value) !== -1,
     },
+    //@jayce 23/05/22-11:16:31 : custom Start
+    type: {
+      type: Number,
+      required: true,
+    },
   },
+
   data() {
     return {
       visible: false,
@@ -295,8 +303,21 @@ export default {
         Modules.push(activitiModdleExtension);
       }
 
+      //@jayce 23/05/22-13:21:13 : cusom Start
+      // @ref:https://blog.csdn.net/qq_39211165/article/details/113620805
+      // @ref:https://stackoverflow.com/a/67207123/12261182
+
+      if (this.isPlatform) {
+        Modules.push({
+          // __init__: ['labelEditingProvider'],
+          labelEditingProvider: ['value', null],
+          // // 禁止点击节点出现contextPad
+          contextPadProvider: ['value', null],
+        });
+      }
       return Modules;
     },
+
     moddleExtensions() {
       const Extensions = {};
       // 仅使用用户自定义模块
@@ -323,6 +344,13 @@ export default {
       }
 
       return Extensions;
+    },
+    //@jayce 23/05/22-11:17:12 : custom Start
+    isPlatform: function () {
+      return this.type === FlowFormDesignerType.PLATFORM_NEW || this.type === FlowFormDesignerType.PLATFORM_EDIT;
+    },
+    isSystem: function () {
+      return this.type === FlowFormDesignerType.SYSTEM_NEW || this.type === FlowFormDesignerType.SYSTEM_EDIT;
     },
   },
   mounted() {

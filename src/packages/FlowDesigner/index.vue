@@ -1,5 +1,6 @@
 <template>
-  <div id="designer-box">
+  <div id="designer-box" :class="{ 'is-platform': isPlatform }">
+    <!-- 通过css 去控制 palette 是否隐藏: @ref:https://forum.bpmn.io/t/how-to-disable-the-properties-panel-and-tools-palette/6498/2 -->
     <!-- <my-process-palette /> -->
     <my-process-designer
       :key="`designer-${reloadIndex}`"
@@ -9,6 +10,7 @@
       ref="processDesigner"
       @element-click="elementClick"
       @init-finished="initModeler"
+      :type="type"
     />
 
     <!-- <a-drawer
@@ -103,6 +105,8 @@ import MyProcessPalette from '@/lib/bpmnpd/package/palette/ProcessPalette';
 // 自定义侧边栏
 // import MyProcessPanel from "@/lib/bpmnpd/package/process-panel/ProcessPanel";
 // import { xmlStr } from '@/bpmnJs/mockBpmnXml/bpmnMockXml'
+//@jayce 23/05/22-11:17:38 : custom Start
+import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 export default {
   name: 'FlowDesigner',
   components: { MyProcessPalette, MyProcessDesigner, MyPropertiesPanel },
@@ -141,6 +145,15 @@ export default {
         CustomPaletteProvider,
       },
     };
+  },
+  computed: {
+    //@jayce 23/05/22-11:17:12 : custom Start
+    isPlatform: function () {
+      return this.type === FlowFormDesignerType.PLATFORM_NEW || this.type === FlowFormDesignerType.PLATFORM_EDIT;
+    },
+    isSystem: function () {
+      return this.type === FlowFormDesignerType.SYSTEM_NEW || this.type === FlowFormDesignerType.SYSTEM_EDIT;
+    },
   },
   created() {
     // 如果bpmnEditDataInit 不为null. 说明是 edit,进行数据回显初始化
@@ -208,6 +221,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep.is-platform .djs-palette {
+  display: none;
+}
 body {
   overflow: hidden;
   margin: 0;
