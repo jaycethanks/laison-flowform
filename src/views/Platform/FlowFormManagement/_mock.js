@@ -5,8 +5,8 @@ export default {
       formDesignId: '1529390247870201856',
       version: '84',
       designKey: 'diagram_Process_1653470206004',
-      designName: '售后工单',
-      designDes: '市场部门发起售后工单',
+      designName: '售后工单一个很长很产很长很长很长很长很长的名字',
+      designDes: '市场部门发起售后工单，市场部门发起售后工单市场部门发起售后工单市场部门发起售后工单',
       designIcon: 'zhaobiaoshenqingliucheng',
       designColor: '#fb602d',
       designGroupName: '售后',
@@ -59,7 +59,6 @@ export default {
       updateTime: '2022-11-23 09:38:05',
       deptId: '0',
     },
-
   ],
 
   success: true,
