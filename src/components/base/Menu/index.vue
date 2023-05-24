@@ -1,5 +1,5 @@
 <template>
-  <a-menu :inline-collapsed="collapsed" theme="dark" class="menu-root" mode="inline" :default-selected-keys="['1']">
+  <a-menu :inline-collapsed="collapsed" theme="light" class="menu-root" mode="inline" :default-selected-keys="['1']">
     <template v-for="{ path, icon, name, children } in menuConfig">
       <a-menu-item class="menu-item" :key="path" v-if="children.length === 0">
         <router-link :to="path">
