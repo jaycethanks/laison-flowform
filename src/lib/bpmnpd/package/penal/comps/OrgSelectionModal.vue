@@ -10,7 +10,7 @@
       <template v-for="item in customProp">
         <el-tag
           style="margin: 0 5px 5px 0"
-          :type="item.type === 4 ? 'success' : item.type === 2 ? 'warning' : item.type === 1 ? 'info' : 'error'"
+          :type="item.type === 3 ? 'success' : item.type === 2 ? 'warning' : item.type === 1 ? 'info' : 'error'"
           :key="item.id"
           >{{ item.name }}</el-tag
         >
@@ -27,6 +27,7 @@
       :disableRole="disableRole"
       :disablePerson="disablePerson"
       v-model="visible"
+      :value="customProp"
       @ok="handleOk"
     />
   </div>
@@ -80,6 +81,7 @@ export default {
   },
 
   methods: {
+    // TODO: handle select
     handleOk(data) {
       let _arr = [];
       data.forEach((it) => {
@@ -88,9 +90,9 @@ export default {
         if (it.type === 'dept') {
           temp = it.taglist.map((_it) => {
             return {
-              type: 4,
-              name: _it.title,
-              memberId: _it.id,
+              type: 3,
+              name: _it.name,
+              id: _it.id,
             };
           });
         } else if (it.type === 'role') {
@@ -98,15 +100,15 @@ export default {
             return {
               type: 2,
               name: _it.name,
-              memberId: _it.id,
+              id: _it.id,
             };
           });
         } else if (it.type === 'person') {
           temp = it.taglist.map((_it) => {
             return {
               type: 1,
-              name: _it.realname,
-              memberId: _it.id,
+              name: _it.name,
+              id: _it.id,
             };
           });
         }

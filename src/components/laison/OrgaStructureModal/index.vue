@@ -8,7 +8,6 @@
     style="padding: 0 !important"
   >
     <div class="org-container">
-      {{ initType }}
       <el-card
         v-if="selectable"
         style="margin-bottom: 10px"
@@ -129,14 +128,6 @@
 </template>
 
 <script>
-import API_SysDept from '@/api/SysDept.js';
-import API_SysUser from '@/api/SysUser.js';
-import API_SysRole from '@/api/SysRole.js';
-
-let { getDeptListByType } = API_SysDept;
-let { getUserList, getUserListByDeptId } = API_SysUser;
-let { getRoleList } = API_SysRole;
-
 import mock from './mock';
 
 export default {
@@ -145,6 +136,9 @@ export default {
     visible: {
       type: Boolean,
       default: false,
+    },
+    value: {
+      type: Array,
     },
     title: {
       type: String,
@@ -202,18 +196,6 @@ export default {
     initType: {
       // 要定义在disable x Type 之后才能访问到！
       type: String,
-      default: function () {
-        // 如未指定initType prop
-        let arr = ['dept', 'role', 'person'];
-        this.disableDept && deleteElement(arr, 'dept');
-        this.disableRole && deleteElement(arr, 'role');
-        this.disablePerson && deleteElement(arr, 'person');
-        function deleteElement(arr, target) {
-          let _i = arr.findIndex((it) => it === target);
-          arr.splice(_i, 1);
-        }
-        return arr[0];
-      }, // 'dept' / 'role' / 'person'
     },
     minPerson: {
       type: Number,
@@ -232,12 +214,12 @@ export default {
   },
   data() {
     return {
-      radio: this.initType, //init 哪一个tab首次显示，以及后续控制
+      radio: undefined, //init 哪一个tab首次显示，以及后续控制
       isloading: false,
       tree: {
         filterText: '',
         filterTargetField: '',
-        personControlFlag: this.initType === 'person' ? true : false,
+        personControlFlag: this.radio === 'person' ? true : false,
         nodeIcon: '',
         // tree Start
         nodes: [],
@@ -263,9 +245,14 @@ export default {
       allUserList: [],
     };
   },
+
   watch: {
     visible: {
       handler: function () {
+        this.radio = this.computedInitType();
+        if (this.value) {
+          this.setInitValue(this.value);
+        }
         this.loadData();
       },
     },
@@ -288,10 +275,27 @@ export default {
       },
     },
   },
-  mounted() {
-    this.loadData();
-  },
+
   methods: {
+    setInitValue(initValue) {
+      // TODO:处理值的回显
+      // initValue
+    },
+    computedInitType() {
+      if (this.initType) {
+        return this.initType;
+      }
+      // 如未指定initType prop
+      let arr = ['dept', 'role', 'person'];
+      this.disableDept && deleteElement(arr, 'dept');
+      this.disableRole && deleteElement(arr, 'role');
+      this.disablePerson && deleteElement(arr, 'person');
+      function deleteElement(arr, target) {
+        let _i = arr.findIndex((it) => it === target);
+        arr.splice(_i, 1);
+      }
+      return arr[0];
+    },
     async loadData() {
       // let res = (await getDeptListByType({ deptType: this.deptType })).data
       // this.tree.data.dept.src = res
@@ -306,12 +310,14 @@ export default {
       this.isloading = true;
       this.allUserList = mock.data.users;
       this.tree.data.person.checkSrc = this.allUserList;
+      this.tree.personControlFlag = this.computedInitType() === 'person' ? true : false;
+
       this.isloading = false;
       this.init();
     },
     init() {
       this.tree.nodes = this.tree.data[this.radio].src;
-      this.setFilterTargetField(this.initType === 'role' ? 'name' : 'name');
+      this.setFilterTargetField('name');
     },
     handleClose(done) {
       this.$emit('cusEvent', false);
@@ -323,8 +329,8 @@ export default {
       this.reset();
     },
     reset() {
-      this.radio = this.initType;
-      this.tree.personControlFlag = this.initType === 'person' ? true : false;
+      this.radio = this.computedInitType();
+      this.tree.personControlFlag = this.computedInitType() === 'person' ? true : false;
       this.tree.data = {
         dept: { src: [], checkedlist: [] },
         role: { src: [], checkedlist: [] },
@@ -348,8 +354,7 @@ export default {
      * */
 
     onRadioChange(e) {
-      let label = e === 'dept' ? 'name' : e === 'role' ? 'name' : 'name';
-      this.setFilterTargetField(label); // set label
+      this.setFilterTargetField('name'); // set label
       this.tree.nodes = this.tree.data[e].src; // set current tree nodes
       console.log('[this.tree.nodes]: ', this.tree.nodes);
 

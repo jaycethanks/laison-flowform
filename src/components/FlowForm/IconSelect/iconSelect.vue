@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       searchText: '',
-      visible: true,
+      visible: false,
       icons: icons,
       colors: ['#017ffd', '#62bcf4', '#1fbb7d', '#fb973f', '#f1441d', '#fc6569', '#817ef6', '#ffbc17'],
       target: {

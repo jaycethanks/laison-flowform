@@ -11,6 +11,8 @@
 @border-color: #ececec;
 
 @left-right-width: 400px;
+@left-width: 360px;
+@right-width: 400px;
 @header-height: 56px;
 @operating-area-height: 45px;
 @import './k-table.less';
@@ -99,7 +101,7 @@
     // 左右栏
     aside {
       box-shadow: 0px 0px 1px 1px @border-color;
-      width: @left-right-width;
+      // width: @left-right-width;
       height: 100%;
       // >.left-title {
       //   padding    : 12px 10px 8px;
@@ -107,6 +109,8 @@
       // }
 
       &.left {
+        width: @left-width;
+
         // border-right: 1px solid @aside-border-color;
         height: 100%;
         overflow: auto;
@@ -175,6 +179,8 @@
 
       // 右侧区域
       &.right {
+        width: @right-width;
+
         height: 100%;
         // border-left: 1px solid @aside-border-color;
         // border-top : 1px solid @aside-border-color;
@@ -232,7 +238,7 @@
     // 中间内容区域
     section {
       flex: 1;
-      max-width: calc(100% - @left-right-width - @left-right-width);
+      max-width: calc(100% - @left-width - @right-width);
       user-select: none;
       margin: 0 8px 0;
       box-shadow: 0px 0px 1px 1px @border-color;

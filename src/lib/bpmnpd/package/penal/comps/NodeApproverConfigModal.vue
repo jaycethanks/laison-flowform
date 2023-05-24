@@ -1,19 +1,22 @@
 <template>
   <div class="root">
-    <a-space direction="vertical">
-      <p>审批类型</p>
-      <a-checkbox v-model="autoApproval"> 自动审批 </a-checkbox>
-      <p>设定节点审批人</p>
-      <a-radio-group v-model="approvalType" :options="options" @change="onChange2" />
-      {{ approvalType }}
-      <OrgSelectionModal :approvalType="approvalType" v-if="approvalType !== 'applicant'" />
-    </a-space>
+    <TitleRow title="审批类型" size="small" bold> </TitleRow>
+    <a-checkbox v-model="autoApproval"> 自动审批 </a-checkbox>
+    <TitleRow title="设定节点审批人" size="small" bold> </TitleRow>
+    <a-radio-group v-model="approvalType" :options="options" @change="onChange2" />
+    <OrgSelectionModal
+      v-model="selected"
+      style="margin-top: 10px"
+      :approvalType="approvalType"
+      v-if="approvalType !== 'applicant'"
+    />
 
     <!-- autoApproval -->
   </div>
 </template>
 <script>
 import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
+import TitleRow from '@/components/base/TitleRow';
 const options = [
   { label: '发起人自己', value: 'applicant' },
   { label: '指定人员', value: 'people' },
@@ -22,9 +25,10 @@ const options = [
 ];
 export default {
   name: 'NodeApproverConfigModal',
-  components: { OrgSelectionModal },
+  components: { OrgSelectionModal, TitleRow },
   data() {
     return {
+      selected: [],
       autoApproval: false,
       options,
       approvalType: 'applicant',
