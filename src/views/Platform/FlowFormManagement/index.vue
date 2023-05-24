@@ -1,89 +1,89 @@
 <template>
-  <div class="flow-design-root">
-    <a-space direction="vertical" size="large" style="width: 100%; display: block">
-      <a-card title="已选择模板" :bordered="false">
-        <a-button type="primary" slot="extra" icon="appstore" @click="showFlowFormTemplatesSelectModal = true"
-          >添加模板</a-button
-        >
-        <section class="my-template">
-          <div class="my-template-content">
-            <template v-if="list.length == 0">
-              <a-empty
-                style="
-                  height: 100%;
-                  width: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  flex-direction: column;
-                "
-              />
-            </template>
+  <RootContainer>
+    <Container>
+      <TitleRow title="已选择模板" size="small" bold>
+        <a-button type="primary" icon="appstore" @click="showFlowFormTemplatesSelectModal = true">添加模板</a-button>
+      </TitleRow>
 
-            <template v-for="(_item, _index) in list">
-              <div class="process-item-wrapper" :key="_index">
-                <div class="process-item">
-                  <div class="process-item-content">
-                    <ff-icon :icon="_item.designIcon" :bgc="_item.designColor" />
-                    <div class="process-item-label">
-                      <p class="process-item-lable-title">
-                        {{ ellipsis(_item.designName, 8) }}
+      <section class="my-template">
+        <div class="my-template-content">
+          <template v-if="list.length == 0">
+            <a-empty
+              style="
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+              "
+            />
+          </template>
+
+          <template v-for="(_item, _index) in list">
+            <div class="process-item-wrapper" :key="_index">
+              <div class="process-item">
+                <div class="process-item-content">
+                  <ff-icon :icon="_item.designIcon" style="height: 38px; width: 38px" :bgc="_item.designColor" />
+                  <div class="process-item-label">
+                    <p class="process-item-lable-title">
+                      {{ ellipsis(_item.designName, 8) }}
+                    </p>
+                    <!-- description -->
+                    <a-tooltip placement="top">
+                      <template slot="title">
+                        {{ _item.designDes }}
+                      </template>
+                      <p class="process-item-lable-subtitle">
+                        {{ ellipsis(_item.designDes, 10) }}
                       </p>
-                      <!-- description -->
-                      <a-tooltip placement="top">
-                        <template slot="title">
-                          {{ _item.designDes }}
-                        </template>
-                        <p class="process-item-lable-subtitle">
-                          {{ ellipsis(_item.designDes, 10) }}
-                        </p>
-                      </a-tooltip>
-                    </div>
+                    </a-tooltip>
                   </div>
                 </div>
+              </div>
 
-                <!-- settings -->
-                <a-dropdown :trigger="['click']">
-                  <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
-                    <a-icon type="ellipsis" style="font-size: 20px" />
-                  </a>
-                  <!-- <a-button
+              <!-- settings -->
+              <a-dropdown :trigger="['click']">
+                <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+                  <a-icon type="ellipsis" style="font-size: 20px" />
+                </a>
+                <!-- <a-button
                     type="link"
                     icon="ellipsis"
                     size="small"
 
                     @click="(e) => e.preventDefault()"
                   ></a-button> -->
-                  <a-menu slot="overlay">
-                    <a-menu-item key="0">
-                      <a-button
-                        type="link"
-                        icon="eye"
-                        size="small"
-                        title="流程设计"
-                        @click="showFormPreviewerModal = true"
-                        >预览该模板表单</a-button
-                      >
-                    </a-menu-item>
-                    <a-menu-item key="1">
-                      <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"
-                        >设计发布该模板</a-button
-                      >
-                    </a-menu-item>
-                    <a-menu-divider />
-                    <a-menu-item key="2">
-                      <a-button
-                        style="color: #ff4d4f"
-                        type="link"
-                        icon="delete"
-                        size="small"
-                        @click="handleDelete(_item.formDesignId)"
-                        >删除该模板</a-button
-                      >
-                    </a-menu-item>
-                  </a-menu>
-                </a-dropdown>
-                <!-- <a-space direction="vertical">
+                <a-menu slot="overlay">
+                  <a-menu-item key="0">
+                    <a-button
+                      type="link"
+                      icon="eye"
+                      size="small"
+                      title="流程设计"
+                      @click="showFormPreviewerModal = true"
+                      >预览该模板表单</a-button
+                    >
+                  </a-menu-item>
+                  <a-menu-item key="1">
+                    <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"
+                      >设计发布该模板</a-button
+                    >
+                  </a-menu-item>
+                  <a-menu-divider />
+                  <a-menu-item key="2">
+                    <a-button
+                      style="color: #ff4d4f"
+                      type="link"
+                      icon="delete"
+                      size="small"
+                      @click="handleDelete(_item.formDesignId)"
+                      >删除该模板</a-button
+                    >
+                  </a-menu-item>
+                </a-menu>
+              </a-dropdown>
+              <!-- <a-space direction="vertical">
                   <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"></a-button>
                   <a-popconfirm
                     placement="rightBottom"
@@ -95,13 +95,13 @@
                     <a-button style="color: #ff4d4f" type="link" icon="delete" size="small"></a-button>
                   </a-popconfirm>
                 </a-space> -->
-              </div>
-            </template>
-          </div>
-        </section>
-      </a-card>
+            </div>
+          </template>
+        </div>
+      </section>
+      <a-space direction="vertical" size="large" style="width: 100%; display: block">
+        <TitleRow title="已发布流程" size="small" bold> </TitleRow>
 
-      <a-card title="已发布流程" :bordered="false">
         <section class="enabled-flow">
           <div class="my-template-content">
             <template v-if="enabled_list.length == 0">
@@ -121,7 +121,7 @@
               <div class="process-item-wrapper" :key="_index">
                 <div class="process-item">
                   <div class="process-item-content">
-                    <ff-icon :icon="_item.designIcon" :bgc="_item.designColor" />
+                    <ff-icon :icon="_item.designIcon" style="height: 38px; width: 38px" :bgc="_item.designColor" />
                     <div class="process-item-label">
                       <p class="process-item-lable-title">
                         {{ ellipsis(_item.designName, 8) }}
@@ -147,15 +147,15 @@
             </template>
           </div>
         </section>
-      </a-card>
-    </a-space>
-    <FormPreviewerModal :visible="showFormPreviewerModal" :footer="null" @close="showFormPreviewerModal = false" />
-    <FlowFormTemplatesSelectModal
-      :visible="showFlowFormTemplatesSelectModal"
-      @ok="showFlowFormTemplatesSelectModal = false"
-      @close="showFlowFormTemplatesSelectModal = false"
-    />
-  </div>
+      </a-space>
+      <FormPreviewerModal :visible="showFormPreviewerModal" :footer="null" @close="showFormPreviewerModal = false" />
+      <FlowFormTemplatesSelectModal
+        :visible="showFlowFormTemplatesSelectModal"
+        @ok="showFlowFormTemplatesSelectModal = false"
+        @close="showFlowFormTemplatesSelectModal = false"
+      />
+    </Container>
+  </RootContainer>
 </template>
 <script>
 import ellipsis from '@/utils/ellipsis.js';
@@ -166,8 +166,11 @@ import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
 import FlowFormTemplatesSelectModal from '@/components/FlowForm/FlowFormTemplatesSelectModal/index.vue';
 import _mock from './_mock';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
+import Container from '@/components/base/Container/index.vue';
+import TitleRow from '@/components/base/TitleRow/index.vue';
+import RootContainer from '@/components/base/RootContainer/index.vue';
 export default {
-  components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal },
+  components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal, Container, TitleRow, RootContainer },
   data() {
     return {
       list: [],
@@ -247,113 +250,59 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.flow-design-root {
-  background-color: #ececec;
-  padding: 20px;
-  height: 100vh;
-  overflow: hidden;
-  .my-template {
-    .my-template-content {
-      // border: 1px solid green;
-      // padding: 20px;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      .process-item-wrapper {
-        flex-shrink: 0;
-        background: #fff;
-        border-radius: 5px;
-        position: relative;
-        // margin: 10px;
-        box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
-        width: 220px;
-        // height: 100px;
-        padding: 10px;
-        // border: 1px solid red;
-        position: relative;
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        .process-item {
-          // border: 1px solid black;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          .process-item-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-            .process-item-label {
-              margin-right: 16px;
-            }
-            p {
-              margin: 0;
-            }
-            .process-item-lable-title {
-              color: #2f2f2f;
-              font-size: 16px;
-              line-height: 32px;
-            }
-            .process-item-lable-subtitle {
-              font-size: 12px;
-              line-height: 16px;
-            }
-          }
-        }
-      }
-    }
-  }
+.my-template-content {
+  // border: 1px solid green;
+  // padding: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  .process-item-wrapper {
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 5px;
+    position: relative;
+    // margin: 10px;
+    border: 1px solid #f2f2f2;
 
-  .enabled-flow {
-    // border: 1px solid purple;
-    .my-template-content {
-      // border: 1px solid green;
-      // padding: 20px;
+    // box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
+    width: 220px;
+    // height: 100px;
+    padding: 15px 20px;
+    // border: 1px solid red;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    &:hover {
+      border: 1px solid #ececec;
+      box-shadow: 0 4px 10px 0 #515a561f;
+    }
+    .process-item {
+      // border: 1px solid black;
       display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      .process-item-wrapper {
-        flex-shrink: 0;
-        background: #fff;
-        border-radius: 5px;
-        position: relative;
-        // margin: 10px;
-        box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
-        width: 220px;
-        // height: 100px;
-        padding: 10px;
-        // border: 1px solid red;
-        position: relative;
+      align-items: center;
+      gap: 10px;
+      .process-item-content {
         display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        .process-item {
-          // border: 1px solid black;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          .process-item-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-            .process-item-label {
-              margin-right: 16px;
-            }
-            p {
-              margin: 0;
-            }
-            .process-item-lable-title {
-              color: #2f2f2f;
-              font-size: 16px;
-              line-height: 32px;
-            }
-            .process-item-lable-subtitle {
-              font-size: 12px;
-              line-height: 16px;
-            }
-          }
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        .process-item-label {
+          margin-right: 16px;
+        }
+        p {
+          margin: 0;
+        }
+        .process-item-lable-title {
+          color: #2f2f2f;
+          font-size: 14px;
+          font-weight: bold;
+          line-height: 32px;
+        }
+        .process-item-lable-subtitle {
+          font-size: 12px;
+          color: #999;
+          line-height: 16px;
         }
       }
     }

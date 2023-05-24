@@ -19,15 +19,15 @@
       :mask="false"
       ok-text="确认"
       cancel-text="取消"
-      width="500px"
+      width="460px"
     >
       <div class="color-select-wrapper">
         <span style="font-weight: 600; width: 12em; display: inline-block">背景色:</span>
         <div class="color-btn" v-for="(item, index) in colors" :key="index">
           <div @click="setColor(item)" :style="{ backgroundColor: item }" class="color-item"></div>
         </div>
-        <a-input size="small" placeholder="过滤 （输入拼音）" type="text" v-model="searchText" />
       </div>
+      <a-input style="margin: 10px 0" placeholder="过滤 （输入拼音）" type="text" v-model="searchText" />
 
       <div class="icon-selected-modal-wrapper">
         <template v-for="(item, index) in filterIcons">
@@ -55,7 +55,7 @@ export default {
       type: Object,
       default: {
         name: undefined,
-        color: '#0089ff',
+        color: '#017ffd',
       },
 
       required: true,
@@ -82,12 +82,12 @@ export default {
   data() {
     return {
       searchText: '',
-      visible: false,
+      visible: true,
       icons: icons,
-      colors: ['#0089ff', '#00c458', '#fc943d', '#f1441d', '#ed2f6a'],
+      colors: ['#017ffd', '#62bcf4', '#1fbb7d', '#fb973f', '#f1441d', '#fc6569', '#817ef6', '#ffbc17'],
       target: {
         name: '',
-        color: '#0089ff',
+        color: '#017ffd',
       },
     };
   },
@@ -102,7 +102,7 @@ export default {
     show() {
       this.target = {
         name: '',
-        color: '#0089ff',
+        color: '#017ffd',
       };
       this.visible = true;
     },
@@ -204,7 +204,7 @@ export default {
 .icon-selected-modal-wrapper {
   display: flex;
   overflow-y: scroll;
-  max-height: 50rem;
+  max-height: 36rem;
   // width: 500px;
   // border: 1px solid red;
   // justify-content: space-between;
@@ -216,20 +216,21 @@ export default {
     cursor: pointer;
     background-color: rgb(199, 199, 199);
     border: 1px solid rgb(238, 238, 238);
-    width: 64px;
-    height: 64px;
+    // border: 1px solid red;
+    width: 48px;
+    height: 48px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 8px;
     &:hover {
       background-color: #dbedff;
       transform: scale(1.1);
       transition: all 0.2s;
     }
     img {
-      width: 32px;
-      // height: 32px;
+      width: 28px;
+      // height: 26px;
     }
   }
   // &:hover {

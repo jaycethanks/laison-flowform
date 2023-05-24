@@ -1,5 +1,5 @@
 <template>
-  <div class="root">
+  <div class="container-root">
     <div class="container">
       <slot />
     </div>
@@ -7,9 +7,10 @@
 </template>
 
 <style lang="css" scoped>
-.root {
+.container-root {
   height: 100%;
   width: 100%;
+  padding: 10px;
 }
 .container {
   margin: 0 auto;
