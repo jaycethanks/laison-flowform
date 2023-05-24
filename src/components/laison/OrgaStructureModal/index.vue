@@ -279,7 +279,32 @@ export default {
   methods: {
     setInitValue(initValue) {
       // TODO:处理值的回显
-      // initValue
+      let _that = this;
+      console.log('[initValue]: ', initValue);
+      initValue.forEach((item) => {
+        switch (item.type) {
+          case 1:
+            item.type = 'person';
+            setTagAndCheckedlist(item, item.type);
+            break;
+          case 2:
+            item.type = 'role';
+            setTagAndCheckedlist(item, item.type);
+            break;
+          case 3:
+            item.type = 'dept';
+            setTagAndCheckedlist(item, item.type);
+            break;
+        }
+      });
+
+      function setTagAndCheckedlist(value, type) {
+        _that.tree.data[type].checkedlist.push(value);
+        _that.setCheckedNodes(_that.tree.data[type].checkedlist); //回显当前tree 选中状态
+
+        const findTagSrc = _that.tags.find((item) => item.type === type);
+        findTagSrc.taglist.push(value);
+      }
     },
     computedInitType() {
       if (this.initType) {

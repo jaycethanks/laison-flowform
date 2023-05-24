@@ -51,6 +51,7 @@ export default {
       disableDept: true,
       disableRole: true,
       disablePerson: true,
+      cache: null,
     };
   },
   watch: {
@@ -59,20 +60,36 @@ export default {
         this.disablePerson = true;
         this.disableDept = true;
         this.disableRole = true;
+        if (this.customProp && this.customProp.length > 0) {
+          this.cache = { [this.customProp[0].type]: this.customProp };
+        }
+
+        // 先置为空
+        // TODO： 人员的回显缓存ok了， 但是部门的还是有问题
+        this.$emit('customEvent', []);
         switch (this.approvalType) {
           case 'applicant':
             this.disablePerson = false;
             this.disableDept = false;
             this.disableRole = false;
-            break;
+
           case 'people':
             this.disablePerson = false;
+            if (this.cache && 'person' in this.cache) {
+              this.$emit('customEvent', this.cache['person']);
+            }
             break;
           case 'role':
             this.disableRole = false;
+            if (this.cache && 'role' in this.cache) {
+              this.$emit('customEvent', this.cache['role']);
+            }
             break;
           case 'department':
             this.disableDept = false;
+            if (this.cache && 'department' in this.cache) {
+              this.$emit('customEvent', this.cache['department']);
+            }
             break;
         }
       },
@@ -89,27 +106,18 @@ export default {
         let temp = [];
         if (it.type === 'dept') {
           temp = it.taglist.map((_it) => {
-            return {
-              type: 3,
-              name: _it.name,
-              id: _it.id,
-            };
+            _it.type = 3;
+            return _it;
           });
         } else if (it.type === 'role') {
           temp = it.taglist.map((_it) => {
-            return {
-              type: 2,
-              name: _it.name,
-              id: _it.id,
-            };
+            _it.type = 2;
+            return _it;
           });
         } else if (it.type === 'person') {
           temp = it.taglist.map((_it) => {
-            return {
-              type: 1,
-              name: _it.name,
-              id: _it.id,
-            };
+            _it.type = 1;
+            return _it;
           });
         }
         _arr = _arr.concat(temp);
