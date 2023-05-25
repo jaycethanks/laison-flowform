@@ -26,6 +26,7 @@ const options = [
 export default {
   name: 'NodeApproverConfigModal',
   components: { OrgSelectionModal, TitleRow },
+
   data() {
     return {
       approver: [],
@@ -33,6 +34,9 @@ export default {
       options,
       approvalType: 'applicant',
     };
+  },
+  mounted() {
+    window.xxxxxx = this;
   },
   methods: {
     onChange1(e) {

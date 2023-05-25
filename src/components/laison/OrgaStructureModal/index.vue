@@ -100,19 +100,20 @@
           >
             <div class="person-list-wrapper">
               <!-- prettier-ignore -->
-              <el-checkbox-group :min="minPerson" :max="maxPerson"  v-model="tree.data.person.checkedlist" style="font-size: unset;" @change="handlePersonCheckGroupChange">
+              <el-checkbox-group ref='per' :min="minPerson" :max="maxPerson"  v-model="tree.data.person.checkedlist" style="font-size: unset;" @change="handlePersonCheckGroupChange">
                 <!-- 加载状态Start -->
-              <div v-if="isloading" v-loading="isloading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中" style="height:40px;padding-bottom:10px;display:flex;justify-content:center;align-items:center"></div>
-              <div v-if="!isloading && tree.data.person.checkSrc.length === 0" style="margin:10px;height:20px;text-align:center">数据为空</div>
-                <!-- 加载状态End -->
+               
+                <div v-if="isloading" v-loading="isloading" element-loading-spinner="el-icon-loading" element-loading-text="拼命加载中" style="height:40px;padding-bottom:10px;display:flex;justify-content:center;align-items:center"></div>
+                <div v-if="!isloading && tree.data.person.checkSrc.length === 0" style="margin:10px;height:20px;text-align:center">数据为空</div>
+                  <!-- 加载状态End -->
 
-              <div class="list-item" v-for="i in tree.data.person.checkSrc" :key="i.id">
-                <el-checkbox :label="i"><i :style="{color:i.sex ? '#93b5cf' : '#93b5cf',marginRight:'10px'}" class="el-icon-user-solid"></i>{{i.name}}
-                </el-checkbox>
-                  <div v-if="ifShowPersonPhone" class="phone-label">{{ i.phoneNumber }}</div>
-                  <div v-if="i.manageFlag" class="position-label">部门领导</div>
-              </div>
-                </el-checkbox-group>
+                <div class="list-item" v-for="i in tree.data.person.checkSrc" :key="i.id">
+                  <el-checkbox :label="i"><i :style="{color:i.sex ? '#93b5cf' : '#93b5cf',marginRight:'10px'}" class="el-icon-user-solid"></i>{{i.name}}
+                  </el-checkbox>
+                    <div v-if="ifShowPersonPhone" class="phone-label">{{ i.phoneNumber }}</div>
+                    <div v-if="i.manageFlag" class="position-label">部门领导</div>
+                </div>
+              </el-checkbox-group>
             </div>
           </div>
         </div>
@@ -133,10 +134,6 @@ import mock from './mock';
 export default {
   name: 'OrgaStructureModal',
   props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
     value: {
       type: Array,
     },
@@ -210,10 +207,11 @@ export default {
   },
   model: {
     event: 'cusEvent',
-    prop: 'visible',
+    prop: 'value',
   },
   data() {
     return {
+      visible: false,
       radio: undefined, //init 哪一个tab首次显示，以及后续控制
       isloading: false,
       tree: {
@@ -242,20 +240,13 @@ export default {
         { type: 'role', taglist: [] },
         { type: 'person', taglist: [] },
       ],
+      outValue: [],
+
       allUserList: [],
     };
   },
 
   watch: {
-    visible: {
-      handler: function () {
-        this.radio = this.computedInitType();
-        if (this.value) {
-          this.setInitValue(this.value);
-        }
-        this.loadData();
-      },
-    },
     'tree.filterText': {
       handler: function (val) {
         if (val == '') {
@@ -277,32 +268,46 @@ export default {
   },
 
   methods: {
-    setInitValue(initValue) {
-      let _that = this;
-      window.ll = this;
-      initValue.forEach((item) => {
-        switch (item.type) {
-          case 1:
-            setTagAndCheckedlist(item, 'person');
-            break;
-          case 2:
-            setTagAndCheckedlist(item, 'role');
-            break;
-          case 3:
-            setTagAndCheckedlist(item, 'dept');
-            break;
-        }
+    show() {
+      this.radio = this.computedInitType();
+      this.loadData();
+      this.visible = true;
+
+      // tags 置空
+      this.tags.forEach((v) => {
+        v.taglist = [];
       });
 
-      function setTagAndCheckedlist(value, type) {
-        debugger;
-        _that.tree.data[type].checkedlist.push(value);
-        _that.setCheckedNodes(_that.tree.data[type].checkedlist); //回显当前tree 选中状态
+      // checkbox group 置空
+      for (let key in this.tree.data) {
+        this.tree.data[key].checkedlist.splice(0, this.tree.data[key].checkedlist.length);
+      }
 
-        const findTagSrc = _that.tags.find((item) => item.type === type);
-        findTagSrc.taglist.push(value);
+      if (this.value && this.value.length === 0) {
+        // 如果没有传入初始值,那么将缓存置为空
+        this.outValue = [];
+        // 并停止后续操作
+        return;
+      } else if (this.value && this.value.length > 0) {
+        this.outValue = this.value;
+      }
+
+      // reset 回显值
+      let typeArray = ['dept', 'role', 'person'];
+      if (this.outValue && this.outValue.length > 0) {
+        let index = 0;
+        this.outValue.forEach((h) => {
+          index = 3 - h.type;
+          this.tags[index].taglist.push(h);
+
+          // [bugfix]checkbox 帮定的是一个对象, 所以这里要从原始数据中找到对应的对象去回显
+          // if()
+          const target = this.tree.data[typeArray[index]].checkSrc.find((a) => a.id == h.id);
+          this.tree.data.person.checkedlist.push(target);
+        });
       }
     },
+
     computedInitType() {
       if (this.initType) {
         return this.initType;
@@ -342,13 +347,38 @@ export default {
       this.setFilterTargetField('name');
     },
     handleClose(done) {
-      this.$emit('cusEvent', false);
-      this.reset();
+      this.visible = false;
     },
     handleOk() {
-      this.$emit('cusEvent', false);
-      this.$emit('ok', this.tags);
-      this.reset();
+      this.outValue = this.getOutvalue();
+      this.$emit('cusEvent', this.outValue);
+      this.visible = false;
+    },
+    getOutvalue() {
+      let arr = [];
+      let tempTags = JSON.parse(JSON.stringify(this.tags));
+      tempTags.forEach((it) => {
+        const taglist = it.taglist;
+        switch (it.type) {
+          case 'dept':
+            taglist.forEach((item) => {
+              item.type = 3;
+            });
+            break;
+          case 'role':
+            taglist.forEach((item) => {
+              item.type = 2;
+            });
+            break;
+          case 'person':
+            taglist.forEach((item) => {
+              item.type = 1;
+            });
+            break;
+        }
+        arr = arr.concat(taglist);
+      });
+      return arr;
     },
     reset() {
       this.radio = this.computedInitType();
@@ -410,6 +440,7 @@ export default {
     handleNodeCheck(currentNode, nodeStatus) {
       //nodeStatus : checkedNodes、checkedKeys、halfCheckedNodes、halfCheckedKeys
       // prettier-ignore
+
       this.tree.data[this.radio].checkedlist = this.getCheckedNodes(); //更新checklist
       let tag = this.tags.find((it) => it.type === this.radio);
       tag.taglist = nodeStatus.checkedNodes; //更新taglist
