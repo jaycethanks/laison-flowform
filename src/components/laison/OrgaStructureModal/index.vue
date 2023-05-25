@@ -278,27 +278,24 @@ export default {
 
   methods: {
     setInitValue(initValue) {
-      // TODO:处理值的回显
       let _that = this;
-      console.log('[initValue]: ', initValue);
+      window.ll = this;
       initValue.forEach((item) => {
         switch (item.type) {
           case 1:
-            item.type = 'person';
-            setTagAndCheckedlist(item, item.type);
+            setTagAndCheckedlist(item, 'person');
             break;
           case 2:
-            item.type = 'role';
-            setTagAndCheckedlist(item, item.type);
+            setTagAndCheckedlist(item, 'role');
             break;
           case 3:
-            item.type = 'dept';
-            setTagAndCheckedlist(item, item.type);
+            setTagAndCheckedlist(item, 'dept');
             break;
         }
       });
 
       function setTagAndCheckedlist(value, type) {
+        debugger;
         _that.tree.data[type].checkedlist.push(value);
         _that.setCheckedNodes(_that.tree.data[type].checkedlist); //回显当前tree 选中状态
 
