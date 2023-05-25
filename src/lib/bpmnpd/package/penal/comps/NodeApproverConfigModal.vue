@@ -5,7 +5,7 @@
     <TitleRow title="设定节点审批人" size="small" bold> </TitleRow>
     <a-radio-group v-model="approvalType" :options="options" @change="onChange2" />
     <OrgSelectionModal
-      v-model="selected"
+      v-model="approver"
       style="margin-top: 10px"
       :approvalType="approvalType"
       v-if="approvalType !== 'applicant'"
@@ -28,7 +28,7 @@ export default {
   components: { OrgSelectionModal, TitleRow },
   data() {
     return {
-      selected: [],
+      approver: [],
       autoApproval: false,
       options,
       approvalType: 'applicant',

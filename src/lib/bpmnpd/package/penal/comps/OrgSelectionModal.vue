@@ -87,8 +87,8 @@ export default {
             break;
           case 'department':
             this.disableDept = false;
-            if (this.cache && 'department' in this.cache) {
-              this.$emit('customEvent', this.cache['department']);
+            if (this.cache && 'dept' in this.cache) {
+              this.$emit('customEvent', this.cache['dept']);
             }
             break;
         }
@@ -100,29 +100,29 @@ export default {
   methods: {
     // TODO: handle select
     handleOk(data) {
-      let _arr = [];
+      let arr = [];
       data.forEach((it) => {
-        //"1-用户类型 2-角色类型 3-部门领导 4-部门 5-发起人 6-发起人领导 格式：Number",
-        let temp = [];
-        if (it.type === 'dept') {
-          temp = it.taglist.map((_it) => {
-            _it.type = 3;
-            return _it;
-          });
-        } else if (it.type === 'role') {
-          temp = it.taglist.map((_it) => {
-            _it.type = 2;
-            return _it;
-          });
-        } else if (it.type === 'person') {
-          temp = it.taglist.map((_it) => {
-            _it.type = 1;
-            return _it;
-          });
+        const taglist = it.taglist;
+        switch (it.type) {
+          case 'dept':
+            taglist.forEach((item) => {
+              item.type = 3;
+            });
+            break;
+          case 'role':
+            taglist.forEach((item) => {
+              item.type = 2;
+            });
+            break;
+          case 'person':
+            taglist.forEach((item) => {
+              item.type = 1;
+            });
+            break;
         }
-        _arr = _arr.concat(temp);
+        arr = arr.concat(taglist);
       });
-      this.$emit('customEvent', _arr);
+      this.$emit('customEvent', arr);
     },
     handleClick() {
       this.visible = true;
