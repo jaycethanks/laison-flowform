@@ -1,14 +1,10 @@
 <template>
   <div>
     <!-- <el-card shadow="never" :body-style="{ padding: '0' }"> -->
-    <div
-      class="person-incharge-wrapper"
-      @click="handleClick"
-      style="position: relative; border: 1px dashed #d9d9d9"
-      :style="{ minHeight: minHeight + 'px' }"
-    >
-      <template v-for="item in customProp">
+    <div class="person-incharge-wrapper" @click="handleClick" :style="{ minHeight: minHeight + 'px' }">
+      <template v-for="item in sonCustomProp">
         <el-tag
+          size="small"
           style="margin: 0 5px 5px 0"
           :type="item.type === 3 ? 'success' : item.type === 2 ? 'warning' : item.type === 1 ? 'info' : 'error'"
           :key="item.id"
@@ -26,9 +22,8 @@
       :disableDept="disableDept"
       :disableRole="disableRole"
       :disablePerson="disablePerson"
-      v-model="visible"
-      :value="customProp"
-      @ok="handleOk"
+      v-model="sonCustomProp"
+      ref="orgaModal"
     />
   </div>
 </template>
@@ -40,6 +35,7 @@ export default {
   components: {
     OrgaStructureModal,
   },
+  computed: {},
   props: ['customProp', 'minHeight', 'approvalType'],
   model: {
     prop: 'customProp',
@@ -48,6 +44,7 @@ export default {
   data() {
     return {
       visible: false,
+      sonCustomProp: null,
       disableDept: true,
       disableRole: true,
       disablePerson: true,
@@ -55,17 +52,28 @@ export default {
     };
   },
   watch: {
+    customProp: {
+      handler: function () {
+        if (this.sonCustomProp !== this.customProp && this.customProp) {
+          this.sonCustomProp = JSON.parse(JSON.stringify(this.customProp));
+        }
+      },
+      immediate: true,
+    },
+    sonCustomProp: {
+      handler: function () {
+        this.$emit('customEvent', this.sonCustomProp);
+      },
+      immediate: true,
+    },
     approvalType: {
       handler: function () {
         this.disablePerson = true;
         this.disableDept = true;
         this.disableRole = true;
-        if (this.customProp && this.customProp.length > 0) {
-          this.cache = { [this.customProp[0].type]: this.customProp };
+        if (this.sonCustomProp && this.sonCustomProp.length > 0) {
+          this.cache = { [this.sonCustomProp[0].type]: this.sonCustomProp };
         }
-
-        // 先置为空
-        // TODO： 人员的回显缓存ok了， 但是部门的还是有问题
         this.$emit('customEvent', []);
         switch (this.approvalType) {
           case 'applicant':
@@ -75,20 +83,20 @@ export default {
 
           case 'people':
             this.disablePerson = false;
-            if (this.cache && 'person' in this.cache) {
-              this.$emit('customEvent', this.cache['person']);
+            if (this.cache && '1' in this.cache) {
+              this.$emit('customEvent', this.cache['1']);
             }
             break;
           case 'role':
             this.disableRole = false;
-            if (this.cache && 'role' in this.cache) {
-              this.$emit('customEvent', this.cache['role']);
+            if (this.cache && '2' in this.cache) {
+              this.$emit('customEvent', this.cache['2']);
             }
             break;
           case 'department':
             this.disableDept = false;
-            if (this.cache && 'dept' in this.cache) {
-              this.$emit('customEvent', this.cache['dept']);
+            if (this.cache && '3' in this.cache) {
+              this.$emit('customEvent', this.cache['3']);
             }
             break;
         }
@@ -98,44 +106,22 @@ export default {
   },
 
   methods: {
-    // TODO: handle select
-    handleOk(data) {
-      let arr = [];
-      data.forEach((it) => {
-        const taglist = it.taglist;
-        switch (it.type) {
-          case 'dept':
-            taglist.forEach((item) => {
-              item.type = 3;
-            });
-            break;
-          case 'role':
-            taglist.forEach((item) => {
-              item.type = 2;
-            });
-            break;
-          case 'person':
-            taglist.forEach((item) => {
-              item.type = 1;
-            });
-            break;
-        }
-        arr = arr.concat(taglist);
-      });
-      this.$emit('customEvent', arr);
-    },
     handleClick() {
-      this.visible = true;
+      window.xxx = this;
+      this.$refs.orgaModal.show();
     },
   },
 };
 </script>
 <style scoped>
 .person-incharge-wrapper {
-  padding: 20px;
+  position: relative;
+  border: 1px dashed #d9d9d9;
+  padding: 16px;
 }
 .person-incharge-wrapper:hover {
-  /* background-color: #eee; */
+  /* background-color: #00000009; */
+  border: 1px dashed #008eff;
 }
 .add-person-inchage-icon-mask {
   cursor: pointer;
@@ -147,21 +133,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2196f30a;
+  background-color: #ffffff0a;
 }
 .add-person-inchage-icon-mask i {
-  color: #008cff34;
+  color: #00000066;
   font-size: 19px;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .add-person-inchage-icon-mask:hover {
   transition: all 0.3s;
-  background-color: #2196f326;
+  background-color: #ffffff26;
   backdrop-filter: blur(1px);
+  transition: all 0.3s ease;
 }
 .add-person-inchage-icon-mask:hover i {
-  transition: all 0.3s;
-
   color: #008eff;
 }
 </style>
