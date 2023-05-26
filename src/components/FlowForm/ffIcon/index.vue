@@ -1,5 +1,5 @@
 <template>
-  <div class="icon-box" :style="{ backgroundColor: bgc }">
+  <div class="icon-box" :class="[size]" :style="{ backgroundColor: bgc }">
     <img :src="getIcon(icon)" alt="" />
   </div>
 </template>
@@ -11,7 +11,10 @@ export default {
     bgc: {
       type: String,
     },
-
+    size:{
+      type: String,
+      default:""
+    },
     icon: {
       type: String,
     },
@@ -36,6 +39,13 @@ export default {
   align-items: center;
   border-radius: 8px;
   position: relative;
+  img {
+    width: 24px;
+  }
+}
+.icon-box.small{
+  width: 36px;
+  height: 36px;
   img {
     width: 24px;
   }
