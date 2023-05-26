@@ -265,11 +265,12 @@ export default {
       },
     },
   },
-
+  created() {
+    this.loadData();
+  },
   methods: {
     show() {
-      this.radio = this.computedInitType();
-      this.loadData();
+      this.init();
       this.visible = true;
 
       // tags 置空
@@ -347,23 +348,23 @@ export default {
       // this.tree.data.dept.src = res
       // this.tree.data.role.src = (await getRoleList()).data
       // this.tree.data.person.src = JSON.parse(JSON.stringify(res))
-
-      this.tree.data.dept.src = mock.data.departments;
-      this.tree.data.role.src = mock.data.roles;
-      this.tree.data.person.src = mock.data.departments;
-
-      //
       this.isloading = true;
-      this.allUserList = mock.data.users;
-      this.tree.data.person.checkSrc = this.allUserList;
-      this.tree.personControlFlag = this.computedInitType() === 'person' ? true : false;
+      setTimeout(() => {
+        this.tree.data.dept.src = mock.data.departments;
+        this.tree.data.role.src = mock.data.roles;
+        this.tree.data.person.src = mock.data.departments;
 
-      this.isloading = false;
-      this.init();
+        //
+        this.allUserList = mock.data.users;
+        this.tree.data.person.checkSrc = this.allUserList;
+        this.isloading = false;
+      }, 500);
     },
     init() {
-      this.tree.nodes = this.tree.data[this.radio].src;
+      this.radio = this.computedInitType();
       this.setFilterTargetField('name');
+      this.tree.nodes = this.tree.data[this.radio].src;
+      this.tree.personControlFlag = this.computedInitType() === 'person' ? true : false;
     },
     handleClose(done) {
       this.visible = false;

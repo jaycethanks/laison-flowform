@@ -1,14 +1,10 @@
 <template>
   <div>
     <!-- <el-card shadow="never" :body-style="{ padding: '0' }"> -->
-    <div
-      class="person-incharge-wrapper"
-      @click="handleClick"
-      style="position: relative; border: 1px dashed #d9d9d9"
-      :style="{ minHeight: minHeight + 'px' }"
-    >
+    <div class="person-incharge-wrapper" @click="handleClick" :style="{ minHeight: minHeight + 'px' }">
       <template v-for="item in sonCustomProp">
         <el-tag
+          size="small"
           style="margin: 0 5px 5px 0"
           :type="item.type === 3 ? 'success' : item.type === 2 ? 'warning' : item.type === 1 ? 'info' : 'error'"
           :key="item.id"
@@ -33,7 +29,6 @@
 </template>
 <script>
 import OrgaStructureModal from '@/components/laison/OrgaStructureModal/index.vue';
-import functions from 'lodash/functions';
 
 export default {
   name: 'OrgSelectionModal',
@@ -120,10 +115,13 @@ export default {
 </script>
 <style scoped>
 .person-incharge-wrapper {
-  padding: 20px;
+  position: relative;
+  border: 1px dashed #d9d9d9;
+  padding: 16px;
 }
 .person-incharge-wrapper:hover {
-  /* background-color: #eee; */
+  /* background-color: #00000009; */
+  border: 1px dashed #008eff;
 }
 .add-person-inchage-icon-mask {
   cursor: pointer;
@@ -135,21 +133,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2196f30a;
+  background-color: #ffffff0a;
 }
 .add-person-inchage-icon-mask i {
-  color: #008cff34;
+  color: #00000066;
   font-size: 19px;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .add-person-inchage-icon-mask:hover {
   transition: all 0.3s;
-  background-color: #2196f326;
+  background-color: #ffffff26;
   backdrop-filter: blur(1px);
+  transition: all 0.3s ease;
 }
 .add-person-inchage-icon-mask:hover i {
-  transition: all 0.3s;
-
   color: #008eff;
 }
 </style>

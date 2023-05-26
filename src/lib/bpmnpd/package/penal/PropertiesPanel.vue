@@ -95,8 +95,8 @@
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
         <template v-if="isPlatform">
-          <p class="field-label-text"><a-icon type="user"></a-icon>审批人</p>
-          <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" />
+          <!-- <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" /> -->
+          <NodeApproverConfigModal v-model="currentExtendNodeConfig.taskConfig.approval" />
         </template>
 
         <template v-if="isSystem">
@@ -107,15 +107,15 @@
 
       <a-collapse-panel class="person-incarge-item" key="copyConfig" v-if="elementType === 'UserTask'">
         <div slot="header" class="panel-tab__title"><a-icon type="mail"></a-icon>抄送配置</div>
-        <p class="field-label-text"><a-icon type="border"></a-icon>抄送类型</p>
+        <TitleRow title="抄送类型" size="small" bold> </TitleRow>
 
         <a-radio-group v-model="currentExtendNodeConfig.copyConfig.type">
           <a-radio value="start">节点审批前</a-radio>
           <a-radio value="end">节点审批后</a-radio>
         </a-radio-group>
         <template v-if="isPlatform">
-          <p class="field-label-text"><a-icon type="team"></a-icon>抄送人</p>
-          <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" />
+          <!-- <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" /> -->
+          <NodeApproverConfigModal v-model="currentExtendNodeConfig.copyConfig.approval" />
         </template>
 
         <template v-if="isSystem">
@@ -169,7 +169,6 @@
             <FormFieldsControl v-model="fieldsControl_peopleInCharge" />
           </a-collapse-panel> -->
     </a-collapse>
-    <NodeApproverConfigModal />
   </div>
   <!-- </a-tab-pane> -->
 
@@ -198,6 +197,7 @@ import LanguageSupport from './comps/LanguageSupport.vue';
 import convert from 'xml-js';
 import deepCloneObject from '@/utils/deepCloneObject.js';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
+import TitleRow from '@/components/base/TitleRow';
 
 /**
  * 侧边栏
@@ -222,6 +222,7 @@ export default {
     OrgSelectionModal,
     LanguageSupport,
     NodeApproverConfigModal,
+    TitleRow,
   },
   componentName: 'MyPropertiesPanel',
   props: {
@@ -476,13 +477,13 @@ export default {
             lang: {},
             taskConfig: {
               columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)), // 将深拷贝表单信息转为 <FormFieldsControl/> 能直接处理的数据对象,
-              members: [],
+              approval: {},
               applyerLeader: false, // 发起人领导
               applyer: false,
             },
             copyConfig: {
               columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)),
-              members: [],
+              approval: {},
               type: 'end',
             },
             viewConfig: {
@@ -493,7 +494,7 @@ export default {
               },
               userConfig: {
                 columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)),
-                members: [],
+                approval: {},
               },
             },
           };
