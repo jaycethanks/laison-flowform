@@ -31,8 +31,7 @@
           :style="{ margin: tagMargin }"
           @close="handleTagClose(item.type,tag)"
         >
-          <!-- {{ tag.item[tree.filterTargetField] }} -->
-          {{tag[item.type === 'dept' ? 'name' : item.type === 'role' ? 'name' : 'name']}}
+          {{tag['name']}}
         </el-tag>
         </span>
       </el-card>
@@ -298,12 +297,32 @@ export default {
         let index = 0;
         this.outValue.forEach((h) => {
           index = 3 - h.type;
+          // set tags
           this.tags[index].taglist.push(h);
-
-          // [bugfix]checkbox 帮定的是一个对象, 所以这里要从原始数据中找到对应的对象去回显
-          // if()
-          const target = this.tree.data[typeArray[index]].checkSrc.find((a) => a.id == h.id);
-          this.tree.data.person.checkedlist.push(target);
+          // [bugfix]checkbox 绑定的是一个对象, 所以这里要从原始数据中找到对应的对象去回显
+          let target;
+          if (h.type === 1) {
+            // person
+            target = this.tree.data[typeArray[index]].checkSrc.find((a) => a.id == h.id);
+          } else if (h.type === 2) {
+            // role
+            target = this.tree.data[typeArray[index]].src.find((a) => a.id == h.id);
+          } else if (h.type === 3) {
+            // dept
+            target = h;
+          }
+          this.tree.data[typeArray[index]].checkedlist.push(target);
+        });
+        // 如果是角色和部门,需要额外调用 setCheckedNodes
+        this.$nextTick(() => {
+          console.log('[this.radio]: ', this.radio);
+          if (this.radio === 'role') {
+            this.setCheckedKeys(this.tree.data.role.checkedlist.map((it) => it.id));
+          } else if (this.radio === 'dept') {
+            this.setCheckedKeys(this.tree.data.dept.checkedlist.map((it) => it.id));
+          }
+          // this.setCheckedNodes(this.tree.data.role.checkedlist);
+          // this.setCheckedNodes(this.tree.data.dept.checkedlist);
         });
       }
     },
@@ -408,7 +427,6 @@ export default {
     onRadioChange(e) {
       this.setFilterTargetField('name'); // set label
       this.tree.nodes = this.tree.data[e].src; // set current tree nodes
-      console.log('[this.tree.nodes]: ', this.tree.nodes);
 
       this.$nextTick(() => {
         this.setCheckedNodes(this.tree.data[e].checkedlist); //回显当前tree 选中状态
@@ -447,6 +465,9 @@ export default {
     },
     setCheckedNodes(arr) {
       this.$refs.tree.setCheckedNodes(arr);
+    },
+    setCheckedKeys(arr) {
+      this.$refs.tree.setCheckedKeys(arr);
     },
     getCheckedNodes() {
       this.$forceUpdate();

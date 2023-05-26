@@ -29,7 +29,26 @@ export default {
 
   data() {
     return {
-      approver: [],
+      approver: [
+        {
+          id: '112a490f2cc041b0af7992a80d7d44a5',
+          name: '焊接工艺员',
+          deptId: '84e034c118c14cb587e542d1624c1d4e',
+          type: 2,
+        },
+        {
+          id: '11550c39729f47ebacf34db93893f150',
+          name: '结构工艺员',
+          deptId: '84e034c118c14cb587e542d1624c1d4e',
+          type: 2,
+        },
+        {
+          id: '132c596385ab4bc382d544e99307f329',
+          name: '工艺主管',
+          deptId: '84e034c118c14cb587e542d1624c1d4e',
+          type: 2,
+        },
+      ],
       autoApproval: false,
       options,
       approvalType: 'applicant',
