@@ -644,4 +644,8 @@ export default {
   margin-top: 10px;
   color: #a4a4a4;
 }
+::v-deep .ant-collapse > .ant-collapse-item > .ant-collapse-header{
+  padding: 10px 14px;
+
+}
 </style>

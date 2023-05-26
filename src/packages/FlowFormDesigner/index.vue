@@ -277,7 +277,7 @@ export default {
   },
 };
 </script>
-<style scoped lang="css">
+<style scoped lang="scss">
 .flow-form-designer-header {
   display: flex;
   justify-content: center;
@@ -295,21 +295,21 @@ export default {
 .flow-form-designer-container {
   height: calc(100% - 40px);
 }
->>> .ant-steps-navigation .ant-steps-item.ant-steps-item-active::before {
+::v-deep .ant-steps-navigation .ant-steps-item.ant-steps-item-active::before {
   transform: translateX(-50%);
   left: 50%;
   width: 25%;
 }
->>> .ant-steps-navigation .ant-steps-item::before {
+::v-deep .ant-steps-navigation .ant-steps-item::before {
   transform: translateX(-50%);
 }
->>> .ant-steps-navigation .ant-steps-item-container {
+::v-deep .ant-steps-navigation .ant-steps-item-container {
   padding-bottom: 8px;
 }
->>> .ant-steps-navigation .ant-steps-item::before {
+::v-deep .ant-steps-navigation .ant-steps-item::before {
   height: 1.8px;
 }
->>> .ant-steps-navigation {
+::v-deep .ant-steps-navigation {
   padding: 12px 0 5px;
 }
 /** steps 自定义样式 END */

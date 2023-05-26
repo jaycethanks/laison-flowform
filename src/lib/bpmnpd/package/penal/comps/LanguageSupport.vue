@@ -1,8 +1,9 @@
 <template>
   <!-- // ToDo: 这个组件逻辑写的很繁琐， 有空优化下， 做成双向绑定 -->
-  <a-form :form="form" ref="form" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
+  <a-form :form="form" ref="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
     <a-form-item :label="getLanguages(lang).name" v-for="lang in supportedLanguages" :key="lang">
       <a-input
+        size="small"
         @change="(e) => handleChange(lang, e)"
         v-decorator="[lang, { rules: [{ required: true, message: '必填写字段' }] }]"
       />
@@ -30,24 +31,24 @@ export default {
         // https://emojipedia.org/flags/
         //@jayce 23/05/11-14:43:17 : 注意，如果要新增支持的语言，也需要去支持时间选择器: src/lib/kform/KDatePicker/datePicker.vue
         {
-          name: '🇨🇳中文',
+          name: '中文',
           value: 'zh',
           disabled: true,
         },
         {
-          name: '🇺🇸英文',
+          name: '英文',
           value: 'en',
         },
         {
-          name: '🇫🇷法语',
+          name: '法语',
           value: 'fr',
         },
         {
-          name: '🇦🇪阿拉伯语',
+          name: '阿拉伯语',
           value: 'ar',
         },
         {
-          name: '🇵🇹葡萄牙语',
+          name: '葡萄牙语',
           value: 'pt',
         },
       ],

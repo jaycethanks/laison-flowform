@@ -10,9 +10,9 @@
 @title-text-color: #fff;
 @border-color: #ececec;
 
-@left-right-width: 400px;
-@left-width: 360px;
-@right-width: 400px;
+// @left-right-width: 400px;
+@left-width: 15%;
+@right-width: 25%;
 @header-height: 56px;
 @operating-area-height: 45px;
 @import './k-table.less';
@@ -110,6 +110,7 @@
 
       &.left {
         width: @left-width;
+        // min-width: @left-width;
 
         // border-right: 1px solid @aside-border-color;
         height: 100%;
@@ -164,6 +165,10 @@
             outline: 1px solid transparent;
             background-color: #fff;
             box-shadow: 0 0 4px 2px #0000000a;
+            font-size: 12px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
 
             &:hover {
               color: @primary-color;
@@ -180,6 +185,7 @@
       // 右侧区域
       &.right {
         width: @right-width;
+        // min-width: @right-width;
 
         height: 100%;
         // border-left: 1px solid @aside-border-color;
@@ -239,6 +245,7 @@
     section {
       flex: 1;
       max-width: calc(100% - @left-width - @right-width);
+      // min-width: 1060px;
       user-select: none;
       margin: 0 8px 0;
       box-shadow: 0px 0px 1px 1px @border-color;

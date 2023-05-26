@@ -26,7 +26,9 @@
       <svg v-if="val.icon" class="icon" aria-hidden="true">
         <use :xlink:href="`#${val.icon}`"></use>
       </svg>
-      {{ val.label }}
+      <span :title="val.label">
+        {{ val.label }}
+      </span>
     </li>
   </draggable>
 </template>

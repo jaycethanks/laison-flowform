@@ -99,10 +99,13 @@
 
             <template slot="mid-action">
               <slot name="mid-action">
-                <a-radio-group v-model="data.config.currentLang" @change="handleCurrentLanguageChange">
+                <a-radio-group size="small" v-model="data.config.currentLang" @change="handleCurrentLanguageChange">
                   <template v-for="lang in data.config.supportedLanguages">
                     <a-radio-button v-if="languageList.find((it) => it.value === lang)" :value="lang" :key="lang">
+                      <!-- <div class="center-wrapper">
+                        <ffFlags :icon="lang" :key="lang" /> -->
                       {{ languageList.find((it) => it.value === lang).name }}
+                      <!-- </div> -->
                     </a-radio-button>
                   </template>
                 </a-radio-group>
@@ -124,8 +127,12 @@
                     v-for="{ name, value, disabled } in languageList"
                     :key="value"
                     :value="value"
-                    >{{ name }}</a-select-option
                   >
+                    <!-- <div class="center-wrapper">
+                      <ffFlags :icon="value" :key="value" /> -->
+                    <span>{{ name }}</span>
+                    <!-- </div> -->
+                  </a-select-option>
                 </a-select>
               </slot>
             </template>
@@ -195,7 +202,7 @@ import json from 'highlight.js/lib/languages/json';
 import deepCloneObject from '@/utils/deepCloneObject';
 import { translateFields } from './translate/index';
 //@jayce 23/05/11-17:05:42 : custom End
-
+// import ffFlags from  "@/components/FlowForm/ffFlags/index.vue"
 export default {
   name: 'KFormDesign',
   props: {
@@ -303,27 +310,30 @@ export default {
       },
       //@jayce 23/05/09-16:43:47 : custom start
       languageList: [
-        // https://emojipedia.org/flags/
+
         //@jayce 23/05/11-14:43:17 : 注意，如果要新增支持的语言，也需要去支持时间选择器: src/lib/kform/KDatePicker/datePicker.vue
+        // icon 的显示是通过 svg , 如果需要新增语言, 去 https://github.com/adobe-fonts/noto-emoji-svg/tree/main/flags 这里,
+        // 通过这个线上工具,将目录下载下来, 找到对应的图标 https://download-directory.github.io/
+
         {
-          name: '🇨🇳中文',
+          name: '中文',
           value: 'zh',
           disabled: true,
         },
         {
-          name: '🇺🇸英文',
+          name: '英文',
           value: 'en',
         },
         {
-          name: '🇫🇷法语',
+          name: '法语',
           value: 'fr',
         },
         {
-          name: '🇦🇪阿拉伯语',
+          name: '阿拉伯语',
           value: 'ar',
         },
         {
-          name: '🇵🇹葡萄牙语',
+          name: '葡萄牙语',
           value: 'pt',
         },
       ],
@@ -343,6 +353,7 @@ export default {
     kFormComponentPanel,
     formItemProperties,
     formProperties,
+    // ffFlags
     // LaisonInputCustomerSelect,
   },
   watch: {
@@ -873,6 +884,11 @@ export default {
 //@jayce 23/05/10-14:12:53 : custom start
 ::v-deep input.ant-select-search__field {
   // display: none;
+}
+.center-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 //@jayce 23/05/10-14:15:01 : custom end
 </style>
