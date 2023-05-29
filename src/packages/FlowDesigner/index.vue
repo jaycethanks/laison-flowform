@@ -146,6 +146,20 @@ export default {
       },
     };
   },
+  watch:{
+    bpmnEditDataInit:{
+      handler:function(){
+        if(this.bpmnEditDataInit){
+          console.log("this.bpmnEditDataInit",this.bpmnEditDataInit)
+          this.xmlString = this.bpmnEditDataInit.xmldata
+        }
+      },
+      deep:true,
+      immediate:true
+    }
+  },
+
+
   computed: {
     //@jayce 23/05/22-11:17:12 : custom Start
     isPlatform: function () {
@@ -154,10 +168,6 @@ export default {
     isSystem: function () {
       return this.type === FlowFormDesignerType.SYSTEM_NEW || this.type === FlowFormDesignerType.SYSTEM_EDIT;
     },
-  },
-  created() {
-    // 如果bpmnEditDataInit 不为null. 说明是 edit,进行数据回显初始化
-    // console.log(this.bpmnEditDataInit, '--line141')
   },
   methods: {
     initModeler(modeler) {

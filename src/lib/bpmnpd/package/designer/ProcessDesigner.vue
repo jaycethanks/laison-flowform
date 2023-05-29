@@ -97,7 +97,9 @@
               @click="processZoomOut()"
             />
           </el-tooltip>
-          <el-button :size="headerButtonSize">{{ Math.floor(this.defaultZoom * 10 * 10) + '%' }}</el-button>
+          <el-button :size="headerButtonSize">{{
+            Math.floor(this.defaultZoom * 10 * 10) + "%"
+          }}</el-button>
           <el-tooltip effect="light" content="放大视图">
             <el-button
               :size="headerButtonSize"
@@ -353,16 +355,24 @@ export default {
       return this.type === FlowFormDesignerType.SYSTEM_NEW || this.type === FlowFormDesignerType.SYSTEM_EDIT;
     },
   },
+  watch:{
+    value:function(){
+      this.init()
+    }
+  },
   mounted() {
-    this.initBpmnModeler();
-    this.createNewDiagram(this.value);
-    this.$once('hook:beforeDestroy', () => {
-      if (this.bpmnModeler) this.bpmnModeler.destroy();
-      this.$emit('destroy', this.bpmnModeler);
-      this.bpmnModeler = null;
-    });
+    this.init()
   },
   methods: {
+    init() {
+      this.initBpmnModeler();
+      this.createNewDiagram(this.value);
+      this.$once('hook:beforeDestroy', () => {
+        if (this.bpmnModeler) this.bpmnModeler.destroy();
+        this.$emit('destroy', this.bpmnModeler);
+        this.bpmnModeler = null;
+      });
+    },
     initBpmnModeler() {
       //@jayce 21/12/21-11:37:52 :  初始化bpmn实例 --> 设定监听器
       if (this.bpmnModeler) return;
