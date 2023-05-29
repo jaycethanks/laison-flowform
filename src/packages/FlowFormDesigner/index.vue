@@ -1,41 +1,46 @@
 <template>
   <div class="flow-form-designer-root">
-    <p class="flow-form-designer-header">
-      <a-steps
-        ref="steps"
-        style="margin-bottom: 0; width: 550px"
-        size="small"
-        v-model="current"
-        type="navigation"
-        @change="onStepChange"
-      >
-        <a-step status="finish" title="表单设计" v-if="!noFormDesign">
-          <SvgIconFormDesign style="width: 24px; height: 24px" slot="icon" />
-        </a-step>
-        <a-step status="finish" title="流程设计">
-          <SvgIconFlowDesign style="width: 24px; height: 24px" slot="icon" />
-        </a-step>
-        <a-step status="process" title="流程发布">
-          <SvgIconFFPublish style="width: 24px; height: 24px" slot="icon" />
-        </a-step>
-      </a-steps>
-    </p>
-    <div class="flow-form-designer-container">
-      <form-design v-if="!noFormDesign" v-show="current === 0" ref="formDesignView"></form-design>
-      <flow-design
-        v-show="noFormDesign ? current === 0 : current === 1"
-        :bpmnEditDataInit="bpmnEditDataInit"
-        :type="computedQuery.type"
-      ></flow-design>
-      <flow-form-publish
-        v-show="noFormDesign ? current === 1 : current === 2"
-        @submit="sumbitHandler"
-        :publishEditDataInit="publishEditDataInit"
-        @success="$emit('back')"
-        @doSubmit="handleSubmit"
-        :type="computedQuery.type"
-      ></flow-form-publish>
+    <div class="flow-form-designer-root" v-if="!success">
+      <p class="flow-form-designer-header">
+        <a-steps
+          ref="steps"
+          style="margin-bottom: 0; width: 550px"
+          size="small"
+          v-model="current"
+          type="navigation"
+          @change="onStepChange"
+        >
+          <a-step status="finish" title="表单设计" v-if="!noFormDesign">
+            <SvgIconFormDesign style="width: 24px; height: 24px" slot="icon" />
+          </a-step>
+          <a-step status="finish" title="流程设计">
+            <SvgIconFlowDesign style="width: 24px; height: 24px" slot="icon" />
+          </a-step>
+          <a-step status="process" title="流程发布">
+            <SvgIconFFPublish style="width: 24px; height: 24px" slot="icon" />
+          </a-step>
+        </a-steps>
+      </p>
+      <div class="flow-form-designer-container">
+        <form-design v-if="!noFormDesign" v-show="current === 0" ref="formDesignView"></form-design>
+        <flow-design
+          v-show="noFormDesign ? current === 0 : current === 1"
+          :bpmnEditDataInit="bpmnEditDataInit"
+          :type="computedQuery.type"
+        ></flow-design>
+        <flow-form-publish
+          v-show="noFormDesign ? current === 1 : current === 2"
+          @submit="sumbitHandler"
+          :publishEditDataInit="publishEditDataInit"
+          @success="$emit('back')"
+          @doSubmit="handleSubmit"
+          :type="computedQuery.type"
+        ></flow-form-publish>
+      </div>
     </div>
+    <SuccessPage description="提交成功" v-if="success">
+      <a-button type="link" icon="rollback">继续设计</a-button>
+    </SuccessPage>
   </div>
 </template>
 
@@ -53,7 +58,7 @@ import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
 
 import { add as system_add } from '@/api/system/ffTemplate.js';
 import { add as platform_add } from '@/api/platform/ffTemplate.js';
-
+import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
 import mock from './mock';
 export default {
   name: 'FlowFormDesigner',
@@ -76,6 +81,7 @@ export default {
     SvgIconFormDesign,
     SvgIconFlowDesign,
     SvgIconFFPublish,
+    SuccessPage
   },
   provide: function () {
     return {
@@ -101,6 +107,7 @@ export default {
           type: Number,
         },
       },
+      success:true
     };
   },
 
@@ -252,7 +259,9 @@ export default {
     // 数据提交
     async handleSubmit(data) {
       const res = await this.fn.add(data);
-      console.log('[res]: ', res);
+      if(res.status === 200){
+        this.success = true
+      }
     },
   },
 

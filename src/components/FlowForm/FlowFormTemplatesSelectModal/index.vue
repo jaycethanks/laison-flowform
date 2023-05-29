@@ -1,80 +1,85 @@
 <template>
-  <a-modal
-    :bodyStyle="{  overflow: 'hidden',padding:'10px' }"
-    :visible="visible"
-    title="发起流程"
-    @ok="$emit('ok')"
-    @cancel="$emit('close')"
-  >
-    <a-input
-      v-model="searchText"
-      placeholder="按照名称过滤"
-      @blur="showFilterList = false"
-      @focus="showFilterList = true"
+  <div>
+    <a-modal
+      @cancel="visible=false"
+      :bodyStyle="{  overflow: 'hidden',padding:'10px' }"
+      :visible="visible"
+      title="选择模板"
+      :footer="null"
     >
-      <!-- <a-button size="small" type="link" icon="rollback" slot="addonAfter"></a-button> -->
-    </a-input>
+      <a-input
+        v-model="searchText"
+        placeholder="按照名称过滤"
+        @blur="showFilterList = false"
+        @focus="showFilterList = true"
+      >
+        <!-- <a-button size="small" type="link" icon="rollback" slot="addonAfter"></a-button> -->
+      </a-input>
 
-    <a-tabs
-      v-show="!showFilterList"
-      size="small"
-      class="tab-wrapper"
-      default-active-key="订单订单订单订单"
-      tab-position="left"
-      @prevClick="() => {}"
-      @nextClick="() => {}"
-    >
-      <a-tab-pane class="tab-pane" v-for="group in list" :key="group.groupName" :tab="ellipsis(group.groupName, 10)">
-        <a-list size="small" item-layout="horizontal" :data-source="group.formTemplates">
-          <a-list-item slot="renderItem" slot-scope="item, index">
-            <a-list-item-meta style="font-size:12px">
-              <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
-              <span slot="title" :title="item.designName" style="white-space: nowrap;">{{
+      <a-tabs
+        v-show="!showFilterList"
+        size="small"
+        class="tab-wrapper"
+        default-active-key="订单"
+        tab-position="left"
+        @prevClick="() => {}"
+        @nextClick="() => {}"
+      >
+        <a-tab-pane class="tab-pane" v-for="group in list" :key="group.groupName" :tab="ellipsis(group.groupName, 10)">
+          <a-list size="small" item-layout="horizontal" :data-source="group.formTemplates">
+            <a-list-item
+              class="list-item"
+              @click="handleSelect(item.formDesignId)"
+              slot="renderItem"
+              slot-scope="item, index"
+            >
+              <a-button @click.prevent.stop="handlePreview" slot="actions" type="link" icon="eye">预览模板</a-button>
+              <a-list-item-meta style="font-size:12px">
+                <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
+                <span slot="title" :title="item.designName" style="white-space: nowrap;">{{
             ellipsis(item.designName, 8)
-              }}</span>
+                }}</span>
+                <ff-icon slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
+              </a-list-item-meta>
+            </a-list-item>
+          </a-list>
+        </a-tab-pane>
+      </a-tabs>
 
-              <ff-icon slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
-            </a-list-item-meta>
-          </a-list-item>
-        </a-list>
-      </a-tab-pane>
-    </a-tabs>
-
-    <a-list
-      class="filter-list"
-      v-show="showFilterList"
-      style="height: 400px;overflow-y:auto"
-      size="small"
-      item-layout="horizontal"
-      :data-source="flatenArray"
-    >
-      <a-list-item slot="renderItem" slot-scope="item, index">
-        <a-list-item-meta style="font-size:12px">
-          <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
-          <span slot="title" :title="item.designName" style="white-space: nowrap;">{{
+      <a-list
+        class="filter-list"
+        v-show="showFilterList"
+        style="height: 400px;overflow-y:auto"
+        size="small"
+        item-layout="horizontal"
+        :data-source="flatenArray"
+      >
+        <a-list-item slot="renderItem" slot-scope="item, index">
+          <a-list-item-meta style="font-size:12px">
+            <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
+            <span slot="title" :title="item.designName" style="white-space: nowrap;">{{
             ellipsis(item.designName, 8)
-          }}</span>
+            }}</span>
 
-          <ff-icon slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
-        </a-list-item-meta>
-      </a-list-item>
-    </a-list>
-  </a-modal>
+            <ff-icon slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
+          </a-list-item-meta>
+        </a-list-item>
+      </a-list>
+    </a-modal>
+    <FormPreviewerModal :visible="showFormPreviewerModal" :footer="null" @close="showFormPreviewerModal = false" />
+  </div>
 </template>
 <script>
 import mock from './mock';
 import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
 import ellipsis from '@/utils/ellipsis';
+import FormPreviewerModal from '@/packages/FormPreviewerModal/index.vue';
+
 import icons from '@/assets/flowform_icons/index.js';
 
 export default {
-  props: {
-    visible: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  components: { ffIcon },
+
+  components: { ffIcon,FormPreviewerModal },
   computed: {
     flatenArray: function () {
       let _this = this
@@ -95,8 +100,9 @@ export default {
     return {
       list: [],
       showFilterList: false,
-      searchText:""
-      // visible: false,
+      searchText:"",
+      showFormPreviewerModal:false,
+      visible: false,
     };
   },
   created() {
@@ -107,6 +113,16 @@ export default {
     handleSearchFilter({target:{value}}){
       console.log('[value]: ',value)
 
+    },
+    show(){
+      this.visible = true;
+    },
+    handleSelect(id){
+      this.visible = false
+      this.$emit("ok",id)
+    },
+    handlePreview(f){
+      this.showFormPreviewerModal = true
     }
     //   showModal() {
     //     this.visible = true;
@@ -128,6 +144,13 @@ export default {
 
       height: 400px;
       overflow-y: auto;
+    }
+    .list-item{
+      cursor: pointer;
+      padding: 10px;
+      &:hover{
+        background-color: rgb(247, 247, 247);
+      }
     }
 
   }

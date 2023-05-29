@@ -2,7 +2,7 @@
   <RootContainer>
     <Container>
       <TitleRow title="已选择模板" bold>
-        <a-button type="primary" icon="appstore" @click="showFlowFormTemplatesSelectModal = true">添加模板</a-button>
+        <a-button type="primary" icon="appstore" @click="$refs.FlowFormTemplatesSelectModal.show()">添加模板</a-button>
       </TitleRow>
 
       <section>
@@ -57,7 +57,12 @@
                   ></a-button> -->
               <a-menu slot="overlay">
                 <a-menu-item key="0">
-                  <a-button type="link" icon="eye" size="small" title="流程设计" @click="showFormPreviewerModal = true"
+                  <a-button
+                    type="link"
+                    icon="eye"
+                    size="small"
+                    title="流程设计"
+                    @click="$refs.FormPreviewerModal.show()"
                     >预览该模板表单</a-button
                   >
                 </a-menu-item>
@@ -178,12 +183,8 @@
           </template>
         </section>
       </a-space>
-      <FormPreviewerModal :visible="showFormPreviewerModal" :footer="null" @close="showFormPreviewerModal = false" />
-      <FlowFormTemplatesSelectModal
-        :visible="showFlowFormTemplatesSelectModal"
-        @ok="showFlowFormTemplatesSelectModal = false"
-        @close="showFlowFormTemplatesSelectModal = false"
-      />
+      <FormPreviewerModal ref="FormPreviewerModal" :footer="null" />
+      <FlowFormTemplatesSelectModal ref="FlowFormTemplatesSelectModal" @ok="()=>{}" />
     </Container>
   </RootContainer>
 </template>
@@ -205,8 +206,6 @@ export default {
     return {
       list: [],
       enabled_list: [],
-      showFormPreviewerModal: false,
-      showFlowFormTemplatesSelectModal: false,
     };
   },
   methods: {

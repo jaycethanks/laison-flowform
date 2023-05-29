@@ -5,7 +5,7 @@
     :visible="visible"
     switchFullscreen
     title="订单详情"
-    @ok="handleOk"
+    @ok="()=>{}"
     @cancel="closeModal"
     :maskClosable="false"
     :footer="footer"
@@ -60,10 +60,6 @@ export default {
         return {};
       },
     },
-    visible: {
-      type: Boolean,
-      default: false,
-    },
     title: {
       type: String,
       default: 'title is not defined',
@@ -82,6 +78,7 @@ export default {
   data() {
     return {
       // title:'',
+      visible:false,
       okBtnDisabled: true,
       allDisabled: true,
       formInfo: {}, //表单定义
@@ -94,236 +91,179 @@ export default {
   },
   methods: {
     closeModal: function () {
-      this.$emit('close');
+      // this.$emit('close');
+      this.visible = false;
+
     },
-    typeHandler(type) {
-      switch (type) {
-        case 0: //申请 add
-          this.okBtnDisabled = false;
-          this.allDisabled = false; //只要这个属性时true里面所有的字段全部禁用，里面任何逻辑都无法修改这个状态
-          break;
-        case 1: //申请 edit
-          this.okBtnDisabled = false;
-          this.allDisabled = false;
-          break;
-        case 2: //翻单 edit
-          this.okBtnDisabled = false;
-          this.allDisabled = false; //因为审核状态下有些字段可以编辑 ，所以里面的组件要自己写逻辑禁用哪些字段
-          break;
-        case 3: //审核
-          this.okBtnDisabled = false;
-          this.allDisabled = false; ////因为审核状态下有些字段可以编辑 ，所以里面的组件要自己写逻辑禁用哪些字段
-          break;
-        case 4: //查看-DoneTask
-          this.okBtnDisabled = true;
-          this.allDisabled = true;
-          break;
-        case 5: //订单的补充修改-DoneTask
-          this.okBtnDisabled = false;
-          this.allDisabled = true;
-          break;
-        default:
-          this.okBtnDisabled = true;
-          this.allDisabled = true;
-          break;
-      }
-    },
+
     show() {
-      this.typeHandler(this.opts.type);
       this.visible = true;
-      // k-form-design 的表单设计数据
-      if (this.value.formInfo) {
-        this.$set(this, 'formInfo', JSON.parse(this.value.formInfo));
-      }
+      // this.$nextTick(() => {
+      //   window.kformd = [];
+      //   if (this.$refs.kfb && this.$refs.kfb.form) {
+      //     // console.log(,'--line162');
+      //     window.aform = this.$refs.kfb.form;
+      //     // console.log(this.formdataObj.LaisonStockList.tableData[0].orderProps.exeStdName, '--line162')
+      //     if (this.formdataObj) {
+      //       this.$refs.kfb.form.resetFields();
+      //       //@jayce 22/06/30-14:41:20 :
+      //       //【解决报错】 Warning: You cannot set a form field before rendering a field associated with the value. You can use `getFieldDecorator(id, options)` instead `v-decorator="[id, options]"` to register it before render.
 
-      if (this.value.erpFormVal && this.value.erpFormVal.formData) {
-        try {
-          this.formdataObj = JSON.parse(this.value.erpFormVal.formData);
-        } catch (e) {
-          console.log('formShowError', JSON.stringify(e));
-        }
-      } else {
-        this.formdataObj = {};
-      }
-      // console.log(this.formdataObj.LaisonStockList.tableData[0].orderProps.exeStdName, '--line147')
-      // k-form-design 的表单值数据
-      if (!this.formdataObj.LaisonStockList) {
-        this.formdataObj.LaisonStockList = {
-          tableData: [],
-          calculateAmount: 0.0,
-          freightCharge: 0.0, //运费
-          isFandan: false,
-        };
-        //this.formdataObj.LaisonStockList.showType = this.opts.type
-        // 根据前台操作的权限，以控制是不似乎申请者（只申请者，才能有这些特有的操作能力）
-      }
-      this.formdataObj.LaisonStockList.showType = this.opts.type;
-      this.$nextTick(() => {
-        window.kformd = [];
-        if (this.$refs.kfb && this.$refs.kfb.form) {
-          // console.log(,'--line162');
-          window.aform = this.$refs.kfb.form;
-          // console.log(this.formdataObj.LaisonStockList.tableData[0].orderProps.exeStdName, '--line162')
-          if (this.formdataObj) {
-            this.$refs.kfb.form.resetFields();
-            //@jayce 22/06/30-14:41:20 :
-            //【解决报错】 Warning: You cannot set a form field before rendering a field associated with the value. You can use `getFieldDecorator(id, options)` instead `v-decorator="[id, options]"` to register it before render.
-
-            for (let field in this.formdataObj) {
-              this.$refs.kfb.form.getFieldDecorator(field, { initialValue: '' });
-            }
-            this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
-            this.$refs.kfb.exeInitJs();
-            this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
-          }
-        }
-      });
+      //       for (let field in this.formdataObj) {
+      //         this.$refs.kfb.form.getFieldDecorator(field, { initialValue: '' });
+      //       }
+      //       this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
+      //       this.$refs.kfb.exeInitJs();
+      //       this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
+      //     }
+      //   }
+      // });
 
       //this.fixData()
     },
 
-    async handleOk() {
-      // 验证整表表单
-      if (this.okBtnDisabled) {
-        this.$message.warning(this.$t('order.submitapp'));
-        return;
-      }
-      try {
-        await this.$refs.kfb.form.validateFields();
-      } catch (e) {
-        let errmsg = e.errors[Object.keys(e.errors)[0]].errors[0].message;
-        this.$message.error(errmsg);
-        return;
-      }
-      // div#LaisonStockList
-      if (this.$refs.kfb.form.formItems.LaisonStockList) {
-        // LaisonStockList 组件存在前提下
-        // prettier-ignore
-        // 验证LaisonStockList组件，table 折叠行中嵌入的k-form-design 表单
-        const KFB_instance_In_LaisonOrderPropShow = this.$refs.kfb.form.formItems.LaisonStockList.$children[0].$children[0].$children[0].KFB_instance_In_LaisonOrderPropShow
-        let hasError = false;
-        await KFB_instance_In_LaisonOrderPropShow.forEach(async (kfb_instance) => {
-          try {
-            let res = await kfb_instance.form.validateFields();
-          } catch (e) {
-            let errmsg = e.errors[Object.keys(e.errors)[0]].errors[0].message;
-            this.$message.error(errmsg);
-            hasError = true;
-            throw new Error(); // 为了终止forEach循环
-          }
-        });
+    // async handleOk() {
+    //   // 验证整表表单
+    //   if (this.okBtnDisabled) {
+    //     this.$message.warning(this.$t('order.submitapp'));
+    //     return;
+    //   }
+    //   try {
+    //     await this.$refs.kfb.form.validateFields();
+    //   } catch (e) {
+    //     let errmsg = e.errors[Object.keys(e.errors)[0]].errors[0].message;
+    //     this.$message.error(errmsg);
+    //     return;
+    //   }
+    //   // div#LaisonStockList
+    //   if (this.$refs.kfb.form.formItems.LaisonStockList) {
+    //     // LaisonStockList 组件存在前提下
+    //     // prettier-ignore
+    //     // 验证LaisonStockList组件，table 折叠行中嵌入的k-form-design 表单
+    //     const KFB_instance_In_LaisonOrderPropShow = this.$refs.kfb.form.formItems.LaisonStockList.$children[0].$children[0].$children[0].KFB_instance_In_LaisonOrderPropShow
+    //     let hasError = false;
+    //     await KFB_instance_In_LaisonOrderPropShow.forEach(async (kfb_instance) => {
+    //       try {
+    //         let res = await kfb_instance.form.validateFields();
+    //       } catch (e) {
+    //         let errmsg = e.errors[Object.keys(e.errors)[0]].errors[0].message;
+    //         this.$message.error(errmsg);
+    //         hasError = true;
+    //         throw new Error(); // 为了终止forEach循环
+    //       }
+    //     });
 
-        if (hasError) {
-          return;
-        }
-      }
-      window.xxx = this.$refs.kfb;
-      this.$refs.kfb
-        .getData()
-        .then((values) => {
-          // prettier-ignore
-          // 如果存在LaisonStockList这个组件的前提下，且其存货为空
-          if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length == 0) {
-            this.$message.error('请至少选择一个存货')
-            return
-          } else if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length > 0) {
-            window.kfkf = this.$refs.kfb.form.formItems.LaisonStockList
+    //     if (hasError) {
+    //       return;
+    //     }
+    //   }
+    //   window.xxx = this.$refs.kfb;
+    //   this.$refs.kfb
+    //     .getData()
+    //     .then((values) => {
+    //       // prettier-ignore
+    //       // 如果存在LaisonStockList这个组件的前提下，且其存货为空
+    //       if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length == 0) {
+    //         this.$message.error('请至少选择一个存货')
+    //         return
+    //       } else if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length > 0) {
+    //         window.kfkf = this.$refs.kfb.form.formItems.LaisonStockList
 
-          }
-          // console.log(this.formdataObj)
-          for (let key in values) {
-            this.formdataObj[key] = values[key];
-          }
-          let newValue = this.value;
-          if (newValue.erpFormVal) {
-            newValue.erpFormVal.formData = this.formdataObj;
-          } else {
-            newValue.erpFormVal = { formData: this.formdataObj };
-          }
-          //
-          this.$emit('input', newValue); //其实这个就是更新value
-          console.log(newValue);
-          this.$emit('apply_success', newValue);
-          this.visible = false;
-        })
-        .catch((e) => {
-          console.error(e, '--line240');
-        });
+    //       }
+    //       // console.log(this.formdataObj)
+    //       for (let key in values) {
+    //         this.formdataObj[key] = values[key];
+    //       }
+    //       let newValue = this.value;
+    //       if (newValue.erpFormVal) {
+    //         newValue.erpFormVal.formData = this.formdataObj;
+    //       } else {
+    //         newValue.erpFormVal = { formData: this.formdataObj };
+    //       }
+    //       //
+    //       this.$emit('input', newValue); //其实这个就是更新value
+    //       console.log(newValue);
+    //       this.$emit('apply_success', newValue);
+    //       this.visible = false;
+    //     })
+    //     .catch((e) => {
+    //       console.error(e, '--line240');
+    //     });
 
-      // return
-      /* old version */
-      // let children = this.$refs.kfb.$children[0].$children[0].$children[0].$children[0].$children
-      // await children.forEach(async (i) => {
-      //   try {
-      //     if (i.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]) {
-      //       let node = i.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]
-      //       if (node.$vnode.tag.includes('LaisonStockList')) {
-      //         //LaisonStockList组件
-      //         let stockListForm =
-      //           node.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]
-      //             .$children[0].$children[1].$children[0]
-      //         stockListForm.$children.forEach(async (ii) => {
-      //           if (
-      //             ii.$vnode.key &&
-      //             typeof ii.$vnode.key == 'string' &&
-      //             ii.$vnode.key.includes('extra-row')
-      //           ) {
-      //             try {
-      //               let res = await ii.$children[1].$children[0].$children[0].form.validateFields()
-      //               console.log(res)
-      //             } catch (e) {
-      //               iserror = true
-      //               Object.keys(e.errors).every((key) => {
-      //                 console.log('错误时', e)
-      //                 errMes = e.errors[key].errors[0].message
-      //                 //console.log('errMes=', errMes)
-      //                 return
-      //               })
-      //               throw new Error('有错误直接退出')
-      //             }
-      //           }
-      //         })
-      //       }
-      //     }
-      //   } catch (error) {}
-      // })
-      // return
+    //   // return
+    //   /* old version */
+    //   // let children = this.$refs.kfb.$children[0].$children[0].$children[0].$children[0].$children
+    //   // await children.forEach(async (i) => {
+    //   //   try {
+    //   //     if (i.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]) {
+    //   //       let node = i.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]
+    //   //       if (node.$vnode.tag.includes('LaisonStockList')) {
+    //   //         //LaisonStockList组件
+    //   //         let stockListForm =
+    //   //           node.$children[0].$children[0].$children[0].$children[0].$children[0].$children[0]
+    //   //             .$children[0].$children[1].$children[0]
+    //   //         stockListForm.$children.forEach(async (ii) => {
+    //   //           if (
+    //   //             ii.$vnode.key &&
+    //   //             typeof ii.$vnode.key == 'string' &&
+    //   //             ii.$vnode.key.includes('extra-row')
+    //   //           ) {
+    //   //             try {
+    //   //               let res = await ii.$children[1].$children[0].$children[0].form.validateFields()
+    //   //               console.log(res)
+    //   //             } catch (e) {
+    //   //               iserror = true
+    //   //               Object.keys(e.errors).every((key) => {
+    //   //                 console.log('错误时', e)
+    //   //                 errMes = e.errors[key].errors[0].message
+    //   //                 //console.log('errMes=', errMes)
+    //   //                 return
+    //   //               })
+    //   //               throw new Error('有错误直接退出')
+    //   //             }
+    //   //           }
+    //   //         })
+    //   //       }
+    //   //     }
+    //   //   } catch (error) {}
+    //   // })
+    //   // return
 
-      // console.log(iserror)
-      // if (iserror) {
-      //   this.$message.error(errMes)
-      //   return
-      // }
+    //   // console.log(iserror)
+    //   // if (iserror) {
+    //   //   this.$message.error(errMes)
+    //   //   return
+    //   // }
 
-      // this.$refs.kfb
-      //   .getData()
-      //   .then((values) => {
-      //     console.log('获取的值是', values)
-      //     if (values.LaisonStockList.tableData.length == 0) {
-      //       this.$message.error('请至少选择一个存货')
-      //       return
-      //     }
-      //     console.log(this.formdataObj)
-      //     for (let key in values) {
-      //       this.formdataObj[key] = values[key]
-      //     }
-      //     let newValue = this.value
+    //   // this.$refs.kfb
+    //   //   .getData()
+    //   //   .then((values) => {
+    //   //     console.log('获取的值是', values)
+    //   //     if (values.LaisonStockList.tableData.length == 0) {
+    //   //       this.$message.error('请至少选择一个存货')
+    //   //       return
+    //   //     }
+    //   //     console.log(this.formdataObj)
+    //   //     for (let key in values) {
+    //   //       this.formdataObj[key] = values[key]
+    //   //     }
+    //   //     let newValue = this.value
 
-      //     if (newValue.erpFormVal) {
-      //       newValue.erpFormVal.formData = this.formdataObj
-      //     } else {
-      //       newValue.erpFormVal = { formData: this.formdataObj }
-      //     }
-      //     //
-      //     this.$emit('input', newValue) //其实这个就是更新value
-      //     console.log(newValue)
-      //     this.$emit('apply_success', newValue)
-      //     this.visible = false
-      //   })
-      //   .catch((e) => {
-      //     console.error(e, '--line240')
-      //   })
-    },
+    //   //     if (newValue.erpFormVal) {
+    //   //       newValue.erpFormVal.formData = this.formdataObj
+    //   //     } else {
+    //   //       newValue.erpFormVal = { formData: this.formdataObj }
+    //   //     }
+    //   //     //
+    //   //     this.$emit('input', newValue) //其实这个就是更新value
+    //   //     console.log(newValue)
+    //   //     this.$emit('apply_success', newValue)
+    //   //     this.visible = false
+    //   //   })
+    //   //   .catch((e) => {
+    //   //     console.error(e, '--line240')
+    //   //   })
+    // },
 
     handleCancel() {
       this.visible = false;
