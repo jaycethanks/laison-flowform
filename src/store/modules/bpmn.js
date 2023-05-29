@@ -4,9 +4,13 @@ const bpmn = {
   },
   mutations: {
     SET_BPMN_DATA: (state, data) => {
-      state.data = data
+      state.data = data;
+    },
+    RESET_BPMN: (state) => {
+      state.data = null;
+      cusLocalStorage.setItem('bpmn', 'data', null);
     },
   },
-}
+};
 
-export default bpmn
+export default bpmn;

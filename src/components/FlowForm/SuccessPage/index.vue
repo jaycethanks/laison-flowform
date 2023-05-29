@@ -10,10 +10,8 @@
   </div>
 </template>
 <script>
-import { Empty } from 'ant-design-vue';
 import successSvg from  "./SuccessSvg.vue"
 import InfoText from  "@/components/FlowForm/InfoText/index.vue"
-import icons from '@/assets/flowform_icons/index.js';
 export default {
   props: {
     description: {
@@ -29,19 +27,10 @@ export default {
   components:{
     successSvg,InfoText
   },
-  beforeCreate() {
-    this.simpleImage = Empty.PRESENTED_IMAGE_SIMPLE;
-  },
+
 };
 </script>
 <style scoped lang="scss">
-::v-deep.ant-empty {
-  min-height: 30vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-}
 .success-page-root{
   position: relative;
   width: 100%;

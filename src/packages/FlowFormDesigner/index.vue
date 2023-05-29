@@ -1,6 +1,6 @@
 <template>
   <div class="flow-form-designer-root">
-    <div class="flow-form-designer-root" v-if="!success">
+    <div class="flow-form-designer-root" v-show="!success">
       <p class="flow-form-designer-header">
         <a-steps
           ref="steps"
@@ -38,8 +38,8 @@
         ></flow-form-publish>
       </div>
     </div>
-    <SuccessPage description="提交成功" v-if="success">
-      <a-button type="link" icon="rollback">继续设计</a-button>
+    <SuccessPage description="提交成功" v-show="success">
+      <a-button @click="handleGoBackToDesign" type="link" icon="rollback">继续设计</a-button>
     </SuccessPage>
   </div>
 </template>
@@ -107,7 +107,7 @@ export default {
           type: Number,
         },
       },
-      success:true
+      success:false
     };
   },
 
@@ -263,6 +263,13 @@ export default {
         this.success = true
       }
     },
+    handleGoBackToDesign(){
+      this.jumpTo(0);
+      this.success = false;
+      this.$store.commit('RESET_KFORM');
+      this.$store.commit('RESET_BPMN');
+      this.$store.commit('RESET_FLOWFORM');
+    }
   },
 
   beforeRouteLeave(to, from, next) {

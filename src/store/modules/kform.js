@@ -7,6 +7,10 @@ const kform = {
       state.data = data;
       cusLocalStorage.setItem('kform', 'data', data);
     },
+    RESET_KFORM: (state) => {
+      state.data = null;
+      cusLocalStorage.setItem('kform', 'data', null);
+    },
   },
 };
 

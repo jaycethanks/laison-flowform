@@ -14,6 +14,12 @@ const kform = {
     SET_FLOWFORM_group: (state, data) => {
       state.group = data;
     },
+
+    RESET_FLOWFORM: (state) => {
+      state.data = null;
+      state.group = null;
+      state.orgStruct = null;
+    },
   },
 };
 
