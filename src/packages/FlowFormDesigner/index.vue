@@ -5,20 +5,20 @@
       <p class="flow-form-designer-header">
         <a-steps
           ref="steps"
-          style="margin-bottom: 0; width: 550px"
+          style="margin-bottom: 0; width: auto"
           size="small"
           v-model="current"
           type="navigation"
           @change="onStepChange"
         >
           <a-step status="finish" title="表单设计" v-if="!noFormDesign">
-            <SvgIconFormDesign style="width: 24px; height: 24px" slot="icon" />
+            <SvgIconFormDesign style="width: 20px; height: 20px" slot="icon" />
           </a-step>
           <a-step status="finish" title="流程设计">
-            <SvgIconFlowDesign style="width: 24px; height: 24px" slot="icon" />
+            <SvgIconFlowDesign style="width: 20px; height: 20px" slot="icon" />
           </a-step>
           <a-step status="process" title="流程发布">
-            <SvgIconFFPublish style="width: 24px; height: 24px" slot="icon" />
+            <SvgIconFFPublish style="width: 20px; height: 20px" slot="icon" />
           </a-step>
         </a-steps>
       </p>
@@ -339,7 +339,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px solid #d6d6d6;
+  border-bottom: 1px solid #e8e8e8;
   user-select: none;
   height: 40px;
   position: relative;
@@ -355,19 +355,51 @@ export default {
 ::v-deep .ant-steps-navigation .ant-steps-item.ant-steps-item-active::before {
   transform: translateX(-50%);
   left: 50%;
-  width: 25%;
+  // width: 25%;
+  height: 100%;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: left 0.3s;
 }
+
 ::v-deep .ant-steps-navigation .ant-steps-item::before {
   transform: translateX(-50%);
+  height: 100%;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: left 0.3s;
+
 }
 ::v-deep .ant-steps-navigation .ant-steps-item-container {
-  padding-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding:2px 0;
+  min-width: 140px;
 }
 ::v-deep .ant-steps-navigation .ant-steps-item::before {
   height: 1.8px;
 }
 ::v-deep .ant-steps-navigation {
-  padding: 12px 0 5px;
+  padding: 2px;
+  border-radius: 6px;
+    background-color: #eeeeee;
+}
+
+
+::v-deep .ant-steps-navigation .ant-steps-item::after{
+  display: none;
+}
+::v-deep .ant-steps-item-custom .ant-steps-item-icon > .ant-steps-icon{
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::v-deep .ant-steps-small .ant-steps-item-custom .ant-steps-item-icon{
+   width: 24px;
+  height: 24px;
 }
 /** steps 自定义样式 END */
 </style>
