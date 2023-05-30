@@ -30,7 +30,7 @@
                 <div class="process-item">
                   <div class="process-item-content">
                     <!-- description -->
-                    <a-tooltip placement="top">
+                    <a-tooltip placement="top" v-show="_item.designDes">
                       <template slot="title">
                         {{ _item.designDes }}
                       </template>
@@ -73,7 +73,12 @@
                       >
                     </a-menu-item>
                     <a-menu-item key="1">
-                      <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item.id)"
+                      <a-button
+                        type="link"
+                        icon="edit"
+                        size="small"
+                        title="流程设计"
+                        @click="handleEdit(_item.id,FlowFormDesignerType.PLATFORM_NEW)"
                         >设计发布该模板</a-button
                       >
                     </a-menu-item>
@@ -107,91 +112,115 @@
           </div>
         </template>
       </section>
-      <a-space direction="vertical" size="large" style="width: 100%; display: block">
-        <TitleRow title="已发布流程" bold> </TitleRow>
 
-        <section>
-          <template v-if="enabled_list.length == 0">
-            <a-empty
-              description="数据为空"
-              style="
-                height: 100%;
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-              "
-            />
-          </template>
+      <!-- 已发布流程 Start-->
+      <TitleRow title="已发布流程" bold> </TitleRow>
 
-          <template v-for="(_item, _index) in enabled_list">
-            <div class="process-item-wrapper" :key="_index">
-              <div class="process-item">
-                <div class="process-item-content">
-                  <a-tooltip placement="top">
-                    <template slot="title">
-                      {{ _item.designDes }}
-                    </template>
-                    <ff-icon :icon="_item.designIcon" style="height: 40px; width: 40px" :bgc="_item.designColor" />
-                  </a-tooltip>
+      <section>
+        <template v-if="enabled_list.length == 0">
+          <a-empty
+            description="数据为空"
+            style="
+              height: 100%;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+            "
+          />
+        </template>
 
-                  <div class="process-item-label">
-                    <p class="process-item-lable-title">
-                      {{ ellipsis(_item.designName, 13) }}
-                    </p>
+        <template v-for="(item, index) in enabled_list">
+          <TitleRow size="small" :key="item.groupId" :title="item.groupName" bold> </TitleRow>
+          <div class="group-wrapper" :key="index">
+            <template v-for="(_item) in item.list">
+              <div class="process-item-wrapper" :key="_item.id">
+                <div class="process-item">
+                  <div class="process-item-content">
                     <!-- description -->
+                    <a-tooltip placement="top">
+                      <template slot="title">
+                        {{ _item.designDes }}
+                      </template>
+                      <ff-icon :icon="_item.designIcon" style="height: 40px; width: 40px" :bgc="_item.designColor" />
+                    </a-tooltip>
 
-                    <p class="process-item-lable-subtitle">
-                      {{ ellipsis(_item.designDes, 18) }}
-                    </p>
+                    <div class="process-item-label">
+                      <p class="process-item-lable-title">
+                        {{ ellipsis(_item.designName, 13) }}
+                      </p>
+
+                      <p class="process-item-lable-subtitle">
+                        {{ ellipsis(_item.designDes, 18) }}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- settings -->
-              <!-- <a-space direction="vertical">
-                </a-space> -->
-
-              <a-dropdown :trigger="['click']">
-                <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
-                  <a-icon type="ellipsis" style="font-size: 20px" />
-                </a>
-                <!-- <a-button
+                <!-- settings -->
+                <a-space direction="vertical">
+                  <a-switch
+                    style="margin-left: 6px"
+                    v-model="_item.enable"
+                    @click="handleEnableChange(_item.id,_item.enable)"
+                    size="small"
+                  ></a-switch>
+                  <a-dropdown :trigger="['click']">
+                    <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+                      <a-icon type="ellipsis" style="font-size: 20px" />
+                    </a>
+                    <!-- <a-button
                     type="link"
                     icon="ellipsis"
                     size="small"
 
                     @click="(e) => e.preventDefault()"
                   ></a-button> -->
-                <a-menu slot="overlay">
-                  <a-menu-item key="1">
-                    <a-button type="link" icon="control" size="small" title="启用状态" @click.prevent.stop
-                      >启用状态<a-switch style="margin-left: 6px" v-model="_item.enable" size="small"></a-switch
-                    ></a-button>
-                  </a-menu-item>
-                  <a-menu-item key="2">
-                    <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"
-                      >设计发布</a-button
-                    >
-                  </a-menu-item>
-                  <a-menu-divider />
-                  <a-menu-item key="3">
-                    <a-button
-                      style="color: #ff4d4f"
-                      type="link"
-                      icon="delete"
-                      size="small"
-                      @click="handleDelete(_item.formDesignId)"
-                      >删除该流程</a-button
-                    >
-                  </a-menu-item>
-                </a-menu>
-              </a-dropdown>
-            </div>
-          </template>
-        </section>
-      </a-space>
+
+                    <a-menu slot="overlay">
+                      <a-menu-item key="2">
+                        <a-button
+                          type="link"
+                          icon="edit"
+                          size="small"
+                          title="流程设计"
+                          @click="handleEdit(_item.id,FlowFormDesignerType.PLATFORM_EDIT)"
+                          >设计发布</a-button
+                        >
+                      </a-menu-item>
+                      <a-menu-divider />
+                      <a-menu-item key="3">
+                        <a-button
+                          style="color: #ff4d4f"
+                          type="link"
+                          icon="delete"
+                          size="small"
+                          @click="handleDelete(_item.formDesignId)"
+                          >删除该流程</a-button
+                        >
+                      </a-menu-item>
+                    </a-menu>
+                  </a-dropdown>
+                </a-space>
+
+                <!-- <a-space direction="vertical">
+                  <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"></a-button>
+                  <a-popconfirm
+                    placement="rightBottom"
+                    ok-text="Yes"
+                    cancel-text="No"
+                    @confirm="handleDelete(_item.formDesignId)"
+                  >
+                    <template slot="title"> 确定删除？ </template>
+                    <a-button style="color: #ff4d4f" type="link" icon="delete" size="small"></a-button>
+                  </a-popconfirm>
+                </a-space> -->
+              </div>
+            </template>
+          </div>
+        </template>
+      </section>
       <FormPreviewerModal ref="FormPreviewerModal" :footer="null" />
       <FlowFormTemplatesSelectModal ref="FlowFormTemplatesSelectModal" @ok="handleSelect" />
     </Container>
@@ -217,6 +246,7 @@ export default {
   mixins:[handleQuery],
   data() {
     return {
+      FlowFormDesignerType,
       list: [],
       enabled_list: [],
       query:{//查看handleQuery的使用文档 src/mixins/handleQuery.md
@@ -290,17 +320,20 @@ export default {
         this.$message.error('删除失败');
       }
     },
-    handleEdit(id) {
+    handleEdit(id,type) {
       this.$router.push({
         path: '/platform/flowformDesigner',
         query:{
-          type:FlowFormDesignerType.PLATFORM_NEW,
+          type:type,
           templateId:id,
           platformId:this.computedQuery.platformId,
           bizToken:this.computedQuery.bizToken
         }
       });
     },
+    async handleEnableChange(id,enable){
+      console.log('[id,enable]: ',id,enable)
+    }
   },
   mounted() {
     this.loadList();
