@@ -86,7 +86,7 @@
           </div>
         </div>
 
-        <div class="field-item">
+        <div class="field-item" v-if="showPeopleConfig">
           <div class="field-title">
             <div class="field-main-title">消息推送类型</div>
             <div class="field-sub-title">指定消息将以何种方式推送</div>
@@ -267,13 +267,15 @@ export default {
           viewAllMembers: this.sumbitForm.viewMembers,
         }),
         nodeDesignConfig: JSON.stringify(window.historyExtendConfig),
+        notifyConfig:this.sumbitForm.notifyConfig
       };
+      let _this = this;
       function interceptingValidator() {
         //! 附加的验证逻辑可以写在这里， 通过返回true，否则返回false
         let valid = true;
         //! 如果是系统内部，设计的流程模板，则不需要验证结点配置
-        if([FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(this.type)){
-          valid = this.validateNodesApproval();
+        if([FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(_this.type)){
+          valid = _this.validateNodesApproval(initDataStructure);
         }
         return valid
       }
@@ -284,10 +286,10 @@ export default {
       }
     },
 
-    validateNodesApproval(){
+    validateNodesApproval(initDataStructure){
       let _this = this;
       // 验证流程, 流程节点除了第一个节点， 其他UserTask 类型节点，必须配置 '审批配置' 指定审批人
-      let temp = JSON.parse(JSON.stringify(initDataStructure.nodeConfigs));
+      let temp = JSON.parse(initDataStructure.nodeDesignConfig);
       temp.shift(); // 首个节点可不必填写
       let blankIndex = temp.findIndex((it) => {
         return it.taskConfig.members.length === 0 && it.taskConfig.approval.approvalType !== "applicantLeader" && it.taskConfig.approval.approvalType !== "applicant";
