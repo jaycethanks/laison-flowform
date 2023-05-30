@@ -107,3 +107,32 @@ export const listDesignGroup = (condition) =>
       platformId: condition.platformId,
     },
   });
+
+/**
+ * 关闭或者删除已发布流程
+ */
+
+export const operateProcessForm = (condition, platformId) =>
+  axios({
+    url: 'platformOpenAPI/operateProcessForm',
+    method: 'post',
+    data: condition,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      platformId: platformId,
+    },
+  });
+
+/**
+ * 删除选择的模板
+ */
+export const deleteTemplate = (condition, platformId) =>
+  axios({
+    url: 'platformOpenAPI/deleteTemplate',
+    method: 'post',
+    data: condition,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      platformId: platformId,
+    },
+  });

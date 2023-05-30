@@ -150,7 +150,6 @@ export default {
     bpmnEditDataInit:{
       handler:function(){
         if(this.bpmnEditDataInit){
-          console.log("this.bpmnEditDataInit",this.bpmnEditDataInit)
           this.xmlString = this.bpmnEditDataInit.xmldata
         }
       },

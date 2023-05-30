@@ -25,7 +25,7 @@
         <template v-for="(item, index) in list">
           <TitleRow size="small" :key="item.groupId" :title="item.groupName" bold> </TitleRow>
           <div class="group-wrapper" :key="index">
-            <template v-for="(_item) in item.list">
+            <template v-for="_item in item.list">
               <div class="process-item-wrapper" :key="_item.id">
                 <div class="process-item">
                   <div class="process-item-content">
@@ -78,7 +78,12 @@
                         icon="edit"
                         size="small"
                         title="流程设计"
-                        @click="handleEdit(_item.id,FlowFormDesignerType.PLATFORM_NEW)"
+                        @click="
+                          handleEdit(
+                            _item.id,
+                            FlowFormDesignerType.PLATFORM_NEW
+                          )
+                        "
                         >设计发布该模板</a-button
                       >
                     </a-menu-item>
@@ -89,24 +94,14 @@
                         type="link"
                         icon="delete"
                         size="small"
-                        @click="handleDelete(_item.formDesignId)"
+                        @click="
+                          handleDeleteTemplate(_item.id, _item.designName)
+                        "
                         >删除该模板</a-button
                       >
                     </a-menu-item>
                   </a-menu>
                 </a-dropdown>
-                <!-- <a-space direction="vertical">
-                  <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"></a-button>
-                  <a-popconfirm
-                    placement="rightBottom"
-                    ok-text="Yes"
-                    cancel-text="No"
-                    @confirm="handleDelete(_item.formDesignId)"
-                  >
-                    <template slot="title"> 确定删除？ </template>
-                    <a-button style="color: #ff4d4f" type="link" icon="delete" size="small"></a-button>
-                  </a-popconfirm>
-                </a-space> -->
               </div>
             </template>
           </div>
@@ -134,7 +129,7 @@
         <template v-for="(item, index) in enabled_list">
           <TitleRow size="small" :key="item.groupId" :title="item.groupName" bold> </TitleRow>
           <div class="group-wrapper" :key="index">
-            <template v-for="(_item) in item.list">
+            <template v-for="_item in item.list">
               <div class="process-item-wrapper" :key="_item.id">
                 <div class="process-item">
                   <div class="process-item-content">
@@ -152,18 +147,19 @@
                       </p>
 
                       <p class="process-item-lable-subtitle">
-                        {{ ellipsis(_item.designDes, 18) }}
+                        {{ ellipsis(_item.designDes, 15) }}
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <!-- settings -->
-                <a-space direction="vertical">
+                <a-space direction="vertical" style="align-items: flex-end">
                   <a-switch
+                    :loading="switchLoading"
                     style="margin-left: 6px"
                     v-model="_item.enable"
-                    @click="handleEnableChange(_item.id,_item.enable)"
+                    @click="handleEnableChange(_item.id, _item.enable)"
                     size="small"
                   ></a-switch>
                   <a-dropdown :trigger="['click']">
@@ -185,7 +181,12 @@
                           icon="edit"
                           size="small"
                           title="流程设计"
-                          @click="handleEdit(_item.id,FlowFormDesignerType.PLATFORM_EDIT)"
+                          @click="
+                            handleEdit(
+                              _item.id,
+                              FlowFormDesignerType.PLATFORM_EDIT
+                            )
+                          "
                           >设计发布</a-button
                         >
                       </a-menu-item>
@@ -196,26 +197,13 @@
                           type="link"
                           icon="delete"
                           size="small"
-                          @click="handleDelete(_item.formDesignId)"
+                          @click="handleDelete(_item.id, _item.designName)"
                           >删除该流程</a-button
                         >
                       </a-menu-item>
                     </a-menu>
                   </a-dropdown>
                 </a-space>
-
-                <!-- <a-space direction="vertical">
-                  <a-button type="link" icon="edit" size="small" title="流程设计" @click="handleEdit(_item)"></a-button>
-                  <a-popconfirm
-                    placement="rightBottom"
-                    ok-text="Yes"
-                    cancel-text="No"
-                    @confirm="handleDelete(_item.formDesignId)"
-                  >
-                    <template slot="title"> 确定删除？ </template>
-                    <a-button style="color: #ff4d4f" type="link" icon="delete" size="small"></a-button>
-                  </a-popconfirm>
-                </a-space> -->
               </div>
             </template>
           </div>
@@ -237,39 +225,40 @@ import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import Container from '@/components/base/Container/index.vue';
 import TitleRow from '@/components/base/TitleRow/index.vue';
 import RootContainer from '@/components/base/RootContainer/index.vue';
-import {listTemplateAndPublish,addTemplate} from "@/api/platform/platformOpenAPI.js"
+import { listTemplateAndPublish, addTemplate, operateProcessForm, deleteTemplate } from "@/api/platform/platformOpenAPI.js"
 import handleQuery from "@/mixins/handleQuery.js"
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
 
 export default {
-  components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal, Container, TitleRow, RootContainer,EmptyPage },
-  mixins:[handleQuery],
+  components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal, Container, TitleRow, RootContainer, EmptyPage },
+  mixins: [handleQuery],
   data() {
     return {
       FlowFormDesignerType,
       list: [],
       enabled_list: [],
-      query:{//查看handleQuery的使用文档 src/mixins/handleQuery.md
-        platformId:{
-          type:String
+      switchLoading: false,
+      query: {//查看handleQuery的使用文档 src/mixins/handleQuery.md
+        platformId: {
+          type: String
         },
-        bizToken:{
-          type:String
+        bizToken: {
+          type: String
         }
       }
     };
   },
-  created(){
+  created() {
     this.loadList();
   },
   methods: {
 
     ellipsis: (str, max) => ellipsis(str, max),
-    async handleSelect(id){
-      const res = await addTemplate({id,platformId:this.computedQuery.platformId})
-      if(res.status === 200){
+    async handleSelect(id) {
+      const res = await addTemplate({ id, platformId: this.computedQuery.platformId })
+      if (res.status === 200) {
         this.$message.success(res.msg)
-      }else{
+      } else {
         this.$message.error(res.msg)
       }
       this.loadList();
@@ -279,13 +268,17 @@ export default {
       // if (res.code === 0) {
       //   this.list = res.data;
       // }
-      const res = await listTemplateAndPublish({platformId:this.computedQuery.platformId})
-      if(res.status === 200){
-        if('templateList' in res.data){
+      const res = await listTemplateAndPublish({ platformId: this.computedQuery.platformId })
+      if (res.status === 200) {
+        if ('templateList' in res.data) {
           this.list = res.data.templateList
+        }else{
+          this.list = []
         }
-        if('publishList' in res.data){
+        if ('publishList' in res.data) {
           this.enabled_list = res.data.publishList
+        }else{
+          this.enabled_list = []
         }
       }
 
@@ -297,42 +290,76 @@ export default {
       // this.enabled_list = _mock.data;
     },
 
-    async handleDelete(id) {
+    async handleDeleteTemplate(id, name) {
+      let _this = this
       this.$confirm({
-        title: 'Are you sure delete this task?',
-        content: 'Some descriptions',
-        okText: 'Yes',
+        title: `确定要删除 [${name}] 模板吗?`,
+        content: '删除模板不会影响到已发布的流程，你可以再次添加新的模板！',
+        okText: '确定',
         okType: 'danger',
-        cancelText: 'No',
-        onOk() {
-          console.log('OK');
+        cancelText: '取消',
+        async onOk() {
+          const res = await deleteTemplate({ id }, _this.computedQuery.platformId)
+          if (res.status === 200) {
+            _this.$message.success(res.msg)
+          } else {
+            _this.$message.error(res.msg)
+          }
+          _this.loadList();
+
+
         },
         onCancel() {
           console.log('Cancel');
         },
       });
-      return;
-      let res = await API.realDeleteConfigById(id);
-      this.loadList();
-      if (res.code === 0) {
-        this.$message.success('删除成功');
-      } else {
-        this.$message.error('删除失败');
-      }
     },
-    handleEdit(id,type) {
+    async handleDelete(id, name) {
+      let _this = this
+      this.$confirm({
+        title: `确定要删除 [${name}] 流程吗?`,
+        content: '删除流程不会影响到已在执行的流程， 但是后续将不再能够发起',
+        okText: '确定',
+        okType: 'danger',
+        cancelText: '取消',
+        async onOk() {
+          const res = await operateProcessForm({ id, deleteStatus: true }, _this.computedQuery.platformId)
+          if (res.status === 200) {
+            _this.$message.success(res.msg)
+          } else {
+            _this.$message.error(res.msg)
+          }
+          _this.loadList();
+
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    },
+    handleEdit(id, type) {
       this.$router.push({
         path: '/platform/flowformDesigner',
-        query:{
-          type:type,
-          templateId:id,
-          platformId:this.computedQuery.platformId,
-          bizToken:this.computedQuery.bizToken
+        query: {
+          type: type,
+          templateId: id,
+          platformId: this.computedQuery.platformId,
+          bizToken: this.computedQuery.bizToken
         }
       });
     },
-    async handleEnableChange(id,enable){
-      console.log('[id,enable]: ',id,enable)
+    async handleEnableChange(id, enable) {
+      // id,deleteStatus,enableStatus
+      this.switchLoading = true
+      const res = await operateProcessForm({ id, enableStatus: enable }, this.computedQuery.platformId)
+      if (res.status === 200) {
+        this.$message.success(res.msg)
+      } else {
+        this.$message.error(res.msg)
+      }
+      this.switchLoading = false
+
+
     }
   },
   mounted() {
