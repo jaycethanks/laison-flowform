@@ -128,7 +128,7 @@ export default {
         platformId:undefined,
         bizToken:undefined,
       },
-      success:true
+      success:false
     };
   },
 

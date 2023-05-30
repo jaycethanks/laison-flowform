@@ -1,4 +1,3 @@
-// TODO: 组件中的操作按钮需要增加权限控制， 仅登陆的管理员用户可操作
 <template>
   <div class="process-list-root" ref="process-list-root" :style="{ height: 'calc(100% - 32px)' }">
     <section class="collapse-wrapper" v-if="list.length > 0">
