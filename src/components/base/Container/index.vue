@@ -1,10 +1,19 @@
 <template>
   <div class="container-root">
-    <div class="container">
+    <div class="container" :style="{maxWidth:maxWidth}">
       <slot />
     </div>
   </div>
 </template>
+<script>
+export default {
+  props:{
+    maxWidth:{
+      type:String,
+    }
+  }
+}
+</script>
 
 <style lang="css" scoped>
 .container-root {

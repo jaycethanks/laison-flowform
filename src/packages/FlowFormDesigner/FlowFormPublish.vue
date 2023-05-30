@@ -1,5 +1,6 @@
 <template>
-  <div class="publish-page-wrapper" :style="{ height: height }">
+  <Container maxWidth="700px">
+    <!-- <div class="publish-page-wrapper" :style="{ height: height }"> -->
     <div class="publish-content">
       <!--  -->
       <div class="field-item">
@@ -114,16 +115,17 @@
         <a-button @click="submit" type="primary">{{ submitBtnText }}</a-button>
       </div>
     </div>
-  </div>
+    <!-- </div> -->
+  </Container>
 </template>
 <script>
 import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
 import iconSelect from '@/components/FlowForm/IconSelect/iconSelect.vue';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
+import Container from "@/components/base/Container/index.vue"
 import convert from 'xml-js';
 let index = 0;
 export default {
-
   props: {
     height: {
       type: String,
@@ -147,6 +149,7 @@ export default {
   components: {
     OrgSelectionModal,
     iconSelect,
+    Container
   },
   data() {
     return {
@@ -317,16 +320,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.publish-page-wrapper {
-  padding: 16px 20px;
-  .publish-content {
-    padding: 16px 20px;
-    background-color: #ffffff;
-    height: 100%;
-    overflow-y: auto;
-    width: 40%;
-    margin: 0 auto;
-    max-width: 700px;
+// .publish-page-wrapper {
+  // padding: 16px 20px;
+  // .publish-content {
+  //   padding: 16px 20px;
+  //   background-color: #ffffff;
+  //   height: 100%;
+  //   overflow-y: auto;
+  //   width: 40%;
+  //   margin: 0 auto;
+  //   max-width: 700px;
     .publish-content::-webkit-scrollbar {
       width: 2px;
       height: 2px;
@@ -373,8 +376,8 @@ export default {
         }
       }
     }
-  }
-}
+  // }
+// }
 
 .required-field::before {
   display: inline-block;
