@@ -240,9 +240,7 @@ export default {
       if (
         Object.keys(this.sumbitForm.iconName).length === 0 ||
         this.sumbitForm.flowName.trim() === '' ||
-        this.sumbitForm.groupSelected.trim() === '' ||
-        this.sumbitForm.startMembers.length === 0 ||
-        this.sumbitForm.startMembers.length === 0
+        this.sumbitForm.groupSelected.trim() === ''
       ) {
         return false;
       } else {
