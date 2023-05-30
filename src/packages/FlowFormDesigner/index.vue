@@ -277,14 +277,9 @@ export default {
     setFlowDesignData({ procModelXml, nodeConfigs }) {
       this.$set(this,'bpmnEditDataInit',{
         xmldata: procModelXml,
-        nodeDesignConfigs: nodeConfigs,
+        nodeConfigs: nodeConfigs,
       });
-      // this.bpmnEditDataInit = {
-      //   xmldata: mock.procModelXml,
-      //   // xmldata: procModelXml,
 
-      //   nodeDesignConfigs: nodeConfigs,
-      // };
     },
     setFlowFormPublishData(fetchData) {
       const {
