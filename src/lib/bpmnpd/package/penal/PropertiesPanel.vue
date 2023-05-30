@@ -331,16 +331,19 @@ export default {
       deep: true,
       immediate: true,
     },
-  },
-  created() {
-    // try init edit data
-    if (this.bpmnEditDataInit != null && !!this.bpmnEditDataInit.nodeDesignConfigs) {
-      if (typeof this.bpmnEditDataInit.nodeDesignConfigs === 'string') {
-        this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeDesignConfigs);
-      }
-      this.historyExtendConfig = this.bpmnEditDataInit.nodeDesignConfigs;
+    bpmnEditDataInit:{
+      // bpmnEditDataInit 数据是异步拉取的， 所以不能在 created 阶段去初始化
+      handler:function(){
+        if(this.bpmnEditDataInit && !!this.bpmnEditDataInit.nodeConfigs){
+          this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeConfigs);
+          console.log('[this.historyExtendConfig]: ',this.historyExtendConfig)
+        }
+      },
+      deep:true,
+      immediate:true
     }
   },
+
   mounted() {
     // this.initModels()
     let unwatch = this.$watch('bpmnModeler', function () {
@@ -363,7 +366,6 @@ export default {
     handleLangInputChange(elementId) {
       this.currentExtendNodeConfig.lang = this.$refs['language-support'].getValue();
       const isValid = this.$refs['language-support'].validateForm();
-      console.log('[isValid]: ', isValid);
     },
     initModels() {
       /**
