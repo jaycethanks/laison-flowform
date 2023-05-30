@@ -1,47 +1,48 @@
 <template>
-  <Container maxWidth="700px">
-    <!-- <div class="publish-page-wrapper" :style="{ height: height }"> -->
-    <div class="publish-content">
-      <!--  -->
-      <div class="field-item">
-        <div style="float: left; width: 15%">
-          <!--  -->
-          <div class="inside-field-item">
-            <div class="field-title">
-              <div class="field-main-title required-field">图标设置</div>
-              <div class="field-sub-title">图标</div>
-            </div>
+  <RootContainer style="height:calc(100vh - 40px)">
+    <Container maxWidth="700px">
+      <!-- <div class="publish-page-wrapper" :style="{ height: height }"> -->
+      <div class="publish-content">
+        <!--  -->
+        <div class="field-item">
+          <div style="float: left; width: 15%">
+            <!--  -->
+            <div class="inside-field-item">
+              <div class="field-title">
+                <div class="field-main-title required-field">图标设置</div>
+                <div class="field-sub-title">图标</div>
+              </div>
 
-            <div class="field-content" style="cursor: pointer" @click="$refs.iconSelect.show()">
-              <iconSelect ref="iconSelect" v-model="sumbitForm.iconName" />
+              <div class="field-content" style="cursor: pointer" @click="$refs.iconSelect.show()">
+                <iconSelect ref="iconSelect" v-model="sumbitForm.iconName" />
+              </div>
             </div>
           </div>
-        </div>
-        <div style="float: right; width: 75%">
-          <!--  -->
-          <div class="field-item">
-            <div class="field-title">
-              <div class="field-main-title required-field">表单名称</div>
-              <div class="field-sub-title">最多20字符</div>
-            </div>
+          <div style="float: right; width: 75%">
+            <!--  -->
+            <div class="field-item">
+              <div class="field-title">
+                <div class="field-main-title required-field">表单名称</div>
+                <div class="field-sub-title">最多20字符</div>
+              </div>
 
-            <div class="field-content">
-              <a-input allowClear style="width: 100%" placeholder="请输入表单名称" v-model="sumbitForm.flowName" />
+              <div class="field-content">
+                <a-input allowClear style="width: 100%" placeholder="请输入表单名称" v-model="sumbitForm.flowName" />
+              </div>
             </div>
+            <!--  -->
           </div>
-          <!--  -->
         </div>
-      </div>
 
-      <div class="field-item" style="clear: both">
-        <div class="field-title">
-          <div class="field-main-title required-field">所在分组</div>
-          <div class="field-sub-title">请为该流程设定分组</div>
-        </div>
-        <div class="field-content" style="display: flex">
-          <a-popover v-model="popoverVisible" :title="null" trigger="click">
-            <!-- prettier-ignore -->
-            <div slot="content" style="display: flex; align-items: center;gap: 5px;">
+        <div class="field-item" style="clear: both">
+          <div class="field-title">
+            <div class="field-main-title required-field">所在分组</div>
+            <div class="field-sub-title">请为该流程设定分组</div>
+          </div>
+          <div class="field-content" style="display: flex">
+            <a-popover v-model="popoverVisible" :title="null" trigger="click">
+              <!-- prettier-ignore -->
+              <div slot="content" style="display: flex; align-items: center;gap: 5px;">
               <!-- prettier-ignore -->
               <div style="white-space: nowrap;font-weight: 600;">新增分组:</div>
               <a-input @keyup.enter="handlerAdd" :maxLength="10" allowClear placeholder="新增的组名，10个字符限制" v-model="newGroupInputModel"></a-input>
@@ -50,79 +51,86 @@
               <!-- prettier-ignore -->
               <a-button @click="popoverVisible = false" type="link" size="small" ><a-icon style="color: #ff7875" type="close"/></a-button>
             </div>
-            <a-button
-              style="margin-right: 20px"
-              type="dashed"
-              shape="circle"
-              icon="plus"
-              @click="newGroupInputModel = ''"
+              <a-button
+                style="margin-right: 20px"
+                type="dashed"
+                shape="circle"
+                icon="plus"
+                @click="newGroupInputModel = ''"
+              />
+            </a-popover>
+
+            <a-select v-model="sumbitForm.groupSelected" style="width: 100%">
+              <!-- prettier-ignore -->
+              <!-- <a-input-search ref="inputRef"  enterButton="添加" @search="addItem"></a-input-search> -->
+              <a-select-option v-for="item in groupList" :key="item" :value="item">
+                {{ item }}
+              </a-select-option>
+            </a-select>
+          </div>
+        </div>
+
+        <div class="field-item">
+          <div class="field-title">
+            <div class="field-main-title">表单说明</div>
+            <div class="field-sub-title">请在这里简单描述该流程表单用途及注意事项，最多50字符</div>
+          </div>
+
+          <div class="field-content">
+            <a-textarea
+              allowClear
+              :maxLength="50"
+              v-model="sumbitForm.remark"
+              :auto-size="{ minRows: 2, maxRows: 2 }"
             />
-          </a-popover>
+          </div>
+        </div>
 
-          <a-select v-model="sumbitForm.groupSelected" style="width: 100%">
-            <!-- prettier-ignore -->
-            <!-- <a-input-search ref="inputRef"  enterButton="添加" @search="addItem"></a-input-search> -->
-            <a-select-option v-for="item in groupList" :key="item" :value="item">
-              {{ item }}
-            </a-select-option>
-          </a-select>
+        <div class="field-item">
+          <div class="field-title">
+            <div class="field-main-title">消息推送类型</div>
+            <div class="field-sub-title">指定消息将以何种方式推送</div>
+          </div>
+
+          <div class="field-content">
+            <a-checkbox v-model="sumbitForm.notifyConfig.selectSMS"> 短信通知 </a-checkbox>
+            <a-checkbox v-model="sumbitForm.notifyConfig.selectEmail"> 邮箱通知 </a-checkbox>
+          </div>
+        </div>
+
+        <div class="field-item" v-if="showPeopleConfig">
+          <div class="field-title">
+            <div class="field-main-title required-field">发起新流程</div>
+            <div class="field-sub-title">请在这里配置可以发起该流程的人员</div>
+          </div>
+          <div class="field-content">
+            <OrgSelectionModal approvalType="multiple" v-model="sumbitForm.startMembers" :minHeight="100" />
+          </div>
+        </div>
+
+        <div class="field-item" v-if="showPeopleConfig">
+          <div class="field-title">
+            <div class="field-main-title required-field">查看全部流程</div>
+            <div class="field-sub-title">请在这里配置可以查看全部该流程的人员</div>
+          </div>
+          <div class="field-content">
+            <OrgSelectionModal approvalType="multiple" v-model="sumbitForm.viewMembers" :minHeight="100" />
+          </div>
+        </div>
+        <div class="field-item">
+          <a-button @click="submit" type="primary">{{ submitBtnText }}</a-button>
         </div>
       </div>
-
-      <div class="field-item">
-        <div class="field-title">
-          <div class="field-main-title">表单说明</div>
-          <div class="field-sub-title">请在这里简单描述该流程表单用途及注意事项，最多50字符</div>
-        </div>
-
-        <div class="field-content">
-          <a-textarea allowClear :maxLength="50" v-model="sumbitForm.remark" :auto-size="{ minRows: 2, maxRows: 2 }" />
-        </div>
-      </div>
-
-      <div class="field-item">
-        <div class="field-title">
-          <div class="field-main-title">消息推送类型</div>
-          <div class="field-sub-title">指定消息将以何种方式推送</div>
-        </div>
-
-        <div class="field-content">
-          <a-checkbox v-model="sumbitForm.notifyConfig.selectSMS"> 短信通知 </a-checkbox>
-          <a-checkbox v-model="sumbitForm.notifyConfig.selectEmail"> 邮箱通知 </a-checkbox>
-        </div>
-      </div>
-
-      <div class="field-item" v-if="showPeopleConfig">
-        <div class="field-title">
-          <div class="field-main-title required-field">发起新流程</div>
-          <div class="field-sub-title">请在这里配置可以发起该流程的人员</div>
-        </div>
-        <div class="field-content">
-          <OrgSelectionModal approvalType="multiple" v-model="sumbitForm.startMembers" :minHeight="100" />
-        </div>
-      </div>
-
-      <div class="field-item" v-if="showPeopleConfig">
-        <div class="field-title">
-          <div class="field-main-title required-field">查看全部流程</div>
-          <div class="field-sub-title">请在这里配置可以查看全部该流程的人员</div>
-        </div>
-        <div class="field-content">
-          <OrgSelectionModal approvalType="multiple" v-model="sumbitForm.viewMembers" :minHeight="100" />
-        </div>
-      </div>
-      <div class="field-item">
-        <a-button @click="submit" type="primary">{{ submitBtnText }}</a-button>
-      </div>
-    </div>
-    <!-- </div> -->
-  </Container>
+      <!-- </div> -->
+    </Container>
+  </RootContainer>
 </template>
 <script>
 import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
 import iconSelect from '@/components/FlowForm/IconSelect/iconSelect.vue';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import Container from "@/components/base/Container/index.vue"
+import RootContainer from '@/components/base/RootContainer/index.vue'
 import convert from 'xml-js';
 let index = 0;
 export default {
@@ -149,7 +157,8 @@ export default {
   components: {
     OrgSelectionModal,
     iconSelect,
-    Container
+    Container,
+    RootContainer
   },
   data() {
     return {
