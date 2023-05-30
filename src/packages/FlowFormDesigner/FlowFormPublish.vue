@@ -262,12 +262,12 @@ export default {
         designGroupName: this.sumbitForm.groupSelected,
         formInfo: JSON.stringify(this.$store.state.kform.data),
         procModelXml: processXml,
-        permissionDesignConfig: JSON.stringify({
+        permissionConfig: JSON.stringify({
           starterMembers: this.sumbitForm.startMembers,
           viewAllMembers: this.sumbitForm.viewMembers,
         }),
-        nodeDesignConfig: JSON.stringify(window.historyExtendConfig),
-        notifyConfig:this.sumbitForm.notifyConfig
+        nodeConfigs: JSON.stringify(window.historyExtendConfig),
+        notifyConfig:JSON.stringify(this.sumbitForm.notifyConfig)
       };
       let _this = this;
       function interceptingValidator() {
@@ -289,7 +289,7 @@ export default {
     validateNodesApproval(initDataStructure){
       let _this = this;
       // 验证流程, 流程节点除了第一个节点， 其他UserTask 类型节点，必须配置 '审批配置' 指定审批人
-      let temp = JSON.parse(initDataStructure.nodeDesignConfig);
+      let temp = JSON.parse(initDataStructure.nodeConfigs);
       temp.shift(); // 首个节点可不必填写
       let blankIndex = temp.findIndex((it) => {
         return it.taskConfig.members.length === 0 && it.taskConfig.approval.approvalType !== "applicantLeader" && it.taskConfig.approval.approvalType !== "applicant";

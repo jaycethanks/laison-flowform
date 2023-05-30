@@ -42,7 +42,20 @@
       </div>
     </div>
     <SuccessPage description="提交成功" v-show="success">
-      <a-button @click="handleGoBackToDesign" type="link" icon="rollback">继续设计</a-button>
+      <a-button
+        v-if="[FlowFormDesignerType.SYSTEM_NEW,FlowFormDesignerType.SYSTEM_EDIT].includes(computedQuery.type)"
+        @click="handleGoBackToDesign"
+        type="link"
+        icon="rollback"
+        >继续设计</a-button
+      >
+      <a-button
+        v-if="[FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(computedQuery.type)"
+        @click="handleGoBackToManagePage"
+        type="link"
+        icon="rollback"
+        >返回</a-button
+      >
     </SuccessPage>
   </div>
 </template>
@@ -92,6 +105,7 @@ export default {
   },
   data() {
     return {
+      FlowFormDesignerType,
       noFormDesign: true,
       current: 0,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
@@ -114,7 +128,7 @@ export default {
         platformId:undefined,
         bizToken:undefined,
       },
-      success:false
+      success:true
     };
   },
 
@@ -310,7 +324,16 @@ export default {
       this.$store.commit('RESET_KFORM');
       this.$store.commit('RESET_BPMN');
       this.$store.commit('RESET_FLOWFORM');
-    }
+    },
+    handleGoBackToManagePage(){
+        this.$router.push({
+        path: '/platform/flowformManagement',
+        query:{
+          platformId:this.computedQuery.platformId,
+          bizToken:this.computedQuery.bizToken
+        }
+      });
+    },
   },
 
   beforeRouteLeave(to, from, next) {
