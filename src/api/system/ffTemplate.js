@@ -4,7 +4,7 @@ export const add = (data) =>
   axios({
     url: '/processFormTemplate/add',
     method: 'post',
-    data: data,
+    data: data.data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
     },
