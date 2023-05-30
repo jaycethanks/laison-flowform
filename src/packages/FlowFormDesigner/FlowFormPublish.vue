@@ -229,8 +229,6 @@ export default {
     },
     submit() {
       let valid = this.requiredFieldsValidate();
-      valid = true;
-      // todo: 记得去除 valid = true
       if (valid) {
         this.submitDataJoint();
       } else {
@@ -264,43 +262,51 @@ export default {
         designGroupName: this.sumbitForm.groupSelected,
         formInfo: JSON.stringify(this.$store.state.kform.data),
         procModelXml: processXml,
-        permissionConfig: JSON.stringify({
+        permissionDesignConfig: JSON.stringify({
           starterMembers: this.sumbitForm.startMembers,
           viewAllMembers: this.sumbitForm.viewMembers,
         }),
-        nodeConfigs: JSON.stringify(window.historyExtendConfig),
+        nodeDesignConfig: JSON.stringify(window.historyExtendConfig),
       };
-      let _this = this;
       function interceptingValidator() {
-        // 附加的验证逻辑可以写在这里， 通过返回true，否则返回false
-        // 验证流程, 流程节点除了第一个节点， 其他UserTask 类型节点，必须配置 '审批配置' 指定审批人
-        let temp = JSON.parse(JSON.stringify(initDataStructure.nodeConfigs));
-        temp.shift(); // 首个节点可不必填写
-        console.log('temp', temp);
-        let blankIndex = temp.findIndex((it) => {
-          return it.taskConfig.members.length === 0 && !it.taskConfig.applyerLeader;
-        }); // true : not valid
-        // if (blankIndex != -1) {
-        //   _this.$message.error('检测到存在审批节点未指定审核人员，请检查配置')
-        //   setTimeout(() => {
-        //     _this.jumpTo(1)
-        //   }, 500)
-        //   setTimeout(() => {
-        //     try {
-        //       let selections = window.bpmnInstances.modeler.get('selection')
-        //       let shape = window.bpmnInstances.modeler.get('elementRegistry').get(temp[blankIndex].nodeId)
-        //       selections.select(shape)
-        //     } catch (e) {}
-        //   }, 1000)
-        //   return false
-        // }
-        _this.$message.success('流程节配置检查通过');
-        return true;
+        //! 附加的验证逻辑可以写在这里， 通过返回true，否则返回false
+        let valid = true;
+        //! 如果是系统内部，设计的流程模板，则不需要验证结点配置
+        if([FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(this.type)){
+          valid = this.validateNodesApproval();
+        }
+        return valid
       }
 
-      if (true || interceptingValidator()) {
+      if (interceptingValidator()) {
+        this.$message.success('流程节配置检查通过');
         this.doSubmit(initDataStructure);
       }
+    },
+
+    validateNodesApproval(){
+      let _this = this;
+      // 验证流程, 流程节点除了第一个节点， 其他UserTask 类型节点，必须配置 '审批配置' 指定审批人
+      let temp = JSON.parse(JSON.stringify(initDataStructure.nodeConfigs));
+      temp.shift(); // 首个节点可不必填写
+      let blankIndex = temp.findIndex((it) => {
+        return it.taskConfig.members.length === 0 && it.taskConfig.approval.approvalType !== "applicantLeader" && it.taskConfig.approval.approvalType !== "applicant";
+      }); // true : not valid
+      if (blankIndex != -1) {
+        _this.$message.error('检测到存在审批节点未指定审核人员，请检查配置')
+        setTimeout(() => {
+          _this.jumpTo(0)
+        }, 500)
+        setTimeout(() => {
+          try {
+            let selections = window.bpmnInstances.modeler.get('selection')
+            let shape = window.bpmnInstances.modeler.get('elementRegistry').get(temp[blankIndex].nodeId)
+            selections.select(shape)
+          } catch (e) {}
+        }, 1000)
+        return false
+      }
+      return true;
     },
     getDesignKey(processJson) {
       return JSON.parse(processJson).elements[0].attributes.id;
