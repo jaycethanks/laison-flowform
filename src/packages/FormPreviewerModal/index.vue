@@ -26,14 +26,7 @@
       </a-tooltip>
     </div> -->
     <div style="padding: 20px" id="pdfDom">
-      <k-form-build
-        @mount="handleMount"
-        :value="formInfo"
-        :disabled="allDisabled"
-        :showType="0"
-        :rootCompent="this"
-        ref="kfb"
-      />
+      <k-form-build @mount="handleMount" :value="formInfo" :disabled="allDisabled" :rootCompent="this" ref="kfb" />
     </div>
   </j-modal>
 </template>
@@ -44,8 +37,8 @@
 import KFormBuild from '@/lib/kform/KFormBuild/index';
 import JModal from '@/components/jeecg/JModal/index.vue';
 import { message } from 'ant-design-vue';
-import mock from './mock';
 //import '@/assets/SourceHanSansCN-Regular-normal'
+import { queryTemplate } from "@/api/platform/platformOpenAPI.js"
 export default {
   name: 'FormPreviewerModal',
   // mixins: [JeecgListMixin, activitiMixin],
@@ -86,9 +79,7 @@ export default {
       isFullScreen: false,
     };
   },
-  created() {
-    this.formInfo = mock;
-  },
+
   methods: {
     closeModal: function () {
       // this.$emit('close');
@@ -96,30 +87,15 @@ export default {
 
     },
 
-    show() {
+    async show(id) {
+      const res = await queryTemplate({id})
+      if(res.status === 200){
+        const { formInfo } = res.data
+        this.formInfo = JSON.parse(formInfo)
+      }else{
+        this.$message.error(res.msg)
+      }
       this.visible = true;
-      // this.$nextTick(() => {
-      //   window.kformd = [];
-      //   if (this.$refs.kfb && this.$refs.kfb.form) {
-      //     // console.log(,'--line162');
-      //     window.aform = this.$refs.kfb.form;
-      //     // console.log(this.formdataObj.LaisonStockList.tableData[0].orderProps.exeStdName, '--line162')
-      //     if (this.formdataObj) {
-      //       this.$refs.kfb.form.resetFields();
-      //       //@jayce 22/06/30-14:41:20 :
-      //       //【解决报错】 Warning: You cannot set a form field before rendering a field associated with the value. You can use `getFieldDecorator(id, options)` instead `v-decorator="[id, options]"` to register it before render.
-
-      //       for (let field in this.formdataObj) {
-      //         this.$refs.kfb.form.getFieldDecorator(field, { initialValue: '' });
-      //       }
-      //       this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
-      //       this.$refs.kfb.exeInitJs();
-      //       this.$refs.kfb.form.setFieldsValue(this.formdataObj); //初始化
-      //     }
-      //   }
-      // });
-
-      //this.fixData()
     },
 
     // async handleOk() {

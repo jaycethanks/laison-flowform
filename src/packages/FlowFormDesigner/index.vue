@@ -1,3 +1,4 @@
+// TODO: 其他对应type的测试和逻辑完善
 <template>
   <div class="flow-form-designer-root">
     <div class="flow-form-designer-root" v-show="!success">
@@ -35,6 +36,8 @@
           @success="$emit('back')"
           @doSubmit="handleSubmit"
           :type="computedQuery.type"
+          :fetchGroup="fn.fetchGroup"
+          :platformId="computedQuery.platformId"
         ></flow-form-publish>
       </div>
     </div>
@@ -55,11 +58,10 @@ import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import SvgIconFormDesign from '@/assets/svgIcon/SvgIconFormDesign.vue';
 import SvgIconFlowDesign from '@/assets/svgIcon/SvgIconFlowDesign.vue';
 import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
-
-import { add as system_add } from '@/api/system/ffTemplate.js';
-import { add as platform_add } from '@/api/platform/ffTemplate.js';
+import mock from "./mock"
+import { listDesignGroup as system_listDesignGroup ,findById as system_query,add as system_add, update as system_update } from '@/api/system/ffTemplate.js';
+import { queryTemplate,queryProcessForm,publishProcessForm,updateProcessForm,organizationStructure,listDesignGroup} from "@/api/platform/platformOpenAPI.js"
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
-import mock from './mock';
 export default {
   name: 'FlowFormDesigner',
   mixins: [handleQuery],
@@ -90,7 +92,6 @@ export default {
   },
   data() {
     return {
-      noBack: true,
       noFormDesign: true,
       current: 0,
       stepsHistoryStack: [0], // steps 的跳转栈，用于增加操作逻辑
@@ -98,22 +99,29 @@ export default {
       bpmnEditDataInit: null, // 用于edit的回显初始化
       publishEditDataInit: null, // 用于edit的回显初始化
       fn: {
-        add: null,
+        publish: null,//发布接口
+        query:null,//查询模板/流程接口
+        fetchGroup:null//查询发布分组接口
       },
       query: {
+        // 查看handleQuery的使用文档 src/mixins/handleQuery.md
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
         // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
         type: {
           type: Number,
         },
+        templateId:undefined,
+        platformId:undefined,
+        bizToken:undefined,
       },
       success:false
     };
   },
 
   created() {
-    this.handleType(this.computedQuery.type);
     // 尝试数据初始化
+    this.handleType(this.computedQuery.type);
+    // 如果指定了模板id, 那么就需要拉取模板数据
   },
   mounted() {
     this.$refs.steps.historyStack = [];
@@ -122,6 +130,7 @@ export default {
     jumpTo(tabIndex) {
       this.current = tabIndex;
     },
+
     onStepChange(key) {
       this.stepsHistoryStack.push(key);
       let from = this.stepsHistoryStack.at(-2);
@@ -167,69 +176,101 @@ export default {
       this.isSubmit = true;
     },
     handleType(type) {
-      // TODO: handle 提交接口 add
       switch (type) {
         case FlowFormDesignerType.SYSTEM_NEW: //1
           this.noFormDesign = false;
-          this.noBack = false;
-          this.fn.add = system_add;
+          this.fn.publish = system_add;
+          this.fn.fetchGroup = system_listDesignGroup;
+
           break;
         case FlowFormDesignerType.PLATFORM_NEW: //2
           this.noFormDesign = true;
-          this.noBack = true;
-          this.fn.add = platform_add;
-
-          this.fetchFlowFormDesignData('template_design_idxxxxxxx'); //TODO: 参数handle
+          this.fn.publish = publishProcessForm;
+          this.fn.query = queryTemplate;
+          this.fn.fetchGroup = listDesignGroup;
+          this.loadPlatformFlowFormDataAndInit()
+          this.loadOrgStructAndSetStore()
           break;
         case FlowFormDesignerType.SYSTEM_EDIT: //3
-          this.noFormDesign = true;
-          this.noBack = true;
-          this.fn.add = platform_add;
+          this.noFormDesign = false;
+          this.fn.publish = system_update;
+          this.fn.query = system_query
+          this.fn.fetchGroup = system_listDesignGroup;
 
-          this.fetchFlowFormDesignData('template_design_idxxxxxxx'); //TODO: 参数handle
+          this.loadSystemFlowFormDataAndInit()
           break;
         case FlowFormDesignerType.PLATFORM_EDIT: //4
           this.noFormDesign = true;
-          this.noBack = true;
-          this.fn.add = platform_add;
+          this.fn.publish = updateProcessForm;
+          this.fn.query = queryProcessForm
+          this.fn.fetchGroup = listDesignGroup;
 
-          this.fetchFlowFormDesignData('template_design_idxxxxxxx'); //TODO: 参数handle
+          this.loadPlatformFlowFormDataAndInit()
+          this.loadOrgStructAndSetStore()
           break;
         default:
           break;
       }
     },
-
-    // 平台管理员会进行模板的设计， 编辑的时候，回去拉取该模板的设计数据
-    fetchTemplateData(designId) {
-      // todo: 从接口拉取数据
-      this.setFlowFormData(mock);
+    // 加载三方组织架构,并set到store
+    async loadOrgStructAndSetStore(){
+      const res  = await organizationStructure({
+        platformId: this.computedQuery.platformId,
+        bizToken: this.computedQuery.bizToken,
+      })
+      if(res.status === 200){
+        this.$store.commit('SET_FLOWFORM_organizationStructure', res.data);
+      }
     },
-    // 业务系统设计流程时，会拉取整个设计数据
-    fetchFlowFormDesignData(designId) {
-      // todo: 从接口拉取数据
-      this.setFlowFormData(mock);
+
+
+    // 系统 在设计/编辑 流程模板时 初始化数据
+    async loadSystemFlowFormDataAndInit(){
+        const res = await this.fn.query({id:this.computedQuery.templateId})
+        if(res.status === 200){
+          this.setFlowFormData(res.data)
+        }else{
+          this.$message.error(res.msg)
+        }
+    },
+
+    // 平台 设计流程模板 / 编辑已发布流程时 初始化数据
+    async loadPlatformFlowFormDataAndInit(){
+      if(this.computedQuery.templateId){
+        const res = await this.fn.query({id:this.computedQuery.templateId})
+        if(res.status === 200){
+          this.setFlowFormData(res.data)
+        }else{
+          this.$message.error(res.msg)
+        }
+      }
     },
     setFlowFormData(fetchData) {
       const { formInfo, procModelXml, nodeConfigs } = fetchData;
       this.setKformStore(formInfo);
       this.setFlowDesignData({ procModelXml, nodeConfigs });
-      this.setFlowFormPublishData(fetchData);
+      // this.setFlowFormPublishData(fetchData);
     },
+    // 初始化kform design store 数据
     setKformStore(formInfo) {
       let _formInfo;
       if (typeof formInfo === 'string') {
-        _formInfo = JSON.parse(mock.formInfo);
+        _formInfo = JSON.parse(formInfo);
       }
-
       this.$store.commit('SET_KFORM_DATA', _formInfo);
     },
+    // 初始化 flow design 数据
     setFlowDesignData({ procModelXml, nodeConfigs }) {
-      this.bpmnEditDataInit = {
+      this.$set(this,'bpmnEditDataInit',{
         xmldata: procModelXml,
         nodeDesignConfigs: nodeConfigs,
-      };
-      console.log('[this.bpmnEditDataInit]: ', this.bpmnEditDataInit);
+      });
+      // this.bpmnEditDataInit = {
+      //   xmldata: mock.procModelXml,
+      //   // xmldata: procModelXml,
+
+      //   nodeDesignConfigs: nodeConfigs,
+      // };
     },
     setFlowFormPublishData(fetchData) {
       const {
@@ -258,7 +299,7 @@ export default {
 
     // 数据提交
     async handleSubmit(data) {
-      const res = await this.fn.add(data);
+      const res = await this.fn.publish({data,platformId:this.computedQuery.platformId});
       if(res.status === 200){
         this.success = true
       }

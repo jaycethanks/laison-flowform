@@ -128,7 +128,6 @@
 </template>
 
 <script>
-import mock from './mock';
 
 export default {
   name: 'OrgaStructureModal',
@@ -344,21 +343,17 @@ export default {
       return arr[0];
     },
     async loadData() {
+      const {departments,roles,users} = this.$store.state.flowform.organizationStructure
       // let res = (await getDeptListByType({ deptType: this.deptType })).data
       // this.tree.data.dept.src = res
       // this.tree.data.role.src = (await getRoleList()).data
       // this.tree.data.person.src = JSON.parse(JSON.stringify(res))
-      this.isloading = true;
-      setTimeout(() => {
-        this.tree.data.dept.src = mock.data.departments;
-        this.tree.data.role.src = mock.data.roles;
-        this.tree.data.person.src = mock.data.departments;
+        this.tree.data.dept.src = departments;
+        this.tree.data.role.src = roles;
+        this.tree.data.person.src = departments;
 
-        //
-        this.allUserList = mock.data.users;
+        this.allUserList = users;
         this.tree.data.person.checkSrc = this.allUserList;
-        this.isloading = false;
-      }, 500);
     },
     init() {
       this.radio = this.computedInitType();
@@ -476,7 +471,6 @@ export default {
     },
     async handleNodeClick(currentNode, node, nodeInstance) {
       if (this.radio === 'person') {
-        // mock member
         this.isloading = true;
         this.tree.data.person.checkSrc = [];
         // let res = (await getUserListByDeptId(currentNode.id)).data;

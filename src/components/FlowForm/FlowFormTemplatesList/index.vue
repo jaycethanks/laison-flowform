@@ -1,35 +1,12 @@
 // TODO: 组件中的操作按钮需要增加权限控制， 仅登陆的管理员用户可操作
 <template>
   <div class="process-list-root" ref="process-list-root" :style="{ height: 'calc(100% - 32px)' }">
-    <!-- <div class="head-operation-wrapper">
-      <a-button type="link">已选中：{{ allSelectedRowKeys.length }}</a-button>
-
-      <a-list size="small" item-layout="horizontal" :data-source="filteredSelectedRow">
-        <a-list-item slot="renderItem" slot-scope="item, index">
-          <a-button @click="handleRemoveListItem(item.designKey)" slot="actions" type="link" title="从选中列表移除">
-            <a-icon type="delete" style="color: #ff4d4f"></a-icon>
-          </a-button>
-          <a-list-item-meta :description="ellipsis(item.designDes, 10)">
-            <span slot="title" :title="item.designName" style="white-space: nowrap">{{
-              ellipsis(item.designName, 8)
-            }}</span>
-            <div slot="avatar" class="icon-box" :style="{ backgroundColor: item.designColor }">
-              <img :src="getIcon(item.designIcon)" alt="" />
-            </div>
-          </a-list-item-meta>
-        </a-list-item>
-      </a-list>
-    </div> -->
     <section class="collapse-wrapper" v-if="list.length > 0">
-      <!-- <div class="search-box">
-        <a-input></a-input>
-      </div> -->
-      <!-- todo: 卷动下方内容 -->
       <div class="collapse-content">
         <a-collapse :bordered="false" v-model="activeKey">
           <a-collapse-panel v-for="group in list" :key="group.groupId" :style="customStyle">
             <!-- group 设置 -->
-            <a-dropdown slot="extra">
+            <a-dropdown slot="extra" v-if="false">
               <a-button type="link">
                 <a-icon type="setting" />
               </a-button>
@@ -227,7 +204,6 @@ export default {
       return null;
     },
     onSwitchChange(status, id) {
-      console.log('[id]: ', id);
       this.changeStatus(status, id);
     },
     async changeStatus(status, id) {
@@ -266,6 +242,9 @@ export default {
 // }
 ::v-deep .ant-collapse-header {
   padding: 0;
+}
+::v-deep .ant-table-small{
+border: none;
 }
 ::v-deep .ant-input[disabled] {
   color: unset;

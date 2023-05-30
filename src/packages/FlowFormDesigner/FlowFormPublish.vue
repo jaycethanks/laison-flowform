@@ -79,13 +79,25 @@
         </div>
       </div>
 
+      <div class="field-item">
+        <div class="field-title">
+          <div class="field-main-title">消息推送类型</div>
+          <div class="field-sub-title">指定消息将以何种方式推送</div>
+        </div>
+
+        <div class="field-content">
+          <a-checkbox v-model="sumbitForm.notifyConfig.selectSMS"> 短信通知 </a-checkbox>
+          <a-checkbox v-model="sumbitForm.notifyConfig.selectEmail"> 邮箱通知 </a-checkbox>
+        </div>
+      </div>
+
       <div class="field-item" v-if="showPeopleConfig">
         <div class="field-title">
           <div class="field-main-title required-field">发起新流程</div>
           <div class="field-sub-title">请在这里配置可以发起该流程的人员</div>
         </div>
         <div class="field-content">
-          <!-- <OrgSelectionModal v-model="sumbitForm.startMembers" :minHeight="100" /> -->
+          <OrgSelectionModal approvalType="multiple" v-model="sumbitForm.startMembers" :minHeight="100" />
         </div>
       </div>
 
@@ -95,7 +107,7 @@
           <div class="field-sub-title">请在这里配置可以查看全部该流程的人员</div>
         </div>
         <div class="field-content">
-          <!-- <OrgSelectionModal v-model="sumbitForm.viewMembers" :minHeight="100" /> -->
+          <OrgSelectionModal approvalType="multiple" v-model="sumbitForm.viewMembers" :minHeight="100" />
         </div>
       </div>
       <div class="field-item">
@@ -105,16 +117,13 @@
   </div>
 </template>
 <script>
-// import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
+import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
 import iconSelect from '@/components/FlowForm/IconSelect/iconSelect.vue';
-import { listPlatformGroup, update, deleteById, listDesignGroup } from '@/api/system/ffTemplate.js';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
-
-import API from '@/api/ErpConfig.js';
-// 引入json转换与高亮
 import convert from 'xml-js';
 let index = 0;
 export default {
+
   props: {
     height: {
       type: String,
@@ -126,10 +135,17 @@ export default {
       type: Number,
       required: true,
     },
+    fetchGroup:{
+      type:Function,
+      required:true
+    },
+    platformId:{
+      type:String,
+    }
   },
   inject: ['jumpTo'],
   components: {
-    // OrgSelectionModal,
+    OrgSelectionModal,
     iconSelect,
   },
   data() {
@@ -143,8 +159,13 @@ export default {
         remark: '', //流程说明
         startMembers: [], //发起流程
         viewMembers: [], // 查看流程
+        notifyConfig:{
+          selectSMS:true,
+          selectEmail:true
+        }
       },
       groupList: [],
+
     };
   },
   computed: {
@@ -167,9 +188,12 @@ export default {
   },
   methods: {
     async loadGroupList() {
-      let res = await listDesignGroup();
+      console.log('[this.platformId]: ',this.platformId)
+      const res = await this.fetchGroup({platformId:this.platformId})
       if (res.status === 200) {
         this.groupList = res.data.map((it) => it.name);
+      }else{
+        this.groupList= []
       }
     },
 

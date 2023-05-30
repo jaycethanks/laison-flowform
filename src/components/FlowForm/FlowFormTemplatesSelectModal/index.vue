@@ -20,20 +20,17 @@
         v-show="!showFilterList"
         size="small"
         class="tab-wrapper"
-        default-active-key="订单"
+        :default-active-key="defaultActiveKey"
         tab-position="left"
         @prevClick="() => {}"
         @nextClick="() => {}"
       >
-        <a-tab-pane class="tab-pane" v-for="group in list" :key="group.groupName" :tab="ellipsis(group.groupName, 10)">
-          <a-list size="small" item-layout="horizontal" :data-source="group.formTemplates">
-            <a-list-item
-              class="list-item"
-              @click="handleSelect(item.formDesignId)"
-              slot="renderItem"
-              slot-scope="item, index"
-            >
-              <a-button @click.prevent.stop="handlePreview" slot="actions" type="link" icon="eye">预览模板</a-button>
+        <a-tab-pane class="tab-pane" v-for="group in list" :key="group.groupId" :tab="ellipsis(group.groupName, 10)">
+          <a-list size="small" item-layout="horizontal" :data-source="group.list">
+            <a-list-item class="list-item" @click="handleSelect(item.id)" slot="renderItem" slot-scope="item, index">
+              <a-button @click.prevent.stop="handlePreview(item.id)" slot="actions" type="link" icon="eye"
+                >预览模板</a-button
+              >
               <a-list-item-meta style="font-size:12px">
                 <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
                 <span slot="title" :title="item.designName" style="white-space: nowrap;">{{
@@ -66,28 +63,28 @@
         </a-list-item>
       </a-list>
     </a-modal>
-    <FormPreviewerModal :visible="showFormPreviewerModal" :footer="null" @close="showFormPreviewerModal = false" />
+    <FormPreviewerModal ref="FormPreviewerModal" :footer="null" @close="()=>{}" />
   </div>
 </template>
 <script>
-import mock from './mock';
 import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
 import ellipsis from '@/utils/ellipsis';
 import FormPreviewerModal from '@/packages/FormPreviewerModal/index.vue';
-
+import {listAllTemplate} from "@/api/platform/platformOpenAPI.js"
 import icons from '@/assets/flowform_icons/index.js';
 
 export default {
-
   components: { ffIcon,FormPreviewerModal },
   computed: {
     flatenArray: function () {
       let _this = this
+      console.log('[this.list]: ',this.list)
       const _flatenList = this.list
-        .map((group) => group.formTemplates)
+        .map((group) => group.list)
         .reduce((prev, curr) => {
           return prev.concat(curr);
         }, []);
+        console.log('[_flatenList]: ',_flatenList)
       if(this.searchText.trim === ""){
         return _flatenList
       }else{
@@ -100,29 +97,36 @@ export default {
     return {
       list: [],
       showFilterList: false,
+      defaultActiveKey:"",
       searchText:"",
-      showFormPreviewerModal:false,
       visible: false,
     };
   },
-  created() {
-    this.list = mock.data;
-  },
+
   methods: {
     ellipsis: (str, max) => ellipsis(str, max),
     handleSearchFilter({target:{value}}){
       console.log('[value]: ',value)
 
     },
-    show(){
-      this.visible = true;
+    async show(){
+      const res = await listAllTemplate()
+      if(res.status === 200){
+        this.list = res.data
+        if(res.data.length > 0){
+          this.defaultActiveKey = res.data[0].groupId
+        }
+        this.visible = true;
+      }else{
+        this.$message.error(res.msg)
+      }
     },
     handleSelect(id){
       this.visible = false
       this.$emit("ok",id)
     },
-    handlePreview(f){
-      this.showFormPreviewerModal = true
+    handlePreview(id){
+      this.$refs.FormPreviewerModal.show(id)
     }
     //   showModal() {
     //     this.visible = true;
@@ -139,6 +143,7 @@ export default {
 .tab-wrapper{
   height: 400px;
   // overflow: auto;
+  margin-top:10px;
   .tab-pane{
     ::v-deep .ant-list-items{
 
@@ -147,7 +152,7 @@ export default {
     }
     .list-item{
       cursor: pointer;
-      padding: 10px;
+      padding: 4px 12px;
       &:hover{
         background-color: rgb(247, 247, 247);
       }

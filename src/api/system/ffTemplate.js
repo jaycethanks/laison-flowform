@@ -49,3 +49,12 @@ export const deleteById = (id) =>
       'Content-Type': 'application/json;charset=UTF-8',
     },
   });
+
+export const findById = (id) =>
+  axios({
+    url: `/processFormTemplate/findById/${id}`,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+  });
