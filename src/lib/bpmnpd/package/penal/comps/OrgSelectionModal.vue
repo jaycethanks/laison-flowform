@@ -72,11 +72,14 @@ export default {
         this.disableDept = true;
         this.disableRole = true;
         if (this.sonCustomProp && this.sonCustomProp.length > 0) {
+          // 缓存初始值
           this.cache = { [this.sonCustomProp[0].type]: this.sonCustomProp };
         }
         this.$emit('customEvent', []);
         switch (this.approvalType) {
-          case 'applicant':
+          // 提高该组件复用性,单独使用时,如果需要允许多类型选择,可以通过传入静态的 approvalType:'multiple'开启
+          case 'multiple':
+          // case 'applicant':
             this.disablePerson = false;
             this.disableDept = false;
             this.disableRole = false;
@@ -107,7 +110,6 @@ export default {
 
   methods: {
     handleClick() {
-      window.xxx = this;
       this.$refs.orgaModal.show();
     },
   },
