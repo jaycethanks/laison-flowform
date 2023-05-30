@@ -1,17 +1,13 @@
 <template>
   <div class="root">
-    <TitleRow title="审批类型" size="small" bold> </TitleRow>
-    <a-checkbox @change="emitChange" v-model="autoApproval"> 自动审批 </a-checkbox>
     <TitleRow title="设定节点审批人" size="small" bold> </TitleRow>
-    <a-radio-group v-model="approver.approvalType" :options="options" @change="emitChange" />
+    <a-radio-group v-model="approval.approvalType" :options="options" @change="emitChange" />
     <OrgSelectionModal
-      v-model="approver.members"
+      v-model="approval.members"
       style="margin-top: 10px"
-      :approvalType="approver.approvalType"
-      v-if="approver.approvalType !== 'applicant' && approver.approvalType !== 'applicantLeader'"
+      :approvalType="approval.approvalType"
+      v-if="approval.approvalType !== 'applicant' && approval.approvalType !== 'applicantLeader'"
     />
-
-    <!-- autoApproval -->
   </div>
 </template>
 <script>
@@ -27,7 +23,15 @@ const options = [
 export default {
   name: 'NodeApproverConfigModal',
   components: { OrgSelectionModal, TitleRow },
-  props: ['customProp'],
+  props: {
+    customProp:{
+      type:Object,
+      default:()=>({
+        approvalType:'applicant',
+        members:[]
+      })
+    }
+  },
   model: {
     prop: 'customProp',
     event: 'customEvent',
@@ -39,20 +43,18 @@ export default {
     // 子 => 父 :
     customProp: {
       handler: function () {
-        if (this.customProp) {
+        if (this.customProp && this.customProp.approvalType && this.customProp.members) {
           const {
-            autoApproval,
-            approver: { approvalType, members },
+            approvalType, members ,
           } = this.customProp;
-          this.autoApproval = autoApproval;
-          this.approver.approvalType = approvalType;
-          this.approver.members = members;
+          this.approval.approvalType = approvalType;
+          this.approval.members = members;
         }
       },
       immediate: true,
       deep: true,
     },
-    'approver.members': {
+    'approval.members': {
       handler: function () {
         this.emitChange();
       },
@@ -62,8 +64,7 @@ export default {
   },
   data() {
     return {
-      autoApproval: false,
-      approver: {
+      approval: {
         approvalType: 'applicant',
         members: [],
       },
@@ -73,8 +74,8 @@ export default {
   methods: {
     emitChange() {
       this.$emit('customEvent', {
-        autoApproval: this.autoApproval,
-        approver: this.approver,
+        approvalType: this.approval.approvalType,
+        members:this.approval.members,
       });
     },
   },

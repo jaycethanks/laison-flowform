@@ -95,6 +95,11 @@
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
         <template v-if="isPlatform">
+          <TitleRow title="审批类型" size="small" bold> </TitleRow>
+          <a-checkbox v-model="currentExtendNodeConfig.taskConfig.autoApproval"> 自动审批 </a-checkbox>
+        </template>
+
+        <template v-if="isPlatform">
           <!-- <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" /> -->
           <NodeApproverConfigModal v-model="currentExtendNodeConfig.taskConfig.approval" />
         </template>
@@ -133,7 +138,11 @@
             <el-col :span="8"
               ><div class="grid-content bg-purple" style="margin-left: 8px">
                 <!-- <p class="field-label-text"><i class="el-icon-time"></i>显示最新</p> -->
-                <el-checkbox-group v-model="currentExtendNodeConfig.viewConfig.commonConfig.newest">
+                <el-checkbox-group
+                  v-model="
+                    currentExtendNodeConfig.viewConfig.commonConfig.newest
+                  "
+                >
                   <el-checkbox label="显示最新"></el-checkbox>
                 </el-checkbox-group></div
             ></el-col>
@@ -477,13 +486,18 @@ export default {
             lang: {},
             taskConfig: {
               columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)), // 将深拷贝表单信息转为 <FormFieldsControl/> 能直接处理的数据对象,
-              approval: {},
-              applyerLeader: false, // 发起人领导
-              applyer: false,
+              approval: {
+                approvalType: 'applicant',
+                members: []
+              },
+              autoApproval: false
             },
             copyConfig: {
               columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)),
-              approval: {},
+              approval: {
+                approvalType: 'applicant',
+                members: []
+              },
               type: 'end',
             },
             viewConfig: {
@@ -494,7 +508,10 @@ export default {
               },
               userConfig: {
                 columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)),
-                approval: {},
+                approval: {
+                  approvalType: 'applicant',
+                  members: []
+                },
               },
             },
           };
@@ -605,11 +622,11 @@ export default {
         console.log(this.historyExtendConfig, '--line586');
         // prettier-ignore
         this.historyExtendConfig.forEach((it) => {
-          historyExtendConfig_backup.forEach(h_it=>{
-            if(it.nodeId === h_it.nodeId){
-              setHistoryFields(it.taskConfig.columnConfigs,h_it.taskConfig.columnConfigs)
-              setHistoryFields(it.copyConfig.columnConfigs,h_it.copyConfig.columnConfigs)
-              setHistoryFields(it.viewConfig.userConfig.columnConfigs,h_it.viewConfig.userConfig.columnConfigs)
+          historyExtendConfig_backup.forEach(h_it => {
+            if (it.nodeId === h_it.nodeId) {
+              setHistoryFields(it.taskConfig.columnConfigs, h_it.taskConfig.columnConfigs)
+              setHistoryFields(it.copyConfig.columnConfigs, h_it.copyConfig.columnConfigs)
+              setHistoryFields(it.viewConfig.userConfig.columnConfigs, h_it.viewConfig.userConfig.columnConfigs)
             }
           })
         })
@@ -620,7 +637,7 @@ export default {
             // 遍历每个字段，先去判断有没有历史配置，针对有历史配置的字段：
             if (DiffKeys.includes(it.key)) {
               // 当前字段有历史配置，找到该历史配置对象
-              let target = historyColumnConfigs.find(i=>i.key === it.key);
+              let target = historyColumnConfigs.find(i => i.key === it.key);
               it.hidden = target.hidden;
               it.disabled = target.disabled;
               // it = target;不可以这样直接赋值，对象的内存地址直接被覆盖了，无法利用引用值特性直接修改原 historyExtendConfig 数据
@@ -644,8 +661,7 @@ export default {
   margin-top: 10px;
   color: #a4a4a4;
 }
-::v-deep .ant-collapse > .ant-collapse-item > .ant-collapse-header{
+::v-deep .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 10px 14px;
-
 }
 </style>
