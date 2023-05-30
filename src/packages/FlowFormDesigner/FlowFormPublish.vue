@@ -1,5 +1,5 @@
 <template>
-  <RootContainer style="height:calc(100vh - 40px)">
+  <RootContainer>
     <Container maxWidth="700px">
       <!-- <div class="publish-page-wrapper" :style="{ height: height }"> -->
       <div class="publish-content">

@@ -18,7 +18,7 @@ export default {
 .root-container {
   background-color: #f8f9fb;
   padding: 20px;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   position: relative;
 }
