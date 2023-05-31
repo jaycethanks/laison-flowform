@@ -263,7 +263,7 @@ export default {
       const { formInfo, procModelXml, nodeConfigs } = fetchData;
       this.setKformStore(formInfo);
       this.setFlowDesignData({ procModelXml, nodeConfigs });
-      // this.setFlowFormPublishData(fetchData);
+      this.setFlowFormPublishData(fetchData);
     },
     // 初始化kform design store 数据
     setKformStore(formInfo) {
@@ -283,17 +283,18 @@ export default {
     },
     setFlowFormPublishData(fetchData) {
       const {
-        permissionDesignConfig = null,
-        formDesignId,
+        permissionConfig = null,
+        id,
         designIcon,
         designColor,
         designName,
         designGroupName,
         designDes,
+        notifyConfig
       } = fetchData;
-      let _permissionDesignConfig = JSON.parse(permissionDesignConfig);
+      let _permissionConfig = JSON.parse(permissionConfig);
       this.publishEditDataInit = {
-        formDesignId: formDesignId, // 注意，仅当为编辑状态时需要此id， 如果时新建流程，不需要传这个id
+        id: id, // 注意，仅当为编辑状态时需要此id， 如果时新建流程，不需要传这个id
         iconName: {
           name: designIcon,
           color: designColor,
@@ -301,8 +302,9 @@ export default {
         flowName: designName,
         groupSelected: designGroupName,
         remark: designDes,
-        startMembers: _permissionDesignConfig ? _permissionDesignConfig.starterMembers : [],
-        viewMembers: _permissionDesignConfig ? _permissionDesignConfig.viewAllMembers : [],
+        notifyConfig:JSON.parse(notifyConfig),
+        startMembers: _permissionConfig ? _permissionConfig.starterMembers : [],
+        viewMembers: _permissionConfig ? _permissionConfig.viewAllMembers : [],
       };
     },
 
@@ -311,7 +313,12 @@ export default {
       const res = await this.fn.publish({data,platformId:this.computedQuery.platformId});
       if(res.status === 200){
         this.success = true
+        this.$message.success(res.msg)
+      }else{
+        this.$message.error(res.msg)
       }
+
+
     },
     handleGoBackToDesign(){
       this.jumpTo(0);
