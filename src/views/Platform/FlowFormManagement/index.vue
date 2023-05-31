@@ -376,6 +376,10 @@ section {
   // display: flex;
   // gap: 20px;
   // flex-wrap: wrap;
+  .group-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
   .process-item-wrapper {
     flex-shrink: 0;
     background: #fff;
@@ -429,5 +433,7 @@ section {
       }
     }
   }
+  }
+
 }
 </style>
