@@ -5,7 +5,12 @@
       <p class="flow-form-designer-header">
         <a-button
           class="header-back"
-          v-if="[FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(computedQuery.type)"
+          v-if="
+            [
+              FlowFormDesignerType.PLATFORM_NEW,
+              FlowFormDesignerType.PLATFORM_EDIT,
+            ].includes(computedQuery.type)
+          "
           @click="handleGoBackToManagePage"
           type="link"
           icon="rollback"
@@ -51,14 +56,27 @@
     </div>
     <SuccessPage description="提交成功" v-show="success">
       <a-button
-        v-if="[FlowFormDesignerType.SYSTEM_NEW,FlowFormDesignerType.SYSTEM_EDIT].includes(computedQuery.type)"
+        v-if="[FlowFormDesignerType.SYSTEM_NEW].includes(computedQuery.type)"
         @click="handleGoBackToDesign"
         type="link"
         icon="rollback"
         >继续设计</a-button
       >
       <a-button
-        v-if="[FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(computedQuery.type)"
+        v-if="[FlowFormDesignerType.SYSTEM_EDIT].includes(computedQuery.type)"
+        @click="handleGoBackToTemplatesList"
+        type="link"
+        icon="rollback"
+        >返回</a-button
+      >
+
+      <a-button
+        v-if="
+          [
+            FlowFormDesignerType.PLATFORM_NEW,
+            FlowFormDesignerType.PLATFORM_EDIT,
+          ].includes(computedQuery.type)
+        "
         @click="handleGoBackToManagePage"
         type="link"
         icon="rollback"
@@ -80,8 +98,8 @@ import SvgIconFormDesign from '@/assets/svgIcon/SvgIconFormDesign.vue';
 import SvgIconFlowDesign from '@/assets/svgIcon/SvgIconFlowDesign.vue';
 import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
 import mock from "./mock"
-import { listDesignGroup as system_listDesignGroup ,findById as system_query,add as system_add, update as system_update } from '@/api/system/ffTemplate.js';
-import { queryTemplate,queryProcessForm,publishProcessForm,updateProcessForm,organizationStructure,listDesignGroup} from "@/api/platform/platformOpenAPI.js"
+import { listDesignGroup as system_listDesignGroup, findById as system_query, add as system_add, update as system_update } from '@/api/system/ffTemplate.js';
+import { queryTemplate, queryProcessForm, publishProcessForm, updateProcessForm, organizationStructure, listDesignGroup } from "@/api/platform/platformOpenAPI.js"
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
 export default {
   name: 'FlowFormDesigner',
@@ -122,8 +140,8 @@ export default {
       publishEditDataInit: null, // 用于edit的回显初始化
       fn: {
         publish: null,//发布接口
-        query:null,//查询模板/流程接口
-        fetchGroup:null//查询发布分组接口
+        query: null,//查询模板/流程接口
+        fetchGroup: null//查询发布分组接口
       },
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
@@ -132,11 +150,11 @@ export default {
         type: {
           type: Number,
         },
-        templateId:undefined,
-        platformId:undefined,
-        bizToken:undefined,
+        templateId: undefined,
+        platformId: undefined,
+        bizToken: undefined,
       },
-      success:false
+      success: false
     };
   },
 
@@ -235,34 +253,34 @@ export default {
       }
     },
     // 加载三方组织架构,并set到store
-    async loadOrgStructAndSetStore(){
-      const res  = await organizationStructure({
+    async loadOrgStructAndSetStore() {
+      const res = await organizationStructure({
         platformId: this.computedQuery.platformId,
         bizToken: this.computedQuery.bizToken,
       })
-      if(res.status === 200){
+      if (res.status === 200) {
         this.$store.commit('SET_FLOWFORM_organizationStructure', res.data);
       }
     },
 
 
     // 系统 在设计/编辑 流程模板时 初始化数据
-    async loadSystemFlowFormDataAndInit(){
-        const res = await this.fn.query({id:this.computedQuery.templateId})
-        if(res.status === 200){
-          this.setFlowFormData(res.data)
-        }else{
-          this.$message.error(res.msg)
-        }
+    async loadSystemFlowFormDataAndInit() {
+      const res = await this.fn.query({ id: this.computedQuery.templateId })
+      if (res.status === 200) {
+        this.setFlowFormData(res.data)
+      } else {
+        this.$message.error(res.msg)
+      }
     },
 
     // 平台 设计流程模板 / 编辑已发布流程时 初始化数据
-    async loadPlatformFlowFormDataAndInit(){
-      if(this.computedQuery.templateId){
-        const res = await this.fn.query({id:this.computedQuery.templateId})
-        if(res.status === 200){
+    async loadPlatformFlowFormDataAndInit() {
+      if (this.computedQuery.templateId) {
+        const res = await this.fn.query({ id: this.computedQuery.templateId })
+        if (res.status === 200) {
           this.setFlowFormData(res.data)
-        }else{
+        } else {
           this.$message.error(res.msg)
         }
       }
@@ -283,7 +301,7 @@ export default {
     },
     // 初始化 flow design 数据
     setFlowDesignData({ procModelXml, nodeConfigs }) {
-      this.$set(this,'bpmnEditDataInit',{
+      this.$set(this, 'bpmnEditDataInit', {
         xmldata: procModelXml,
         nodeConfigs: nodeConfigs,
       });
@@ -310,7 +328,7 @@ export default {
         flowName: designName,
         groupSelected: designGroupName,
         remark: designDes,
-        notifyConfig:notifyConfig ? JSON.parse(notifyConfig) : {},
+        notifyConfig: notifyConfig ? JSON.parse(notifyConfig) : {},
         startMembers: _permissionConfig ? _permissionConfig.starterMembers : [],
         viewMembers: _permissionConfig ? _permissionConfig.viewAllMembers : [],
       };
@@ -318,32 +336,42 @@ export default {
 
     // 数据提交
     async handleSubmit(data) {
-      const res = await this.fn.publish({data,platformId:this.computedQuery.platformId});
-      if(res.status === 200){
+      const res = await this.fn.publish({ data, platformId: this.computedQuery.platformId });
+      if (res.status === 200) {
         this.success = true
         this.$message.success(res.msg)
-      }else{
+      } else {
         this.$message.error(res.msg)
       }
 
 
     },
-    handleGoBackToDesign(){
+    handleGoBackToDesign() {
       this.jumpTo(0);
       this.success = false;
       this.$store.commit('RESET_KFORM');
       this.$store.commit('RESET_BPMN');
       this.$store.commit('RESET_FLOWFORM');
     },
-    handleGoBackToManagePage(){
-        this.$router.push({
+    handleGoBackToManagePage() {
+      this.$router.push({
         path: '/platform/flowformManagement',
-        query:{
-          platformId:this.computedQuery.platformId,
-          bizToken:this.computedQuery.bizToken
+        query: {
+          platformId: this.computedQuery.platformId,
+          bizToken: this.computedQuery.bizToken
         }
       });
     },
+    handleGoBackToTemplatesList() {
+      this.$store.commit('RESET_KFORM');
+      this.$store.commit('RESET_BPMN');
+      this.$store.commit('RESET_FLOWFORM');
+      this.$router.push({
+        path: '/system/flowformDesign/flowformTemplatesList',
+      });
+    },
+
+
   },
 
   // beforeRouteLeave(to, from, next) {
@@ -377,7 +405,7 @@ export default {
   height: 40px;
   position: relative;
   margin-bottom: 0;
-  .header-back{
+  .header-back {
     position: absolute;
     left: 0;
   }
@@ -405,13 +433,12 @@ export default {
   border-radius: 6px;
   background-color: #fff;
   transition: left 0.3s;
-
 }
 ::v-deep .ant-steps-navigation .ant-steps-item-container {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding:2px 0;
+  padding: 2px 0;
   min-width: 140px;
 }
 ::v-deep .ant-steps-navigation .ant-steps-item::before {
@@ -420,22 +447,21 @@ export default {
 ::v-deep .ant-steps-navigation {
   padding: 2px;
   border-radius: 6px;
-    background-color: #eeeeee;
+  background-color: #eeeeee;
 }
 
-
-::v-deep .ant-steps-navigation .ant-steps-item::after{
+::v-deep .ant-steps-navigation .ant-steps-item::after {
   display: none;
 }
-::v-deep .ant-steps-item-custom .ant-steps-item-icon > .ant-steps-icon{
+::v-deep .ant-steps-item-custom .ant-steps-item-icon > .ant-steps-icon {
   width: 24px;
   height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-::v-deep .ant-steps-small .ant-steps-item-custom .ant-steps-item-icon{
-   width: 24px;
+::v-deep .ant-steps-small .ant-steps-item-custom .ant-steps-item-icon {
+  width: 24px;
   height: 24px;
 }
 /** steps 自定义样式 END */
