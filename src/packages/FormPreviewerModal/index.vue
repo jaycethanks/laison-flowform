@@ -4,7 +4,7 @@
     width="1200px"
     :visible="visible"
     switchFullscreen
-    title="订单详情"
+    :title="title"
     @ok="()=>{}"
     @cancel="closeModal"
     :maskClosable="false"

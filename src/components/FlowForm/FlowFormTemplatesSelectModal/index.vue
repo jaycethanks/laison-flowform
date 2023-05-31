@@ -7,13 +7,16 @@
       title="选择模板"
       :footer="null"
     >
-      <a-input
-        v-model="searchText"
-        placeholder="按照名称过滤"
-        @blur="showFilterList = false"
-        @focus="showFilterList = true"
-      >
-        <!-- <a-button size="small" type="link" icon="rollback" slot="addonAfter"></a-button> -->
+      <a-input v-model="searchText" placeholder="按照名称过滤" @focus="showFilterList = true">
+        <!-- <a-icon slot="addonAfter" type="close"></a-icon> -->
+        <!-- <a-button slot="addonAfter">清除</a-button> -->
+        <a-button
+          @click="searchText='';showFilterList = false"
+          size="small"
+          type="link"
+          icon="close-circle"
+          slot="addonAfter"
+        ></a-button>
       </a-input>
 
       <a-tabs
@@ -28,7 +31,11 @@
         <a-tab-pane class="tab-pane" v-for="group in list" :key="group.groupId" :tab="ellipsis(group.groupName, 10)">
           <a-list size="small" item-layout="horizontal" :data-source="group.list">
             <a-list-item class="list-item" @click="handleSelect(item.id)" slot="renderItem" slot-scope="item, index">
-              <a-button @click.prevent.stop="handlePreview(item.id)" slot="actions" type="link" icon="eye"
+              <a-button
+                @click.prevent.stop="handlePreview(item.id,item.designName)"
+                slot="actions"
+                type="link"
+                icon="eye"
                 >预览模板</a-button
               >
               <a-list-item-meta style="font-size:12px">
@@ -36,7 +43,7 @@
                 <span slot="title" :title="item.designName" style="white-space: nowrap;">{{
             ellipsis(item.designName, 8)
                 }}</span>
-                <ff-icon slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
+                <ff-icon size="small" slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
               </a-list-item-meta>
             </a-list-item>
           </a-list>
@@ -51,19 +58,21 @@
         item-layout="horizontal"
         :data-source="flatenArray"
       >
-        <a-list-item slot="renderItem" slot-scope="item, index">
+        <a-list-item class="list-item" @click="handleSelect(item.id)" slot="renderItem" slot-scope="item, index">
+          <a-button @click.prevent.stop="handlePreview(item.id,item.designName)" slot="actions" type="link" icon="eye"
+            >预览模板</a-button
+          >
           <a-list-item-meta style="font-size:12px">
             <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
             <span slot="title" :title="item.designName" style="white-space: nowrap;">{{
             ellipsis(item.designName, 8)
             }}</span>
-
-            <ff-icon slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
+            <ff-icon size="small" slot="avatar" :icon="item.designIcon" :bgc="item.designColor" />
           </a-list-item-meta>
         </a-list-item>
       </a-list>
     </a-modal>
-    <FormPreviewerModal ref="FormPreviewerModal" :footer="null" @close="()=>{}" />
+    <FormPreviewerModal :title="previewModalTitle" ref="FormPreviewerModal" :footer="null" @close="()=>{}" />
   </div>
 </template>
 <script>
@@ -100,6 +109,7 @@ export default {
       defaultActiveKey:"",
       searchText:"",
       visible: false,
+      previewModalTitle:""
     };
   },
 
@@ -125,7 +135,8 @@ export default {
       this.visible = false
       this.$emit("ok",id)
     },
-    handlePreview(id){
+    handlePreview(id,name){
+      this.previewModalTitle = name
       this.$refs.FormPreviewerModal.show(id)
     }
     //   showModal() {
@@ -146,19 +157,29 @@ export default {
   margin-top:10px;
   .tab-pane{
     ::v-deep .ant-list-items{
-
       height: 400px;
       overflow-y: auto;
     }
-    .list-item{
-      cursor: pointer;
-      padding: 4px 12px;
-      &:hover{
-        background-color: rgb(247, 247, 247);
-      }
-    }
-
   }
-
+}
+.filter-list{
+  margin-top:10px;
+}
+.list-item{
+  cursor: pointer;
+  padding: 4px 12px;
+  &:hover{
+    background-color: rgb(247, 247, 247);
+  }
+}
+::v-deep .ant-list-item-meta{
+  align-items: center;
+}
+::v-deep .ant-list-item-meta-title{
+    line-height: 14px;
+  }
+::v-deep .ant-list-item-meta-description{
+    line-height: 14px;
+    font-size: 12px;
 }
 </style>
