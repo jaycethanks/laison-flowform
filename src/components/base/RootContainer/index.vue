@@ -19,15 +19,17 @@ export default {
   background-color: #f8f9fb;
   padding: 20px;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
+
   position: relative;
 }
 .root-content {
   overflow: auto;
 }
 .root-container-icon {
-  position: absolute;
-  bottom: 10px;
+  /* position: absolute; */
+  /* bottom: 10px; */
+  float:right;
   right: 10px;
   width: 32px;
 }
