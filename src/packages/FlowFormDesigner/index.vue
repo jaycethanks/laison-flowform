@@ -3,6 +3,14 @@
   <div class="flow-form-designer-root">
     <div class="flow-form-designer-root" v-show="!success">
       <p class="flow-form-designer-header">
+        <a-button
+          class="header-back"
+          v-if="[FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(computedQuery.type)"
+          @click="handleGoBackToManagePage"
+          type="link"
+          icon="rollback"
+          >返回</a-button
+        >
         <a-steps
           ref="steps"
           style="margin-bottom: 0; width: auto"
@@ -338,25 +346,25 @@ export default {
     },
   },
 
-  beforeRouteLeave(to, from, next) {
-    if (this.isSubmit) {
-      //提交过了
-      next();
-    } else {
-      this.$confirm({
-        title: this.$t('common.warning'),
-        content: this.$t('common.离开页面将会丢弃所有设计内容，确认离开？'),
-        okType: 'danger',
-        onOk() {
-          next();
-        },
-        onCancel() {
-          next(false);
-        },
-      });
-    }
-    this.isSubmit = false;
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   if (this.isSubmit) {
+  //     //提交过了
+  //     next();
+  //   } else {
+  //     this.$confirm({
+  //       title: this.$t('common.warning'),
+  //       content: this.$t('common.离开页面将会丢弃所有设计内容，确认离开？'),
+  //       okType: 'danger',
+  //       onOk() {
+  //         next();
+  //       },
+  //       onCancel() {
+  //         next(false);
+  //       },
+  //     });
+  //   }
+  //   this.isSubmit = false;
+  // },
 };
 </script>
 <style scoped lang="scss">
@@ -369,6 +377,10 @@ export default {
   height: 40px;
   position: relative;
   margin-bottom: 0;
+  .header-back{
+    position: absolute;
+    left: 0;
+  }
 }
 .flow-form-designer-root {
   height: 100%;
