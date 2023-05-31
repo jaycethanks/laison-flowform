@@ -118,7 +118,9 @@
           </div>
         </div>
         <div class="field-item">
-          <a-button @click="submit" type="primary">{{ submitBtnText }}</a-button>
+          <a-button @click="submit" type="primary">{{
+            submitBtnText
+          }}</a-button>
         </div>
       </div>
       <!-- </div> -->
@@ -145,12 +147,12 @@ export default {
       type: Number,
       required: true,
     },
-    fetchGroup:{
-      type:Function,
-      required:true
+    fetchGroup: {
+      type: Function,
+      required: true
     },
-    platformId:{
-      type:String,
+    platformId: {
+      type: String,
     }
   },
   inject: ['jumpTo'],
@@ -171,9 +173,9 @@ export default {
         remark: '', //流程说明
         startMembers: [], //发起流程
         viewMembers: [], // 查看流程
-        notifyConfig:{
-          selectSMS:true,
-          selectEmail:true
+        notifyConfig: {
+          selectSMS: true,
+          selectEmail: true
         }
       },
       groupList: [],
@@ -190,22 +192,30 @@ export default {
       return isPlatform ? '发布流程' : '发布模板';
     },
   },
+  watch: {
+    publishEditDataInit: {
+      handler: function () {
+        if (this.publishEditDataInit != null) {
+          this.sumbitForm = JSON.parse(JSON.stringify(this.publishEditDataInit));
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
 
   created() {
     // init edit data
-    if (this.publishEditDataInit != null) {
-      this.sumbitForm = JSON.parse(JSON.stringify(this.publishEditDataInit));
-    }
+
     this.loadGroupList();
   },
   methods: {
     async loadGroupList() {
-      console.log('[this.platformId]: ',this.platformId)
-      const res = await this.fetchGroup({platformId:this.platformId})
+      const res = await this.fetchGroup({ platformId: this.platformId })
       if (res.status === 200) {
         this.groupList = res.data.map((it) => it.name);
-      }else{
-        this.groupList= []
+      } else {
+        this.groupList = []
       }
     },
 
@@ -265,14 +275,14 @@ export default {
           viewAllMembers: this.sumbitForm.viewMembers,
         }),
         nodeConfigs: JSON.stringify(window.historyExtendConfig),
-        notifyConfig:JSON.stringify(this.sumbitForm.notifyConfig)
+        notifyConfig: JSON.stringify(this.sumbitForm.notifyConfig)
       };
       let _this = this;
       function interceptingValidator() {
         //! 附加的验证逻辑可以写在这里， 通过返回true，否则返回false
         let valid = true;
         //! 如果是系统内部，设计的流程模板，则不需要验证结点配置
-        if([FlowFormDesignerType.PLATFORM_NEW,FlowFormDesignerType.PLATFORM_EDIT].includes(_this.type)){
+        if ([FlowFormDesignerType.PLATFORM_NEW, FlowFormDesignerType.PLATFORM_EDIT].includes(_this.type)) {
           valid = _this.validateNodesApproval(initDataStructure);
         }
         return valid
@@ -284,7 +294,7 @@ export default {
       }
     },
 
-    validateNodesApproval(initDataStructure){
+    validateNodesApproval(initDataStructure) {
       let _this = this;
       // 验证流程, 流程节点除了第一个节点， 其他UserTask 类型节点，必须配置 '审批配置' 指定审批人
       let temp = JSON.parse(initDataStructure.nodeConfigs);
@@ -302,7 +312,7 @@ export default {
             let selections = window.bpmnInstances.modeler.get('selection')
             let shape = window.bpmnInstances.modeler.get('elementRegistry').get(temp[blankIndex].nodeId)
             selections.select(shape)
-          } catch (e) {}
+          } catch (e) { }
         }, 1000)
         return false
       }
@@ -336,62 +346,62 @@ export default {
 
 <style scoped lang="scss">
 // .publish-page-wrapper {
-  // padding: 16px 20px;
-  // .publish-content {
-  //   padding: 16px 20px;
-  //   background-color: #ffffff;
-  //   height: 100%;
-  //   overflow-y: auto;
-  //   width: 40%;
-  //   margin: 0 auto;
-  //   max-width: 700px;
-    .publish-content::-webkit-scrollbar {
-      width: 2px;
-      height: 2px;
+// padding: 16px 20px;
+// .publish-content {
+//   padding: 16px 20px;
+//   background-color: #ffffff;
+//   height: 100%;
+//   overflow-y: auto;
+//   width: 40%;
+//   margin: 0 auto;
+//   max-width: 700px;
+.publish-content::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+.field-item {
+  padding-top: 32px;
+  .field-title {
+    .field-main-title {
+      color: #1f2d3d;
+      line-height: 22px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
-    .field-item {
-      padding-top: 32px;
-      .field-title {
-        .field-main-title {
-          color: #1f2d3d;
-          line-height: 22px;
-          font-size: 14px;
-          font-weight: 600;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        .field-sub-title {
-          margin-bottom: 4px;
-          color: #91a1b7;
-          font-size: 12px;
-          line-height: 18px;
-        }
+    .field-sub-title {
+      margin-bottom: 4px;
+      color: #91a1b7;
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+  .field-content {
+  }
+  .inside-field-item {
+    padding-top: 32px;
+    .field-title {
+      .field-main-title {
+        color: #1f2d3d;
+        line-height: 22px;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
-      .field-content {
-      }
-      .inside-field-item {
-        padding-top: 32px;
-        .field-title {
-          .field-main-title {
-            color: #1f2d3d;
-            line-height: 22px;
-            font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
-          .field-sub-title {
-            margin-bottom: 4px;
-            color: #91a1b7;
-            font-size: 12px;
-            line-height: 18px;
-          }
-        }
-        .field-content {
-        }
+      .field-sub-title {
+        margin-bottom: 4px;
+        color: #91a1b7;
+        font-size: 12px;
+        line-height: 18px;
       }
     }
-  // }
+    .field-content {
+    }
+  }
+}
+// }
 // }
 
 .required-field::before {
@@ -401,6 +411,6 @@ export default {
   font-size: 14px;
   font-family: SimSun, sans-serif;
   line-height: 1;
-  content: '*';
+  content: "*";
 }
 </style>
