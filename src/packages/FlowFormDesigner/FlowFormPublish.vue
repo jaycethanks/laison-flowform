@@ -261,7 +261,7 @@ export default {
       let processJson = await this.previewProcessJson();
       let processXml = await this.previewProcessXML();
       let initDataStructure = {
-        formDesignId: this.sumbitForm.formDesignId || '', // 仅在编辑时会有此id
+        id: this.sumbitForm.id || '', // 仅在编辑时会有此id
         designKey: this.getDesignKey(processJson),
         designName: this.sumbitForm.flowName,
         designDes: this.sumbitForm.remark,
