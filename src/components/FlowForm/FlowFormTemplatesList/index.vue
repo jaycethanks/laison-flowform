@@ -245,6 +245,7 @@ export default {
 // ::v-deep .ant-collapse {
 //   overflow-y: auto;
 // }
+
 ::v-deep .ant-collapse-header {
   padding: 0;
 }
