@@ -374,7 +374,12 @@ export default {
       // 监听 store 的变化， 当store 中的kform 设计数据发生了变化，设计器需要同步更新：
       // 例如： 异步接口拉取的回显数据， 或者 在其他页面想通过重置store中的kform 以达到重置设计器的效果
       handler:function(){
-        this.data = this.$store.state.kform.data
+        if(this.$store.state.kform.data != null){
+          this.data = this.$store.state.kform.data
+        }else{
+          // 当store.kform中的数据被 set 为null时()，触发设计器的重置
+          this.clearData()
+        }
       }
     },
 
