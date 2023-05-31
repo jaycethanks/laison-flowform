@@ -68,7 +68,7 @@
                         icon="eye"
                         size="small"
                         title="流程设计"
-                        @click="$refs.FormPreviewerModal.show(_item.id)"
+                        @click="formPreviewModalTitle=_item.designName;$refs.FormPreviewerModal.show(_item.id)"
                         >预览该模板表单</a-button
                       >
                     </a-menu-item>
@@ -209,7 +209,7 @@
           </div>
         </template>
       </section>
-      <FormPreviewerModal ref="FormPreviewerModal" :footer="null" />
+      <FormPreviewerModal :title="formPreviewModalTitle" ref="FormPreviewerModal" :footer="null" />
       <FlowFormTemplatesSelectModal ref="FlowFormTemplatesSelectModal" @ok="handleSelect" />
     </Container>
   </RootContainer>
@@ -238,6 +238,7 @@ export default {
       list: [],
       enabled_list: [],
       switchLoading: false,
+      formPreviewModalTitle:'',
       query: {//查看handleQuery的使用文档 src/mixins/handleQuery.md
         platformId: {
           type: String
