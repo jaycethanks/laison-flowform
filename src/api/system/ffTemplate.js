@@ -31,11 +31,11 @@ export const listDesignGroup = () =>
     },
   });
 
-export const update = (data) =>
+export const update = (condition) =>
   axios({
     url: '/processFormTemplate/update',
     method: 'post',
-    data: data,
+    data: condition.data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
     },
@@ -50,9 +50,9 @@ export const deleteById = (id) =>
     },
   });
 
-export const findById = (id) =>
+export const findById = (condition) =>
   axios({
-    url: `/processFormTemplate/findById/${id}`,
+    url: `/processFormTemplate/findById/${condition.id}`,
     method: 'get',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',

@@ -85,6 +85,7 @@ import { listPlatformGroup, update, deleteById, listDesignGroup } from '@/api/sy
 import icons from '@/assets/flowform_icons/index.js';
 import mock from './mock';
 import ellipsis from '@/utils/ellipsis';
+import FlowFormDesignerType from "@/constants/FlowFormDesignerType.js"
 const columns = [
   {
     title: '',
@@ -226,8 +227,13 @@ export default {
       this.loadList();
     },
     handleEdit(record) {
-      console.log('[record]: ', record);
-      this.$emit('edit', record);
+      this.$router.push({
+        path: '/platform/flowformDesigner',
+        query: {
+          type: FlowFormDesignerType.SYSTEM_EDIT,
+          templateId: record.id,
+        }
+      });
     },
   },
   mounted() {

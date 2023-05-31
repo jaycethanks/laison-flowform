@@ -291,7 +291,7 @@ export default {
     },
     setFlowFormPublishData(fetchData) {
       const {
-        permissionConfig = null,
+        permissionConfig,
         id,
         designIcon,
         designColor,
@@ -300,7 +300,7 @@ export default {
         designDes,
         notifyConfig
       } = fetchData;
-      let _permissionConfig = JSON.parse(permissionConfig);
+      let _permissionConfig = permissionConfig ? JSON.parse(permissionConfig) : {};
       this.publishEditDataInit = {
         id: id, // 注意，仅当为编辑状态时需要此id， 如果时新建流程，不需要传这个id
         iconName: {
@@ -310,7 +310,7 @@ export default {
         flowName: designName,
         groupSelected: designGroupName,
         remark: designDes,
-        notifyConfig:JSON.parse(notifyConfig),
+        notifyConfig:notifyConfig ? JSON.parse(notifyConfig) : {},
         startMembers: _permissionConfig ? _permissionConfig.starterMembers : [],
         viewMembers: _permissionConfig ? _permissionConfig.viewAllMembers : [],
       };

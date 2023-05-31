@@ -287,7 +287,7 @@ const platformRoutes = [
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { platformId: '1660919377043652608', bizToken: '219fb66d-924b-47f6-b10d-1a33304a9319' },
+          query: { platformId: '1660919377043652608', bizToken: 'c4f0e83a-e8f1-405e-9cd8-f90534c4e676' },
         });
       } else {
         next();
