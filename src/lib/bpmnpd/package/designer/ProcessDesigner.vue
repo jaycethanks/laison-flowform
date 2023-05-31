@@ -312,9 +312,14 @@ export default {
       if (this.isPlatform) {
         Modules.push({
           // __init__: ['labelEditingProvider'],
-          labelEditingProvider: ['value', null],
           // // 禁止点击节点出现contextPad
-          contextPadProvider: ['value', null],
+          paletteProvider: ["value", ''],//禁用/清空左侧工具栏
+          labelEditingProvider: ["value", ''],//禁用节点编辑
+          contextPadProvider: ["value", ''],//禁用图形菜单
+          bendpoints: ["value", {}],//禁用连线拖动
+          zoomScroll: ["value", ''],//禁用滚动
+          moveCanvas: ['value', ''],//禁用拖动整个流程图
+          move: ['value', '']//禁用单个图形拖动
         });
       }
       return Modules;
@@ -355,8 +360,8 @@ export default {
       return this.type === FlowFormDesignerType.SYSTEM_NEW || this.type === FlowFormDesignerType.SYSTEM_EDIT;
     },
   },
-  watch:{
-    value:function(){
+  watch: {
+    value: function () {
       this.init()
     }
   },
