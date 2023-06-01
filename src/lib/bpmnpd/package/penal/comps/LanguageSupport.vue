@@ -1,5 +1,5 @@
 <template>
-  <!-- // ToDo: 这个组件逻辑写的很繁琐， 有空优化下， 做成双向绑定 -->
+  <!-- // ToDo: 这个组件逻辑写的很繁琐， 有空优化下， 看能不能做成双向绑定 -->
   <a-form :form="form" ref="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
     <a-form-item :label="getLanguages(lang).name" v-for="lang in supportedLanguages" :key="lang">
       <a-input
@@ -15,13 +15,17 @@
 import { mapState } from 'vuex';
 export default {
   props: {
-    initValue: {
+    customProp: {
       type: Object,
     },
     elementId: {
       type: String,
     },
     businessObject: Object,
+  },
+  model:{
+    prop:"customProp",
+    event:"customEvent"
   },
   data() {
     return {
@@ -58,32 +62,34 @@ export default {
     supportedLanguages: (state) => state.kform.data.config.supportedLanguages,
   }),
   watch: {
-    initValue: {
+    customProp: {
       handler: function () {
-        this.form.setFieldsValue(this.initValue);
+        this.$nextTick(()=>{
+          this.form.setFieldsValue(this.customProp);
+        })
+        // this.setModalElement(this.customProp['zh']);
       },
+      deep:true,
+      immediate:true
     },
   },
-  mounted() {
-    this.form.setFieldsValue(this.initValue);
+
+  mounted(){
+    window.ffff = this.form
   },
-  // mounted() {
-  //   if (this.initValue) {
-  //     // 如果有初始值，则回显
-  //     console.log('[this.initValue]: ', this.initValue);
-  //     this.form.setFieldsValue(this.initValue);
-  //   }
-  // },
+
+
   methods: {
     getLanguages(lang) {
       return this.languageList.find((it) => it.value === lang);
     },
     handleChange(lang, { target: { value } }) {
       this.form.setFieldsValue({ [lang]: value });
-      this.$emit('change', this.elementId);
-      if (lang === 'zh') {
-        this.setModalElement(value);
-      }
+      const fields = this.form.getFieldsValue()
+      this.$emit('customEvent', fields);
+      // if (lang === 'zh') {
+      //   this.setModalElement(value);
+      // }
     },
     getValue() {
       let result = null;
