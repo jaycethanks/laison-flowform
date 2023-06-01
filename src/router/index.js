@@ -380,5 +380,11 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   }
-  next();
+  // bugfix: 解决从 系统模板编辑 直接通过 menu 跳转到 新增模板时，路由守卫beforeEnter 不会触发的问题
+  // 这里直接禁止重复跳转
+  if (to.path === from.path) {
+    console.log('路由重复跳转被拦截!!');
+  } else {
+    next();
+  }
 });
