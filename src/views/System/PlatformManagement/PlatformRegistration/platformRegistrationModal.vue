@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="visible" :title="title" @ok="handleOk" @cancel="handleCancle">
+  <a-modal cancelText="取消" okText="确定" v-model="visible" :title="title" @ok="handleOk" @cancel="handleCancle">
     isEdit?: {{ isEdit }}
     <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-model-item ref="name" label="租户名称" prop="name">
@@ -65,8 +65,8 @@ export default {
     return {
       visible: false,
       isEdit: false,
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 7 },
+      wrapperCol: { span: 17 },
       other: '',
       form: {
         // name: '',
