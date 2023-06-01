@@ -160,8 +160,10 @@ export default {
 
   created() {
     // 尝试数据初始化
+    this.resetStore()
+
+    // 根据query的type 进行一系列初始化
     this.handleType(this.computedQuery.type);
-    // 如果指定了模板id, 那么就需要拉取模板数据
   },
   mounted() {
     this.$refs.steps.historyStack = [];
@@ -349,9 +351,8 @@ export default {
     handleGoBackToDesign() {
       this.jumpTo(0);
       this.success = false;
-      this.$store.commit('RESET_KFORM');
-      this.$store.commit('RESET_BPMN');
-      this.$store.commit('RESET_FLOWFORM');
+      this.resetStore()
+
     },
     handleGoBackToManagePage() {
       this.$router.push({
@@ -363,13 +364,16 @@ export default {
       });
     },
     handleGoBackToTemplatesList() {
-      this.$store.commit('RESET_KFORM');
-      this.$store.commit('RESET_BPMN');
-      this.$store.commit('RESET_FLOWFORM');
+      this.resetStore()
       this.$router.push({
         path: '/system/flowformDesign/flowformTemplatesList',
       });
     },
+    resetStore(){
+      this.$store.commit('RESET_KFORM');
+      this.$store.commit('RESET_BPMN');
+      this.$store.commit('RESET_FLOWFORM');
+    }
 
 
   },
