@@ -244,7 +244,7 @@ export default {
     },
     handleEdit(record) {
       this.$router.push({
-        path: '/platform/flowformDesigner',
+        path: '/system/flowformDesign/flowformDesigner',
         query: {
           type: FlowFormDesignerType.SYSTEM_EDIT,
           templateId: record.id,
