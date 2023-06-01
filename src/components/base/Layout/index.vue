@@ -46,6 +46,9 @@ export default {
 #layout-root {
   height: 100vh;
   #layout-aside {
+        max-width: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     // background-color: rgb(0, 3, 22);
     // color: $layout-aside-color;
   }
