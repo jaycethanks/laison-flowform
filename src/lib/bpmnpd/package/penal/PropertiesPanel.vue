@@ -76,12 +76,7 @@
 
       <a-collapse-panel class="person-incarge-item" key="languages" v-if="elementType === 'UserTask' && isSystem">
         <div slot="header" class="panel-tab__title"><a-icon type="tags"></a-icon>结点多语言</div>
-        <LanguageSupport
-          :elementId="elementId"
-          :initValue="currentExtendNodeConfig.lang"
-          ref="language-support"
-          @change="handleLangInputChange"
-        />
+        <LanguageSupport :elementId="elementId" v-model="currentExtendNodeConfig.lang" ref="language-support" />
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
@@ -316,8 +311,17 @@ export default {
         this.activeTab = ['languages'];
       },
     },
+
     historyExtendConfig: {
-      handler: function () {
+
+      handler: function (val,ol) {
+        debugger
+        window.obarray=[]
+        window.valarray=[]
+        valarray.push(val)
+        if(this.historyExtendConfig[0]){
+             obarray.push(this.historyExtendConfig[0])
+        }
         window.historyExtendConfig = this.historyExtendConfig;
       },
       deep: true,
@@ -334,9 +338,9 @@ export default {
     bpmnEditDataInit:{
       // bpmnEditDataInit 数据是异步拉取的， 所以不能在 created 阶段去初始化
       handler:function(){
+
         if(this.bpmnEditDataInit && !!this.bpmnEditDataInit.nodeConfigs){
           this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeConfigs);
-          console.log('[this.historyExtendConfig]: ',this.historyExtendConfig)
         }
       },
       deep:true,
@@ -346,22 +350,25 @@ export default {
 
   mounted() {
     // this.initModels()
+    window.fff=this
     let unwatch = this.$watch('bpmnModeler', function () {
       this.initModels();
       if (unwatch) unwatch();
     });
     /**
-     * 用以监听src/views/erp/formdesign/FlowFormDesigner/index.vue 中， step 切换时的事件
+     * 用以监听src/viewsbpmnModelerp/formdesign/FlowFormDesigner/index.vue 中， step 切换时的事件
      * 该监听事件，用于当表单设计器变动时，刷新流程节点的字段控制
      * @param key { Number } - 当前step对应的key
      */
-    this.$bus.$on('stepChange', (from, key) => this.stepChangeListener(from, key));
+    //this.$bus.$on('stepChange', (from, key) => this.stepChangeListener(from, key));
   },
   methods: {
     handleElementChange(element) {
       // 结点编辑 change 事件发生后，同步去修改结点多语言配置中的中文项
       const name = element.businessObject.name;
-      this.currentExtendNodeConfig.lang['zh'] = name;
+      // this.currentExtendNodeConfig.lang['zh'] = name;
+      console.log("changeddddd")
+      //this.$set(this.currentExtendNodeConfig.lang,'zh',name)
     },
     handleLangInputChange(elementId) {
       this.currentExtendNodeConfig.lang = this.$refs['language-support'].getValue();
@@ -378,6 +385,7 @@ export default {
        * }
        * if (this.timer) clearTimeout(this.timer)
        */
+
 
       window.bpmnInstances = {
         modeler: this.bpmnModeler,
@@ -417,6 +425,7 @@ export default {
     },
     // 初始化数据
     initFormOnChanged(element) {
+      // TODO : fix, 这个方法在结点编辑后，触发了多次，其中好像第二次触发时， 正好 this.historyExtendConfig 被置为空， 待debug!
       //@jayce 21/12/22-15:38:48 : 节点点击事件
       let activatedElement = element;
       if (!activatedElement) {
@@ -450,6 +459,7 @@ export default {
       this.clickEventCustomHandle();
     },
     beforeDestroy() {
+      debugger
       window.bpmnInstances = null;
     },
     //@jayce 21/12/28-15:49:52 :
@@ -464,17 +474,20 @@ export default {
     },
     clickEventCustomHandle() {
       this.initFieldsControl(); // 初始化表单字段控制组件
-      console.log('[this.currentExtendNodeConfig]: ', this.currentExtendNodeConfig);
+      try{
+        console.log('[JSON.parse(JSON.stringify(this.historyExtendConfig))]: ',JSON.parse(JSON.stringify(this.historyExtendConfig)))
+      }catch(e){}
+      // console.log('[this.currentExtendNodeConfig]: ', this.currentExtendNodeConfig);
     },
     //@jayce 21/12/28-16:26:41 :
     initFieldsControl() {
       /** 每次点击，有两件事需要做：
-       * 1. 判断bpmnUserTaskNodeConfig是否已经维护该节点
+       * 1. 判断historyExtendConfig是否已经维护该节点
        * 2. 如果已经维护，拿出其表单，响应式绑定到 <FormFieldsControl/>,实时修改
-       * 3. 如果没有维护，从store深拷贝当前表单，然后维护到bpmnUserTaskNodeConfig，响应式绑定到 <FormFieldsControl/>, 实时修改
+       * 3. 如果没有维护，从store深拷贝当前表单，然后维护到historyExtendConfig，响应式绑定到 <FormFieldsControl/>, 实时修改
        */
       if (this.elementType === 'UserTask') {
-        // 1. 判断bpmnUserTaskNodeConfig是否已经维护该节点
+        // 1. 判断historyExtendConfig是否已经维护该节点
         let target = this.historyExtendConfig.find((it) => it.nodeId === this.elementId);
         if (target != undefined) {
           // 2. 如果已经维护
@@ -482,7 +495,7 @@ export default {
           this.currentExtendNodeConfig = target;
         } else {
           // 3. 如果没有维护
-          //深拷贝一份kform 表单信息，并关联改节点后，放入bpmnUserTaskNodeConfig,将表单的引用响应式绑定到 <FormFieldsControl/>,  实时修改
+          //深拷贝一份kform 表单信息，并关联改节点后，放入historyExtendConfig,将表单的引用响应式绑定到 <FormFieldsControl/>,  实时修改
           let temp = {
             nodeId: this.elementId,
             lang: {},
