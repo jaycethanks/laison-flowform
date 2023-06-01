@@ -76,12 +76,7 @@
 
       <a-collapse-panel class="person-incarge-item" key="languages" v-if="elementType === 'UserTask' && isSystem">
         <div slot="header" class="panel-tab__title"><a-icon type="tags"></a-icon>结点多语言</div>
-        <LanguageSupport
-          :elementId="elementId"
-          :initValue="currentExtendNodeConfig.lang"
-          ref="language-support"
-          @change="handleLangInputChange"
-        />
+        <LanguageSupport :elementId="elementId" v-model="currentExtendNodeConfig.lang" ref="language-support" />
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
@@ -460,7 +455,9 @@ export default {
     // },
     shapeRemoveEventCustomHandle(element) {
       let i = this.historyExtendConfig.findIndex((it) => it.node_id === element.id);
-      this.historyExtendConfig.splice(i, 1); // 移除该节点
+      if(i != -1){
+        this.historyExtendConfig.splice(i, 1); // 移除该节点
+      }
     },
     clickEventCustomHandle() {
       this.initFieldsControl(); // 初始化表单字段控制组件
