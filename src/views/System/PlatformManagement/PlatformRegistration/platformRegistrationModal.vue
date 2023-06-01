@@ -2,7 +2,7 @@
   <a-modal v-model="visible" :title="title" @ok="handleOk" @cancel="handleCancle">
     isEdit?: {{ isEdit }}
     <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-model-item ref="name" label="平台名称" prop="name">
+      <a-form-model-item ref="name" label="租户名称" prop="name">
         <a-input
           v-model="form.name"
           @blur="
@@ -12,25 +12,26 @@
           "
         />
       </a-form-model-item>
-      <a-form-model-item ref="tenantId" label="租户id" prop="tenantId">
+      <a-form-model-item ref="bizTenantId" label="业务系统租户ID" prop="bizTenantId">
         <a-input
-          v-model="form.tenantId"
+          v-model="form.bizTenantId"
           @blur="
             () => {
-              $refs.tenantId.onFieldBlur();
+              $refs.bizTenantId.onFieldBlur();
             }
           "
         />
       </a-form-model-item>
-      <a-form-model-item label="timeZone" required prop="timeZone">
-        <a-select v-model="form.timeZone" placeholder="please select your zone" :options="timeZoneOpts">
+      <a-form-model-item label="时区" required prop="timezone">
+        <a-select v-model="form.timezone" placeholder="please select your zone" :options="timeZoneOpts">
           <a-select-option value="shanghai"> Zone one </a-select-option>
           <a-select-option value="beijing"> Zone two </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item ref="baseUrl" label="baseUrl" prop="baseUrl">
+      <a-form-model-item ref="baseUrl" label="业务系统baseUrl" prop="baseUrl">
         <a-input
           v-model="form.baseUrl"
+          placeholder="ip+port"
           @blur="
             () => {
               $refs.baseUrl.onFieldBlur();
@@ -64,13 +65,13 @@ export default {
     return {
       visible: false,
       isEdit: false,
-      labelCol: { span: 4 },
-      wrapperCol: { span: 20 },
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 },
       other: '',
       form: {
         // name: '',
         // tenantId: undefined,
-        // timeZone: undefined,
+        // timezone: undefined,
         // baseUrl: undefined,
         // remark: undefined,
       },
@@ -175,7 +176,7 @@ export default {
       rules: {
         name: [{ required: true, message: '平台名称不可为空', trigger: 'blur' }],
         tenantId: [{ required: true, message: '租户id不可为空', trigger: 'change' }],
-        timeZone: [{ required: true, message: '时区不可为空', trigger: 'change' }],
+        timezone: [{ required: true, message: '时区不可为空', trigger: 'change' }],
         baseUrl: [{ required: true, message: 'baseUrl不可为空', trigger: 'change' }],
       },
     };

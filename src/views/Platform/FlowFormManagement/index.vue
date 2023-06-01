@@ -240,7 +240,7 @@ export default {
       switchLoading: false,
       formPreviewModalTitle:'',
       query: {//查看handleQuery的使用文档 src/mixins/handleQuery.md
-        platformId: {
+        uniTenantId: {
           type: String
         },
         bizToken: {
@@ -256,7 +256,7 @@ export default {
 
     ellipsis: (str, max) => ellipsis(str, max),
     async handleSelect(id) {
-      const res = await addTemplate({ id, platformId: this.computedQuery.platformId })
+      const res = await addTemplate({ id, uniTenantId: this.computedQuery.uniTenantId })
       if (res.status === 200) {
         this.$message.success(res.msg)
       } else {
@@ -269,7 +269,7 @@ export default {
       // if (res.code === 0) {
       //   this.list = res.data;
       // }
-      const res = await listTemplateAndPublish({ platformId: this.computedQuery.platformId })
+      const res = await listTemplateAndPublish({ uniTenantId: this.computedQuery.uniTenantId })
       if (res.status === 200) {
         if ('templateList' in res.data) {
           this.list = res.data.templateList
@@ -300,7 +300,7 @@ export default {
         okType: 'danger',
         cancelText: '取消',
         async onOk() {
-          const res = await deleteTemplate({ id }, _this.computedQuery.platformId)
+          const res = await deleteTemplate({ id }, _this.computedQuery.uniTenantId)
           if (res.status === 200) {
             _this.$message.success(res.msg)
           } else {
@@ -324,7 +324,7 @@ export default {
         okType: 'danger',
         cancelText: '取消',
         async onOk() {
-          const res = await operateProcessForm({ id, deleteStatus: true }, _this.computedQuery.platformId)
+          const res = await operateProcessForm({ id, deleteStatus: true }, _this.computedQuery.uniTenantId)
           if (res.status === 200) {
             _this.$message.success(res.msg)
           } else {
@@ -344,7 +344,7 @@ export default {
         query: {
           type: type,
           templateId: id,
-          platformId: this.computedQuery.platformId,
+          uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken
         }
       });
@@ -352,7 +352,7 @@ export default {
     async handleEnableChange(id, enable) {
       // id,deleteStatus,enableStatus
       this.switchLoading = true
-      const res = await operateProcessForm({ id, enableStatus: enable }, this.computedQuery.platformId)
+      const res = await operateProcessForm({ id, enableStatus: enable }, this.computedQuery.uniTenantId)
       if (res.status === 200) {
         this.$message.success(res.msg)
       } else {

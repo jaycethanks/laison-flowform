@@ -6,7 +6,7 @@
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
         <a-form-item label="租户id">
-          <a-input v-model="pageInfo.condition.tenantId"></a-input>
+          <a-input v-model="pageInfo.condition.bizTenantId"></a-input>
         </a-form-item>
         <!-- <a-col :md="6" :sm="8"> </a-col>
         <a-col :md="6" :sm="8">
@@ -66,12 +66,12 @@
 <script>
 import platformRegistrationModal from '@/views/System/PlatformManagement/PlatformRegistration/platformRegistrationModal.vue';
 import searchTableMixin from '@/mixins/searchTableMixin.js';
-import { findPage, add, update } from '@/api/system/platformManage.js';
+import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
 const columns = [
   {
     title: '平台id',
-    dataIndex: 'id',
-    key: 'id',
+    dataIndex: 'uniTenantId',
+    key: 'uniTenantId',
   },
   {
     title: '平台名称',
@@ -82,8 +82,8 @@ const columns = [
   },
   {
     title: '租户ID',
-    dataIndex: 'tenantId',
-    key: 'tenantId',
+    dataIndex: 'bizTenantId',
+    key: 'bizTenantId',
   },
   {
     title: 'baseUrl',
@@ -93,8 +93,8 @@ const columns = [
 
   {
     title: '时区',
-    dataIndex: 'timeZone',
-    key: 'timeZone',
+    dataIndex: 'timezone',
+    key: 'timezone',
     ellipsis: true,
   },
   {
@@ -141,7 +141,7 @@ export default {
     },
 
     async handleOk(formFieldsValue, isEdit) {
-      let fn = isEdit ? update : add;
+      let fn = saveOrUpdate;
       const res = await fn(formFieldsValue);
       if (res.status === 200) {
         this.$message.success('添加成功');

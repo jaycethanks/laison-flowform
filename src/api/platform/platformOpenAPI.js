@@ -27,7 +27,7 @@ export const listTemplateAndPublish = (condition) =>
     data: {},
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: condition.platformId,
+      uniTenantId: condition.uniTenantId,
     },
   });
 
@@ -38,7 +38,7 @@ export const addTemplate = (condition) =>
     data: { id: condition.id },
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: condition.platformId,
+      uniTenantId: condition.uniTenantId,
     },
   });
 /**
@@ -51,7 +51,7 @@ export const publishProcessForm = (condition) =>
     data: condition.data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: condition.platformId,
+      uniTenantId: condition.uniTenantId,
     },
   });
 
@@ -65,7 +65,7 @@ export const updateProcessForm = (condition) =>
     data: condition.data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: condition.platformId,
+      uniTenantId: condition.uniTenantId,
     },
   });
 
@@ -92,7 +92,7 @@ export const organizationStructure = (condition) =>
     data: {},
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: condition.platformId,
+      uniTenantId: condition.uniTenantId,
       bizToken: condition.bizToken,
     },
   });
@@ -104,7 +104,7 @@ export const listDesignGroup = (condition) =>
     data: {},
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: condition.platformId,
+      uniTenantId: condition.uniTenantId,
     },
   });
 
@@ -112,27 +112,27 @@ export const listDesignGroup = (condition) =>
  * 关闭或者删除已发布流程
  */
 
-export const operateProcessForm = (condition, platformId) =>
+export const operateProcessForm = (condition, uniTenantId) =>
   axios({
     url: 'platformOpenAPI/operateProcessForm',
     method: 'post',
     data: condition,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: platformId,
+      uniTenantId: uniTenantId,
     },
   });
 
 /**
  * 删除选择的模板
  */
-export const deleteTemplate = (condition, platformId) =>
+export const deleteTemplate = (condition, uniTenantId) =>
   axios({
     url: 'platformOpenAPI/deleteTemplate',
     method: 'post',
     data: condition,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
-      platformId: platformId,
+      uniTenantId: uniTenantId,
     },
   });

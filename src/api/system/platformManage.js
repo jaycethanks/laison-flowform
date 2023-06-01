@@ -10,19 +10,9 @@ export const findPage = (pageInfo) =>
     },
   });
 
-export const add = (data) =>
+export const saveOrUpdate = (data) =>
   axios({
-    url: '/platformInfo/add',
-    method: 'post',
-    data: data,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8',
-    },
-  });
-
-export const update = (data) =>
-  axios({
-    url: '/platformInfo/update',
+    url: '/platformInfo/saveOrUpdate',
     method: 'post',
     data: data,
     headers: {

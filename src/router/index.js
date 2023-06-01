@@ -283,11 +283,11 @@ const platformRoutes = [
   {
     path: 'flowformManagement',
     beforeEnter: (to, from, next) => {
-      if (!to.query.platformId) {
+      if (!to.query.uniTenantId) {
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { platformId: '1660919377043652608', bizToken: 'c4f0e83a-e8f1-405e-9cd8-f90534c4e676' },
+          query: { uniTenantId: '1660919377043652608', bizToken: 'c4f0e83a-e8f1-405e-9cd8-f90534c4e676' },
         });
       } else {
         next();

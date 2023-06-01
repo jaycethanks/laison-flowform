@@ -151,7 +151,7 @@ export default {
       type: Function,
       required: true
     },
-    platformId: {
+    uniTenantId: {
       type: String,
     }
   },
@@ -211,7 +211,7 @@ export default {
   },
   methods: {
     async loadGroupList() {
-      const res = await this.fetchGroup({ platformId: this.platformId })
+      const res = await this.fetchGroup({ uniTenantId: this.uniTenantId })
       if (res.status === 200) {
         this.groupList = res.data.map((it) => it.name);
       } else {

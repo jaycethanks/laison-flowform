@@ -50,7 +50,7 @@
           @doSubmit="handleSubmit"
           :type="computedQuery.type"
           :fetchGroup="fn.fetchGroup"
-          :platformId="computedQuery.platformId"
+          :uniTenantId="computedQuery.uniTenantId"
         ></flow-form-publish>
       </div>
     </div>
@@ -151,7 +151,7 @@ export default {
           type: Number,
         },
         templateId: undefined,
-        platformId: undefined,
+        uniTenantId: undefined,
         bizToken: undefined,
       },
       success: false
@@ -255,7 +255,7 @@ export default {
     // 加载三方组织架构,并set到store
     async loadOrgStructAndSetStore() {
       const res = await organizationStructure({
-        platformId: this.computedQuery.platformId,
+        uniTenantId: this.computedQuery.uniTenantId,
         bizToken: this.computedQuery.bizToken,
       })
       if (res.status === 200) {
@@ -336,7 +336,7 @@ export default {
 
     // 数据提交
     async handleSubmit(data) {
-      const res = await this.fn.publish({ data, platformId: this.computedQuery.platformId });
+      const res = await this.fn.publish({ data, uniTenantId: this.computedQuery.uniTenantId });
       if (res.status === 200) {
         this.success = true
         this.$message.success(res.msg)
@@ -357,7 +357,7 @@ export default {
       this.$router.push({
         path: '/platform/flowformManagement',
         query: {
-          platformId: this.computedQuery.platformId,
+          uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken
         }
       });
