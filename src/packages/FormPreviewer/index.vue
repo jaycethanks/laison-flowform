@@ -55,6 +55,7 @@ import PreviewFormType from '@/constants/PreviewFormType.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import SvgIconSend from '@/assets/svgIcon/SvgIconSend.vue';
 import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
+import { queryProcessForm } from "@/api/platform/platformOpenAPI.js"
 export default {
   name: 'FormPreviewer',
   mixins: [handleQuery],
@@ -68,34 +69,7 @@ export default {
   data() {
     return {
       PreviewFormType,
-      formInfo: {
-        list: [],
-        config: {
-          layout: 'horizontal',
-          labelCol: {
-            xs: 4,
-            sm: 4,
-            md: 4,
-            lg: 4,
-            xl: 4,
-            xxl: 4,
-          },
-          labelWidth: 100,
-          labelLayout: 'flex',
-          wrapperCol: {
-            xs: 18,
-            sm: 18,
-            md: 18,
-            lg: 18,
-            xl: 18,
-            xxl: 18,
-          },
-          hideRequiredMark: false,
-          customStyle: '',
-          enablePrint: false,
-          expressions: '',
-        },
-      }, //表单定义
+      formInfo: null, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
       kfb: {
@@ -109,20 +83,43 @@ export default {
         type: {
           type: Number,
         },
+        uniTenantId: {
+          type: String
+        },
+        bizToken: {
+          type: String
+        },
+        uniTenantId: {
+          type: String
+        },
+        flowformId: {
+          type: String
+
+        }
       },
     };
   },
 
   created() {
+    this.loadflowformData(this.computedQuery.flowformId)
     this.handleType(this.computedQuery.type);
-    // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
-    // 解析示例：
-    const parsedFormInfo = parseFormWithNodeConfig(mock);
-    this.formInfo = parsedFormInfo;
+
   },
   methods: {
     closeModal: function () {
       this.$emit('close');
+    },
+    async loadflowformData(id) {
+      // TODO: 这里要换接口， 如果是发起，应该去请求第一个结点的结点配置信息
+      const res = await queryProcessForm({ id })
+      if (res.status === 200) {
+        // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
+        // 解析示例：
+        const parsedFormInfo = parseFormWithNodeConfig(mock);
+        this.formInfo = parsedFormInfo;
+      }else{
+        this.$message.error(res.msg)
+      }
     },
 
     handleType(type) {
@@ -183,8 +180,8 @@ export default {
           // prettier-ignore
           // 如果存在LaisonStockList这个组件的前提下，且其存货为空
           if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length == 0) {
-      
-      this.$message.error('请至少选择一个存货')
+
+            this.$message.error('请至少选择一个存货')
             return
           } else if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length > 0) {
             window.kfkf = this.$refs.kfb.form.formItems.LaisonStockList

@@ -303,35 +303,51 @@ const platformRoutes = [
       {
         path: 'myapply',
         icon: 'file-add', //antd-icon name
+        meta: {
+          title: '我的发起',
+        },
         name: '我的发起',
         beforeEnter: (to, from, next) => {
-          if (!to.query.type) {
-            // 如果没有传递 query 参数，默认设置 'type'
-            next({ path: to.path, query: { type: 1 } });
+          // console.log('[to.path]: ', to.path);
+          // to.query.uniTenantId = '1660919377043652608';
+          // to.query.bizToken = 'e1f66d27-bd61-4e6e-b3e0-4dd621e392fe';
+          // next();
+          if (!to.query.uniTenantId) {
+            next({
+              path: to.path,
+              query: { uniTenantId: '1660919377043652608', bizToken: 'e1f66d27-bd61-4e6e-b3e0-4dd621e392fe' },
+            });
           } else {
             next();
           }
         },
         component: () => import('@/views/Platform/WorkOrder/MyApply/index.vue'),
-        // component: () => import('@/packages/FlowFormDesigner/index.vue'),
       },
       {
         path: 'mytodo',
         icon: 'file-add', //antd-icon name
         name: '我的代办',
+        meta: {
+          title: '我的代办',
+        },
         component: () => import('@/views/Platform/WorkOrder/MyTodo/index.vue'),
       },
       {
         path: 'mydone',
         icon: 'file-add', //antd-icon name
         name: '我的已办',
+        meta: {
+          title: '我的已办',
+        },
         component: () => import('@/views/Platform/WorkOrder/MyDone/index.vue'),
       },
       {
         path: 'mycopied',
         icon: 'file-add', //antd-icon name
+        meta: {
+          title: '抄送我的',
+        },
         name: '抄送我的',
-
         component: () => import('@/views/Platform/WorkOrder/MyCopied/index.vue'),
       },
     ],
@@ -384,15 +400,15 @@ const router = new VueRouter({
 export default router;
 
 // 动态设置标题
-router.beforeEach((to, from, next) => {
-  if (to.meta.title) {
-    document.title = to.meta.title;
-  }
-  // bugfix: 解决从 系统模板编辑 直接通过 menu 跳转到 新增模板时，路由守卫beforeEnter 不会触发的问题
-  // 这里直接禁止重复跳转
-  if (to.path === from.path) {
-    console.log('路由重复跳转被拦截!!');
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.title) {
+//     document.title = to.meta.title;
+//   }
+//   // bugfix: 解决从 系统模板编辑 直接通过 menu 跳转到 新增模板时，路由守卫beforeEnter 不会触发的问题
+//   // 这里直接禁止重复跳转
+//   if (to.path === from.path) {
+//     console.log('路由重复跳转被拦截!!');
+//   } else {
+//     next();
+//   }
+// });

@@ -1,5 +1,6 @@
 <template>
   <div class="root">
+    <!-- <Container> -->
     <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
       <a-row :gutter="24" style="margin: 0">
         <a-form-item label="平台名称">
@@ -61,12 +62,14 @@
       </template>
     </a-table>
     <platformRegistrationModal :title="modalTitle" ref="modal" @ok="handleOk" submitLoading />
+    <!-- </Container> -->
   </div>
 </template>
 <script>
 import platformRegistrationModal from '@/views/System/PlatformManagement/PlatformRegistration/platformRegistrationModal.vue';
 import searchTableMixin from '@/mixins/searchTableMixin.js';
 import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
+import Container from "@/components/base/Container"
 const columns = [
   {
     title: '平台id',
@@ -124,6 +127,7 @@ export default {
   mixins: [searchTableMixin],
   components: {
     platformRegistrationModal,
+    Container
   },
   data() {
     return {
