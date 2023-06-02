@@ -315,7 +315,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: 'e1f66d27-bd61-4e6e-b3e0-4dd621e392fe' },
+              query: { uniTenantId: '1660919377043652608', bizToken: 'c6e8dde4-599c-45c6-ba26-0541af2db736' },
             });
           } else {
             next();

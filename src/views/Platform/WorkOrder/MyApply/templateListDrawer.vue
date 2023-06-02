@@ -28,9 +28,14 @@
 import { myApplyList } from "@/api/platform/processOpenAPI.js"
 import ffIcon from "@/components/FlowForm/ffIcon/index.vue"
 import TitleRow from "@/components/base/TitleRow/index.vue"
+import handleQuery from '@/mixins/handleQuery.js';
+
 import mock from "./listMock"
+import listMock from './listMock';
 export default {
   name: "TemplateListDrawer",
+  mixins: [handleQuery],
+
   components: {
     ffIcon, TitleRow
   },
@@ -42,7 +47,18 @@ export default {
   },
   data() {
     return {
-      list: []
+      list: [],
+      query: {
+        // 查看handleQuery的使用文档 src/mixins/handleQuery.md
+        // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
+        // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
+        uniTenantId: {
+          type:String
+        },
+        bizToken: {
+          type:String
+        },
+      },
     }
   },
   methods: {
@@ -55,8 +71,15 @@ export default {
       this.$emit("close")
     },
     async loadData() {
-      const res = await Promise.resolve(mock)
-      this.list = res.data
+      const res = await myApplyList({
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken
+      })
+      if(res.status === 200){
+        this.list = res.data
+      }else{
+        this.$message.error(res.msg)
+      }
     },
     handleFlowSelect(id){
       this.$emit("close")

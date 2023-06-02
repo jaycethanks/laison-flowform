@@ -33,7 +33,6 @@
   </a-config-provider>
 </template>
 <script>
-import { createLogger } from 'vuex';
 /*
  * author kcz
  * date 2019-11-20

@@ -75,6 +75,9 @@ export default {
       kfb: {
         disabled: false,
       },
+      fn:{
+        query:null
+      },
       query: {
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
         // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
@@ -101,7 +104,6 @@ export default {
   },
 
   created() {
-    this.loadflowformData(this.computedQuery.flowformId)
     this.handleType(this.computedQuery.type);
 
   },
@@ -109,9 +111,21 @@ export default {
     closeModal: function () {
       this.$emit('close');
     },
-    async loadflowformData(id) {
-      // TODO: 这里要换接口， 如果是发起，应该去请求第一个结点的结点配置信息
-      const res = await queryProcessForm({ id })
+    async loadflowformData(flowformId) {
+      //mock
+      const {formInfo,nodeConfigs} = mock
+      const formWithNodeConfig = {
+        formInfo,
+        nodeConfigs:nodeConfigs[0]// 发起结点模拟， 这里都应该根据接口拉取
+      }
+      const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig);
+      this.formInfo = parsedFormInfo;
+
+
+      // TODO: 发起结点模拟， 这里都应该根据接口拉取
+      return
+      const res = await this.fn.query({ id })
+      // const res = await queryProcessForm({ id })
       if (res.status === 200) {
         // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
         // 解析示例：
@@ -125,17 +139,25 @@ export default {
     handleType(type) {
       switch (type) {
         case PreviewFormType.APPLY:
+          // query 为拉取发起结点配置接口
+          // this.fn.query = queryApplyNodeConfig
           break;
         case PreviewFormType.APPROVE:
+          // query 为拉取审批结点配置接口
+          // this.fn.query = queryApproveNodeConfig
           break;
         case PreviewFormType.VIEW:
+          // this.fn.query = queryCopyNodeConfig
           this.kfb.disabled = true;
           break;
         case PreviewFormType.ARCHIVE:
+
           break;
         default:
           break;
       }
+    this.loadflowformData(this.computedQuery.flowformId)
+
     },
 
     async handleOk() {
