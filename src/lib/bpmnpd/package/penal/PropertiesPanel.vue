@@ -5,7 +5,7 @@
     default-active-key="1"
   > -->
   <!-- <a-tab-pane key="1" tab="节点属性"> -->
-  <div class="process-panel__container" :style="{ width: `${this.width}px` }">
+  <div class="process-panel__container" :style="{ width: `${this.width}%` }">
     <a-collapse :bordered="false" accordion v-model="activeTab">
       <a-collapse-panel key="base" v-if="isSystem">
         <div slot="header" class="panel-tab__title">
@@ -237,7 +237,7 @@ export default {
     },
     width: {
       type: Number,
-      default: 480,
+      default: 40,
     },
     idEditDisabled: {
       type: Boolean,

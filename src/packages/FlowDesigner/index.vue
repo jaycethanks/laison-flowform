@@ -242,7 +242,7 @@ body {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  display: inline-grid;
+  display: inline-flex;
   // grid-template-columns: 100px auto max-content;// 100px 是自定义左侧栏的宽度
   grid-template-columns: auto max-content;
 }
