@@ -35,8 +35,17 @@ service.interceptors.response.use(
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误
     if (response.data.status === 401) {
-      $message.error(`登录凭证失效，请重新退出登录！`);
-      router.push('/login');
+      const {
+        currentRoute: { path },
+      } = router;
+      if (/^\/platform\//.test(path)) {
+        // 平台页接口token过期
+        router.push('/platform/401');
+      } else {
+        // 系统平台过期
+        $message.error(`登录凭证失效，请重新登录！`);
+        router.push('/login');
+      }
     } else if (response.data.errorcode === 403) {
       // Message({
       //   message: 'The login information has expired. Please login again.',
@@ -44,7 +53,6 @@ service.interceptors.response.use(
       //   duration: 5 * 1000,
       // });
       localStorage.removeItem('token');
-      window.location.href = 'login.html';
     } else {
       return response.data;
     }

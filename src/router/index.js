@@ -287,7 +287,7 @@ const platformRoutes = [
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { uniTenantId: '1660919377043652608', bizToken: 'c4f0e83a-e8f1-405e-9cd8-f90534c4e676' },
+          query: { uniTenantId: '1660919377043652608', bizToken: 'e1f66d27-bd61-4e6e-b3e0-4dd621e392fe' },
         });
       } else {
         next();
@@ -336,6 +336,13 @@ const platformRoutes = [
       },
     ],
   },
+  {
+    path: '401',
+    meta: {
+      title: '业务系统token失效',
+    },
+    component: () => import('@/views/Platform/401/index.vue'),
+  },
 ];
 
 const router = new VueRouter({
@@ -363,6 +370,7 @@ const router = new VueRouter({
       },
       component: () => import('@/views/System/Login/index.vue'),
     },
+
     {
       path: '*',
       meta: {
