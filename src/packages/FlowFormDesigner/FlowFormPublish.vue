@@ -300,7 +300,7 @@ export default {
       let temp = JSON.parse(initDataStructure.nodeConfigs);
       temp.shift(); // 首个节点可不必填写
       let blankIndex = temp.findIndex((it) => {
-        return it.taskConfig.members.length === 0 && it.taskConfig.approval.approvalType !== "applicantLeader" && it.taskConfig.approval.approvalType !== "applicant";
+        return it.taskConfig.approval.members.length === 0 && it.taskConfig.approval.approvalType !== "applicantLeader" && it.taskConfig.approval.approvalType !== "applicant";
       }); // true : not valid
       if (blankIndex != -1) {
         _this.$message.error('检测到存在审批节点未指定审核人员，请检查配置')
