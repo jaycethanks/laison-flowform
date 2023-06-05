@@ -475,11 +475,11 @@ export default {
 .anticon.anticon-question-circle-o {
   margin-left: 5px;
 }
-.ant-input[disabled] {
-  margin-bottom: 0px;
-  background-color: transparent;
-  cursor: pointer;
-  opacity: 1;
-  color: #000;
-}
+// .ant-input[disabled] {
+//   margin-bottom: 0px;
+//   background-color: transparent;
+//   cursor: pointer;
+//   opacity: 1;
+//   color: #000;
+// }
 </style>

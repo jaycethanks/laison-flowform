@@ -437,12 +437,12 @@ export default {
 };
 </script>
 <style scoped>
-.ant-input[disabled] {
+/* .ant-input[disabled] {
   background-color: transparent;
   cursor: pointer;
   opacity: 1;
   color: #000;
-}
+} */
 .no-display-fields {
   display: none !important;
 }

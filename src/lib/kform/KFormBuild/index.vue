@@ -476,7 +476,7 @@ export default {
 };
 </script>
 <style scoped>
->>> .ant-input[disabled] {
+/* >>> .ant-input[disabled] {
   background-color: transparent;
   cursor: pointer;
   opacity: 1;
@@ -515,5 +515,5 @@ export default {
 
 >>> .ant-radio-checked .ant-radio-inner::after {
   background-color: #1890ff;
-}
+} */
 </style>
