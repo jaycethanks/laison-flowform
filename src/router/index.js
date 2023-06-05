@@ -287,7 +287,7 @@ const platformRoutes = [
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { uniTenantId: '1660919377043652608', bizToken: 'e1f66d27-bd61-4e6e-b3e0-4dd621e392fe' },
+          query: { uniTenantId: '1660919377043652608', bizToken: '00b27847-a306-4526-b9ba-6bcbe666f892' },
         });
       } else {
         next();
@@ -315,7 +315,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: 'c6e8dde4-599c-45c6-ba26-0541af2db736' },
+              query: { uniTenantId: '1660919377043652608', bizToken: '00b27847-a306-4526-b9ba-6bcbe666f892' },
             });
           } else {
             next();
@@ -400,15 +400,15 @@ const router = new VueRouter({
 export default router;
 
 // 动态设置标题
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.title) {
-//     document.title = to.meta.title;
-//   }
-//   // bugfix: 解决从 系统模板编辑 直接通过 menu 跳转到 新增模板时，路由守卫beforeEnter 不会触发的问题
-//   // 这里直接禁止重复跳转
-//   if (to.path === from.path) {
-//     console.log('路由重复跳转被拦截!!');
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  // bugfix: 解决从 系统模板编辑 直接通过 menu 跳转到 新增模板时，路由守卫beforeEnter 不会触发的问题
+  // 这里直接禁止重复跳转
+  if (to.path === from.path) {
+    console.log('路由重复跳转被拦截!!');
+  } else {
+    next();
+  }
+});
