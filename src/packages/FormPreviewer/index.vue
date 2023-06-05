@@ -1,9 +1,12 @@
 <template>
   <div class="form-previewer-root">
-    <EmptyPage v-if="wrongPage" description="wrong page" />
+    <EmptyPage
+      v-if="wrongPage || formInfo == null"
+      :description="wrongPage ? 'Wrong Page!' : 'Error When Parse Form!'"
+    />
 
     <k-form-build
-      v-if="!wrongPage"
+      v-if="!wrongPage && formInfo"
       :style="computedQuery.style"
       class="container form-previewer"
       @mount="handleMount"
@@ -18,7 +21,6 @@
           <span v-if="computedQuery.type === PreviewFormType.APPLY">
             <SvgIconSend style="height: 14px" /> 发起流程</span
           >
-
           <span v-if="computedQuery.type === PreviewFormType.APPROVE">
             <a-icon type="check"></a-icon>
             审批通过</span
@@ -27,14 +29,14 @@
             ><SvgIconArchive style="height: 14px" /> 归档</span
           >
         </a-button>
-        <a-button type="primary">
-          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+        <a-button type="primary" v-if="computedQuery.type === PreviewFormType.APPROVE">
+          <span>
             <a-icon type="enter" rotate="180"></a-icon>
             委托</span
           >
         </a-button>
-        <a-button type="danger">
-          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+        <a-button type="danger" v-if="computedQuery.type === PreviewFormType.APPROVE">
+          <span>
             <a-icon type="close"></a-icon>
             驳回</span
           >
@@ -97,8 +99,8 @@ export default {
         },
         flowformId: {
           type: String
-
-        }
+        },
+        lang:''
       },
     };
   },
@@ -113,12 +115,13 @@ export default {
     },
     async loadflowformData(flowformId) {
       //mock
+      const mock = await Promise.resolve(mock)
       const {formInfo,nodeConfigs} = mock
       const formWithNodeConfig = {
         formInfo,
-        nodeConfigs:nodeConfigs[0]// 发起结点模拟， 这里都应该根据接口拉取
+        formConfigs:nodeConfigs[0].taskConfig.columnConfigs// 发起结点模拟， 这里都应该根据接口拉取
       }
-      const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig);
+      const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig,this.computedQuery.lang);
       this.formInfo = parsedFormInfo;
 
 
@@ -313,4 +316,36 @@ $operation-row-height: 4rem;
 //     max-width: 1536px;
 //   }
 // }
+</style>
+
+<style scoped lang="scss">
+// print style
+// ::v-deep .ant-col{
+//   border-bottom:1px solid;
+//   border-right:1px solid;
+// }
+// ::v-deep .ant-col .ant-col{
+//   border: none;
+// }
+
+::v-deep .ant-form-item-label{
+  //    border-bottom:1px solid;
+  // border-right:1px solid;
+  // border:1px solid;
+
+}
+::v-deep .ant-form-item-control-wrapper{
+  //    border-bottom:1px solid;
+  // border-right:1px solid;
+  // border:1px solid;
+}
+::v-deep .table-td{
+  padding: 0!important;
+}
+::v-deep .kk-table-9136076486841527.bordered tr td{
+  border: none!important;
+}
+::v-deep .ant-form-item{
+  margin:0!important;
+}
 </style>
