@@ -38,8 +38,8 @@
                     </a-tooltip>
 
                     <div class="process-item-label">
-                      <p class="process-item-lable-title">
-                        {{ ellipsis(_item.designName, 13) }}
+                      <p class="process-item-lable-title" :title="_item.designName">
+                        {{ ellipsis(_item.designName, 12) }}
                       </p>
 
                       <p class="process-item-lable-subtitle">
@@ -142,8 +142,8 @@
                     </a-tooltip>
 
                     <div class="process-item-label">
-                      <p class="process-item-lable-title">
-                        {{ ellipsis(_item.designName, 13) }}
+                      <p class="process-item-lable-title" :title="_item.designName">
+                        {{ ellipsis(_item.designName, 12) }}
                       </p>
 
                       <p class="process-item-lable-subtitle">
