@@ -21,7 +21,7 @@
           <span v-if="computedQuery.type === PreviewFormType.APPLY">
             <SvgIconSend style="height: 14px" /> 发起流程</span
           >
-          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+          <span v-if="computedQuery.type === PreviewFormType.TODO">
             <a-icon type="check"></a-icon>
             审批通过</span
           >
@@ -29,13 +29,13 @@
             ><SvgIconArchive style="height: 14px" /> 归档</span
           >
         </a-button>
-        <a-button type="primary" v-if="computedQuery.type === PreviewFormType.APPROVE">
+        <a-button type="primary" v-if="computedQuery.type === PreviewFormType.TODO">
           <span>
             <a-icon type="enter" rotate="180"></a-icon>
             委托</span
           >
         </a-button>
-        <a-button type="danger" v-if="computedQuery.type === PreviewFormType.APPROVE">
+        <a-button type="danger" v-if="computedQuery.type === PreviewFormType.TODO">
           <span>
             <a-icon type="close"></a-icon>
             驳回</span
@@ -144,7 +144,7 @@ export default {
           // query 为拉取发起结点配置接口
           // this.fn.query = queryApplyNodeConfig
           break;
-        case PreviewFormType.APPROVE:
+        case PreviewFormType.TODO:
           // query 为拉取审批结点配置接口
           // this.fn.query = queryApproveNodeConfig
           break;
