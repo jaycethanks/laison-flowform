@@ -15,7 +15,7 @@
       :disabled="kfb.disabled"
     />
 
-    <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.VIEW)" id="operation-footer-row">
+    <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.COPY)" id="operation-footer-row">
       <a-space>
         <a-button type="primary">
           <span v-if="computedQuery.type === PreviewFormType.APPLY">
@@ -115,7 +115,7 @@ export default {
     },
     async loadflowformData(flowformId) {
       //mock
-      const mock = await Promise.resolve(mock)
+      // const mock = await Promise.resolve(mock)
       const {formInfo,nodeConfigs} = mock
       const formWithNodeConfig = {
         formInfo,
@@ -123,7 +123,6 @@ export default {
       }
       const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig,this.computedQuery.lang);
       this.formInfo = parsedFormInfo;
-
 
       // TODO: 发起结点模拟， 这里都应该根据接口拉取
       return
@@ -149,7 +148,7 @@ export default {
           // query 为拉取审批结点配置接口
           // this.fn.query = queryApproveNodeConfig
           break;
-        case PreviewFormType.VIEW:
+        case PreviewFormType.COPY:
           // this.fn.query = queryCopyNodeConfig
           this.kfb.disabled = true;
           break;
