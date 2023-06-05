@@ -5,7 +5,17 @@
       :description="wrongPage ? 'Wrong Page!' : 'Error When Parse Form!'"
     />
 
+    <!-- @jayce -->
+    <div align="right">
+      <a-tooltip title="打印预览" v-if="formInfo.config != undefined && formInfo.config.enablePrint">
+        <a-button type="link" v-print="'#print-target-id'">
+          <a-icon type="printer" style="font-size: 20px" />
+        </a-button>
+      </a-tooltip>
+    </div>
+
     <k-form-build
+      id="print-target-id"
       v-if="!wrongPage && formInfo"
       :style="computedQuery.style"
       class="container form-previewer"
@@ -117,6 +127,7 @@ export default {
       //mock
       // const mock = await Promise.resolve(mock)
       const {formInfo,nodeConfigs} = mock
+      console.log('[formInfo]: ',formInfo)
       const formWithNodeConfig = {
         formInfo,
         formConfigs:nodeConfigs[0].taskConfig.columnConfigs// 发起结点模拟， 这里都应该根据接口拉取
@@ -338,13 +349,13 @@ $operation-row-height: 4rem;
   // border-right:1px solid;
   // border:1px solid;
 }
-::v-deep .table-td{
-  padding: 0!important;
-}
-::v-deep .kk-table-9136076486841527.bordered tr td{
-  border: none!important;
-}
-::v-deep .ant-form-item{
-  margin:0!important;
-}
+// ::v-deep .table-td{
+//   padding: 0!important;
+// }
+// ::v-deep .kk-table-9136076486841527.bordered tr td{
+//   border: none!important;
+// }
+// ::v-deep .ant-form-item{
+//   margin:0!important;
+// }
 </style>
