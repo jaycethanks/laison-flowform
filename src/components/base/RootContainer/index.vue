@@ -3,7 +3,7 @@
     <div class="root-content">
       <slot />
     </div>
-    <FlowFormSvgIcon class="root-container-icon" />
+    <FlowFormSvgIcon v-if="!noLogo" class="root-container-icon" />
   </div>
 </template>
 <script>
@@ -12,6 +12,12 @@ export default {
   components: {
     FlowFormSvgIcon,
   },
+  props:{
+    noLogo:{
+      type:Boolean,
+      default:false
+    }
+  }
 };
 </script>
 <style scoped>
