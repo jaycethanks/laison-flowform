@@ -8,24 +8,24 @@ const service = axios.create({
   baseURL: baseUrl, // api base_url
   timeout: 30000, // 请求超时时间
 });
-const WHITELIST = ['myApplyList'];
+const WHITELIST = ['myApplyList', 'queryProcessNodeForm'];
 function checkIfInWhitelist(url) {
   for (let i = 0; i < WHITELIST.length; i++) {
     if (url.includes(WHITELIST[i])) {
       return true;
-    } else {
-      return false;
     }
   }
+  return false;
 }
 // request interceptor
 service.interceptors.request.use(
   function (config) {
     const token = cusLocalStorage.getItem('system', 'access_token');
-    console.log('[config]: ', config);
     if (token) {
       if (!checkIfInWhitelist(config.url)) {
         config.headers['Authorization'] = 'bearer ' + token;
+      } else {
+        config.headers['Authorization'] = null;
       }
       return config;
     } else {
