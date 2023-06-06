@@ -287,7 +287,7 @@ const platformRoutes = [
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { uniTenantId: '1660919377043652608', bizToken: '00b27847-a306-4526-b9ba-6bcbe666f892' },
+          query: { uniTenantId: '1660919377043652608', bizToken: '921d18e2-43a2-4ac4-8b5c-4044bf3f7b0a' },
         });
       } else {
         next();
@@ -315,7 +315,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '00b27847-a306-4526-b9ba-6bcbe666f892' },
+              query: { uniTenantId: '1660919377043652608', bizToken: '921d18e2-43a2-4ac4-8b5c-4044bf3f7b0a' },
             });
           } else {
             next();
