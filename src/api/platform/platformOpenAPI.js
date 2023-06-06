@@ -136,3 +136,20 @@ export const deleteTemplate = (condition, uniTenantId) =>
       uniTenantId: uniTenantId,
     },
   });
+
+/**
+ * 查询流程表单节点的详情
+ */
+export const queryProcessNodeForm = function (condition) {
+  const { publishId, procDefId, nodeType, nodeId = '', busId = '' } = condition;
+  return axios({
+    url: 'platformOpenAPI/queryProcessNodeForm',
+    method: 'post',
+    data: { publishId, procDefId, nodeType, nodeId, busId },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });
+};
