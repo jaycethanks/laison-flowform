@@ -163,6 +163,7 @@ export default {
     Container,
     RootContainer
   },
+  name:"FlowFormPublish",
   data() {
     return {
       popoverVisible: false,
@@ -198,6 +199,13 @@ export default {
       handler: function () {
         if (this.publishEditDataInit != null) {
           this.sumbitForm = JSON.parse(JSON.stringify(this.publishEditDataInit));
+          //后端数据库 在存储模板的时候 没有保存 notifyConfig， 这里需要在平台拉取模板进行流程设计的时候，给这个字段初始化一下
+          if (!this.sumbitForm.notifyConfig) {
+            this.$set(this.sumbitForm,'notifyConfig',{
+              selectSMS: true,
+              selectEmail: true
+            })
+          }
         }
       },
       immediate: true,
