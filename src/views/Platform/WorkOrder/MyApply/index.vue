@@ -150,18 +150,19 @@ export default {
     };
   },
     mounted() {
-    this.loadData();
+    // this.loadData();
   },
   methods: {
     handleQuery() {
       this.loadData();
     },
-    handleSelect(id){
+    handleSelect({publishId,procDefId}){
       this.$router.push({
         path: '/platform/formPreviewer',
         query: {
           type:PreviewFormType.APPLY,
-          flowformId:id,
+          publishId,
+          procDefId,
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken
         }

@@ -12,7 +12,12 @@
       <section v-for="group in list" :key="group.groupId">
         <TitleRow size="small" :title="group.groupName" bold />
         <a-list item-layout="horizontal" :data-source="group.list">
-          <a-list-item @click="handleFlowSelect(item.id)" class="list-item" slot="renderItem" slot-scope="item, index">
+          <a-list-item
+            @click="handleFlowSelect(item.id,item.procDefId)"
+            class="list-item"
+            slot="renderItem"
+            slot-scope="item, index"
+          >
             <a-list-item-meta :description="item.designDes">
               <p style="margin:0" slot="title">{{item.designName}}</p>
               <!-- <TitleRow slot="title" size="small" :title="item.designName" bold /> -->
@@ -81,9 +86,9 @@ export default {
         this.$message.error(res.msg)
       }
     },
-    handleFlowSelect(id){
+    handleFlowSelect(publishId,procDefId){
       this.$emit("close")
-      this.$emit("select",id)
+      this.$emit("select",{publishId,procDefId})
     },
   },
 };
