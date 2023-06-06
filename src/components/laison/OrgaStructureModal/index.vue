@@ -57,7 +57,7 @@
         </div>
 
         <div :class="{ 'person-display-mode': tree.personControlFlag }">
-          <div style="margin: 10px; overflow-y: auto; max-height: 38vh; flex: 1">
+          <div style="margin: 10px; overflow-y: auto; max-height: 38vh;min-height: 38vh; flex: 1">
             <div
               v-if="tree.personControlFlag"
               style="height: 26px"
@@ -94,7 +94,7 @@
           <div
             v-if="tree.personControlFlag"
             class="person-list"
-            style="margin: 10px; overflow-y: auto; max-height: 38vh; flex: 1"
+            style="margin: 10px; overflow-y: auto; max-height: 38vh;min-height: 38vh; flex: 1"
             :style="{ overflowY: isloading ? 'hidden' : 'auto' }"
           >
             <div class="person-list-wrapper">
@@ -640,7 +640,8 @@ export default {
 }
 .org-container {
   width: 100%;
-  height: 'auto';
+  height: auto;
+
   /* background-color: #f40; */
   /* display: flex;
   justify-content: center;
