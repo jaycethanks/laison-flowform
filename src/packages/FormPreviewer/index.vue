@@ -7,27 +7,32 @@
 
     <!-- @jayce -->
     <div align="right">
-      <a-tooltip title="打印预览" v-if="formInfo.config != undefined && formInfo.config.enablePrint">
+      <a-tooltip title="打印预览" v-if="formInfo && formInfo.config != undefined && formInfo.config.enablePrint">
         <a-button type="link" v-print="'#print-target-id'">
           <a-icon type="printer" style="font-size: 20px" />
         </a-button>
       </a-tooltip>
     </div>
 
-    <k-form-build
+    <section
+      class="form"
       id="print-target-id"
-      v-if="!wrongPage && formInfo"
-      :style="computedQuery.style"
-      class="container form-previewer"
-      @mount="handleMount"
-      :value="formInfo"
-      ref="kfb"
-      :disabled="kfb.disabled"
-    />
+      :class="{'enable-print-simple-style':formInfo && formInfo.config != undefined && formInfo.config.enablePrintSimpleStyle}"
+    >
+      <k-form-build
+        v-if="!wrongPage && formInfo"
+        :style="computedQuery.style"
+        class="container form-previewer"
+        @mount="handleMount"
+        :value="formInfo"
+        ref="kfb"
+        :disabled="kfb.disabled"
+      />
+    </section>
 
     <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.COPY)" id="operation-footer-row">
       <a-space>
-        <a-button type="primary">
+        <a-button type="primary" @click="handleSubmit">
           <span v-if="computedQuery.type === PreviewFormType.APPLY">
             <SvgIconSend style="height: 14px" /> 发起流程</span
           >
@@ -67,7 +72,7 @@ import PreviewFormType from '@/constants/PreviewFormType.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import SvgIconSend from '@/assets/svgIcon/SvgIconSend.vue';
 import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
-import { queryProcessForm } from "@/api/platform/platformOpenAPI.js"
+import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js"
 export default {
   name: 'FormPreviewer',
   mixins: [handleQuery],
@@ -87,8 +92,8 @@ export default {
       kfb: {
         disabled: false,
       },
-      fn:{
-        query:null
+      fn: {
+        query: null
       },
       query: {
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
@@ -107,10 +112,14 @@ export default {
         uniTenantId: {
           type: String
         },
-        flowformId: {
+        publishId: {
           type: String
         },
-        lang:''
+        procDefId: {
+          type: String
+
+        },
+        lang: ''
       },
     };
   },
@@ -123,30 +132,30 @@ export default {
     closeModal: function () {
       this.$emit('close');
     },
-    async loadflowformData(flowformId) {
-      //mock
-      // const mock = await Promise.resolve(mock)
-      const {formInfo,nodeConfigs} = mock
-      console.log('[formInfo]: ',formInfo)
-      const formWithNodeConfig = {
-        formInfo,
-        formConfigs:nodeConfigs[0].taskConfig.columnConfigs// 发起结点模拟， 这里都应该根据接口拉取
-      }
-      const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig,this.computedQuery.lang);
-      this.formInfo = parsedFormInfo;
-
-      // TODO: 发起结点模拟， 这里都应该根据接口拉取
-      return
-      const res = await this.fn.query({ id })
-      // const res = await queryProcessForm({ id })
+    async loadflowformData() {
+      // TODO: BUG FIX TypeError: Cannot read properties of null (reading 'config')
+      const res = await queryProcessNodeForm({
+        publishId: this.computedQuery.publishId,
+        procDefId: this.computedQuery.procDefId,
+        nodeType: PreviewFormType.APPLY
+      })
       if (res.status === 200) {
         // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
-        // 解析示例：
-        const parsedFormInfo = parseFormWithNodeConfig(mock);
-        this.formInfo = parsedFormInfo;
-      }else{
+      const { formInfo, formConfigs } = res.data
+      const formWithNodeConfig = {
+        formInfo,
+        formConfigs
+      }
+      const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
+      console.log('[parsedFormInfo]: ', parsedFormInfo)
+      this.formInfo = parsedFormInfo;
+      } else {
         this.$message.error(res.msg)
       }
+
+
+
+
     },
 
     handleType(type) {
@@ -169,7 +178,7 @@ export default {
         default:
           break;
       }
-    this.loadflowformData(this.computedQuery.flowformId)
+      this.loadflowformData()
 
     },
 
@@ -241,6 +250,15 @@ export default {
           console.error(e, '--line240');
         });
     },
+    handleSubmit(){
+      this.$refs.kfb.getData()
+        .then((res) => {
+          console.log(res, '获取数据成功');
+        })
+        .catch((err) => {
+          console.log(err, '获取数据失败');
+        });
+    },
 
     handleMount(laisonRootFormInstance) {
       /**
@@ -290,11 +308,14 @@ $operation-row-height: 4rem;
 }
 .container {
   width: 100%;
+    min-width: 640px;
+
 }
 
 @media (min-width: 640px) {
   .container {
     max-width: 640px;
+
   }
 }
 
@@ -329,33 +350,5 @@ $operation-row-height: 4rem;
 </style>
 
 <style scoped lang="scss">
-// print style
-// ::v-deep .ant-col{
-//   border-bottom:1px solid;
-//   border-right:1px solid;
-// }
-// ::v-deep .ant-col .ant-col{
-//   border: none;
-// }
-
-::v-deep .ant-form-item-label{
-  //    border-bottom:1px solid;
-  // border-right:1px solid;
-  // border:1px solid;
-
-}
-::v-deep .ant-form-item-control-wrapper{
-  //    border-bottom:1px solid;
-  // border-right:1px solid;
-  // border:1px solid;
-}
-// ::v-deep .table-td{
-//   padding: 0!important;
-// }
-// ::v-deep .kk-table-9136076486841527.bordered tr td{
-//   border: none!important;
-// }
-// ::v-deep .ant-form-item{
-//   margin:0!important;
-// }
+@import '@/lib/kform/styles/simple-print-style.scss'
 </style>

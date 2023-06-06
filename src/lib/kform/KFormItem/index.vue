@@ -249,7 +249,7 @@
   >
     <component
       :ref="['batch', 'selectInputList'].includes(record.type) && 'KBatch'"
-      :style="`width:${record.options.width};border:1px solid red!important`"
+      :style="`width:${record.options.width}`"
       v-bind="componentOption"
       :record="record"
       :config="config"

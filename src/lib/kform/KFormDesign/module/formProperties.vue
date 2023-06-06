@@ -86,6 +86,14 @@
         <a-form-item label="启用打印">
           <a-switch v-model="config.enablePrint" />
         </a-form-item>
+        <a-form-item label="启用打印为简洁表格效果">
+          <a-switch v-model="config.enablePrintSimpleStyle" />
+        </a-form-item>
+        <a-alert
+          style="margin-top: 10px"
+          description="注:仅支持简单表达式, 输入参数使用英文逗号','隔开,例如:sum=MULTIPLY(price,count), 不支持嵌套表达式如 'SUM(SUBTRACT())'"
+          type="warning"
+        />
         <a-form-item label="表单属性">
           <kCheckbox v-model="config.hideRequiredMark" label="隐藏必选标记" />
         </a-form-item>

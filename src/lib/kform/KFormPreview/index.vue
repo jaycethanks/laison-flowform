@@ -21,7 +21,10 @@
         </a-button>
       </a-tooltip>
     </div>
-    <div id="print-target-id">
+    <div
+      id="print-target-id"
+      :class="{'enable-print-simple-style':jsonData.config != undefined && jsonData.config.enablePrintSimpleStyle}"
+    >
       <k-form-build
         :value="jsonData"
         @submit="handleSubmit"
@@ -125,3 +128,7 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+@import '@/lib/kform/styles/simple-print-style.scss'
+</style>
