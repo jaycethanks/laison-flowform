@@ -9,7 +9,7 @@ export default {
   designIcon: 'yanfaxiangmujiedianshenpiliucheng',
   designName: '测试表单渲染逻辑',
   formInfo:
-    '{"list":[{"type":"text","label":"FlowForm Render Logic Test","options":{"textAlign":"left","hidden":false,"showRequiredMark":false,"color":"rgb(0, 0, 0)","fontFamily":"SimHei","fontSize":"16pt"},"key":"text_1685693090201"},{"type":"grid","label":"栅格布局","columns":[{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"M","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"m","key":"number_1685692607042","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[]}],"options":{"gutter":0},"key":"grid_1685692589453"}]},{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"N","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"n","key":"number_1685692608882","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[{"type":"input","label":"MN","icon":"icon-write","options":{"type":"text","width":"100%","defaultValue":"","placeholder":"请输入","clearable":false,"maxLength":null,"addonBefore":"","addonAfter":"","hidden":false,"disabled":false},"model":"mn","key":"input_1685692611903","help":"","rules":[{"required":false,"message":"请输入"}]}]}],"options":{"gutter":0},"key":"grid_1685692603642"}]}],"options":{"gutter":0},"key":"grid_1685692586885"},{"type":"table","label":"表格布局","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"table","label":"表格布局","icon":"icon-biaoge","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"Price","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"price","key":"number_1685692625701","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"colspan":1,"rowspan":1,"list":[]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":true,"bright":false,"small":true,"customStyle":""},"key":"table_1685692621740"}]},{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"Count","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"count","key":"number_1685692627312","help":"","rules":[{"required":false,"message":"请输入"}]}]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":true,"bright":false,"small":true,"customStyle":""},"key":"table_1685692614177"},{"type":"number","label":"Sum","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"sum","key":"number_1685692633620","help":"","rules":[{"required":false,"message":"请输入"}]}],"config":{"layout":"horizontal","labelCol":{"xs":4,"sm":4,"md":4,"lg":4,"xl":4,"xxl":4},"labelWidth":100,"labelLayout":"flex","wrapperCol":{"xs":18,"sm":18,"md":18,"lg":18,"xl":18,"xxl":18},"hideRequiredMark":false,"customStyle":"","enablePrint":false,"Expressions":"","currentLang":"en","supportedLanguages":["zh","en"],"expressions":[{"key":1685692710924,"expression":"mn=SUM(m,n)"},{"key":1685692718609,"expression":"sum=MULTIPLY(price,count)"}]},"predefinedLists":{"zh":[{"type":"text","label":"测试表单渲染逻辑","options":{"textAlign":"left","hidden":false,"showRequiredMark":false,"color":"rgb(0, 0, 0)","fontFamily":"SimHei","fontSize":"16pt"},"key":"text_1685693090201"},{"type":"grid","label":"栅格布局","columns":[{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"M","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"m","key":"number_1685692607042","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[]}],"options":{"gutter":0},"key":"grid_1685692589453"}]},{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"N","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"n","key":"number_1685692608882","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[{"type":"input","label":"MN","icon":"icon-write","options":{"type":"text","width":"100%","defaultValue":"","placeholder":"请输入","clearable":false,"maxLength":null,"addonBefore":"","addonAfter":"","hidden":false,"disabled":false},"model":"mn","key":"input_1685692611903","help":"","rules":[{"required":false,"message":"请输入"}]}]}],"options":{"gutter":0},"key":"grid_1685692603642"}]}],"options":{"gutter":0},"key":"grid_1685692586885"},{"type":"table","label":"表格布局","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"table","label":"表格布局","icon":"icon-biaoge","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"单价","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"price","key":"number_1685692625701","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"colspan":1,"rowspan":1,"list":[]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":true,"bright":false,"small":true,"customStyle":""},"key":"table_1685692621740"}]},{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"数量","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"count","key":"number_1685692627312","help":"","rules":[{"required":false,"message":"请输入"}]}]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":true,"bright":false,"small":true,"customStyle":""},"key":"table_1685692614177"},{"type":"number","label":"总价","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"sum","key":"number_1685692633620","help":"","rules":[{"required":false,"message":"请输入"}]}],"en":[{"type":"text","label":"FlowForm Render Logic Test","options":{"textAlign":"left","hidden":false,"showRequiredMark":false,"color":"rgb(0, 0, 0)","fontFamily":"SimHei","fontSize":"16pt"},"key":"text_1685693090201"},{"type":"grid","label":"栅格布局","columns":[{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"M","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"m","key":"number_1685692607042","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[]}],"options":{"gutter":0},"key":"grid_1685692589453"}]},{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"N","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"n","key":"number_1685692608882","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[{"type":"input","label":"MN","icon":"icon-write","options":{"type":"text","width":"100%","defaultValue":"","placeholder":"请输入","clearable":false,"maxLength":null,"addonBefore":"","addonAfter":"","hidden":false,"disabled":false},"model":"mn","key":"input_1685692611903","help":"","rules":[{"required":false,"message":"请输入"}]}]}],"options":{"gutter":0},"key":"grid_1685692603642"}]}],"options":{"gutter":0},"key":"grid_1685692586885"},{"type":"table","label":"表格布局","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"table","label":"表格布局","icon":"icon-biaoge","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"Price","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"price","key":"number_1685692625701","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"colspan":1,"rowspan":1,"list":[]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":true,"bright":false,"small":true,"customStyle":""},"key":"table_1685692621740"}]},{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"Count","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"count","key":"number_1685692627312","help":"","rules":[{"required":false,"message":"请输入"}]}]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":true,"bright":false,"small":true,"customStyle":""},"key":"table_1685692614177"},{"type":"number","label":"Sum","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"sum","key":"number_1685692633620","help":"","rules":[{"required":false,"message":"请输入"}]}]}}',
+    '{"list":[{"type":"text","label":"测试表单渲染逻辑","options":{"textAlign":"left","hidden":false,"showRequiredMark":false,"color":"rgb(0, 0, 0)","fontFamily":"SimHei","fontSize":"16pt"},"key":"text_1685693090201"},{"type":"grid","label":"栅格布局","columns":[{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"M","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"m","key":"number_1685692607042","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[]}],"options":{"gutter":0},"key":"grid_1685692589453"}]},{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"N","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"n","key":"number_1685692608882","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[{"type":"input","label":"MN","icon":"icon-write","options":{"type":"text","width":"100%","defaultValue":"","placeholder":"请输入","clearable":false,"maxLength":null,"addonBefore":"","addonAfter":"","hidden":false,"disabled":false},"model":"mn","key":"input_1685692611903","help":"","rules":[{"required":false,"message":"请输入"}]}]}],"options":{"gutter":0},"key":"grid_1685692603642"}]}],"options":{"gutter":0},"key":"grid_1685692586885"},{"type":"table","label":"表格布局","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"table","label":"表格布局","icon":"icon-biaoge","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"单价","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"price","key":"number_1685692625701","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"colspan":1,"rowspan":1,"list":[]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":false,"bright":false,"small":true,"customStyle":""},"key":"table_1685692621740"}]},{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"数量","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"count","key":"number_1685692627312","help":"","rules":[{"required":false,"message":"请输入"}]}]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":false,"bright":false,"small":true,"customStyle":""},"key":"table_1685692614177"},{"type":"number","label":"总价","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"sum","key":"number_1685692633620","help":"","rules":[{"required":false,"message":"请输入"}]},{"label":"CustomFields","type":"CustomFields","options":{"help":"","width":"100%","hidden":false,"disabled":false},"rules":[{"required":false,"message":"common.please_input"}],"key":"CustomFields_1685931653109","model":"CustomFields_1685931653109","exposeFields":[{"label":"userName","disabled":true,"hidden":false,"type":"userName","key":"userName"},{"label":"price","disabled":true,"hidden":false,"type":"price","key":"price"}]}],"config":{"layout":"horizontal","labelCol":{"xs":4,"sm":4,"md":4,"lg":4,"xl":4,"xxl":4},"labelWidth":100,"labelLayout":"flex","wrapperCol":{"xs":18,"sm":18,"md":18,"lg":18,"xl":18,"xxl":18},"hideRequiredMark":false,"customStyle":"","enablePrint":true,"Expressions":"","currentLang":"zh","supportedLanguages":["zh","en"],"expressions":[{"key":1685692710924,"expression":"mn=SUM(m,n)"},{"key":1685692718609,"expression":"sum=MULTIPLY(price,count)"}]},"predefinedLists":{"zh":[{"type":"text","label":"测试表单渲染逻辑","options":{"textAlign":"left","hidden":false,"showRequiredMark":false,"color":"rgb(0, 0, 0)","fontFamily":"SimHei","fontSize":"16pt"},"key":"text_1685693090201"},{"type":"grid","label":"栅格布局","columns":[{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"M","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"m","key":"number_1685692607042","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[]}],"options":{"gutter":0},"key":"grid_1685692589453"}]},{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"N","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"n","key":"number_1685692608882","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[{"type":"input","label":"MN","icon":"icon-write","options":{"type":"text","width":"100%","defaultValue":"","placeholder":"请输入","clearable":false,"maxLength":null,"addonBefore":"","addonAfter":"","hidden":false,"disabled":false},"model":"mn","key":"input_1685692611903","help":"","rules":[{"required":false,"message":"请输入"}]}]}],"options":{"gutter":0},"key":"grid_1685692603642"}]}],"options":{"gutter":0},"key":"grid_1685692586885"},{"type":"table","label":"表格布局","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"table","label":"表格布局","icon":"icon-biaoge","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"单价","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"price","key":"number_1685692625701","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"colspan":1,"rowspan":1,"list":[]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":false,"bright":false,"small":true,"customStyle":""},"key":"table_1685692621740"}]},{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"数量","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"count","key":"number_1685692627312","help":"","rules":[{"required":false,"message":"请输入"}]}]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":false,"bright":false,"small":true,"customStyle":""},"key":"table_1685692614177"},{"type":"number","label":"总价","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"sum","key":"number_1685692633620","help":"","rules":[{"required":false,"message":"请输入"}]},{"label":"CustomFields","type":"CustomFields","options":{"help":"","width":"100%","hidden":false,"disabled":false},"rules":[{"required":false,"message":"common.please_input"}],"key":"CustomFields_1685931653109","model":"CustomFields_1685931653109","exposeFields":[{"label":"userName","disabled":true,"hidden":false,"type":"userName","key":"userName"},{"label":"price","disabled":true,"hidden":false,"type":"price","key":"price"}]}],"en":[{"type":"text","label":"FlowForm Render Logic Test","options":{"textAlign":"left","hidden":false,"showRequiredMark":false,"color":"rgb(0, 0, 0)","fontFamily":"SimHei","fontSize":"16pt"},"key":"text_1685693090201"},{"type":"grid","label":"栅格布局","columns":[{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"M","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"m","key":"number_1685692607042","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[]}],"options":{"gutter":0},"key":"grid_1685692589453"}]},{"span":12,"list":[{"type":"grid","label":"栅格布局","icon":"icon-zhage","columns":[{"span":12,"list":[{"type":"number","label":"N","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"n","key":"number_1685692608882","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"span":12,"list":[{"type":"input","label":"MN","icon":"icon-write","options":{"type":"text","width":"100%","defaultValue":"","placeholder":"请输入","clearable":false,"maxLength":null,"addonBefore":"","addonAfter":"","hidden":false,"disabled":false},"model":"mn","key":"input_1685692611903","help":"","rules":[{"required":false,"message":"请输入"}]}]}],"options":{"gutter":0},"key":"grid_1685692603642"}]}],"options":{"gutter":0},"key":"grid_1685692586885"},{"type":"table","label":"表格布局","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"table","label":"表格布局","icon":"icon-biaoge","trs":[{"tds":[{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"Price","icon":"icon-number","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"price","key":"number_1685692625701","help":"","rules":[{"required":false,"message":"请输入"}]}]},{"colspan":1,"rowspan":1,"list":[]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":false,"bright":false,"small":true,"customStyle":""},"key":"table_1685692621740"}]},{"colspan":1,"rowspan":1,"list":[{"type":"number","label":"Count","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"count","key":"number_1685692627312","help":"","rules":[{"required":false,"message":"请输入"}]}]}]},{"tds":[{"colspan":1,"rowspan":1,"list":[]},{"colspan":1,"rowspan":1,"list":[]}]}],"options":{"width":"100%","bordered":false,"bright":false,"small":true,"customStyle":""},"key":"table_1685692614177"},{"type":"number","label":"Sum","options":{"width":"100%","defaultValue":0,"min":null,"max":null,"precision":null,"step":1,"hidden":false,"disabled":false,"placeholder":"请输入"},"model":"sum","key":"number_1685692633620","help":"","rules":[{"required":false,"message":"请输入"}]},{"label":"CustomFields","type":"CustomFields","options":{"help":"","width":"100%","hidden":false,"disabled":false},"rules":[{"required":false,"message":"common.please_input"}],"key":"CustomFields_1685931653109","model":"CustomFields_1685931653109","exposeFields":[{"label":"userName","disabled":true,"hidden":false,"type":"userName","key":"userName"},{"label":"price","disabled":true,"hidden":false,"type":"price","key":"price"}]}]}}',
   procModelXml:
     '<?xml version="1.0" encoding="UTF-8"?>\n<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="diagram_Process_1685692513838" targetNamespace="http://bpmn.io/schema/bpmn">\n  <bpmn2:process id="Process_1685692513838" name="业务流程_1685692513838" isExecutable="true">\n    <bpmn2:startEvent id="Event_1y2lhvc">\n      <bpmn2:outgoing>Flow_1tfqnkk</bpmn2:outgoing>\n    </bpmn2:startEvent>\n    <bpmn2:userTask id="Activity_0puql83" name="发起结点">\n      <bpmn2:incoming>Flow_1tfqnkk</bpmn2:incoming>\n      <bpmn2:outgoing>Flow_12hgj3h</bpmn2:outgoing>\n    </bpmn2:userTask>\n    <bpmn2:sequenceFlow id="Flow_1tfqnkk" sourceRef="Event_1y2lhvc" targetRef="Activity_0puql83" />\n    <bpmn2:userTask id="Activity_01gm35v" name="审批结点01">\n      <bpmn2:incoming>Flow_12hgj3h</bpmn2:incoming>\n      <bpmn2:outgoing>Flow_0xzin9r</bpmn2:outgoing>\n    </bpmn2:userTask>\n    <bpmn2:sequenceFlow id="Flow_12hgj3h" sourceRef="Activity_0puql83" targetRef="Activity_01gm35v" />\n    <bpmn2:userTask id="Activity_15n0pff" name="审批结点02">\n      <bpmn2:incoming>Flow_0xzin9r</bpmn2:incoming>\n      <bpmn2:outgoing>Flow_1d0hxc3</bpmn2:outgoing>\n    </bpmn2:userTask>\n    <bpmn2:sequenceFlow id="Flow_0xzin9r" sourceRef="Activity_01gm35v" targetRef="Activity_15n0pff" />\n    <bpmn2:userTask id="Activity_0a94vsn" name="审批结点03">\n      <bpmn2:incoming>Flow_1d0hxc3</bpmn2:incoming>\n      <bpmn2:outgoing>Flow_1w5nrx4</bpmn2:outgoing>\n    </bpmn2:userTask>\n    <bpmn2:sequenceFlow id="Flow_1d0hxc3" sourceRef="Activity_15n0pff" targetRef="Activity_0a94vsn" />\n    <bpmn2:endEvent id="Event_1ydmgpv">\n      <bpmn2:incoming>Flow_1w5nrx4</bpmn2:incoming>\n    </bpmn2:endEvent>\n    <bpmn2:sequenceFlow id="Flow_1w5nrx4" sourceRef="Activity_0a94vsn" targetRef="Event_1ydmgpv" />\n  </bpmn2:process>\n  <bpmndi:BPMNDiagram id="BPMNDiagram_1">\n    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1685692513838">\n      <bpmndi:BPMNEdge id="Flow_1w5nrx4_di" bpmnElement="Flow_1w5nrx4">\n        <di:waypoint x="980" y="180" />\n        <di:waypoint x="1032" y="180" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id="Flow_1d0hxc3_di" bpmnElement="Flow_1d0hxc3">\n        <di:waypoint x="830" y="180" />\n        <di:waypoint x="880" y="180" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id="Flow_0xzin9r_di" bpmnElement="Flow_0xzin9r">\n        <di:waypoint x="670" y="180" />\n        <di:waypoint x="730" y="180" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id="Flow_12hgj3h_di" bpmnElement="Flow_12hgj3h">\n        <di:waypoint x="510" y="180" />\n        <di:waypoint x="570" y="180" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id="Flow_1tfqnkk_di" bpmnElement="Flow_1tfqnkk">\n        <di:waypoint x="358" y="180" />\n        <di:waypoint x="410" y="180" />\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNShape id="Event_1y2lhvc_di" bpmnElement="Event_1y2lhvc">\n        <dc:Bounds x="322" y="162" width="36" height="36" />\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id="Activity_0puql83_di" bpmnElement="Activity_0puql83">\n        <dc:Bounds x="410" y="140" width="100" height="80" />\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id="Activity_01gm35v_di" bpmnElement="Activity_01gm35v">\n        <dc:Bounds x="570" y="140" width="100" height="80" />\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id="Activity_15n0pff_di" bpmnElement="Activity_15n0pff">\n        <dc:Bounds x="730" y="140" width="100" height="80" />\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id="Activity_0a94vsn_di" bpmnElement="Activity_0a94vsn">\n        <dc:Bounds x="880" y="140" width="100" height="80" />\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id="Event_1ydmgpv_di" bpmnElement="Event_1ydmgpv">\n        <dc:Bounds x="1032" y="162" width="36" height="36" />\n      </bpmndi:BPMNShape>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn2:definitions>\n',
   permissionConfig: {
@@ -205,7 +205,7 @@ export default {
       taskConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -216,7 +216,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -224,14 +224,26 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: false, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: false, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
         approval: { approvalType: 'applicant', members: [] },
         autoApproval: false,
@@ -239,7 +251,7 @@ export default {
       copyConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -250,7 +262,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -258,14 +270,26 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
         approval: { approvalType: 'applicant', members: [] },
         type: 'end',
@@ -275,7 +299,7 @@ export default {
         userConfig: {
           columnConfigs: [
             {
-              label: 'FlowForm Render Logic Test',
+              label: '测试表单渲染逻辑',
               type: 'text',
               model: 'text_1685693090201',
               key: 'text_1685693090201',
@@ -286,7 +310,7 @@ export default {
             { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
             { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
             {
-              label: 'Price',
+              label: '单价',
               type: 'number',
               model: 'price',
               key: 'number_1685692625701',
@@ -294,14 +318,33 @@ export default {
               disabled: false,
             },
             {
-              label: 'Count',
+              label: '数量',
               type: 'number',
               model: 'count',
               key: 'number_1685692627312',
               hidden: false,
               disabled: false,
             },
-            { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+            {
+              label: '总价',
+              type: 'number',
+              model: 'sum',
+              key: 'number_1685692633620',
+              hidden: false,
+              disabled: false,
+            },
+            {
+              label: 'CustomFields',
+              type: 'CustomFields',
+              model: 'CustomFields_1685931653109',
+              key: 'CustomFields_1685931653109',
+              hidden: false,
+              disabled: false,
+              exposeFields: [
+                { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+                { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+              ],
+            },
           ],
           approval: { approvalType: 'applicant', members: [] },
         },
@@ -313,7 +356,7 @@ export default {
       taskConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -323,30 +366,29 @@ export default {
           { label: 'M', type: 'number', model: 'm', key: 'number_1685692607042', hidden: false, disabled: false },
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
-          { label: 'Price', type: 'number', model: 'price', key: 'number_1685692625701', hidden: true, disabled: true },
-          { label: 'Count', type: 'number', model: 'count', key: 'number_1685692627312', hidden: true, disabled: true },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: true, disabled: true },
+          { label: '单价', type: 'number', model: 'price', key: 'number_1685692625701', hidden: true, disabled: true },
+          { label: '数量', type: 'number', model: 'count', key: 'number_1685692627312', hidden: true, disabled: true },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: true, disabled: true },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: false, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
-        approval: {
-          approvalType: 'people',
-          members: [
-            {
-              id: '1480706801677631488',
-              name: '宋东盼',
-              countryCode: '+86',
-              phoneNumber: '+86-18521392705',
-              email: 'dongpan.song@laisontech.com',
-              deptId: 'd4e4c9f431b547b0b9a49bbd00413c44',
-              type: 1,
-            },
-          ],
-        },
+        approval: { approvalType: 'applicant', members: [] },
         autoApproval: false,
       },
       copyConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -357,7 +399,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -365,14 +407,26 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
         approval: { approvalType: 'applicant', members: [] },
         type: 'end',
@@ -382,7 +436,7 @@ export default {
         userConfig: {
           columnConfigs: [
             {
-              label: 'FlowForm Render Logic Test',
+              label: '测试表单渲染逻辑',
               type: 'text',
               model: 'text_1685693090201',
               key: 'text_1685693090201',
@@ -393,7 +447,7 @@ export default {
             { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
             { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
             {
-              label: 'Price',
+              label: '单价',
               type: 'number',
               model: 'price',
               key: 'number_1685692625701',
@@ -401,14 +455,33 @@ export default {
               disabled: false,
             },
             {
-              label: 'Count',
+              label: '数量',
               type: 'number',
               model: 'count',
               key: 'number_1685692627312',
               hidden: false,
               disabled: false,
             },
-            { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+            {
+              label: '总价',
+              type: 'number',
+              model: 'sum',
+              key: 'number_1685692633620',
+              hidden: false,
+              disabled: false,
+            },
+            {
+              label: 'CustomFields',
+              type: 'CustomFields',
+              model: 'CustomFields_1685931653109',
+              key: 'CustomFields_1685931653109',
+              hidden: false,
+              disabled: false,
+              exposeFields: [
+                { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+                { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+              ],
+            },
           ],
           approval: { approvalType: 'applicant', members: [] },
         },
@@ -420,7 +493,7 @@ export default {
       taskConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -431,7 +504,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: true, disabled: true },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: true, disabled: true },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -439,35 +512,34 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: false, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
-        approval: {
-          approvalType: 'people',
-          members: [
-            {
-              id: '1478668033495924736',
-              name: '李华',
-              countryCode: '+86',
-              phoneNumber: '+86-13588721336',
-              email: 'edward.li@laisontech.com',
-              deptId: 'd4e4c9f431b547b0b9a49bbd00413c44',
-              type: 1,
-            },
-          ],
-        },
+        approval: { approvalType: 'applicant', members: [] },
         autoApproval: false,
       },
       copyConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -478,7 +550,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -486,14 +558,26 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
         approval: { approvalType: 'applicant', members: [] },
         type: 'end',
@@ -503,7 +587,7 @@ export default {
         userConfig: {
           columnConfigs: [
             {
-              label: 'FlowForm Render Logic Test',
+              label: '测试表单渲染逻辑',
               type: 'text',
               model: 'text_1685693090201',
               key: 'text_1685693090201',
@@ -514,7 +598,7 @@ export default {
             { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
             { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
             {
-              label: 'Price',
+              label: '单价',
               type: 'number',
               model: 'price',
               key: 'number_1685692625701',
@@ -522,14 +606,33 @@ export default {
               disabled: false,
             },
             {
-              label: 'Count',
+              label: '数量',
               type: 'number',
               model: 'count',
               key: 'number_1685692627312',
               hidden: false,
               disabled: false,
             },
-            { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+            {
+              label: '总价',
+              type: 'number',
+              model: 'sum',
+              key: 'number_1685692633620',
+              hidden: false,
+              disabled: false,
+            },
+            {
+              label: 'CustomFields',
+              type: 'CustomFields',
+              model: 'CustomFields_1685931653109',
+              key: 'CustomFields_1685931653109',
+              hidden: false,
+              disabled: false,
+              exposeFields: [
+                { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+                { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+              ],
+            },
           ],
           approval: { approvalType: 'applicant', members: [] },
         },
@@ -541,7 +644,7 @@ export default {
       taskConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -551,44 +654,29 @@ export default {
           { label: 'M', type: 'number', model: 'm', key: 'number_1685692607042', hidden: false, disabled: true },
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: true },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: true },
+          { label: '单价', type: 'number', model: 'price', key: 'number_1685692625701', hidden: false, disabled: true },
+          { label: '数量', type: 'number', model: 'count', key: 'number_1685692627312', hidden: false, disabled: true },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: true },
           {
-            label: 'Price',
-            type: 'number',
-            model: 'price',
-            key: 'number_1685692625701',
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
             hidden: false,
-            disabled: true,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: false, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: false, hidden: false, type: 'price', key: 'price' },
+            ],
           },
-          {
-            label: 'Count',
-            type: 'number',
-            model: 'count',
-            key: 'number_1685692627312',
-            hidden: false,
-            disabled: true,
-          },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: true },
         ],
-        approval: {
-          approvalType: 'people',
-          members: [
-            {
-              id: '1408292416032604160',
-              name: '吴德',
-              countryCode: '+86',
-              phoneNumber: '+86-15067142076',
-              email: 'de.wu@laisontech.com',
-              deptId: '65be31f67c754197a432dd262160373e',
-              type: 1,
-            },
-          ],
-        },
+        approval: { approvalType: 'applicant', members: [] },
         autoApproval: false,
       },
       copyConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -599,7 +687,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -607,14 +695,26 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
         approval: { approvalType: 'applicant', members: [] },
         type: 'end',
@@ -624,7 +724,7 @@ export default {
         userConfig: {
           columnConfigs: [
             {
-              label: 'FlowForm Render Logic Test',
+              label: '测试表单渲染逻辑',
               type: 'text',
               model: 'text_1685693090201',
               key: 'text_1685693090201',
@@ -635,7 +735,7 @@ export default {
             { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
             { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
             {
-              label: 'Price',
+              label: '单价',
               type: 'number',
               model: 'price',
               key: 'number_1685692625701',
@@ -643,14 +743,33 @@ export default {
               disabled: false,
             },
             {
-              label: 'Count',
+              label: '数量',
               type: 'number',
               model: 'count',
               key: 'number_1685692627312',
               hidden: false,
               disabled: false,
             },
-            { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+            {
+              label: '总价',
+              type: 'number',
+              model: 'sum',
+              key: 'number_1685692633620',
+              hidden: false,
+              disabled: false,
+            },
+            {
+              label: 'CustomFields',
+              type: 'CustomFields',
+              model: 'CustomFields_1685931653109',
+              key: 'CustomFields_1685931653109',
+              hidden: false,
+              disabled: false,
+              exposeFields: [
+                { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+                { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+              ],
+            },
           ],
           approval: { approvalType: 'applicant', members: [] },
         },
@@ -662,7 +781,7 @@ export default {
       taskConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -673,7 +792,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -681,14 +800,26 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
         approval: { approvalType: 'applicant', members: [] },
         autoApproval: false,
@@ -696,7 +827,7 @@ export default {
       copyConfig: {
         columnConfigs: [
           {
-            label: 'FlowForm Render Logic Test',
+            label: '测试表单渲染逻辑',
             type: 'text',
             model: 'text_1685693090201',
             key: 'text_1685693090201',
@@ -707,7 +838,7 @@ export default {
           { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
           { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
           {
-            label: 'Price',
+            label: '单价',
             type: 'number',
             model: 'price',
             key: 'number_1685692625701',
@@ -715,14 +846,26 @@ export default {
             disabled: false,
           },
           {
-            label: 'Count',
+            label: '数量',
             type: 'number',
             model: 'count',
             key: 'number_1685692627312',
             hidden: false,
             disabled: false,
           },
-          { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          { label: '总价', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+          {
+            label: 'CustomFields',
+            type: 'CustomFields',
+            model: 'CustomFields_1685931653109',
+            key: 'CustomFields_1685931653109',
+            hidden: false,
+            disabled: false,
+            exposeFields: [
+              { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+              { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+            ],
+          },
         ],
         approval: { approvalType: 'applicant', members: [] },
         type: 'end',
@@ -732,7 +875,7 @@ export default {
         userConfig: {
           columnConfigs: [
             {
-              label: 'FlowForm Render Logic Test',
+              label: '测试表单渲染逻辑',
               type: 'text',
               model: 'text_1685693090201',
               key: 'text_1685693090201',
@@ -743,7 +886,7 @@ export default {
             { label: 'N', type: 'number', model: 'n', key: 'number_1685692608882', hidden: false, disabled: false },
             { label: 'MN', type: 'input', model: 'mn', key: 'input_1685692611903', hidden: false, disabled: false },
             {
-              label: 'Price',
+              label: '单价',
               type: 'number',
               model: 'price',
               key: 'number_1685692625701',
@@ -751,14 +894,33 @@ export default {
               disabled: false,
             },
             {
-              label: 'Count',
+              label: '数量',
               type: 'number',
               model: 'count',
               key: 'number_1685692627312',
               hidden: false,
               disabled: false,
             },
-            { label: 'Sum', type: 'number', model: 'sum', key: 'number_1685692633620', hidden: false, disabled: false },
+            {
+              label: '总价',
+              type: 'number',
+              model: 'sum',
+              key: 'number_1685692633620',
+              hidden: false,
+              disabled: false,
+            },
+            {
+              label: 'CustomFields',
+              type: 'CustomFields',
+              model: 'CustomFields_1685931653109',
+              key: 'CustomFields_1685931653109',
+              hidden: false,
+              disabled: false,
+              exposeFields: [
+                { label: 'userName', disabled: true, hidden: false, type: 'userName', key: 'userName' },
+                { label: 'price', disabled: true, hidden: false, type: 'price', key: 'price' },
+              ],
+            },
           ],
           approval: { approvalType: 'applicant', members: [] },
         },
