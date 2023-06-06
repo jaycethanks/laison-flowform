@@ -330,7 +330,7 @@ export default {
         flowName: designName,
         groupSelected: designGroupName,
         remark: designDes,
-        notifyConfig: notifyConfig ? JSON.parse(notifyConfig) : {},
+        notifyConfig: notifyConfig ? JSON.parse(notifyConfig) : null,
         startMembers: _permissionConfig ? _permissionConfig.starterMembers : [],
         viewMembers: _permissionConfig ? _permissionConfig.viewAllMembers : [],
       };
