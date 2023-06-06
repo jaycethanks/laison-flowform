@@ -8,7 +8,7 @@ import '@/lib/lazy_antd';
 import '@/lib/lazy_elementui.js';
 import i18n from '@/lang/index.js';
 import '@/utils/localStorageEnhance.js'; //LocalStorage 方法增强
-import Print from 'vue-print-nb-jeecg';
+import Print from 'vue-print-nb';
 
 Vue.config.productionTip = false;
 Vue.use(Print);

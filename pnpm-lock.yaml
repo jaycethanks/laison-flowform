@@ -45,7 +45,7 @@ specifiers:
   vue: ^2.6.14
   vue-codemirror-lite: ^1.0.4
   vue-i18n: ^8.7.0
-  vue-print-nb-jeecg: ^1.0.12
+  vue-print-nb: ^1.7.5
   vue-quill-editor: 3.0.6
   vue-router: 3.6.5
   vue-template-compiler: ^2.6.14
@@ -83,7 +83,7 @@ dependencies:
   vue: 2.7.14
   vue-codemirror-lite: 1.0.4
   vue-i18n: 8.28.2_vue@2.7.14
-  vue-print-nb-jeecg: 1.0.12
+  vue-print-nb: 1.7.5
   vue-quill-editor: 3.0.6
   vue-router: 3.6.5_vue@2.7.14
   vuedraggable: 2.24.3
@@ -2859,12 +2859,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /babel-plugin-transform-runtime/6.23.0:
-    resolution: {integrity: sha512-cpGMVC1vt/772y3jx1gwSaTitQVZuFDlllgreMsZ+rTYC6jlYXRyf5FQOgSnckOiA5QmzbXTyBY2A5AmZXF1fA==}
-    dependencies:
-      babel-runtime: 6.26.0
-    dev: false
 
   /babel-polyfill/6.26.0:
     resolution: {integrity: sha512-F2rZGQnAdaHWQ8YAoeRbukc7HS9QgdgeyJ0rQDd485v9opwuPvjpPFcOOT/WmkKTdgy9ESgSPXDcTNpzrGr6iQ==}
@@ -9066,10 +9060,10 @@ packages:
       webpack: 5.79.0
     dev: true
 
-  /vue-print-nb-jeecg/1.0.12:
-    resolution: {integrity: sha512-jHyWm6/TxB1iU2nHL7upQdHVdxb1SJQ9n3XKeYTaruFdbSphLo1vDtTunS2qVCjupk8lui7FlF5rxxSNr0zjZg==}
+  /vue-print-nb/1.7.5:
+    resolution: {integrity: sha512-iNbNyUVRWz0Ha1UTiCKxMPtHLUDGgNI8e8xmD3xqm9RlXIUeX9bT7DgNAfY8vPzqyFRHqGjxLI1rycKH366ziQ==}
     dependencies:
-      babel-plugin-transform-runtime: 6.23.0
+      vue: 2.7.14
     dev: false
 
   /vue-quill-editor/3.0.6:
