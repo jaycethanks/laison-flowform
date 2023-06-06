@@ -8,13 +8,25 @@ const service = axios.create({
   baseURL: baseUrl, // api base_url
   timeout: 30000, // 请求超时时间
 });
-
+const WHITELIST = ['myApplyList'];
+function checkIfInWhitelist(url) {
+  for (let i = 0; i < WHITELIST.length; i++) {
+    if (url.includes(WHITELIST[i])) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
 // request interceptor
 service.interceptors.request.use(
   function (config) {
     const token = cusLocalStorage.getItem('system', 'access_token');
+    console.log('[config]: ', config);
     if (token) {
-      config.headers['Authorization'] = 'bearer ' + token;
+      if (!checkIfInWhitelist(config.url)) {
+        config.headers['Authorization'] = 'bearer ' + token;
+      }
       return config;
     } else {
       return config;
@@ -38,7 +50,8 @@ service.interceptors.response.use(
       const {
         currentRoute: { path },
       } = router;
-      if (/^\/platform\//.test(path)) {
+      console.log('[path]: ', path);
+      if (/^\/platform\/[^\/]+/.test(path)) {
         // 平台页接口token过期
         router.push('/platform/401');
       } else {
