@@ -130,5 +130,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 @import '@/lib/kform/styles/simple-print-style.scss'
 </style>
