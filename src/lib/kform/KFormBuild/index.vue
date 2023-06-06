@@ -420,23 +420,23 @@ export default {
       this.handleExpression();
       this.triggerHiddenDisabledInjectScript();
     },
-    doInitJs(that, item, model) {
-      // console.log(item.model, this.disabled, '--line467')
+    // doInitJs(that, item, model) {
+    //   // console.log(item.model, this.disabled, '--line467')
 
-      if (item.options.initJs) {
-        let funh = new Function('return ' + item.options.initJs)();
-        try {
-          /**
-           * window.rootKForm 是在src/components/laison/LaisonCustomeFormShow2.vue中
-           * 注册的根表单实例
-           */
+    //   if (item.options.initJs) {
+    //     let funh = new Function('return ' + item.options.initJs)();
+    //     try {
+    //       /**
+    //        * window.rootKForm 是在src/components/laison/LaisonCustomeFormShow2.vue中
+    //        * 注册的根表单实例
+    //        */
 
-          funh(that, item, model, window.rootKForm || undefined);
-        } catch (e) {
-          console.error(e, '--line452', item);
-        }
-      }
-    },
+    //       funh(that, item, model, window.rootKForm || undefined);
+    //     } catch (e) {
+    //       console.error(e, '--line452', item);
+    //     }
+    //   }
+    // },
     handleExpression() {
       /**
        * 要动态计算一个表达式,

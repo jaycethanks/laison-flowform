@@ -31,7 +31,20 @@
       // border: none;
     }
   }
+  ::v-deep .ant-select-selection {
+    border: none;
+    box-shadow: none;
+  }
 
+  ::v-deep .ant-time-picker-input {
+    border: none;
+    &:hover,
+    &:focus,
+    &:active {
+      border: none;
+      box-shadow: none;
+    }
+  }
   ::v-deep .ant-input {
     border: none;
     &:hover,

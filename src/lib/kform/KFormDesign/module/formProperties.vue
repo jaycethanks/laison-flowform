@@ -91,7 +91,7 @@
         </a-form-item>
         <a-alert
           style="margin-top: 10px"
-          description="注:仅支持简单表达式, 输入参数使用英文逗号','隔开,例如:sum=MULTIPLY(price,count), 不支持嵌套表达式如 'SUM(SUBTRACT())'"
+          description="注:启用打印为简洁表格效果后，表单的渲染将会尽可能的紧凑， 此时会影响到必选字段的验证提示效果！'"
           type="warning"
         />
         <a-form-item label="表单属性">

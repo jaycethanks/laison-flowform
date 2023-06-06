@@ -16,7 +16,7 @@
     <!-- @jayce -->
     <div align="right">
       <a-tooltip title="打印预览" v-if="jsonData.config != undefined && jsonData.config.enablePrint">
-        <a-button type="link" v-print="'#print-target-id'" @click="printHandler">
+        <a-button type="link" v-print="'#print-target-id'">
           <a-icon type="printer" style="font-size: 20px" />
         </a-button>
       </a-tooltip>
@@ -122,9 +122,7 @@ export default {
     },
 
     // ---------------------------------------custom start-----------------------------------
-    printHandler() {
-      console.log('hello', '--line78');
-    },
+
   },
 };
 </script>
