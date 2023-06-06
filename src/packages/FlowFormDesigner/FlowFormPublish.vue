@@ -86,7 +86,8 @@
           </div>
         </div>
 
-        <div class="field-item" v-if="showPeopleConfig">
+        <!-- bugfix 不可 v-if 模板设计完成后将会没有notifyConfig字段， 这样拉取模板发布时，这个字段没有初始值，提交也不会有值-->
+        <div class="field-item" v-show="showPeopleConfig">
           <div class="field-title">
             <div class="field-main-title">消息推送类型</div>
             <div class="field-sub-title">指定消息将以何种方式推送</div>
