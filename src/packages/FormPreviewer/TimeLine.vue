@@ -29,19 +29,19 @@
   </div>
 </template>
 <script>
-
-const colors = {
-  create: '#9ec5fe',
-  pass: '#a3cfbb',
-  cancel: '#58151c',
-  back: '#ffe69c',
-  delegate: "#4d94ff",
-  change: "#c4c8cb"
-}
 import SvgIconPersonPin from "@/assets/svgIcon/SvgIconPersonPin.vue"
 import SvgIconLinkedFiles from "@/assets/svgIcon/SvgIconLinkedFiles.vue"
 import {downloadFile} from "@/utils/downloadFile.js"
+import baseStyle from '@/components/base/baseStyle'
 const _fileUrl = process.env.VUE_APP_FILE_URL;
+const colors = {
+  create: baseStyle.$primary.bg,
+  pass: baseStyle.$success.bg,
+  cancel: baseStyle.$danger.bg,
+  back: baseStyle.$warning.bg,
+  delegate: baseStyle.$info.bg,
+  change: baseStyle.$dark.bg
+}
 
 export default {
   props: {
@@ -126,7 +126,7 @@ export default {
     gap: 0.2em;
   }
   .comment {
-    max-width: 24em;
+    // max-width: 24em;
     font-size: 12px;
     background-color: #f7f7f7;
     padding: 0.6rem 1.2rem;
@@ -139,8 +139,8 @@ export default {
     margin-top: 0.2em;
   }
   .addons {
-    max-width: 24em;
-    min-width: 24em;
+    // max-width: 24em;
+    // min-width: 24em;
     font-size: 12px;
     .addon-item {
       margin-bottom: 0.2em;
