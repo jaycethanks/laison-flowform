@@ -58,6 +58,7 @@
     "json-server": "^0.17.3",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
+    "node-polyfill-webpack-plugin": "^2.0.1",
     "postcss": "^8.4.21",
     "rollup": "^2.36.1",
     "rollup-plugin-vue": "^5.1.9",
