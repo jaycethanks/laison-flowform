@@ -21,6 +21,7 @@ function checkIfInWhitelist(url) {
 service.interceptors.request.use(
   function (config) {
     const token = cusLocalStorage.getItem('system', 'access_token');
+    console.log('Request URL:', config);
     if (token) {
       if (!checkIfInWhitelist(config.url)) {
         config.headers['Authorization'] = 'bearer ' + token;

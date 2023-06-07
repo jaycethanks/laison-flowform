@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const path = require('path');
 
 function resolve(dir) {
@@ -32,6 +33,7 @@ module.exports = defineConfig({
     },
   },
   configureWebpack: {
+    plugins: [new NodePolyfillPlugin()], // @jayce:terminal warning fix: https://stackoverflow.com/a/65556946/12261182
     resolve: {
       alias: {
         '@': resolve('src'),
@@ -56,12 +58,12 @@ module.exports = defineConfig({
           '^/api': '/', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
         },
       },
-      '/file': {
-        target: 'http://127.0.0.1:2456', // 请求本地 需要jeecg-boot后台项目
-        // target: 'http://192.168.3.47', // 请求本地 需要jeecg-boot后台项目
+      '/api/file': {
+        // target: 'http://127.0.0.1:2456', // 请求本地 需要jeecg-boot后台项目
+        target: 'http://192.168.3.47:80/file', // 请求本地 需要jeecg-boot后台项目
         // target: 'http://192.168.0.166:11180', // 请求本地 需要jeecg-boot后台项目
         changeOrigin: true,
-        logLevel: 'debug',
+        logLeve: 'debug',
 
         pathRewrite: {
           '^/file': '/file', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login

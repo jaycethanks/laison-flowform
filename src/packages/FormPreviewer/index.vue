@@ -1,5 +1,6 @@
 <template>
-  <div class="form-previewer-root">
+  <!-- <div class="form-previewer-root"> -->
+  <RootContainer noLogo>
     <EmptyPage
       v-if="wrongPage || formInfo == null"
       :description="wrongPage ? 'Wrong Page!' : 'Error When Parse Form!'"
@@ -7,28 +8,45 @@
 
     <!-- @jayce -->
     <div align="right">
-      <a-tooltip title="打印预览" v-if="formInfo && formInfo.config != undefined && formInfo.config.enablePrint">
+      <a-tooltip
+        title="打印预览"
+        v-if="
+          formInfo &&
+          formInfo.config != undefined &&
+          formInfo.config.enablePrint
+        "
+      >
         <a-button type="link" v-print="'#print-target-id'">
           <a-icon type="printer" style="font-size: 20px" />
         </a-button>
       </a-tooltip>
     </div>
 
-    <section
-      class="form"
-      id="print-target-id"
-      :class="{'enable-print-simple-style':formInfo && formInfo.config != undefined && formInfo.config.enablePrintSimpleStyle}"
-    >
-      <k-form-build
-        v-if="!wrongPage && formInfo"
-        :style="computedQuery.style"
-        class="container form-previewer"
-        @mount="handleMount"
-        :value="formInfo"
-        ref="kfb"
-        :disabled="kfb.disabled"
-      />
-    </section>
+    <main class="form-preview-content-area">
+      <section
+        class="form"
+        id="print-target-id"
+        :class="{
+          'enable-print-simple-style':
+            formInfo &&
+            formInfo.config != undefined &&
+            formInfo.config.enablePrintSimpleStyle,
+        }"
+      >
+        <k-form-build
+          v-if="!wrongPage && formInfo"
+          :style="computedQuery.style"
+          class="container form-previewer"
+          @mount="handleMount"
+          :value="formInfo"
+          ref="kfb"
+          :disabled="kfb.disabled"
+        />
+      </section>
+      <aside v-if="true && operations != null" class="timeline">
+        <TimeLine :operations="operations" />
+      </aside>
+    </main>
 
     <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.COPY)" id="operation-footer-row">
       <a-space>
@@ -58,13 +76,14 @@
         </a-button>
       </a-space>
     </footer>
-  </div>
+    <!-- </div> -->
+  </RootContainer>
 </template>
 
 <script>
+import mock from "./mock"
 import KFormBuild from '@/lib/kform/KFormBuild/index';
 import JModal from '@/components/jeecg/JModal/index.vue';
-import mock from './mock';
 import { parseFormWithNodeConfig } from '@/utils/kformRelatedUtils.js';
 //import '@/assets/SourceHanSansCN-Regular-normal'
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
@@ -72,7 +91,9 @@ import PreviewFormType from '@/constants/PreviewFormType.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import SvgIconSend from '@/assets/svgIcon/SvgIconSend.vue';
 import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
-import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js"
+import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js";
+import RootContainer from "@/components/base/RootContainer/index.vue";
+import TimeLine from "./TimeLine.vue"
 export default {
   name: 'FormPreviewer',
   mixins: [handleQuery],
@@ -82,6 +103,8 @@ export default {
     EmptyPage,
     SvgIconSend,
     SvgIconArchive,
+    TimeLine,
+    RootContainer
   },
   data() {
     return {
@@ -89,6 +112,7 @@ export default {
       formInfo: null, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
+      operations:null,
       kfb: {
         disabled: false,
       },
@@ -126,9 +150,13 @@ export default {
 
   created() {
     this.handleType(this.computedQuery.type);
+    this.loadOperations()
 
   },
   methods: {
+    async loadOperations(){
+      this.operations = mock
+    },
     closeModal: function () {
       this.$emit('close');
     },
@@ -141,14 +169,14 @@ export default {
       })
       if (res.status === 200) {
         // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
-      const { formInfo, formConfigs } = res.data
-      const formWithNodeConfig = {
-        formInfo,
-        formConfigs
-      }
-      const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
-      console.log('[parsedFormInfo]: ', parsedFormInfo)
-      this.formInfo = parsedFormInfo;
+        const { formInfo, formConfigs } = res.data
+        const formWithNodeConfig = {
+          formInfo,
+          formConfigs
+        }
+        const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
+        console.log('[parsedFormInfo]: ', parsedFormInfo)
+        this.formInfo = parsedFormInfo;
       } else {
         this.$message.error(res.msg)
       }
@@ -250,7 +278,7 @@ export default {
           console.error(e, '--line240');
         });
     },
-    handleSubmit(){
+    handleSubmit() {
       this.$refs.kfb.getData()
         .then((res) => {
           console.log(res, '获取数据成功');
@@ -275,47 +303,62 @@ export default {
 
 <style scoped lang="scss">
 $operation-row-height: 4rem;
-.form-previewer-root {
-  width: 100vw;
-  padding: 20px;
-  min-height: 100vh;
-  position: relative;
-  #operation-footer-row {
-    position: fixed;
-    display: flex;
+// .form-previewer-root {
+//   width: 100vw;
+//   padding: 20px;
+//   min-height: 100vh;
+//   position: relative;
+#operation-footer-row {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: $operation-row-height;
+  background-color: #fff;
+  box-shadow: 0px 0px 7px 3px #f4f4f4;
+  span {
+    display: inline-flex;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-end;
-    padding: 10px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: $operation-row-height;
-    background-color: #fff;
-    box-shadow: 0px 0px 7px 3px #f4f4f4;
-    span {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-  }
-  .form-previewer {
-    padding: 6rem;
-    margin: 0 auto;
-    // max-width: 100%;
-    box-shadow: 0px 0px 7px 3px #f4f4f4;
+    gap: 10px;
   }
 }
+main {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap:1rem;
+
+  section {
+    padding:10px;
+    .form-previewer {
+      background-color: white;
+      padding: 4rem;
+      margin: 0 auto;
+      // max-width: 100%;
+      box-shadow: 0px 0px 7px 3px #f4f4f4;
+    }
+  }
+  aside{
+    padding:10px;
+  }
+}
+
+// }
 .container {
   width: 100%;
-    min-width: 640px;
+  min-width: 1024px;
+
 
 }
 
 @media (min-width: 640px) {
   .container {
     max-width: 640px;
-
   }
 }
 
@@ -350,5 +393,5 @@ $operation-row-height: 4rem;
 </style>
 
 <style scoped lang="scss">
-@import '@/lib/kform/styles/simple-print-style.scss'
+@import "@/lib/kform/styles/simple-print-style.scss";
 </style>
