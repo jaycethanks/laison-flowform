@@ -140,6 +140,7 @@ export default {
   }
   .addons {
     max-width: 24em;
+    min-width: 24em;
     font-size: 12px;
     .addon-item {
       margin-bottom: 0.2em;

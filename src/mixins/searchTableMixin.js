@@ -30,9 +30,9 @@ export default {
       };
       this.loadData();
     },
-    async loadData() {
+    async loadData(options = {}) {
       this.pageInfo.loading = true;
-      const res = await this.findPage(this.pageInfo);
+      const res = await this.findPage(Object.assign(this.pageInfo, options));
       if (res.status === 200) {
         const { total, list } = res.data;
         this.dataSource = list;

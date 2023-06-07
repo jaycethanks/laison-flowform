@@ -40,7 +40,7 @@
     >
       <a slot="name" slot-scope="text">{{ text }}</a>
       <a slot="delFlag" slot-scope="text">
-        <a-tag :color="text ? 'red' : 'green'">{{ text ? '已删除' : '正常' }} </a-tag>
+        <a-tag :color="text ? 'red' : 'green'">{{ text ? "已删除" : "正常" }} </a-tag>
       </a>
 
       <template slot="action" slot-scope="text, record">
@@ -70,50 +70,56 @@ import searchTableMixin from '@/mixins/searchTableMixin.js';
 import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import PreviewFormType from "@/constants/PreviewFormType.js"
+import { myApply } from "@/api/platform/processOpenAPI.js"
 const columns = [
   {
-    title: '平台id',
-    dataIndex: 'uniTenantId',
-    key: 'uniTenantId',
+    title: '标题',
+    dataIndex: 'title',
+    key: 'title',
   },
   {
-    title: '平台名称',
-    dataIndex: 'name',
-    key: 'name',
-    width: 120,
-    scopedSlots: { customRender: 'name' },
+    title: '工单编号',
+    dataIndex: 'businessId',
+    key: 'businessId',
   },
   {
-    title: '租户ID',
-    dataIndex: 'bizTenantId',
-    key: 'bizTenantId',
+    title: '工单类型',
+    dataIndex: 'orderType',
+    key: 'orderType',
   },
   {
-    title: 'baseUrl',
-    dataIndex: 'baseUrl',
-    key: 'baseUrl',
+    title: '创建时间',
+    dataIndex: 'createTime',
+    key: 'createTime',
   },
 
-  {
-    title: '时区',
-    dataIndex: 'timezone',
-    key: 'timezone',
-    ellipsis: true,
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-    key: 'remark',
-    ellipsis: true,
-  },
   {
     title: '状态',
-    dataIndex: 'delFlag',
-    key: 'delFlag',
-    scopedSlots: { customRender: 'delFlag' },
-
-    width: 100,
+    dataIndex: 'status',
+    key: 'status',
   },
+  {
+    title: '结果',
+    dataIndex: 'result',
+    key: 'result',
+    ellipsis: true,
+  },
+  {
+    title: '更新人',
+    dataIndex: 'updateBy',
+    key: 'updateBy',
+  },
+  {
+    title: '更新时间',
+    dataIndex: 'updateTime',
+    key: 'updateTime',
+  },
+  {
+    title: '委托人',
+    dataIndex: 'delegator',
+    key: 'delegator',
+  },
+
   {
     title: '操作',
     dataIndex: 'action',
@@ -123,44 +129,50 @@ const columns = [
   },
 ];
 export default {
-  name:"MyApply",
-  mixins: [searchTableMixin,handleQuery],
-  components:{
+  name: "MyApply",
+  mixins: [searchTableMixin, handleQuery],
+  components: {
     Container,
     RootContainer,
     TemplateListDrawer
   },
-    data() {
+  data() {
     return {
       columns,
-      findPage,
+      findPage: myApply,
       modalTitle: '新增',
-      templateListVisible:false,
+      templateListVisible: false,
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
         // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
         uniTenantId: {
-          type:String
+          type: String
         },
         bizToken: {
-          type:String
+          type: String
         },
       },
     };
   },
-    mounted() {
-    // this.loadData();
+  mounted() {
+    this.loadData({
+      uniTenantId: this.computedQuery.uniTenantId,
+      bizToken: this.computedQuery.bizToken,
+    });
   },
   methods: {
     handleQuery() {
-      this.loadData();
+      this.loadData({
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
+      });
     },
-    handleSelect({publishId,procDefId}){
+    handleSelect({ publishId, procDefId }) {
       this.$router.push({
         path: '/platform/formPreviewer',
         query: {
-          type:PreviewFormType.APPLY,
+          type: PreviewFormType.APPLY,
           publishId,
           procDefId,
           uniTenantId: this.computedQuery.uniTenantId,
@@ -179,7 +191,11 @@ export default {
       } else {
         this.$message.warn(res.msg);
       }
-      this.loadData();
+      this.loadData({
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
+      });
+
     },
   },
 };

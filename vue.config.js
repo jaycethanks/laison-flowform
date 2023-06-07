@@ -46,6 +46,9 @@ module.exports = defineConfig({
   devServer: {
     // disableHostCheck: true,
     port: 3000,
+    // client: {
+    //   logging: 'log',
+    // },
     proxy: {
       '/api': {
         // target: 'http://192.168.3.47:12345',
@@ -53,7 +56,6 @@ module.exports = defineConfig({
         target: 'http://192.168.3.47:1228', // 请求本地 需要jeecg-boot后台项目
         // ws: true,
         changeOrigin: true,
-        logLevel: 'debug',
         pathRewrite: {
           '^/api': '/', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
         },
@@ -63,10 +65,8 @@ module.exports = defineConfig({
         target: 'http://192.168.3.47:80/file', // 请求本地 需要jeecg-boot后台项目
         // target: 'http://192.168.0.166:11180', // 请求本地 需要jeecg-boot后台项目
         changeOrigin: true,
-        logLeve: 'debug',
-
         pathRewrite: {
-          '^/file': '/file', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
+          '^/file': '/', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
         },
       },
     },

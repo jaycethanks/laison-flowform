@@ -52,7 +52,7 @@
       <a-space>
         <a-button type="primary" @click="handleSubmit">
           <span v-if="computedQuery.type === PreviewFormType.APPLY">
-            <SvgIconSend style="height: 14px" /> 发起流程</span
+            <SvgIconSend style="height: 14px" /> 提交并发起</span
           >
           <span v-if="computedQuery.type === PreviewFormType.TODO">
             <a-icon type="check"></a-icon>
@@ -61,6 +61,9 @@
           <span v-if="computedQuery.type === PreviewFormType.ARCHIVE"
             ><SvgIconArchive style="height: 14px" /> 归档</span
           >
+        </a-button>
+        <a-button v-if="computedQuery.type === PreviewFormType.APPLY" @click="handleSaveAsDraft">
+          <span> <SvgIconSaveDraft style="height: 14px" /> 保存为草稿</span>
         </a-button>
         <a-button type="primary" v-if="computedQuery.type === PreviewFormType.TODO">
           <span>
@@ -90,8 +93,10 @@ import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
 import PreviewFormType from '@/constants/PreviewFormType.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import SvgIconSend from '@/assets/svgIcon/SvgIconSend.vue';
+import SvgIconSaveDraft from '@/assets/svgIcon/SvgIconSaveDraft.vue';
 import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
 import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js";
+import { create,submit,edit } from "@/api/platform/businessOpenAPI.js"
 import RootContainer from "@/components/base/RootContainer/index.vue";
 import TimeLine from "./TimeLine.vue"
 export default {
@@ -102,6 +107,7 @@ export default {
     JModal,
     EmptyPage,
     SvgIconSend,
+    SvgIconSaveDraft,
     SvgIconArchive,
     TimeLine,
     RootContainer
@@ -133,13 +139,10 @@ export default {
         bizToken: {
           type: String
         },
-        uniTenantId: {
-          type: String
-        },
         publishId: {
           type: String
         },
-        procDefId: {
+        procDefId: {//流程定义ID
           type: String
 
         },
@@ -161,7 +164,6 @@ export default {
       this.$emit('close');
     },
     async loadflowformData() {
-      // TODO: BUG FIX TypeError: Cannot read properties of null (reading 'config')
       const res = await queryProcessNodeForm({
         publishId: this.computedQuery.publishId,
         procDefId: this.computedQuery.procDefId,
@@ -174,8 +176,8 @@ export default {
           formInfo,
           formConfigs
         }
+        // todo: parse form with data: data 在审批结点时，应该有值设定
         const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
-        console.log('[parsedFormInfo]: ', parsedFormInfo)
         this.formInfo = parsedFormInfo;
       } else {
         this.$message.error(res.msg)
@@ -278,16 +280,37 @@ export default {
           console.error(e, '--line240');
         });
     },
-    handleSubmit() {
-      this.$refs.kfb.getData()
-        .then((res) => {
-          console.log(res, '获取数据成功');
-        })
-        .catch((err) => {
-          console.log(err, '获取数据失败');
-        });
-    },
+    async handleSubmit() {
+        const formData = await this.getFormData()
 
+
+    },
+    async handleSaveAsDraft(){
+        const formData = await this.getFormData()
+        const res = await create({
+            publishId: this.computedQuery.publishId,
+            formData,
+            uniTenantId: this.computedQuery.uniTenantId,
+            bizToken: this.computedQuery.bizToken,
+        })
+        if(res.status === 200){
+          this.$message.success(res.msg)
+          this.$router.go(-1)
+        }else{
+          this.$message.error(res.msg)
+        }
+    },
+    async getFormData(){
+      let formData = null;
+      try{
+        formData = await this.$refs.kfb.getData()
+      }catch(e) {
+        formData = null;
+        this.$message.error("获取表单数据异常,请先检查表单是否按要求填写！")
+        throw Error("获取表单数据异常")
+      }
+      return formData
+    },
     handleMount(laisonRootFormInstance) {
       /**
        * 将根表单 注册到window 对象，以便在 src/components/kform/KFormBuild/index.vue
@@ -352,8 +375,6 @@ main {
 .container {
   width: 100%;
   min-width: 1024px;
-
-
 }
 
 @media (min-width: 640px) {
