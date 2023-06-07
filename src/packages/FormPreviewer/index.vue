@@ -1,52 +1,60 @@
 <template>
   <!-- <div class="form-previewer-root"> -->
   <RootContainer noLogo>
-    <EmptyPage
-      v-if="wrongPage || formInfo == null"
-      :description="wrongPage ? 'Wrong Page!' : 'Error When Parse Form!'"
-    />
+    <Container>
+      <EmptyPage
+        v-if="wrongPage || formInfo == null"
+        :description="wrongPage ? 'Wrong Page!' : 'Error When Parse Form!'"
+      />
 
-    <!-- @jayce -->
-    <div align="right">
-      <a-tooltip
-        title="打印预览"
-        v-if="
+      <!-- @jayce -->
+      <div align="right">
+        <a-tooltip
+          title="打印预览"
+          v-if="
           formInfo &&
           formInfo.config != undefined &&
           formInfo.config.enablePrint
         "
-      >
-        <a-button type="link" v-print="'#print-target-id'">
-          <a-icon type="printer" style="font-size: 20px" />
-        </a-button>
-      </a-tooltip>
-    </div>
+        >
+          <a-button type="link" v-print="'#print-target-id'">
+            <a-icon type="printer" style="font-size: 20px" />
+          </a-button>
+        </a-tooltip>
+      </div>
 
-    <main class="form-preview-content-area">
-      <section
-        class="form"
-        id="print-target-id"
-        :class="{
-          'enable-print-simple-style':
-            formInfo &&
-            formInfo.config != undefined &&
-            formInfo.config.enablePrintSimpleStyle,
-        }"
-      >
-        <k-form-build
-          v-if="!wrongPage && formInfo"
-          :style="computedQuery.style"
-          class="container form-previewer"
-          @mount="handleMount"
-          :value="formInfo"
-          ref="kfb"
-          :disabled="kfb.disabled"
-        />
-      </section>
-      <aside v-if="true && operations != null" class="timeline">
-        <TimeLine :operations="operations" />
-      </aside>
-    </main>
+      <main class="form-preview-content-area">
+        <a-row type="flex" justify="center">
+          <a-col :xs="24" :xl="18">
+            <section
+              class="form"
+              id="print-target-id"
+              :class="{
+                'enable-print-simple-style':
+                  formInfo &&
+                  formInfo.config != undefined &&
+                  formInfo.config.enablePrintSimpleStyle,
+              }"
+            >
+              <k-form-build
+                v-if="!wrongPage && formInfo"
+                :style="computedQuery.style"
+                class="form-previewer"
+                @mount="handleMount"
+                :value="formInfo"
+                ref="kfb"
+                :disabled="kfb.disabled"
+              />
+            </section>
+          </a-col>
+          <a-col :xs="24" :xl="6" v-if="operations != null">
+            <aside class="timeline">
+              <TimeLine :operations="operations" />
+            </aside>
+          </a-col>
+        </a-row>
+      </main>
+    </Container>
 
     <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.COPY)" id="operation-footer-row">
       <a-space>
@@ -96,8 +104,9 @@ import SvgIconSend from '@/assets/svgIcon/SvgIconSend.vue';
 import SvgIconSaveDraft from '@/assets/svgIcon/SvgIconSaveDraft.vue';
 import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
 import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js";
-import { create,submit,edit } from "@/api/platform/businessOpenAPI.js"
+import { create, submit, edit } from "@/api/platform/businessOpenAPI.js"
 import RootContainer from "@/components/base/RootContainer/index.vue";
+import Container from "@/components/base/Container/index.vue";
 import TimeLine from "./TimeLine.vue"
 export default {
   name: 'FormPreviewer',
@@ -110,7 +119,8 @@ export default {
     SvgIconSaveDraft,
     SvgIconArchive,
     TimeLine,
-    RootContainer
+    RootContainer,
+    Container
   },
   data() {
     return {
@@ -118,7 +128,7 @@ export default {
       formInfo: null, //表单定义
       formdataObj: {}, //表单数据
       isFullScreen: false,
-      operations:null,
+      operations: null,
       kfb: {
         disabled: false,
       },
@@ -157,7 +167,7 @@ export default {
 
   },
   methods: {
-    async loadOperations(){
+    async loadOperations() {
       this.operations = mock
     },
     closeModal: function () {
@@ -281,30 +291,30 @@ export default {
         });
     },
     async handleSubmit() {
-        const formData = await this.getFormData()
+      const formData = await this.getFormData()
 
 
     },
-    async handleSaveAsDraft(){
-        const formData = await this.getFormData()
-        const res = await create({
-            publishId: this.computedQuery.publishId,
-            formData,
-            uniTenantId: this.computedQuery.uniTenantId,
-            bizToken: this.computedQuery.bizToken,
-        })
-        if(res.status === 200){
-          this.$message.success(res.msg)
-          this.$router.go(-1)
-        }else{
-          this.$message.error(res.msg)
-        }
+    async handleSaveAsDraft() {
+      const formData = await this.getFormData()
+      const res = await create({
+        publishId: this.computedQuery.publishId,
+        formData,
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
+      })
+      if (res.status === 200) {
+        this.$message.success(res.msg)
+        this.$router.go(-1)
+      } else {
+        this.$message.error(res.msg)
+      }
     },
-    async getFormData(){
+    async getFormData() {
       let formData = null;
-      try{
+      try {
         formData = await this.$refs.kfb.getData()
-      }catch(e) {
+      } catch (e) {
         formData = null;
         this.$message.error("获取表单数据异常,请先检查表单是否按要求填写！")
         throw Error("获取表单数据异常")
@@ -351,13 +361,13 @@ $operation-row-height: 4rem;
   }
 }
 main {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap:1rem;
+  // display: flex;
+  // justify-content: center;
+  // flex-wrap: wrap;
+  // gap: 1rem;
 
   section {
-    padding:10px;
+    padding: 10px;
     .form-previewer {
       background-color: white;
       padding: 4rem;
@@ -366,50 +376,11 @@ main {
       box-shadow: 0px 0px 7px 3px #f4f4f4;
     }
   }
-  aside{
-    padding:10px;
+  aside {
+    padding: 10px;
   }
 }
 
-// }
-.container {
-  width: 100%;
-  min-width: 1024px;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1000px;
-  }
-}
-
-// @media (min-width: 1280px) {
-//   .container {
-//     max-width: 1280px;
-//   }
-// }
-// @media (min-width: 1536px) {
-//   .container {
-//     max-width: 1536px;
-//   }
 // }
 </style>
 
