@@ -30,32 +30,40 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-table
-      :loading="pageInfo.loading"
-      @change="handleTableChange"
-      :columns="columns"
-      :data-source="dataSource"
-      rowKey="id"
-      :pagination="pageInfo.pagination"
-    >
-      <a slot="name" slot-scope="text">{{ text }}</a>
-      <a slot="delFlag" slot-scope="text">
-        <a-tag :color="text ? 'red' : 'green'">{{ text ? "已删除" : "正常" }} </a-tag>
-      </a>
+    <a-card :bordered="false" style="margin-top:1rem">
+      <a-table
+        :loading="pageInfo.loading"
+        @change="handleTableChange"
+        :columns="columns"
+        :data-source="dataSource"
+        rowKey="id"
+        :pagination="pageInfo.pagination"
+      >
+        <a slot="name" slot-scope="text">{{ text }}</a>
 
-      <template slot="action" slot-scope="text, record">
-        <a-space>
-          <a
-            slot="action"
-            @click="
+        <span slot="result" slot-scope="text">
+          <ff-status :statusCode="text" isTag />
+        </span>
+
+        <span slot="status" slot-scope="text">
+          <ff-status :statusCode="text" />
+        </span>
+
+        <template slot="action" slot-scope="text, record">
+          <a-space>
+            <a
+              slot="action"
+              @click="
               modalTitle = '编辑 - ' + record.name;
               $refs.modal.show(record);
             "
-            >编辑</a
-          >
-        </a-space>
-      </template>
-    </a-table>
+              >编辑</a
+            >
+          </a-space>
+        </template>
+      </a-table>
+    </a-card>
+
     <!-- <platformRegistrationModal :title="modalTitle" ref="modal" @ok="handleOk" submitLoading /> -->
     <TemplateListDrawer @select="handleSelect" :visible="templateListVisible" @close="templateListVisible = false" />
     <!-- <Container> -->
@@ -71,6 +79,7 @@ import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import PreviewFormType from "@/constants/PreviewFormType.js"
 import { myApply } from "@/api/platform/processOpenAPI.js"
+import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 const columns = [
   {
     title: '标题',
@@ -97,11 +106,17 @@ const columns = [
     title: '状态',
     dataIndex: 'status',
     key: 'status',
+    width:100,
+    scopedSlots: { customRender: 'status' },
+
   },
   {
     title: '结果',
     dataIndex: 'result',
     key: 'result',
+    width:100,
+    scopedSlots: { customRender: 'result' },
+
     ellipsis: true,
   },
   {
@@ -128,13 +143,16 @@ const columns = [
     scopedSlots: { customRender: 'action' },
   },
 ];
+
+
 export default {
   name: "MyApply",
   mixins: [searchTableMixin, handleQuery],
   components: {
     Container,
     RootContainer,
-    TemplateListDrawer
+    TemplateListDrawer,
+    ffStatus
   },
   data() {
     return {
