@@ -35,8 +35,6 @@ import ffIcon from "@/components/FlowForm/ffIcon/index.vue"
 import TitleRow from "@/components/base/TitleRow/index.vue"
 import handleQuery from '@/mixins/handleQuery.js';
 
-import mock from "./listMock"
-import listMock from './listMock';
 export default {
   name: "TemplateListDrawer",
   mixins: [handleQuery],

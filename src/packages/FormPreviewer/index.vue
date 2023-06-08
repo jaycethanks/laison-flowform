@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="form-previewer-root"> -->
-  <RootContainer noLogo>
+  <RootContainer noLogo :loading="pageLoading">
     <Container>
       <EmptyPage
         v-if="wrongPage || formInfo == null"
@@ -12,10 +12,10 @@
         <a-tooltip
           title="打印预览"
           v-if="
-          formInfo &&
-          formInfo.config != undefined &&
-          formInfo.config.enablePrint
-        "
+            formInfo &&
+            formInfo.config != undefined &&
+            formInfo.config.enablePrint
+          "
         >
           <a-button type="link" v-print="'#print-target-id'">
             <a-icon type="printer" style="font-size: 20px" />
@@ -129,6 +129,7 @@ export default {
   data() {
     return {
       PreviewFormType,
+      pageLoading: false,
       formInfo: null, //表单定义
       formData: null, // 表单数据
       formdataObj: {}, //表单数据
@@ -161,32 +162,32 @@ export default {
           type: String
         },
         lang: '',
-        businessId:'',
-        nodeId:''
+        businessId: '',
+        nodeId: ''
       },
     };
   },
-  computed:{
-    modalTitle:function(){
+  computed: {
+    modalTitle: function () {
       const titles = {
-        [PreviewFormType.APPLY]:"发起流程",
-        [PreviewFormType.TODO]:"流程审批",
+        [PreviewFormType.APPLY]: "发起流程",
+        [PreviewFormType.TODO]: "流程审批",
       };
       return titles[this.computedQuery.type] || "未定义modal title 值！"
     }
   },
-  watch:{
-    formData:{
-      handler:function(){
-        if(!this.formData) return;
+  watch: {
+    formData: {
+      handler: function () {
+        if (!this.formData) return;
         this.setFormData()
       }
     }
   },
   created() {
+    this.pageLoading = true
     this.handleType(this.computedQuery.type);
     this.loadOperations()
-
   },
   methods: {
     async loadOperations() {
@@ -195,15 +196,16 @@ export default {
     closeModal: function () {
       this.$emit('close');
     },
-    async setFormData(){
+    async setFormData() {
       // this.formData 数据在 created 阶段拉取， 在watch 中监听有值以后触发
       this.formData = typeof this.formData === 'string' ? JSON.parse(this.formData) : this.formData;
-
-      this.$nextTick(async ()=>{
+      this.$nextTick(async () => {
         const result = await this.$refs.kfb.setData(this.formData)
       })
+
     },
     async loadflowformData() {
+      try{
       const res = await queryProcessNodeForm({
         businessId: this.computedQuery.businessId,
         publishId: this.computedQuery.publishId,
@@ -213,17 +215,20 @@ export default {
       })
       if (res.status === 200) {
         // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
-        const { formInfo, formConfigs,formData } = res.data
+        const { formInfo, formConfigs, formData } = res.data
         this.formData = formData;
         const formWithNodeConfig = {
           formInfo,
           formConfigs,
         }
-        // todo: parse form with data: data 在审批结点时，应该有值设定
         const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
         this.formInfo = parsedFormInfo;
       } else {
         this.$message.error(res.msg)
+      }
+      }finally{
+      this.pageLoading = false
+
       }
 
 
@@ -323,19 +328,19 @@ export default {
           console.error(e, '--line240');
         });
     },
-    async handleSubmitInfoOk(submitInfo){
+    async handleSubmitInfoOk(submitInfo) {
       const formData = await this.getFormData()
       const res = await submit({
-        businessId:this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
+        businessId: this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
         formData,
-        curTaskId:this.computedQuery.curTaskId || '',// 审批时需要携带
+        curTaskId: this.computedQuery.curTaskId || '',// 审批时需要携带
         uniTenantId: this.computedQuery.uniTenantId,
-        publishId:this.computedQuery.publishId,
+        publishId: this.computedQuery.publishId,
         bizToken: this.computedQuery.bizToken,
         submitInfo
       })
 
-        if (res.status === 200) {
+      if (res.status === 200) {
         this.$message.success(res.msg)
         this.$router.go(-1)
       } else {
@@ -348,7 +353,7 @@ export default {
     async handleSaveAsDraft() {
       const formData = await this.getFormData()
       let res;
-      if(this.computedQuery.businessId){
+      if (this.computedQuery.businessId) {
         // 如果 businessId 存在， 则说明是编辑，走编辑接口， 否则，走创建
         res = await edit({
           businessId: this.computedQuery.businessId,
@@ -356,7 +361,7 @@ export default {
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken,
         })
-      }else{
+      } else {
         res = await create({
           publishId: this.computedQuery.publishId,
           formData,

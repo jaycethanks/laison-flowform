@@ -6,7 +6,13 @@
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
         <a-form-item label="状态">
-          <a-input v-model="pageInfo.condition.bizTenantId"></a-input>
+          <a-select
+            style="min-width:100px"
+            v-model="pageInfo.condition.status"
+            :allowClear="true"
+            :options="statusOptions"
+          >
+          </a-select>
         </a-form-item>
         <!-- <a-col :md="6" :sm="8"> </a-col>
         <a-col :md="6" :sm="8">
@@ -40,7 +46,6 @@
         :pagination="pageInfo.pagination"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
-
         <span slot="result" slot-scope="text">
           <ff-status :statusCode="text" isTag />
         </span>
@@ -51,9 +56,15 @@
 
         <template slot="action" slot-scope="text, record">
           <a-space>
-            <a slot="action" @click="handleRowEdit(record)">编辑</a>
-            <a-divider type="vertical" />
-            <a slot="action" @click="$refs.modal.show()">提交</a>
+            <template v-if="record.status !== 0">
+              <a slot="action" @click="handleCheckDetail(record)">查看</a>
+            </template>
+
+            <template v-if="record.status == 0">
+              <a slot="action" @click="handleRowEdit(record)">编辑</a>
+              <a-divider type="vertical" />
+              <a slot="action" @click="$refs.modal.show()">提交</a>
+            </template>
           </a-space>
         </template>
       </a-table>
@@ -77,6 +88,17 @@ import PreviewFormType from "@/constants/PreviewFormType.js"
 import { myApply } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
+const statusOptions = [
+  {label:'草稿',value:0},
+  {label:'待审批',value:1},
+  {label:'处理结束',value:2},
+  {label:'已撤回',value:3},
+  {label:'审批中',value:4},
+  {label:'驳回',value:5},
+  {label:'变更',value:6},
+]
+
+
 
 const columns = [
   {
@@ -155,6 +177,7 @@ export default {
   data() {
     return {
       columns,
+      statusOptions,
       findPage: myApply,
       modalTitle: '发起流程',
       templateListVisible: false,
@@ -182,6 +205,19 @@ export default {
       this.loadData({
         uniTenantId: this.computedQuery.uniTenantId,
         bizToken: this.computedQuery.bizToken,
+      });
+    },
+    handleCheckDetail({businessId,publishId, procDefId}){
+        this.$router.push({
+        path: '/platform/formPreviewer',
+        query: {
+          type: PreviewFormType.VIEW,
+          publishId,
+          procDefId,
+          businessId,
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken
+        }
       });
     },
     handleRowEdit({businessId,publishId, procDefId}){
