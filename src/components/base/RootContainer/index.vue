@@ -1,5 +1,9 @@
 <template>
   <div class="root-container">
+    <div class="loading-mask" v-if="loading">
+      <a-icon type="loading" />
+      wait a moment...
+    </div>
     <div class="root-content">
       <slot />
     </div>
@@ -16,6 +20,10 @@ export default {
     noLogo:{
       type:Boolean,
       default:false
+    },
+     loading:{
+      type:Boolean,
+      default:false
     }
   }
 };
@@ -26,7 +34,6 @@ export default {
   padding: 20px;
   height: 100%;
   overflow: auto;
-
   position: relative;
 }
 .root-content {
@@ -37,6 +44,18 @@ export default {
   bottom: 10px;
   right: 10px;
   width: 32px;
-
+}
+.loading-mask{
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: rgb(255, 255, 255);
 }
 </style>
