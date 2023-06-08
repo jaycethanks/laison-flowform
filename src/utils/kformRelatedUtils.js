@@ -40,19 +40,21 @@ export const parseFormWithNodeConfig = function (formWithNodeConfig, currentLang
     }
     // 取出配置， set到对应的语言 list
     const list = jsonFormInfo.predefinedLists[currentLang];
-    walkNodes(list, (element) => {
-      const findConfig = formConfigs.find((config) => config.key === element.key);
-      if (findConfig != undefined) {
-        const { disabled, hidden } = findConfig;
-        element.options['hidden'] = hidden;
-        element.options['disabled'] = disabled;
-        if (typeof findConfig.exposeFields !== 'undefined') {
-          // 如果这个字段是自定义组件， 就会可能会存在 exposeFields 这个字段 (取决与自定义组件中 是否有按照规定实现)
-          // 将exposeFields 写入到 formInfo 在组件解析阶段去控制自定义组件中的对应字段
-          element._exposeFields = findConfig.exposeFields;
+    // 如果 formConfigs 不为 undefined, 那么去解析配置
+    formConfigs &&
+      walkNodes(list, (element) => {
+        const findConfig = formConfigs.find((config) => config.key === element.key);
+        if (findConfig != undefined) {
+          const { disabled, hidden } = findConfig;
+          element.options['hidden'] = hidden;
+          element.options['disabled'] = disabled;
+          if (typeof findConfig.exposeFields !== 'undefined') {
+            // 如果这个字段是自定义组件， 就会可能会存在 exposeFields 这个字段 (取决与自定义组件中 是否有按照规定实现)
+            // 将exposeFields 写入到 formInfo 在组件解析阶段去控制自定义组件中的对应字段
+            element._exposeFields = findConfig.exposeFields;
+          }
         }
-      }
-    });
+      });
 
     // 将当前表单 list 设定为已配置的目标语言 list
     jsonFormInfo.list = list;
