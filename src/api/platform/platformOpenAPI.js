@@ -141,11 +141,13 @@ export const deleteTemplate = (condition, uniTenantId) =>
  * 查询流程表单节点的详情
  */
 export const queryProcessNodeForm = function (condition) {
-  const { publishId, procDefId, nodeType, nodeId = '', busId = '' } = condition;
+  // nodeId 审批和已完成需携带
+  // nodeType 审批和已完成需携带
+  const { publishId, procDefId, nodeType, nodeId = '', businessId = '' } = condition;
   return axios({
     url: 'platformOpenAPI/queryProcessNodeForm',
     method: 'post',
-    data: { publishId, procDefId, nodeType, nodeId, busId },
+    data: { publishId, procDefId, nodeType, nodeId, businessId },
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       uniTenantId: condition.uniTenantId,

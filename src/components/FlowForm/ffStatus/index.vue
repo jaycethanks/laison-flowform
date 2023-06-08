@@ -24,8 +24,8 @@
 <script>
 import baseStyle from "@/components/base/baseStyle.js"
 const statuses = {
-  0:{label:'待提交',color:baseStyle.$secondary},
-  1:{label:'处理中',color:baseStyle.$primary},
+  0:{label:'草稿',color:baseStyle.$secondary},
+  1:{label:'待审批',color:baseStyle.$primary},
   2:{label:'处理结束',color:baseStyle.$dark},
   3:{label:'已撤回',color:baseStyle.$warning},
   4:{label:'审批中',color:baseStyle.$info},

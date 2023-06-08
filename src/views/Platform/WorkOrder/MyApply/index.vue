@@ -51,20 +51,16 @@
 
         <template slot="action" slot-scope="text, record">
           <a-space>
-            <a
-              slot="action"
-              @click="
-              modalTitle = '编辑 - ' + record.name;
-              $refs.modal.show(record);
-            "
-              >编辑</a
-            >
+            <a slot="action" @click="handleRowEdit(record)">编辑</a>
+            <a-divider type="vertical" />
+            <a slot="action" @click="$refs.modal.show()">提交</a>
           </a-space>
         </template>
       </a-table>
     </a-card>
 
-    <!-- <platformRegistrationModal :title="modalTitle" ref="modal" @ok="handleOk" submitLoading /> -->
+    <submitInfoModal :title="modalTitle" ref="modal" @ok="handleSubmitInfoOk" />
+
     <TemplateListDrawer @select="handleSelect" :visible="templateListVisible" @close="templateListVisible = false" />
     <!-- <Container> -->
   </RootContainer>
@@ -80,6 +76,8 @@ import handleQuery from '@/mixins/handleQuery.js';
 import PreviewFormType from "@/constants/PreviewFormType.js"
 import { myApply } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
+import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
+
 const columns = [
   {
     title: '标题',
@@ -110,15 +108,15 @@ const columns = [
     scopedSlots: { customRender: 'status' },
 
   },
-  {
-    title: '结果',
-    dataIndex: 'result',
-    key: 'result',
-    width:100,
-    scopedSlots: { customRender: 'result' },
+  // {
+  //   title: '结果',
+  //   dataIndex: 'result',
+  //   key: 'result',
+  //   width:100,
+  //   scopedSlots: { customRender: 'result' },
 
-    ellipsis: true,
-  },
+  //   ellipsis: true,
+  // },
   {
     title: '更新人',
     dataIndex: 'updateBy',
@@ -139,7 +137,6 @@ const columns = [
     title: '操作',
     dataIndex: 'action',
     key: 'action',
-    width: 100,
     scopedSlots: { customRender: 'action' },
   },
 ];
@@ -152,13 +149,14 @@ export default {
     Container,
     RootContainer,
     TemplateListDrawer,
-    ffStatus
+    ffStatus,
+    submitInfoModal
   },
   data() {
     return {
       columns,
       findPage: myApply,
-      modalTitle: '新增',
+      modalTitle: '发起流程',
       templateListVisible: false,
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
@@ -184,6 +182,19 @@ export default {
       this.loadData({
         uniTenantId: this.computedQuery.uniTenantId,
         bizToken: this.computedQuery.bizToken,
+      });
+    },
+    handleRowEdit({businessId,publishId, procDefId}){
+        this.$router.push({
+        path: '/platform/formPreviewer',
+        query: {
+          type: PreviewFormType.APPLY,
+          publishId,
+          procDefId,
+          businessId,
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken
+        }
       });
     },
     handleSelect({ publishId, procDefId }) {
@@ -214,6 +225,20 @@ export default {
         bizToken: this.computedQuery.bizToken,
       });
 
+    },
+
+    async handleSubmitInfoOk(submitInfo){
+      // const formData = await this.getFormData()
+      // const res = await submit({
+      //   businessId:this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
+      //   formData,
+      //   curTaskId:this.computedQuery.curTaskId || '',// 审批时需要携带
+      //   uniTenantId: this.computedQuery.uniTenantId,
+      //   publishId:this.computedQuery.publishId,
+      //   bizToken: this.computedQuery.bizToken,
+      //   submitInfo
+      // })
+      // console.log('[res]: ',res)
     },
   },
 };

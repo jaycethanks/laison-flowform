@@ -87,6 +87,8 @@
         </a-button>
       </a-space>
     </footer>
+
+    <submitInfoModal :title="modalTitle" ref="modal" @ok="handleSubmitInfoOk" />
     <!-- </div> -->
   </RootContainer>
 </template>
@@ -106,6 +108,7 @@ import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
 import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js";
 import { create, submit, edit } from "@/api/platform/businessOpenAPI.js"
 import RootContainer from "@/components/base/RootContainer/index.vue";
+import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import Container from "@/components/base/Container/index.vue";
 import TimeLine from "./TimeLine.vue"
 export default {
@@ -120,12 +123,14 @@ export default {
     SvgIconArchive,
     TimeLine,
     RootContainer,
-    Container
+    Container,
+    submitInfoModal
   },
   data() {
     return {
       PreviewFormType,
       formInfo: null, //表单定义
+      formData: null, // 表单数据
       formdataObj: {}, //表单数据
       isFullScreen: false,
       operations: null,
@@ -154,13 +159,30 @@ export default {
         },
         procDefId: {//流程定义ID
           type: String
-
         },
-        lang: ''
+        lang: '',
+        businessId:'',
+        nodeId:''
       },
     };
   },
-
+  computed:{
+    modalTitle:function(){
+      const titles = {
+        [PreviewFormType.APPLY]:"发起流程",
+        [PreviewFormType.TODO]:"流程审批",
+      };
+      return titles[this.computedQuery.type] || "未定义modal title 值！"
+    }
+  },
+  watch:{
+    formData:{
+      handler:function(){
+        if(!this.formData) return;
+        this.setFormData()
+      }
+    }
+  },
   created() {
     this.handleType(this.computedQuery.type);
     this.loadOperations()
@@ -173,18 +195,29 @@ export default {
     closeModal: function () {
       this.$emit('close');
     },
+    async setFormData(){
+      // this.formData 数据在 created 阶段拉取， 在watch 中监听有值以后触发
+      this.formData = typeof this.formData === 'string' ? JSON.parse(this.formData) : this.formData;
+
+      this.$nextTick(async ()=>{
+        const result = await this.$refs.kfb.setData(this.formData)
+      })
+    },
     async loadflowformData() {
       const res = await queryProcessNodeForm({
+        businessId: this.computedQuery.businessId,
         publishId: this.computedQuery.publishId,
         procDefId: this.computedQuery.procDefId,
-        nodeType: PreviewFormType.APPLY
+        nodeType: this.computedQuery.type,
+        nodeId: this.computedQuery.nodeId || ''
       })
       if (res.status === 200) {
         // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
-        const { formInfo, formConfigs } = res.data
+        const { formInfo, formConfigs,formData } = res.data
+        this.formData = formData;
         const formWithNodeConfig = {
           formInfo,
-          formConfigs
+          formConfigs,
         }
         // todo: parse form with data: data 在审批结点时，应该有值设定
         const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
@@ -290,19 +323,48 @@ export default {
           console.error(e, '--line240');
         });
     },
-    async handleSubmit() {
+    async handleSubmitInfoOk(submitInfo){
       const formData = await this.getFormData()
+      const res = await submit({
+        businessId:this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
+        formData,
+        curTaskId:this.computedQuery.curTaskId || '',// 审批时需要携带
+        uniTenantId: this.computedQuery.uniTenantId,
+        publishId:this.computedQuery.publishId,
+        bizToken: this.computedQuery.bizToken,
+        submitInfo
+      })
 
-
+        if (res.status === 200) {
+        this.$message.success(res.msg)
+        this.$router.go(-1)
+      } else {
+        this.$message.error(res.msg)
+      }
+    },
+    handleSubmit() {
+      this.$refs.modal.show()
     },
     async handleSaveAsDraft() {
       const formData = await this.getFormData()
-      const res = await create({
-        publishId: this.computedQuery.publishId,
-        formData,
-        uniTenantId: this.computedQuery.uniTenantId,
-        bizToken: this.computedQuery.bizToken,
-      })
+      let res;
+      if(this.computedQuery.businessId){
+        // 如果 businessId 存在， 则说明是编辑，走编辑接口， 否则，走创建
+        res = await edit({
+          businessId: this.computedQuery.businessId,
+          formData,
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken,
+        })
+      }else{
+        res = await create({
+          publishId: this.computedQuery.publishId,
+          formData,
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken,
+        })
+      }
+
       if (res.status === 200) {
         this.$message.success(res.msg)
         this.$router.go(-1)

@@ -49,6 +49,7 @@ export const submit = (condition) =>
     url: 'businessOpenAPI/submit',
     method: 'post',
     data: {
+      publishId: condition.publishId,
       businessId: condition.businessId, // 业务ID，从草稿提交时需要携带
       formData: condition.formData,
       submitInfo: condition.submitInfo,
