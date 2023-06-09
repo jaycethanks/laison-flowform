@@ -2,7 +2,7 @@
   <a-modal cancelText="取消" okText="确定" v-model="visible" :title="title" @ok="handleOk" @cancel="handleCancle">
     <a-form-model ref="ruleForm" :model="form" :rules="rules">
       <a-form-model-item ref="comment" prop="comment">
-        <span slot="label" class="label-slot">评论</span>
+        <span slot="label" class="label-slot">评论或备注</span>
         <a-textarea allowClear :autoSize="{ minRows: 6, maxRows: 6 }" v-model="form.comment" />
       </a-form-model-item>
       <section class="recommendations">

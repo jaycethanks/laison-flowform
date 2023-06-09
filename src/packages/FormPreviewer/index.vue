@@ -8,7 +8,8 @@
       />
 
       <!-- @jayce -->
-      <div align="right">
+      <div id="operation-row">
+        <a-button type="link" icon="rollback" @click="$router.go(-1)">返回</a-button>
         <a-tooltip
           title="打印预览"
           v-if="
@@ -43,7 +44,7 @@
                 @mount="handleMount"
                 :value="formInfo"
                 ref="kfb"
-                :disabled="kfb.disabled"
+                :disabled="this.computedQuery.type === PreviewFormType.VIEW"
               />
             </section>
           </a-col>
@@ -56,7 +57,7 @@
       </main>
     </Container>
 
-    <footer v-if="!wrongPage && !(computedQuery.type === PreviewFormType.COPY)" id="operation-footer-row">
+    <footer v-if="ifShowFooter" id="operation-footer-row">
       <a-space>
         <a-button type="primary" @click="handleSubmit">
           <span v-if="computedQuery.type === PreviewFormType.APPLY">
@@ -168,6 +169,9 @@ export default {
     };
   },
   computed: {
+    ifShowFooter:function(){
+      return !this.wrongPage && !(this.computedQuery.type === PreviewFormType.COPY) && !(this.computedQuery.type === PreviewFormType.VIEW)
+    },
     modalTitle: function () {
       const titles = {
         [PreviewFormType.APPLY]: "发起流程",
@@ -408,6 +412,12 @@ $operation-row-height: 4rem;
 //   padding: 20px;
 //   min-height: 100vh;
 //   position: relative;
+#operation-row{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 #operation-footer-row {
   position: fixed;
   display: flex;

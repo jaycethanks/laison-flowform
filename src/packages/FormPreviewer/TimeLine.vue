@@ -1,5 +1,13 @@
 <template>
   <div class="timeline-wrapper">
+    <p style="text-align:end">
+      <a-button type="link" @click="handleCheckFlowDiagram">
+        <span style="display:inline-flex;align-items: center;gap:.2em">
+          <SvgIconFlow style="height: 1.2em; width: 1.2em" />
+          查看流程图
+        </span>
+      </a-button>
+    </p>
     <a-timeline>
       <a-timeline-item
         v-for="operateItem in operateRecord"
@@ -19,20 +27,41 @@
         </p>
         <div v-if="operateItem.enclosurePaths" class="addons">
           <div class="addon-item" v-for="addon in circulateFiles(operateItem.enclosurePaths)" :key="addon.name">
-            <a href="#" @click="download(addon.path,addon.name)">{{addon.name}}</a>
+            <a href="#" @click="download(addon.path, addon.name)">{{
+              addon.name
+            }}</a>
           </div>
         </div>
 
         <p class="time-stamp">{{ operateItem.createTime }}</p>
       </a-timeline-item>
     </a-timeline>
+    <j-modal
+      width="1200px"
+      :visible="flowPreviewerModalVisible"
+      switchFullscreen
+      title="流程图"
+      @ok="()=>{}"
+      @cancel="flowPreviewerModalVisible = false"
+      :maskClosable="false"
+      :footer="null"
+      @fullScreenEvent="()=>{}"
+    >
+      <!-- :ok-button-props="{ props: { disabled: this.okBtnDisabled } }" -->
+      <!-- @fullScreenEvent="isFullScreen = $event" -->
+
+      <FlowPreviewer />
+    </j-modal>
   </div>
 </template>
 <script>
 import SvgIconPersonPin from "@/assets/svgIcon/SvgIconPersonPin.vue"
 import SvgIconLinkedFiles from "@/assets/svgIcon/SvgIconLinkedFiles.vue"
-import {downloadFile} from "@/utils/downloadFile.js"
+import SvgIconFlow from "@/assets/svgIcon/SvgIconFlow.vue"
+import FlowPreviewer from "@/packages/FlowPreviewer/index.vue"
+import { downloadFile } from "@/utils/downloadFile.js"
 import baseStyle from '@/components/base/baseStyle'
+import JModal from "@/components/jeecg/JModal/index.vue"
 const _fileUrl = process.env.VUE_APP_FILE_URL;
 const colors = {
   create: baseStyle.$primary.bg,
@@ -51,11 +80,15 @@ export default {
   },
   data() {
     return {
+      flowPreviewerModalVisible:false
     }
   },
   components: {
     SvgIconPersonPin,
-    SvgIconLinkedFiles
+    SvgIconLinkedFiles,
+    SvgIconFlow,
+    JModal,
+    FlowPreviewer
   },
   computed: {
     operateRecord: function () {
@@ -67,13 +100,16 @@ export default {
 
   },
   methods: {
+    handleCheckFlowDiagram(){
+      this.flowPreviewerModalVisible = true
+    },
     getColor(type) {
       return colors[type]
     },
-    circulateFiles(filePaths){
-      if(!filePaths) return [];
-      return filePaths.split(',').map(path=>({
-        name:path.substring(path.lastIndexOf('/') + 1),
+    circulateFiles(filePaths) {
+      if (!filePaths) return [];
+      return filePaths.split(',').map(path => ({
+        name: path.substring(path.lastIndexOf('/') + 1),
         path
       }))
     },
@@ -82,7 +118,7 @@ export default {
       const url = _fileUrl + path;
       // const url = "http://192.168.3.47/file/1314/1547/wallhaven-578d73.jpg"
 
-      downloadFile(url,fileName)
+      downloadFile(url, fileName)
 
       return
       link.style.display = 'none'

@@ -475,45 +475,7 @@ export default {
   },
 };
 </script>
-<style scoped>
-/* >>> .ant-input[disabled] {
-  background-color: transparent;
-  cursor: pointer;
-  opacity: 1;
-  color: #000;
-}
 
->>> .ant-radio-disabled {
-  background-color: transparent;
-  cursor: not-allowed;
-  opacity: 1;
-  color: #000;
-}
->>> .ant-radio-disabled + span {
-  color: #000;
-  cursor: not-allowed;
-}
-
->>> .ant-radio-disabled .ant-radio-input {
-  color: #000;
-  cursor: not-allowed;
-}
-
->>> .ant-radio-disabled .ant-radio-inner {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-
->>> .ant-select-disabled {
-  color: #000;
-  cursor: not-allowed;
-}
-
->>> .ant-radio-checked .ant-radio-inner {
-  border-color: #1890ff !important;
-}
-
->>> .ant-radio-checked .ant-radio-inner::after {
-  background-color: #1890ff;
-} */
+<style scoped lang="scss">
+@import "@/lib/kform/styles/form-item-disable-style.scss";
 </style>

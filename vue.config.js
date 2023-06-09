@@ -56,6 +56,13 @@ module.exports = defineConfig({
         target: 'http://192.168.3.47:1228', // 请求本地 需要jeecg-boot后台项目
         // ws: true,
         changeOrigin: true,
+        onProxyReq: function (proxyReq, req, res) {
+          console.log(
+            '[proxy]: ' + proxyReq.getHeader('origin') + proxyReq.path,
+            ' => ',
+            proxyReq.getHeader('host') + proxyReq.path,
+          );
+        },
         pathRewrite: {
           '^/api': '/', // 这种接口配置出来     http://XX.XX.XX.XX:8083/login
         },

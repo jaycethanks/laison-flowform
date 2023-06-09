@@ -1,26 +1,11 @@
-<style lang="less"></style>
 <template>
-  <!--流程图-->
-
   <div class="containers" style="min-height: 400px">
     <div id="canvas" ref="canvas"></div>
     <div id="js-properties-panel" class="panel" style="visibility: hidden"></div>
   </div>
-  <!--实时备注信息 时间轴  #00DB00-->
-
-  <!--
-     type:
-      0:创建-applyOrder
-      1-翻单
-      2-复制 （订单类型）-CopyTask
-      3-编辑-edit
-      4-查看-DoneTask
-      5-审批-TodoTask
-     -->
 </template>
 
 <script>
-import JModal from '@/components/jeecg/JModal/index.vue';
 import BpmnViewer from 'bpmn-js/lib/Viewer';
 import ModelingModule from 'bpmn-js/lib/features/modeling';
 import mock from './mock2';
@@ -48,7 +33,6 @@ export default {
       default: null,
     },
   },
-  components: { JModal },
   data() {
     return {
       modalVisible: true,
@@ -84,7 +68,6 @@ export default {
     },
   },
   created() {
-    console.log('[mock]: ', mock);
     this.xmlUrl = mock.procModelXml;
   },
   mounted() {
@@ -119,7 +102,6 @@ export default {
     closeModal: function () {
       this.$emit('close');
     },
-
     /**
      * bpmn相关
      */
