@@ -61,3 +61,20 @@ export const submit = (condition) =>
       bizToken: condition.bizToken,
     },
   });
+
+/**
+ * 删除业务
+ */
+export const deleteById = (condition) =>
+  axios({
+    url: 'businessOpenAPI/deleteById',
+    method: 'post',
+    data: {
+      businessId: condition.businessId, // 业务ID，从草稿提交时需要携带
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });

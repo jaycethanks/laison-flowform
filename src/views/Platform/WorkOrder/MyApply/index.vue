@@ -38,6 +38,7 @@
     </a-form>
     <a-card :bordered="false" style="margin-top:1rem">
       <a-table
+        size="small"
         :loading="pageInfo.loading"
         @change="handleTableChange"
         :columns="columns"
@@ -57,14 +58,19 @@
         <template slot="action" slot-scope="text, record">
           <a-space>
             <template v-if="record.status !== 0">
-              <a slot="action" @click="handleCheckDetail(record)">查看</a>
+              <a @click="handleCheckDetail(record)">查看</a>
             </template>
 
+            <!-- <a-divider type="vertical" /> -->
             <template v-if="record.status == 0">
-              <a slot="action" @click="handleRowEdit(record)">编辑</a>
-              <a-divider type="vertical" />
-              <a slot="action" @click="$refs.modal.show()">提交</a>
+              <a @click="handleRowEdit(record)">编辑</a>
+              <!-- <a-divider type="vertical" /> -->
+              <a @click="$refs.modal.show()">提交</a>
             </template>
+            <a-popconfirm placement="rightBottom" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
+              <template slot="title"> 确定删除？ </template>
+              <a-button style="color: #ff4d4f" type="link">删除</a-button>
+            </a-popconfirm>
           </a-space>
         </template>
       </a-table>
@@ -88,6 +94,7 @@ import PreviewFormType from "@/constants/PreviewFormType.js"
 import { myApply } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
+import { deleteById } from "@/api/platform/businessOpenAPI.js"
 const statusOptions = [
   {label:'草稿',value:0},
   {label:'待审批',value:1},
@@ -116,11 +123,7 @@ const columns = [
     dataIndex: 'orderType',
     key: 'orderType',
   },
-  {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime',
-  },
+
 
   {
     title: '状态',
@@ -143,6 +146,11 @@ const columns = [
     title: '更新人',
     dataIndex: 'updateBy',
     key: 'updateBy',
+  },
+    {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    key: 'createTime',
   },
   {
     title: '更新时间',
@@ -231,6 +239,23 @@ export default {
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken
         }
+      });
+    },
+    async handleDelete(record){
+      const {businessId} = record
+      const res = await deleteById({
+          businessId,
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken
+      })
+      if(res.status === 200){
+        this.$message.success(res.msg)
+      }else{
+        this.$message.error(res.msg)
+      }
+      this.loadData({
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
       });
     },
     handleSelect({ publishId, procDefId }) {
