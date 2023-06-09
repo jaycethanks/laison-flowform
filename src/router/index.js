@@ -308,10 +308,6 @@ const platformRoutes = [
         },
         name: '我的发起',
         beforeEnter: (to, from, next) => {
-          // console.log('[to.path]: ', to.path);
-          // to.query.uniTenantId = '1660919377043652608';
-          // to.query.bizToken = 'e1f66d27-bd61-4e6e-b3e0-4dd621e392fe';
-          // next();
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
@@ -330,6 +326,16 @@ const platformRoutes = [
         meta: {
           title: '我的代办',
         },
+        beforeEnter: (to, from, next) => {
+          if (!to.query.uniTenantId) {
+            next({
+              path: to.path,
+              query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+            });
+          } else {
+            next();
+          }
+        },
         component: () => import('@/views/Platform/WorkOrder/MyTodo/index.vue'),
       },
       {
@@ -339,6 +345,16 @@ const platformRoutes = [
         meta: {
           title: '我的已办',
         },
+        beforeEnter: (to, from, next) => {
+          if (!to.query.uniTenantId) {
+            next({
+              path: to.path,
+              query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+            });
+          } else {
+            next();
+          }
+        },
         component: () => import('@/views/Platform/WorkOrder/MyDone/index.vue'),
       },
       {
@@ -346,6 +362,16 @@ const platformRoutes = [
         icon: 'file-add', //antd-icon name
         meta: {
           title: '抄送我的',
+        },
+        beforeEnter: (to, from, next) => {
+          if (!to.query.uniTenantId) {
+            next({
+              path: to.path,
+              query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+            });
+          } else {
+            next();
+          }
         },
         name: '抄送我的',
         component: () => import('@/views/Platform/WorkOrder/MyCopied/index.vue'),
