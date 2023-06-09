@@ -26,6 +26,8 @@
 
 <script>
 export default {
+  name: 'exposeFields',
+  props:['value'],
   data() {
     return {
       name: 'CustomFields',
@@ -43,12 +45,27 @@ export default {
       },
     };
   },
-
-  methods: {
-    emitEmpty() {
-      this.$refs.userNameInput.focus();
-      this.userName = '';
+  watch:{
+    value:{
+      handler:function(){
+        if(!this.value) return
+        const { userName,price } = this.value
+        this.exposeFields.userName.value = userName;
+        this.exposeFields.price.value = price;
+      },
+      immediate:true,
+      deep:true,
     },
-  },
+    exposeFields:{
+      handler:function(){
+        const {userName,price} = this.exposeFields
+        this.$emit("change",{userName:userName.value,price:price.value})
+      },
+      immediate:true,
+      deep:true,
+    }
+  }
+
+
 };
 </script>

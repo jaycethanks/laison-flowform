@@ -40,73 +40,16 @@
  */
 import buildBlocks from './buildBlocks';
 import { expressionAnalyser } from '@/lib/kform/KExpressions/expressionsHandleFns.js';
-// import moment from "moment";
 export default {
   name: 'KFormBuild',
-  // created() {
-  //   // console.log('lihuaxxx KForm开始渲染', this._uid, new Date())
-  //   this.form = this.$form.createForm(this);
-  //   let res = {};
-  //   if (this.value.list) {
-  //     res.list = JSON.parse(JSON.stringify(this.value.list));
-  //     res.list.forEach((v) => {
-  //       if (v.label) {
-  //         v.label = this.$t(v.label);
-  //       }
-  //       if (v.options) {
-  //         if (v.options.placeholder) {
-  //           console.log('我要翻译了', this.$t(v.options.placeholder));
-  //           v.options.placeholder = this.$t(v.options.placeholder);
-  //         }
-  //         if (v.options.options) {
-  //           v.options.options.forEach((ov) => {
-  //             ov.label = this.$t(ov.label);
-  //           });
-  //         }
-  //       }
-  //     });
-  //   }
-
-  //   this.cvalue = res;
-  // },
-  // watch: {
-  //   value: {
-  //     //深度监听，可监听到对象、数组的变化
-  //     handler(val, oldVal) {
-  //       let res = {};
-  //       if (val.list) {
-  //         res.list = JSON.parse(JSON.stringify(val.list));
-  //         res.list.forEach((v) => {
-  //           if (v.label) {
-  //             v.label = this.$t(v.label);
-  //           }
-  //           if (v.options) {
-  //             if (v.options.placeholder) {
-  //               v.options.placeholder = this.$t(v.options.placeholder);
-  //             }
-  //             if (v.options.options) {
-  //               v.options.options.forEach((ov) => {
-  //                 ov.label = this.$t(ov.label);
-  //               });
-  //             }
-  //           }
-  //         });
-  //         this.cvalue = res;
-  //       }
-  //     },
-  //     deep: false, //true 深度监听
-  //   },
-  // },
   data() {
     return {
       form: this.$form.createForm(this),
       validatorError: {},
       defaultDynamicData: {},
-      // cvalue: {},
       tempModel: null,
     };
   },
-  // props: ["value", "dynamicData"],
   props: {
     value: {
       type: Object,
@@ -170,28 +113,6 @@ export default {
         : window.$kfb_dynamicData || {};
     },
     // ---------------------------------------------------CUS START --------------------------------
-    // cvalue() {
-    //   let res = {}
-    //   if (this.value.list && this.value.list.length > 0) {
-    //     res.list = JSON.parse(JSON.stringify(this.value.list))
-    //     res.list.forEach((v) => {
-    //       if (v.label) {
-    //         v.label = this.$t(v.label)
-    //       }
-    //       if (v.options) {
-    //         if (v.options.placeholder) {
-    //           v.options.placeholder = this.$t(v.options.placeholder)
-    //         }
-    //         if (v.options.options) {
-    //           v.options.options.forEach((ov) => {
-    //             ov.label = this.$t(ov.label)
-    //           })
-    //         }
-    //       }
-    //     })
-    //   }
-    //   return res
-    // },
   },
 
   methods: {
@@ -234,7 +155,8 @@ export default {
               return item.validateKFormItem();
             });
             await Promise.all(validates);
-
+            window.xxxx = this.$refs.buildBlocks[0].$refs.nestedComponents
+            console.log('[values]: ',values)
             if (this.outputString) {
               // 需要所有value转成字符串
               for (const key in values) {
