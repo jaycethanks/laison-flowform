@@ -98,7 +98,7 @@ import SvgIconFormDesign from '@/assets/svgIcon/SvgIconFormDesign.vue';
 import SvgIconFlowDesign from '@/assets/svgIcon/SvgIconFlowDesign.vue';
 import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
 import mock from "./mock"
-import { listDesignGroup as system_listDesignGroup, findById as system_query, add as system_add, update as system_update } from '@/api/system/ffTemplate.js';
+import { listDesignGroup as system_listDesignGroup, findById as system_query, add as system_add, update as system_update } from '@/api/system/processFormTemplate.js';
 import { queryTemplate, queryProcessForm, publishProcessForm, updateProcessForm, organizationStructure, listDesignGroup } from "@/api/platform/platformOpenAPI.js"
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
 export default {

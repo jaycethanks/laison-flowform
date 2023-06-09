@@ -72,7 +72,7 @@
 <script>
 import API from '@/api/ErpConfig.js';
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
-import { listPlatformGroup, update, deleteById, listDesignGroup } from '@/api/system/ffTemplate.js';
+import { listPlatformGroup, update, deleteById, listDesignGroup } from '@/api/system/processFormTemplate.js';
 import icons from '@/assets/flowform_icons/index.js';
 import ffIcon from "@/components/FlowForm/ffIcon/index.vue"
 import mock from './mock';

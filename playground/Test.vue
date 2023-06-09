@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import { add } from '@/api/system/ffTemplate.js';
+import { add } from '@/api/system/processFormTemplate.js';
 export default {
   data() {
     return {
