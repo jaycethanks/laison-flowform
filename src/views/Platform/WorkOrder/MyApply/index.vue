@@ -7,10 +7,10 @@
         </a-form-item>
         <a-form-item label="状态">
           <a-select
-            style="min-width:100px"
+            style="min-width: 100px"
             v-model="pageInfo.condition.status"
             :allowClear="true"
-            :options="statusOptions"
+            :options="StatusOptions"
           >
           </a-select>
         </a-form-item>
@@ -36,7 +36,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-card :bordered="false" style="margin-top:1rem">
+    <a-card :bordered="false" style="margin-top: 1rem">
       <a-table
         size="small"
         :loading="pageInfo.loading"
@@ -57,17 +57,48 @@
 
         <template slot="action" slot-scope="text, record">
           <a-space>
-            <template v-if="record.status !== 0">
+            <!-- 公有 -->
+            <template>
               <a @click="handleCheckDetail(record)">查看</a>
             </template>
 
-            <!-- <a-divider type="vertical" /> -->
-            <template v-if="record.status == 0">
+            <!-- 草稿 编辑|提交 -->
+            <template v-if="[ProcessResultType.TOSUBMIT].includes(record.result)">
               <a @click="handleRowEdit(record)">编辑</a>
               <!-- <a-divider type="vertical" /> -->
-              <a @click="$refs.modal.show()">提交</a>
+              <a
+                @click="
+                  businessId = record.businessId;
+                  $refs.modal.show();
+                "
+                >提交</a
+              >
             </template>
-            <a-popconfirm placement="rightBottom" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
+            <template>
+              <a
+                v-if="
+                  [ProcessResultType.DEALING].includes(record.status) &&
+                  [1].includes(ProcessStatusType.TODO)
+                "
+                @click="handleCancelTask(record)"
+                >撤回</a
+              >
+            </template>
+
+            <template>
+              <a v-if="[ProcessResultType.DEALING].includes(record.result)" @click="handleRemainderTask(record)"
+                >催单</a
+              >
+            </template>
+
+            <!-- 草稿 删除 -->
+            <a-popconfirm
+              v-if="[ProcessResultType.TOSUBMIT].includes(record.result)"
+              placement="rightBottom"
+              ok-text="Yes"
+              cancel-text="No"
+              @confirm="handleDelete(record)"
+            >
               <template slot="title"> 确定删除？ </template>
               <a-button style="color: #ff4d4f" type="link">删除</a-button>
             </a-popconfirm>
@@ -91,19 +122,14 @@ import searchTableMixin from '@/mixins/searchTableMixin.js';
 import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import PreviewFormType from "@/constants/PreviewFormType.js"
-import { myApply } from "@/api/platform/processOpenAPI.js"
+import ProcessResultType from "@/constants/ProcessResultType.js"
+import { ProcessStatusType, StatusOptions } from "@/constants/ProcessStatusType.js"
+import { myApply, remainderTask,cancelTask } from "@/api/platform/processOpenAPI.js"
+
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
-import { deleteById } from "@/api/platform/businessOpenAPI.js"
-const statusOptions = [
-  {label:'草稿',value:0},
-  {label:'待审批',value:1},
-  {label:'处理结束',value:2},
-  {label:'已撤回',value:3},
-  {label:'审批中',value:4},
-  {label:'驳回',value:5},
-  {label:'变更',value:6},
-]
+import { deleteById, submit } from "@/api/platform/businessOpenAPI.js"
+
 
 
 
@@ -129,7 +155,7 @@ const columns = [
     title: '状态',
     dataIndex: 'status',
     key: 'status',
-    width:100,
+    width: 100,
     scopedSlots: { customRender: 'status' },
 
   },
@@ -147,7 +173,7 @@ const columns = [
     dataIndex: 'updateBy',
     key: 'updateBy',
   },
-    {
+  {
     title: '创建时间',
     dataIndex: 'createTime',
     key: 'createTime',
@@ -184,10 +210,13 @@ export default {
   },
   data() {
     return {
+      ProcessResultType,
+      ProcessStatusType,
+      StatusOptions,
       columns,
-      statusOptions,
       findPage: myApply,
       modalTitle: '发起流程',
+      businessId: undefined,
       templateListVisible: false,
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
@@ -203,20 +232,21 @@ export default {
     };
   },
   mounted() {
-    this.loadData({
-      uniTenantId: this.computedQuery.uniTenantId,
-      bizToken: this.computedQuery.bizToken,
-    });
+    this._loadData()
   },
   methods: {
-    handleQuery() {
+    _loadData: function () {
       this.loadData({
         uniTenantId: this.computedQuery.uniTenantId,
         bizToken: this.computedQuery.bizToken,
       });
     },
-    handleCheckDetail({businessId,publishId, procDefId}){
-        this.$router.push({
+    handleQuery() {
+      this._loadData()
+
+    },
+    handleCheckDetail({ businessId, publishId, procDefId }) {
+      this.$router.push({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.VIEW,
@@ -228,8 +258,8 @@ export default {
         }
       });
     },
-    handleRowEdit({businessId,publishId, procDefId}){
-        this.$router.push({
+    handleRowEdit({ businessId, publishId, procDefId }) {
+      this.$router.push({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.APPLY,
@@ -241,22 +271,34 @@ export default {
         }
       });
     },
-    async handleDelete(record){
-      const {businessId} = record
-      const res = await deleteById({
-          businessId,
-          uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+    async handleRemainderTask({ businessId }) {
+      const res = await remainderTask({
+        businessId,
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken
       })
-      if(res.status === 200){
+      if (res.status === 200) {
         this.$message.success(res.msg)
-      }else{
+      } else {
         this.$message.error(res.msg)
       }
-      this.loadData({
+      this._loadData()
+
+    },
+    async handleDelete(record) {
+      const { businessId } = record
+      const res = await deleteById({
+        businessId,
         uniTenantId: this.computedQuery.uniTenantId,
-        bizToken: this.computedQuery.bizToken,
-      });
+        bizToken: this.computedQuery.bizToken
+      })
+      if (res.status === 200) {
+        this.$message.success(res.msg)
+      } else {
+        this.$message.error(res.msg)
+      }
+      this._loadData()
+
     },
     handleSelect({ publishId, procDefId }) {
       this.$router.push({
@@ -271,6 +313,20 @@ export default {
       });
     },
 
+    async handleCancelTask({ businessId }){
+        const res = await cancelTask({
+        businessId,
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken
+      })
+      if (res.status === 200) {
+        this.$message.success(res.msg)
+      } else {
+        this.$message.error(res.msg)
+      }
+      this._loadData()
+    },
+
 
     async handleOk(formFieldsValue, isEdit) {
       let fn = saveOrUpdate;
@@ -281,25 +337,26 @@ export default {
       } else {
         this.$message.warn(res.msg);
       }
-      this.loadData({
-        uniTenantId: this.computedQuery.uniTenantId,
-        bizToken: this.computedQuery.bizToken,
-      });
+      this._loadData()
+
 
     },
 
-    async handleSubmitInfoOk(submitInfo){
-      // const formData = await this.getFormData()
-      // const res = await submit({
-      //   businessId:this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
-      //   formData,
-      //   curTaskId:this.computedQuery.curTaskId || '',// 审批时需要携带
-      //   uniTenantId: this.computedQuery.uniTenantId,
-      //   publishId:this.computedQuery.publishId,
-      //   bizToken: this.computedQuery.bizToken,
-      //   submitInfo
-      // })
-      // console.log('[res]: ',res)
+    async handleSubmitInfoOk(submitInfo) {
+      const res = await submit({
+        businessId: this.businessId || '',// 业务ID，从草稿提交时需要携带
+        formData: null,
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
+        submitInfo
+      })
+      if (res.status === 200) {
+        this.$message.success(res.msg)
+      } else {
+        this.$message.error(res.msg)
+      }
+      this._loadData()
+
     },
   },
 };

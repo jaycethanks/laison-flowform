@@ -10,7 +10,7 @@
             style="min-width:100px"
             v-model="pageInfo.condition.status"
             :allowClear="true"
-            :options="statusOptions"
+            :options="StatusOptions"
           >
           </a-select>
         </a-form-item>
@@ -48,20 +48,18 @@
 
         <template slot="action" slot-scope="text, record">
           <a-space>
-            <template v-if="record.status !== 0">
+            <template>
               <a @click="handleCheckDetail(record)">查看</a>
             </template>
-
-            <!-- <a-divider type="vertical" /> -->
-            <template v-if="record.status == 0">
-              <a @click="handleRowEdit(record)">编辑</a>
-              <!-- <a-divider type="vertical" /> -->
-              <a @click="$refs.modal.show()">提交</a>
+            <template>
+              <a @click="handleDeal(record)">处理</a>
+              <!-- 驳回 通过 委托-->
             </template>
-            <a-popconfirm placement="rightBottom" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
+
+            <!-- <a-popconfirm placement="rightBottom" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
               <template slot="title"> 确定删除？ </template>
               <a-button style="color: #ff4d4f" type="link">删除</a-button>
-            </a-popconfirm>
+            </a-popconfirm> -->
           </a-space>
         </template>
       </a-table>
@@ -75,25 +73,19 @@
 <script>
 import Container from "@/components/base/Container"
 import RootContainer from "@/components/base/RootContainer"
-import platformRegistrationModal from '@/views/System/PlatformManagement/PlatformRegistration/platformRegistrationModal.vue';
 import searchTableMixin from '@/mixins/searchTableMixin.js';
 import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import PreviewFormType from "@/constants/PreviewFormType.js"
+import ProcessResultType from "@/constants/ProcessResultType.js"
+
+import {ProcessStatusType,StatusOptions} from "@/constants/ProcessStatusType.js"
+
+
 import { myTodo } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById } from "@/api/platform/businessOpenAPI.js"
-const statusOptions = [
-  {label:'草稿',value:0},
-  {label:'待审批',value:1},
-  {label:'处理结束',value:2},
-  {label:'已撤回',value:3},
-  {label:'审批中',value:4},
-  {label:'驳回',value:5},
-  {label:'变更',value:6},
-]
-
 
 
 const columns = [
@@ -172,8 +164,11 @@ export default {
   },
   data() {
     return {
+      ProcessResultType,
+
+      ProcessStatusType,
+      StatusOptions,
       columns,
-      statusOptions,
       findPage: myTodo,
       modalTitle: '发起流程',
       query: {
@@ -200,6 +195,19 @@ export default {
       this.loadData({
         uniTenantId: this.computedQuery.uniTenantId,
         bizToken: this.computedQuery.bizToken,
+      });
+    },
+    handleDeal({businessId,publishId, procDefId}){
+        this.$router.push({
+        path: '/platform/formPreviewer',
+        query: {
+          type: PreviewFormType.APPROVE,
+          publishId,
+          procDefId,
+          businessId,
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken
+        }
       });
     },
     handleCheckDetail({businessId,publishId, procDefId}){

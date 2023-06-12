@@ -70,6 +70,9 @@ export const myApplyList = (condition) =>
     },
   });
 
+/**
+ * 驳回任务
+ */
 export const backTask = (condition) =>
   axios({
     url: 'processOpenAPI/backTask',
@@ -78,6 +81,23 @@ export const backTask = (condition) =>
       businessId: condition.businessId,
       curTaskId: condition.curTaskId,
       submitInfo: condition.submitInfo,
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });
+
+/**
+ * 撤回任务
+ */
+export const cancelTask = (condition) =>
+  axios({
+    url: 'processOpenAPI/cancelTask',
+    method: 'post',
+    data: {
+      businessId: condition.businessId,
     },
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
@@ -108,6 +128,23 @@ export const delegateTask = (condition) =>
 export const taskProgress = (condition) =>
   axios({
     url: 'processOpenAPI/taskProgress',
+    method: 'post',
+    data: {
+      businessId: condition.businessId,
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });
+
+/**
+ * 催单
+ */
+export const remainderTask = (condition) =>
+  axios({
+    url: 'processOpenAPI/remainderTask',
     method: 'post',
     data: {
       businessId: condition.businessId,
