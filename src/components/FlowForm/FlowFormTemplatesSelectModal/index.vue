@@ -87,13 +87,11 @@ export default {
   computed: {
     flatenArray: function () {
       let _this = this
-      console.log('[this.list]: ',this.list)
       const _flatenList = this.list
         .map((group) => group.list)
         .reduce((prev, curr) => {
           return prev.concat(curr);
         }, []);
-        console.log('[_flatenList]: ',_flatenList)
       if(this.searchText.trim === ""){
         return _flatenList
       }else{
@@ -155,6 +153,7 @@ export default {
   height: 400px;
   // overflow: auto;
   margin-top:10px;
+
   .tab-pane{
     ::v-deep .ant-list-items{
       height: 400px;
@@ -167,13 +166,18 @@ export default {
 }
 .list-item{
   cursor: pointer;
+  margin-block: 10px;
   padding: 4px 12px;
+  border: none;
   &:hover{
     background-color: rgb(247, 247, 247);
   }
 }
 ::v-deep .ant-list-item-meta{
   align-items: center;
+}
+::v-deep .ant-list-item-action{
+  margin: 0;
 }
 ::v-deep .ant-list-item-meta-title{
     line-height: 14px;

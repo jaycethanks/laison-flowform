@@ -24,7 +24,8 @@
           type="navigation"
           @change="onStepChange"
         >
-          <a-step status="finish" title="表单设计" v-if="!noFormDesign">
+          <!-- bugfix 不可以用v-if, v-if 会导致current 改变， 0,1,2 => 0,1 -->
+          <a-step status="finish" title="表单设计" v-show="!noFormDesign">
             <SvgIconFormDesign style="width: 20px; height: 20px" slot="icon" />
           </a-step>
           <a-step status="finish" title="流程设计">
@@ -36,14 +37,14 @@
         </a-steps>
       </p>
       <div class="flow-form-designer-container">
-        <form-design v-if="!noFormDesign" v-show="current === 0" ref="formDesignView"></form-design>
+        <form-design v-show="!noFormDesign || current === 0" ref="formDesignView"></form-design>
         <flow-design
-          v-show="noFormDesign ? current === 0 : current === 1"
+          v-show="current === 1"
           :bpmnEditDataInit="bpmnEditDataInit"
           :type="computedQuery.type"
         ></flow-design>
         <flow-form-publish
-          v-show="noFormDesign ? current === 1 : current === 2"
+          v-show="current === 2"
           @submit="sumbitHandler"
           :publishEditDataInit="publishEditDataInit"
           @success="$emit('back')"
@@ -101,6 +102,11 @@ import mock from "./mock"
 import { listDesignGroup as system_listDesignGroup, findById as system_query, add as system_add, update as system_update } from '@/api/system/processFormTemplate.js';
 import { queryTemplate, queryProcessForm, publishProcessForm, updateProcessForm, organizationStructure, listDesignGroup } from "@/api/platform/platformOpenAPI.js"
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
+const HistoryStack = {
+  0:"formDesign",
+  1:"flowDesign",
+  2:"flowformPublish"
+}
 export default {
   name: 'FlowFormDesigner',
   mixins: [handleQuery],
@@ -173,7 +179,7 @@ export default {
       this.current = tabIndex;
     },
 
-    onStepChange(key) {
+    onStepChange(key,a,b) {
       this.stepsHistoryStack.push(key);
       let from = this.stepsHistoryStack.at(-2);
 
@@ -221,12 +227,15 @@ export default {
       switch (type) {
         case FlowFormDesignerType.SYSTEM_NEW: //1
           this.noFormDesign = false;
+          this.current = 0;
           this.fn.publish = system_add;
           this.fn.fetchGroup = system_listDesignGroup;
 
           break;
         case FlowFormDesignerType.PLATFORM_NEW: //2
           this.noFormDesign = true;
+          this.current = 1;
+
           this.fn.publish = publishProcessForm;
           this.fn.query = queryTemplate;
           this.fn.fetchGroup = listDesignGroup;
@@ -235,6 +244,8 @@ export default {
           break;
         case FlowFormDesignerType.SYSTEM_EDIT: //3
           this.noFormDesign = false;
+          this.current = 0;
+
           this.fn.publish = system_update;
           this.fn.query = system_query
           this.fn.fetchGroup = system_listDesignGroup;
@@ -243,6 +254,8 @@ export default {
           break;
         case FlowFormDesignerType.PLATFORM_EDIT: //4
           this.noFormDesign = true;
+          this.current = 1;
+
           this.fn.publish = updateProcessForm;
           this.fn.query = queryProcessForm
           this.fn.fetchGroup = listDesignGroup;

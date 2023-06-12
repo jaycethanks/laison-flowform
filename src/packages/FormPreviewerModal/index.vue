@@ -26,7 +26,7 @@
       </a-tooltip>
     </div> -->
     <div style="padding: 20px" id="pdfDom">
-      <k-form-build @mount="handleMount" :value="formInfo" :disabled="allDisabled" :rootCompent="this" ref="kfb" />
+      <k-form-build @mount="handleMount" :value="formInfo" :disabled="allDisabled" ref="kfb" />
     </div>
   </j-modal>
 </template>

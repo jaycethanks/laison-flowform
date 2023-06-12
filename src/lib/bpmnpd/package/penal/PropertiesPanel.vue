@@ -314,6 +314,8 @@ export default {
     historyExtendConfig: {
       handler: function () {
         window.historyExtendConfig = this.historyExtendConfig;
+        this.$store.commit('SET_BPMN_DATA', this.historyExtendConfig);
+
       },
       deep: true,
       immediate: true,

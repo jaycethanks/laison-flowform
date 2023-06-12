@@ -39,8 +39,15 @@
         >
       </a-space>
       <!-- </a> -->
-      <p slot="expandedRowRender" slot-scope="record" style="margin: 0">
-        <a-table :columns="columns" :data-source="record.list" rowKey="id" size="small" :pagination="false">
+      <p slot="expandedRowRender" slot-scope="record" style="margin: 0;">
+        <a-table
+          style="background-color:#fff"
+          :columns="columns"
+          :data-source="record.list"
+          rowKey="id"
+          size="small"
+          :pagination="false"
+        >
           <template slot="id" slot-scope="text, record">
             <ffIcon size="small" :bgc="record.designColor" :icon="record.designIcon" />
             <!-- <div class="icon-box" :style="{ backgroundColor: record.designColor }">
@@ -70,12 +77,10 @@
   </Container>
 </template>
 <script>
-import API from '@/api/ErpConfig.js';
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
 import { listPlatformGroup, update, deleteById, listDesignGroup } from '@/api/system/processFormTemplate.js';
 import icons from '@/assets/flowform_icons/index.js';
 import ffIcon from "@/components/FlowForm/ffIcon/index.vue"
-import mock from './mock';
 import ellipsis from '@/utils/ellipsis';
 import FlowFormDesignerType from "@/constants/FlowFormDesignerType.js"
 import Container  from "@/components/base/Container/index.vue"
