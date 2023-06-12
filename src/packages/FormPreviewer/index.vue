@@ -67,7 +67,7 @@
           <span v-if="computedQuery.type === PreviewFormType.APPLY">
             <SvgIconSend style="height: 14px" /> 提交并发起</span
           >
-          <span v-if="computedQuery.type === PreviewFormType.TODO">
+          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
             <a-icon type="check"></a-icon>
             审批通过</span
           >
@@ -78,13 +78,13 @@
         <a-button v-if="computedQuery.type === PreviewFormType.APPLY" @click="handleSaveAsDraft">
           <span> <SvgIconSaveDraft style="height: 14px" /> 保存为草稿</span>
         </a-button>
-        <a-button type="primary" v-if="computedQuery.type === PreviewFormType.TODO">
+        <a-button type="primary" v-if="computedQuery.type === PreviewFormType.APPROVE">
           <span>
             <a-icon type="enter" rotate="180"></a-icon>
             委托</span
           >
         </a-button>
-        <a-button type="danger" v-if="computedQuery.type === PreviewFormType.TODO">
+        <a-button type="danger" v-if="computedQuery.type === PreviewFormType.APPROVE">
           <span>
             <a-icon type="close"></a-icon>
             驳回</span
@@ -178,7 +178,7 @@ export default {
     modalTitle: function () {
       const titles = {
         [PreviewFormType.APPLY]: "发起流程",
-        [PreviewFormType.TODO]: "流程审批",
+        [PreviewFormType.APPROVE]: "流程审批",
       };
       return titles[this.computedQuery.type] || "未定义modal title 值！"
     }
@@ -245,7 +245,7 @@ export default {
           // query 为拉取发起结点配置接口
           // this.fn.query = queryApplyNodeConfig
           break;
-        case PreviewFormType.TODO:
+        case PreviewFormType.APPROVE:
           // query 为拉取审批结点配置接口
           // this.fn.query = queryApproveNodeConfig
           break;
