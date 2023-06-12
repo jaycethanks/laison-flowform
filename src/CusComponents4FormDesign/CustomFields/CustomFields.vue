@@ -4,7 +4,7 @@
       ref="userNameInput"
       v-model="exposeFields.userName.value"
       v-if="!exposeFields.userName.hidden"
-      :disabled="exposeFields.userName.disabled"
+      :disabled="disabled || exposeFields.userName.disabled"
       placeholder="Basic usage"
     >
       <a-icon slot="prefix" type="user" />
@@ -17,7 +17,7 @@
     <a-input
       v-model="exposeFields.price.value"
       v-if="!exposeFields.price.hidden"
-      :disabled="exposeFields.price.disabled"
+      :disabled="disabled || exposeFields.price.disabled"
       prefix="￥"
       suffix="RMB"
     />
@@ -27,7 +27,7 @@
 <script>
 export default {
   name: 'exposeFields',
-  props:['value'],
+  props:['value','disabled'],
   data() {
     return {
       name: 'CustomFields',
