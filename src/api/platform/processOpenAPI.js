@@ -101,3 +101,20 @@ export const delegateTask = (condition) =>
       bizToken: condition.bizToken,
     },
   });
+
+/**
+ * 任务进度查询，待办和已办同时显示
+ */
+export const taskProgress = (condition) =>
+  axios({
+    url: 'processOpenAPI/taskProgress',
+    method: 'post',
+    data: {
+      businessId: condition.businessId,
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });

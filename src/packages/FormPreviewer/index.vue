@@ -48,9 +48,13 @@
               />
             </section>
           </a-col>
-          <a-col :xs="24" :xl="6" v-if="operations != null">
+          <a-col :xs="24" :xl="6" v-if="this.computedQuery.type !== PreviewFormType.APPLY">
             <aside class="timeline">
-              <TimeLine :operations="operations" />
+              <TimeLine
+                :businessId="computedQuery.businessId"
+                :uniTenantId="computedQuery.uniTenantId"
+                :bizToken="computedQuery.bizToken"
+              />
             </aside>
           </a-col>
         </a-row>
@@ -135,7 +139,6 @@ export default {
       formData: null, // 表单数据
       formdataObj: {}, //表单数据
       isFullScreen: false,
-      operations: null,
       kfb: {
         disabled: false,
       },
@@ -191,12 +194,8 @@ export default {
   created() {
     this.pageLoading = true
     this.handleType(this.computedQuery.type);
-    this.loadOperations()
   },
   methods: {
-    async loadOperations() {
-      this.operations = mock
-    },
     closeModal: function () {
       this.$emit('close');
     },

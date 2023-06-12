@@ -1,8 +1,8 @@
 <template>
   <div class="timeline-wrapper">
-    <p style="text-align:end">
+    <p style="text-align: end">
       <a-button type="link" @click="handleCheckFlowDiagram">
-        <span style="display:inline-flex;align-items: center;gap:.2em">
+        <span style="display: inline-flex; align-items: center; gap: 0.2em">
           <SvgIconFlow style="height: 1.2em; width: 1.2em" />
           查看流程图
         </span>
@@ -17,7 +17,7 @@
         <p>{{ operateItem.nodeName }}</p>
         <p class="userName">
           <SvgIconPersonPin style="height: 14px; width: 14px" />{{
-            operateItem.userName
+            operateItem.executorName
           }}
         </p>
         <div class="comment">{{ operateItem.comment }}</div>
@@ -41,16 +41,16 @@
       :visible="flowPreviewerModalVisible"
       switchFullscreen
       title="流程图"
-      @ok="()=>{}"
+      @ok="() => {}"
       @cancel="flowPreviewerModalVisible = false"
       :maskClosable="false"
       :footer="null"
-      @fullScreenEvent="()=>{}"
+      @fullScreenEvent="() => {}"
     >
       <!-- :ok-button-props="{ props: { disabled: this.okBtnDisabled } }" -->
       <!-- @fullScreenEvent="isFullScreen = $event" -->
 
-      <FlowPreviewer />
+      <FlowPreviewer :flowPreviewerData="flowPreviewerData" />
     </j-modal>
   </div>
 </template>
@@ -62,6 +62,7 @@ import FlowPreviewer from "@/packages/FlowPreviewer/index.vue"
 import { downloadFile } from "@/utils/downloadFile.js"
 import baseStyle from '@/components/base/baseStyle'
 import JModal from "@/components/jeecg/JModal/index.vue"
+import { taskProgress } from "@/api/platform/processOpenAPI.js"
 const _fileUrl = process.env.VUE_APP_FILE_URL;
 const colors = {
   create: baseStyle.$primary.bg,
@@ -76,11 +77,25 @@ export default {
   props: {
     operations: {
       type: Object,
-    }
+    },
+    businessId:{
+      type:String,
+      required: true,
+    },
+    uniTenantId:{
+      type:String,
+      required: true,
+    },
+    bizToken:{
+      type:String,
+      required: true,
+    },
   },
   data() {
     return {
-      flowPreviewerModalVisible:false
+      flowPreviewerModalVisible: false,
+      operateRecord:[],
+      flowPreviewerData:null
     }
   },
   components: {
@@ -90,18 +105,27 @@ export default {
     JModal,
     FlowPreviewer
   },
-  computed: {
-    operateRecord: function () {
-      if (this.operations.operateRecord) {
-        return this.operations.operateRecord
-      }
-      return []
-    }
-
+  created(){
+    this.loadOperationRecord()
   },
   methods: {
-    handleCheckFlowDiagram(){
+    handleCheckFlowDiagram() {
+
       this.flowPreviewerModalVisible = true
+    },
+    async loadOperationRecord(){
+      const res = await taskProgress({
+        businessId: this.businessId,
+        uniTenantId: this.uniTenantId,
+        bizToken: this.bizToken,
+
+      });
+      if(res.status == 200){
+        this.operateRecord = res.data.operateRecord
+        this.flowPreviewerData = res.data.processProgress
+      }else{
+        this.$message.error(res.msg)
+      }
     },
     getColor(type) {
       return colors[type]

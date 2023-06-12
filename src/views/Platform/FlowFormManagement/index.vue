@@ -372,6 +372,8 @@ export default {
 section {
   // border: 1px solid green;
   // padding: 20px;
+  background-color: #fff;
+  padding: 2em;
   margin-bottom: 46px;
   // display: flex;
   // gap: 20px;

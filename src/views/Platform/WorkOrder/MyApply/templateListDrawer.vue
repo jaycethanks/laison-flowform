@@ -93,7 +93,8 @@ export default {
 </script>
 <style scoped lang="scss">
 ::v-deep .ant-list-item{
-  padding: 6px 0
+  padding: 6px 0;
+  border:none
 }
 ::v-deep .ant-list-item-meta{
   align-items: center;
@@ -111,5 +112,8 @@ export default {
   &:hover{
     background-color: rgb(247, 247, 247);
   }
+}
+section{
+  margin-bottom: 2em;
 }
 </style>

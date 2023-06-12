@@ -8,22 +8,17 @@
 <script>
 import BpmnViewer from 'bpmn-js/lib/Viewer';
 import ModelingModule from 'bpmn-js/lib/features/modeling';
-import mock from './mock2';
 // bpmnviewer 拖动
 // https://www.modb.pro/db/32324
 
 export default {
   name: 'FlowPreviewer',
   props: {
-    // value: {
-    //   type: Object,
-    //   default: () => null,
-    //   required: true,
-    // },
-    visible: {
-      type: Boolean,
-      default: false,
+    flowPreviewerData: {
+      type: Object,
+      default: () => null,
     },
+
     title: {
       type: String,
       default: 'title is not defined',
@@ -35,76 +30,52 @@ export default {
   },
   data() {
     return {
-      modalVisible: true,
-      showHistory: false,
-      showProcess: false,
-      showRecord: false,
-      type: 0,
       loading: false, // 表单加载状态
       clickable: false,
       formNode: {},
-      taskList: [],
       commentTitle: this.$t('order.auditSuggest'),
       // bpmn建模器
       BpmnViewer: null,
       container: null,
       canvas: null,
       xmlUrl: '',
-      orderResult: 1,
       taskRecords: [],
-      highLightedFlows: null, //连线的id
-      highLightedToDoActivities: null, // 待办的活动节点
-      highLightedDoneActivities: null, //已完成的活动节点
-      highLightedActivities: null, //已完成全部流程活动节点
+      highLightedFlows: [], //连线的id
+      highLightedToDoActivities: [], // 待办的活动节点
+      highLightedDoneActivities: [], //已完成的活动节点
+      highLightedActivities: [], //已完成全部流程活动节点
     };
   },
   watch: {
-    visible(newVal) {
-      if (newVal) {
-        this.$nextTick(() => {
-          this.init();
-        });
-      }
-    },
+    flowPreviewerData: {
+      handler: function () {
+        this.$nextTick(()=>{
+          this.setProcessData()
+        })
+      },
+      immediate: true
+    }
   },
-  created() {
-    this.xmlUrl = mock.procModelXml;
-  },
-  mounted() {
-    this.init();
-  },
+
   methods: {
-    init() {
-      /**
-       * 备注信息
-       */
-      // if (this.value) {
-      //   this.orderResult = !this.value.orderInfo ? 1 : this.value.orderInfo.result;
-      //   //历史任务
-      //   this.taskList = this.value.taskProgress;
-      //   this.showHistory = !!this.taskList && this.taskList.length > 0;
-      //   //bpmn的xml
-      //   this.xmlUrl = this.value.procBpmn;
-      //   this.showProcess = !!this.xmlUrl;
-      //   //记录信息
-      //   this.taskRecords = this.value.operateRecord;
-      //   this.showRecord = !!this.taskRecords && this.taskRecords.length > 0;
-      //   //高亮flows
-      //   if (this.value.procHighLight) {
-      //     this.highLightedFlows = this.value.procHighLight.highLightedFlows;
-      //     this.highLightedToDoActivities = this.value.procHighLight.highLightedToDoActivities;
-      //     this.highLightedDoneActivities = this.value.procHighLight.highLightedDoneActivities;
-      //     this.highLightedActivities = this.value.procHighLight.highLightedActivities;
-      //   }
-      // }
+    setProcessData() {
+      if (this.flowPreviewerData) {
+        const { procModelXml, nodeFlows: {
+          highLightedFlows = [],
+          highLightedToDoActivities = [],
+          highLightedDoneActivities = [],
+          highLightedActivities = [],
+        } } = this.flowPreviewerData
+
+        this.xmlUrl = procModelXml;
+        this.highLightedFlows = highLightedFlows;
+        this.highLightedToDoActivities = highLightedToDoActivities;
+        this.highLightedDoneActivities = highLightedDoneActivities;
+        this.highLightedActivities = highLightedActivities;
+      }
       this.initBpmn();
     },
-    closeModal: function () {
-      this.$emit('close');
-    },
-    /**
-     * bpmn相关
-     */
+
     initBpmn() {
       // 获取到属性ref为“canvas”的dom节点
       // const canvas = document.getElementById('canvas')
@@ -140,9 +111,9 @@ export default {
     },
     bpmnTransformSuccess() {
       //点击事件
-      this.clickModelerListener();
+      // this.clickModelerListener();
       //需要渲染的列表
-      // this.setNodeColor();
+      this.setNodeColor();
     },
     //添加点击事件
     clickModelerListener() {
