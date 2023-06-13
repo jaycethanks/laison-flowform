@@ -12,7 +12,7 @@
         </a-button>
       </section>
       <a-divider style="margin: 1em 0" />
-      <a-form-model-item ref="comment" prop="comment">
+      <a-form-model-item ref="enclosurePaths" prop="enclosurePaths">
         <span slot="label" class="label-slot">附件</span>
         <ffUploader multiple v-model="form.enclosurePaths" />
       </a-form-model-item>
@@ -27,7 +27,7 @@
         <a-select @change="onBackNodesSelectChange" v-model="form.backNodeId" :options="backNodesOptions" />
       </a-form-model-item>
 
-      <a-form-model-item v-if="fields.includes('backTask')" ref="comment" prop="comment">
+      <a-form-model-item v-if="fields.includes('backTask')" ref="backUsers" prop="backUsers">
         <span slot="label" class="label-slot">选择处理人</span>
         <a-select mode="multiple" v-model="form.backUsers" :options="backUsersOptions" />
       </a-form-model-item>
@@ -105,15 +105,21 @@ export default {
 
       rules: {
         comment: [{
-          required: false,
           validator(rule, value, cb) {
-            if (value.trim().length > 100) {
-              cb(new Error(`超出 ${value.trim().length - 100} 字符！`))
-            } else {
+            if(!value){
               cb()
+            }else{
+              if (value.trim().length > 255) {
+                cb(new Error(`超出 ${value.trim().length - 255} 字符！`))
+              } else {
+                cb()
+              }
             }
           }, trigger: 'change'
         }],
+        delegator:[{required: true}],
+        backNodeId:[{required: true}],
+        backUsers:[{required: true}],
 
       },
     };
@@ -152,7 +158,7 @@ export default {
 
       // ! 这里为什么要用 nextTick ? 不知道， 但是不用， this.type 这个prop 值， 始终是延后一步
       this.$nextTick(async () => {
-        if (this.type !== 'backTask') return
+        if (this.type !== SubmitInfoType.BACKTASK) return
 
         // 如果是驳回，去拉取必要数据
         const res = await getBackList({
@@ -187,7 +193,7 @@ export default {
     handleOk(e) {
       const valid = this.validateForm();
       valid && this.$emit('ok', JSON.parse(JSON.stringify(this.form)), this.isEdit);
-      this.hide()
+      valid && this.hide()
     },
     handleCancle() {
       this.resetForm();
@@ -195,9 +201,10 @@ export default {
     },
     validateForm() {
       let _valid = false;
+      window.xxx = this.$refs.ruleForm
       this.$refs.ruleForm.validate((valid) => {
         _valid = valid;
-      });
+      })
       return _valid;
     },
     resetForm() {
