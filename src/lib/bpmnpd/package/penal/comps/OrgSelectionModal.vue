@@ -19,6 +19,7 @@
     <!-- </el-card> -->
 
     <orga-structure-modal
+      :maxPerson="maxPerson"
       :disableDept="disableDept"
       :disableRole="disableRole"
       :disablePerson="disablePerson"
@@ -36,7 +37,7 @@ export default {
     OrgaStructureModal,
   },
   computed: {},
-  props: ['customProp', 'minHeight', 'approvalType'],
+  props: ['customProp', 'minHeight', 'approvalType','maxPerson'],
   model: {
     prop: 'customProp',
     event: 'customEvent',
