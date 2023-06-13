@@ -34,7 +34,7 @@
         @change="handleTableChange"
         :columns="columns"
         :data-source="dataSource"
-        rowKey="id"
+        rowKey="taskId"
         :pagination="pageInfo.pagination"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
@@ -44,6 +44,10 @@
 
         <span slot="status" slot-scope="text">
           <ff-status :statusCode="text" />
+        </span>
+
+        <span slot="taskDuration" slot-scope="text">
+          {{millsToTime(text)}}
         </span>
 
         <template slot="action" slot-scope="text, record">
@@ -82,7 +86,7 @@ import { deleteById } from "@/api/platform/businessOpenAPI.js"
 
 
 const columns = [
-  {
+   {
     title: '标题',
     dataIndex: 'title',
     key: 'title',
@@ -97,44 +101,43 @@ const columns = [
     dataIndex: 'orderType',
     key: 'orderType',
   },
-
-
   {
-    title: '状态',
-    dataIndex: 'status',
-    key: 'status',
-    width:100,
-    scopedSlots: { customRender: 'status' },
-
-  },
-  // {
-  //   title: '结果',
-  //   dataIndex: 'result',
-  //   key: 'result',
-  //   width:100,
-  //   scopedSlots: { customRender: 'result' },
-
-  //   ellipsis: true,
-  // },
-  {
-    title: '更新人',
-    dataIndex: 'updateBy',
-    key: 'updateBy',
-  },
-    {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime',
+    title: '任务名称',
+    dataIndex: 'nodeName',
+    key: 'nodeName',
   },
   {
-    title: '更新时间',
-    dataIndex: 'updateTime',
-    key: 'updateTime',
+    title: '申请人',
+    dataIndex: 'userId',
+    key: 'userId',
   },
   {
     title: '委托人',
     dataIndex: 'delegator',
     key: 'delegator',
+  },
+
+   {
+    title: '审批意见',
+    dataIndex: 'comment',
+    key: 'comment',
+  },
+   {
+    title: '任务耗时',
+    dataIndex: 'taskDuration',
+    key: 'taskDuration',
+    scopedSlots: { customRender: 'taskDuration' },
+
+  },
+    {
+    title: '开始时间',
+    dataIndex: 'taskStartTime',
+    key: 'taskStartTime',
+  },
+  {
+    title: '结束时间',
+    dataIndex: 'taskEndTime',
+    key: 'taskEndTime',
   },
 
   {
@@ -184,6 +187,36 @@ export default {
     });
   },
   methods: {
+    millsToTime(mills) {
+      if (!mills || mills <= 0) {
+        return ''
+      }
+      let s = mills / 1000
+      if (s.toFixed(0) === '0') {
+        return mills + ' ms'
+      }
+      if (s < 60) {
+        return s.toFixed(0) + ' s'
+      }
+      let m = s / 60
+      if (m < 60) {
+        return m.toFixed(0) + ' m'
+      }
+      let h = m / 60
+      if (h < 24) {
+        return h.toFixed(0) + ' h'
+      }
+      let d = h / 24
+      if (d < 30) {
+        return d.toFixed(0) + ' day'
+      }
+      let month = d / 30
+      if (month < 12) {
+        return month.toFixed(0) + ' month'
+      }
+      let year = month / 12
+      return year.toFixed(0) + ' year'
+    },
     handleQuery() {
       this.loadData({
         uniTenantId: this.computedQuery.uniTenantId,

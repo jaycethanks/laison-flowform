@@ -43,7 +43,7 @@
         @change="handleTableChange"
         :columns="columns"
         :data-source="dataSource"
-        rowKey="id"
+        rowKey="businessId"
         :pagination="pageInfo.pagination"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
