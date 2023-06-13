@@ -98,6 +98,7 @@ export const cancelTask = (condition) =>
     method: 'post',
     data: {
       businessId: condition.businessId,
+      submitInfo: condition.submitInfo,
     },
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
@@ -147,6 +148,37 @@ export const remainderTask = (condition) =>
     url: 'processOpenAPI/remainderTask',
     method: 'post',
     data: {
+      businessId: condition.businessId,
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });
+
+export const getBackList = (condition) =>
+  axios({
+    url: 'processOpenAPI/getBackList',
+    method: 'post',
+    data: {
+      curTaskId: condition.curTaskId,
+      businessId: condition.businessId,
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });
+
+export const getNodeCandidates = (condition) =>
+  axios({
+    url: 'processOpenAPI/getNodeCandidates',
+    method: 'post',
+    data: {
+      curNodeId: condition.curNodeId,
+      curTaskId: condition.curTaskId,
       businessId: condition.businessId,
     },
     headers: {

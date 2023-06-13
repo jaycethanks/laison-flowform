@@ -11,10 +11,19 @@
     <a-timeline>
       <a-timeline-item
         v-for="operateItem in operateRecord"
-        :key="operateItem.nodeId"
-        :color="getColor(operateItem.taskType)"
+        :key="operateItem.createTime"
+        :color="getColor(operateItem.taskType).bg"
       >
-        <p>{{ operateItem.nodeName }}</p>
+        <p
+          :style="{display:'flex',justifyContent:'space-between',padding:'.2em .6em',backgroundColor:getColor(operateItem.taskType).bg_light}"
+        >
+          <span>
+            {{ operateItem.nodeName }}
+          </span>
+          <span :style="{color:getColor(operateItem.taskType).text}"
+            >[{{ circulateTaskType(operateItem.taskType) }}]</span
+          >
+        </p>
         <p class="userName">
           <SvgIconPersonPin style="height: 14px; width: 14px" />{{
             operateItem.executorName
@@ -65,13 +74,14 @@ import JModal from "@/components/jeecg/JModal/index.vue"
 import { taskProgress } from "@/api/platform/processOpenAPI.js"
 const _fileUrl = process.env.VUE_APP_FILE_URL;
 const colors = {
-  create: baseStyle.$primary.bg,
-  pass: baseStyle.$success.bg,
-  cancel: baseStyle.$danger.bg,
-  back: baseStyle.$warning.bg,
-  delegate: baseStyle.$info.bg,
-  change: baseStyle.$dark.bg
+  create: baseStyle.$primary,
+  pass: baseStyle.$success,
+  cancel: baseStyle.$danger,
+  back: baseStyle.$warning,
+  delegate: baseStyle.$info,
+  change: baseStyle.$dark
 }
+
 
 export default {
   props: {
@@ -95,7 +105,16 @@ export default {
     return {
       flowPreviewerModalVisible: false,
       operateRecord:[],
-      flowPreviewerData:null
+      flowPreviewerData:null,
+      taskTypes:{
+        // todo: 多语言支持
+        create: "创建",
+        pass: "通过",
+        cancel: "撤回",
+        back: "驳回",
+        delegate: "委托",
+        change: "变更"
+      }
     }
   },
   components: {
@@ -109,8 +128,11 @@ export default {
     this.loadOperationRecord()
   },
   methods: {
-    handleCheckFlowDiagram() {
+    circulateTaskType(typeString){
+      return this.taskTypes[typeString]
+    },
 
+    handleCheckFlowDiagram() {
       this.flowPreviewerModalVisible = true
     },
     async loadOperationRecord(){

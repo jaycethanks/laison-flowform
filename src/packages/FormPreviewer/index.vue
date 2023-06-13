@@ -63,28 +63,42 @@
 
     <footer v-if="ifShowFooter" id="operation-footer-row">
       <a-space>
-        <a-button type="primary" @click="handleSubmit">
-          <span v-if="computedQuery.type === PreviewFormType.APPLY">
-            <SvgIconSend style="height: 14px" /> 提交并发起</span
-          >
-          <span v-if="computedQuery.type === PreviewFormType.APPROVE">
+        <a-button
+          type="primary"
+          @click="handleSubmit(SubmitInfoType.APPLY)"
+          v-if="computedQuery.type === PreviewFormType.APPLY"
+        >
+          <span> <SvgIconSend style="height: 14px" /> 提交并发起</span>
+        </a-button>
+
+        <a-button
+          type="primary"
+          @click="handleSubmit(SubmitInfoType.PASS)"
+          v-if="computedQuery.type === PreviewFormType.APPROVE"
+        >
+          <span>
             <a-icon type="check"></a-icon>
             审批通过</span
-          >
-          <span v-if="computedQuery.type === PreviewFormType.ARCHIVE"
-            ><SvgIconArchive style="height: 14px" /> 归档</span
           >
         </a-button>
         <a-button v-if="computedQuery.type === PreviewFormType.APPLY" @click="handleSaveAsDraft">
           <span> <SvgIconSaveDraft style="height: 14px" /> 保存为草稿</span>
         </a-button>
-        <a-button type="primary" v-if="computedQuery.type === PreviewFormType.APPROVE">
+        <a-button
+          type="primary"
+          v-if="computedQuery.type === PreviewFormType.APPROVE"
+          @click="handleSubmit(SubmitInfoType.DELEGATE)"
+        >
           <span>
-            <a-icon type="enter" rotate="180"></a-icon>
+            <a-icon type="enter" :rotate="180"></a-icon>
             委托</span
           >
         </a-button>
-        <a-button type="danger" v-if="computedQuery.type === PreviewFormType.APPROVE">
+        <a-button
+          type="danger"
+          v-if="computedQuery.type === PreviewFormType.APPROVE"
+          @click="handleSubmit(SubmitInfoType.BACKTASK)"
+        >
           <span>
             <a-icon type="close"></a-icon>
             驳回</span
@@ -93,7 +107,16 @@
       </a-space>
     </footer>
 
-    <submitInfoModal :title="modalTitle" ref="modal" @ok="handleSubmitInfoOk" />
+    <submitInfoModal
+      :businessId="computedQuery.businessId"
+      :curTaskId="computedQuery.curTaskId"
+      :uniTenantId="computedQuery.uniTenantId"
+      :bizToken="computedQuery.bizToken"
+      :type="submitInfoModalType"
+      :title="modalTitle_"
+      ref="modal"
+      @ok="handleSubmitInfoOk"
+    />
     <!-- </div> -->
   </RootContainer>
 </template>
@@ -106,16 +129,45 @@ import { parseFormWithNodeConfig } from '@/utils/kformRelatedUtils.js';
 //import '@/assets/SourceHanSansCN-Regular-normal'
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
 import PreviewFormType from '@/constants/PreviewFormType.js';
+import { SubmitInfoType } from '@/constants/SubmitInfoType.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import SvgIconSend from '@/assets/svgIcon/SvgIconSend.vue';
 import SvgIconSaveDraft from '@/assets/svgIcon/SvgIconSaveDraft.vue';
 import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
 import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js";
 import { create, submit, edit } from "@/api/platform/businessOpenAPI.js"
+import { backTask,delegateTask } from "@/api/platform/processOpenAPI.js"
+
 import RootContainer from "@/components/base/RootContainer/index.vue";
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
+import { organizationStructure } from "@/api/platform/platformOpenAPI.js"
+
 import Container from "@/components/base/Container/index.vue";
 import TimeLine from "./TimeLine.vue"
+
+/**
+ * 在审批或者发起时， 传递接口的数据结构类似， 但是有些是不同的结构， 所以这里维护了一份映射
+ */
+
+// todo: 本地多语言支持
+const FN = {
+  [SubmitInfoType.APPLY]:{
+    fn:submit,
+    subTitle:"发起申请"
+  },
+  [SubmitInfoType.PASS]:{
+    fn:submit,
+    subTitle:"审批通过"
+  },
+  [SubmitInfoType.DELEGATE]:{
+    fn:delegateTask,
+    subTitle:"任务委托"
+  },
+  [SubmitInfoType.BACKTASK]:{
+    fn:backTask,
+    subTitle:"驳回"
+  }
+}
 export default {
   name: 'FormPreviewer',
   mixins: [handleQuery],
@@ -129,22 +181,24 @@ export default {
     TimeLine,
     RootContainer,
     Container,
-    submitInfoModal
+    submitInfoModal,
   },
   data() {
     return {
       PreviewFormType,
+      SubmitInfoType,
       pageLoading: false,
+      modalTitle_:'',// modal title
       formInfo: null, //表单定义
       formData: null, // 表单数据
       formdataObj: {}, //表单数据
+      submitInfoModalType:NaN,//submitInfoModal可根据type 不同去动态渲染需要录入的字段
+      delegatePerson:[],
       isFullScreen: false,
       kfb: {
         disabled: false,
       },
-      fn: {
-        query: null
-      },
+      fn: null,
       query: {
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
         // 那么，需要将该字段初始化为一对象,例如 type: {value: 初始化值}
@@ -167,7 +221,8 @@ export default {
         },
         lang: '',
         businessId: '',
-        nodeId: ''
+        nodeId: '',
+        curTaskId:''
       },
     };
   },
@@ -214,7 +269,9 @@ export default {
         publishId: this.computedQuery.publishId,
         procDefId: this.computedQuery.procDefId,
         nodeType: this.computedQuery.type,
-        nodeId: this.computedQuery.nodeId || ''
+        nodeId: this.computedQuery.nodeId || '',
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
       })
       if (res.status === 200) {
         // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
@@ -231,26 +288,18 @@ export default {
       }
       }finally{
       this.pageLoading = false
-
       }
-
-
-
-
     },
 
     handleType(type) {
+      // 针对不同的 query.type 参数，作一些预处理操作
       switch (type) {
         case PreviewFormType.APPLY:
-          // query 为拉取发起结点配置接口
-          // this.fn.query = queryApplyNodeConfig
           break;
         case PreviewFormType.APPROVE:
-          // query 为拉取审批结点配置接口
-          // this.fn.query = queryApproveNodeConfig
+          this.loadOrgStructAndSetStore()// 更新组织架构
           break;
         case PreviewFormType.COPY:
-          // this.fn.query = queryCopyNodeConfig
           this.kfb.disabled = true;
           break;
         case PreviewFormType.ARCHIVE:
@@ -260,7 +309,6 @@ export default {
           break;
       }
       this.loadflowformData()
-
     },
 
     async handleOk() {
@@ -332,11 +380,21 @@ export default {
         });
     },
     async handleSubmitInfoOk(submitInfo) {
+      // 额外处理， 后端这个字段保存的是一个逗号隔开的字符串
+      if(submitInfo.backUsers){
+        submitInfo.backUsers = submitInfo.backUsers.join()
+      }
+      if(submitInfo.delegator){
+        submitInfo.delegator = submitInfo.delegator[0].id
+      }
+
+
+
       const formData = await this.getFormData()
-      const res = await submit({
-        businessId: this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
+      const res = await this.fn({
+        businessId: this.computedQuery.businessId || '',// submit接口， 业务ID，从草稿提交时需要携带
         formData,
-        curTaskId: this.computedQuery.curTaskId || '',// 审批时需要携带
+        curTaskId: this.computedQuery.curTaskId || '',// submit接口，审批时需要携带
         uniTenantId: this.computedQuery.uniTenantId,
         publishId: this.computedQuery.publishId,
         bizToken: this.computedQuery.bizToken,
@@ -350,7 +408,13 @@ export default {
         this.$message.error(res.msg)
       }
     },
-    handleSubmit() {
+    handleSubmit(submitType) {
+      // 获取到请求接口
+      const target = FN[submitType];
+      const { fn,subTitle } = target;
+      this.fn = fn;
+      this.submitInfoModalType = submitType
+      this.modalTitle_ = this.modalTitle + " - " + subTitle
       this.$refs.modal.show()
     },
     async handleSaveAsDraft() {
@@ -391,6 +455,8 @@ export default {
       }
       return formData
     },
+
+
     handleMount(laisonRootFormInstance) {
       /**
        * 将根表单 注册到window 对象，以便在 src/components/kform/KFormBuild/index.vue
@@ -399,6 +465,16 @@ export default {
        * 中去访问，从而写一些判断逻辑
        */
       window.rootKForm = laisonRootFormInstance;
+    },
+        // 加载三方组织架构,并set到store
+    async loadOrgStructAndSetStore() {
+      const res = await organizationStructure({
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
+      })
+      if (res.status === 200) {
+        this.$store.commit('SET_FLOWFORM_organizationStructure', res.data);
+      }
     },
   },
 };

@@ -49,11 +49,11 @@
         <template slot="action" slot-scope="text, record">
           <a-space>
             <template>
-              <a @click="handleCheckDetail(record)">查看</a>
-            </template>
-            <template>
               <a @click="handleDeal(record)">处理</a>
               <!-- 驳回 通过 委托-->
+            </template>
+            <template>
+              <a @click="handleCheckDetail(record)">查看</a>
             </template>
 
             <!-- <a-popconfirm placement="rightBottom" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
@@ -197,7 +197,7 @@ export default {
         bizToken: this.computedQuery.bizToken,
       });
     },
-    handleDeal({businessId,publishId, procDefId}){
+    handleDeal({businessId,publishId, procDefId,taskId}){
         this.$router.push({
         path: '/platform/formPreviewer',
         query: {
@@ -206,7 +206,8 @@ export default {
           procDefId,
           businessId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          curTaskId:taskId
         }
       });
     },

@@ -66,13 +66,7 @@
             <template v-if="[ProcessResultType.TOSUBMIT].includes(record.result)">
               <a @click="handleRowEdit(record)">编辑</a>
               <!-- <a-divider type="vertical" /> -->
-              <a
-                @click="
-                  businessId = record.businessId;
-                  $refs.modal.show();
-                "
-                >提交</a
-              >
+              <a @click="handleRowSubmit(record)">提交</a>
             </template>
             <template>
               <a
@@ -107,7 +101,7 @@
       </a-table>
     </a-card>
 
-    <submitInfoModal :title="modalTitle" ref="modal" @ok="handleSubmitInfoOk" />
+    <submitInfoModal :type="submitInfoModalType" :title="modalTitle_" ref="modal" @ok="handleSubmitInfoOk" />
 
     <TemplateListDrawer @select="handleSelect" :visible="templateListVisible" @close="templateListVisible = false" />
     <!-- <Container> -->
@@ -122,16 +116,28 @@ import searchTableMixin from '@/mixins/searchTableMixin.js';
 import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
 import handleQuery from '@/mixins/handleQuery.js';
 import PreviewFormType from "@/constants/PreviewFormType.js"
+import { SubmitInfoType } from "@/constants/SubmitInfoType.js"
 import ProcessResultType from "@/constants/ProcessResultType.js"
 import { ProcessStatusType, StatusOptions } from "@/constants/ProcessStatusType.js"
-import { myApply, remainderTask,cancelTask } from "@/api/platform/processOpenAPI.js"
+import { myApply, remainderTask, cancelTask } from "@/api/platform/processOpenAPI.js"
 
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById, submit } from "@/api/platform/businessOpenAPI.js"
 
 
+// todo: 本地多语言支持
+const FN = {
+  [SubmitInfoType.APPLY]: {
+    fn: submit,
+    subTitle: "发起申请"
+  },
+  [SubmitInfoType.CANCELTASK]: {
+    fn: cancelTask,
+    subTitle: "撤销申请"
+  },
 
+}
 
 const columns = [
   {
@@ -215,9 +221,12 @@ export default {
       StatusOptions,
       columns,
       findPage: myApply,
+      modalTitle_: '',
       modalTitle: '发起流程',
       businessId: undefined,
+      submitInfoModalType: NaN,//submitInfoModal可根据type 不同去动态渲染需要录入的字段
       templateListVisible: false,
+      fn: null,
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
@@ -257,6 +266,25 @@ export default {
           bizToken: this.computedQuery.bizToken
         }
       });
+    },
+    handleRowSubmit({ businessId }) {
+      this.submitInfoModalType = SubmitInfoType.APPLY
+      const target = FN[SubmitInfoType.APPLY];
+      const { fn, subTitle } = target;
+      this.fn = fn;
+      this.modalTitle_ = this.modalTitle + " - " + subTitle
+      this.$refs.modal.show()
+      this.businessId = businessId
+    },
+
+    handleCancelTask({ businessId }) {
+      this.submitInfoModalType = SubmitInfoType.CANCELTASK
+      const target = FN[SubmitInfoType.CANCELTASK];
+      const { fn, subTitle } = target;
+      this.fn = fn;
+      this.modalTitle_ = this.modalTitle + " - " + subTitle
+      this.$refs.modal.show()
+      this.businessId = businessId
     },
     handleRowEdit({ businessId, publishId, procDefId }) {
       this.$router.push({
@@ -312,22 +340,6 @@ export default {
         }
       });
     },
-
-    async handleCancelTask({ businessId }){
-        const res = await cancelTask({
-        businessId,
-        uniTenantId: this.computedQuery.uniTenantId,
-        bizToken: this.computedQuery.bizToken
-      })
-      if (res.status === 200) {
-        this.$message.success(res.msg)
-      } else {
-        this.$message.error(res.msg)
-      }
-      this._loadData()
-    },
-
-
     async handleOk(formFieldsValue, isEdit) {
       let fn = saveOrUpdate;
       const res = await fn(formFieldsValue);
@@ -343,7 +355,7 @@ export default {
     },
 
     async handleSubmitInfoOk(submitInfo) {
-      const res = await submit({
+      const res = await this.fn({
         businessId: this.businessId || '',// 业务ID，从草稿提交时需要携带
         formData: null,
         uniTenantId: this.computedQuery.uniTenantId,
