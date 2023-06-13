@@ -37,7 +37,7 @@
         </a-steps>
       </p>
       <div class="flow-form-designer-container">
-        <form-design v-show="!noFormDesign || current === 0" ref="formDesignView"></form-design>
+        <form-design v-show="!noFormDesign && current === 0" ref="formDesignView"></form-design>
         <flow-design
           v-show="current === 1"
           :bpmnEditDataInit="bpmnEditDataInit"
