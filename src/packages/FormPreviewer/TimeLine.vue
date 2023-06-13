@@ -76,8 +76,8 @@ const _fileUrl = process.env.VUE_APP_FILE_URL;
 const colors = {
   create: baseStyle.$primary,
   pass: baseStyle.$success,
-  cancel: baseStyle.$danger,
-  back: baseStyle.$warning,
+  cancel: baseStyle.$warning,
+  back: baseStyle.$danger,
   delegate: baseStyle.$info,
   change: baseStyle.$dark
 }

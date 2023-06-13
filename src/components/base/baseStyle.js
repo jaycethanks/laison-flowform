@@ -32,7 +32,7 @@ export default {
   },
   $danger: {
     bg: '#dc3545',
-    bg_light: '#fff3cd',
+    bg_light: '#f8d7da',
     text: '#58151c',
     border: '#f1aeb5',
   },
