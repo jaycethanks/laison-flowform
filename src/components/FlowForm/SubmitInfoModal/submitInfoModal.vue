@@ -107,7 +107,7 @@ export default {
         comment: [{
           validator(rule, value, cb) {
             if(!value){
-              cb()
+              cb(new Error(`不可为空！`))
             }else{
               if (value.trim().length > 255) {
                 cb(new Error(`超出 ${value.trim().length - 255} 字符！`))
@@ -115,7 +115,7 @@ export default {
                 cb()
               }
             }
-          }, trigger: 'change'
+          }, trigger: 'blur'
         }],
         delegator:[{required: true}],
         backNodeId:[{required: true}],
@@ -152,7 +152,7 @@ export default {
       //   this.$set(this, 'form', {});
       // }
       this.$set(this, 'form', {
-
+        comment:"通过"
       });
 
 
