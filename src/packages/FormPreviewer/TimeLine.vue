@@ -10,18 +10,20 @@
     </p>
     <a-timeline>
       <a-timeline-item
-        v-for="operateItem in operateRecord"
-        :key="operateItem.createTime"
+        v-for="(operateItem,index) in operateRecord"
+        :key="index"
         :color="getColor(operateItem.taskType).bg"
       >
         <p
-          :style="{display:'flex',justifyContent:'space-between',padding:'.2em .6em',backgroundColor:getColor(operateItem.taskType).bg_light}"
+          :style="{display:'flex',justifyContent:'space-between',padding:'.2em .6em'
+          }"
         >
-          <span>
+          <span style="font-weight:bold">
             {{ operateItem.nodeName }}
           </span>
-          <span :style="{color:getColor(operateItem.taskType).text}"
-            >[{{ circulateTaskType(operateItem.taskType) }}]</span
+          <span
+            :style="{color:getColor(operateItem.taskType).text}"
+            >{{ circulateTaskType(operateItem.taskType) }}</span
           >
         </p>
         <p class="userName">
@@ -29,7 +31,7 @@
             operateItem.executorName
           }}
         </p>
-        <div class="comment">{{ operateItem.comment }}</div>
+        <div v-if="operateItem.comment" class="comment">{{ operateItem.comment }}</div>
 
         <p v-if="operateItem.enclosurePaths" class="link-files">
           <SvgIconLinkedFiles style="height: 14px; width: 14px" />附件
@@ -79,7 +81,8 @@ const colors = {
   cancel: baseStyle.$warning,
   back: baseStyle.$danger,
   delegate: baseStyle.$info,
-  change: baseStyle.$dark
+  change: baseStyle.$dark,
+  todo: baseStyle.$warning
 }
 
 
@@ -113,7 +116,8 @@ export default {
         cancel: "撤回",
         back: "驳回",
         delegate: "委托",
-        change: "变更"
+        change: "变更",
+        todo: "待办"
       }
     }
   },
