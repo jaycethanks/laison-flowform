@@ -115,7 +115,7 @@
         </a-radio-group>
         <template v-if="isPlatform">
           <!-- <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" /> -->
-          <NodeApproverConfigModal v-model="currentExtendNodeConfig.copyConfig.approval" />
+          <NodeApproverConfigModal defaultApprovalType="none" v-model="currentExtendNodeConfig.copyConfig.approval" />
         </template>
 
         <template v-if="isSystem">
@@ -496,7 +496,7 @@ export default {
             copyConfig: {
               columnConfigs: this.pureFieldsControl(deepCloneObject(this.$store.state.kform.data)),
               approval: {
-                approvalType: 'applicant',
+                approvalType: 'none',
                 members: []
               },
               type: 'end',

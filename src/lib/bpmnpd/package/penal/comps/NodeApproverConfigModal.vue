@@ -1,12 +1,12 @@
 <template>
   <div class="root">
-    <TitleRow title="设定节点审批人" size="small" bold> </TitleRow>
+    <TitleRow title="指定审批人" size="small" bold> </TitleRow>
     <a-radio-group v-model="approval.approvalType" :options="options" @change="emitChange" />
     <OrgSelectionModal
       v-model="approval.members"
       style="margin-top: 10px"
       :approvalType="approval.approvalType"
-      v-if="approval.approvalType !== 'applicant' && approval.approvalType !== 'applicantLeader'"
+      v-if="!['none','applicant','applicantLeader'].includes(approval.approvalType)"
     />
   </div>
 </template>
@@ -14,6 +14,7 @@
 import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
 import TitleRow from '@/components/base/TitleRow';
 const options = [
+  { label: '无', value: 'none' },
   { label: '发起人自己', value: 'applicant' },
   { label: '发起人直属主管审批', value: 'applicantLeader' },
   { label: '指定人员', value: 'people' },
@@ -30,6 +31,10 @@ export default {
         approvalType:'applicant',
         members:[]
       })
+    },
+    defaultApprovalType:{
+      type:String,
+      default:'applicant',
     }
   },
   model: {
@@ -65,7 +70,7 @@ export default {
   data() {
     return {
       approval: {
-        approvalType: 'applicant',
+        approvalType: this.defaultApprovalType,
         members: [],
       },
       options,
