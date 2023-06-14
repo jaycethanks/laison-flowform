@@ -16,8 +16,8 @@ handleQuery 提供了两个值：
 
   ```js
    query:{
-        maxWidth: 'auto',//示例字段
-        minWidth: 'auto',//示例字段
+        maxWidth: 'auto',//auto 为默认值
+        minWidth: 'auto',//auto 为默认值
         example: { //必须字段
           type: Number,
         },
@@ -28,8 +28,8 @@ handleQuery 提供了两个值：
 
   ```json
    {
-    maxWidth: 'auto',//示例字段
-    minWidth: 'auto',//示例字段
+    maxWidth: 'auto',//auto 为默认值
+    minWidth: 'auto',//auto 为默认值
     example: 路由传入的type参数<Number>
    }
   ```
@@ -49,8 +49,8 @@ export deafault {
   data(){
     query:{
       // 必须字段
-        maxWidth: 'auto',//示例字段
-        minWidth: 'auto',//示例字段
+        maxWidth: 'auto',//auto 为默认值
+        minWidth: 'auto',//auto 为默认值
         example: { //示例字段
           type: Number,
         },
@@ -59,6 +59,9 @@ export deafault {
 }
 
 ```
+
+**指定非必传字段**
+如果你指定了非必传字段， 例如上面的示例中的 `maxWidth` 和 `minWidth`, 如果 url 中指定了 maxWidth 这个 query 参数， 那么当你访问 this.computedQuery.maxWidth, 时，就是 query 传入的字段值， 如果没有传入， 那么这个值将会是 默认值 'auto'
 
 **指定必传字段**
 你需要通过将一个必传字段指定为一个形如 :`{ type: Number | String | Boolean }` 的对象， 其作用除了用于验证字段是否传递之外， 还会将 query 中对应的字段，通过这些构造函数包装转换后返回。

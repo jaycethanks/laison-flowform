@@ -38,7 +38,7 @@ export default {
           // 设定默认值,获取路由query参数
           _value = this.parseType(value.type, routeQuery[key]);
         } else {
-          _value = routeQuery[key];
+          _value = routeQuery[key] || value;
         }
         Obj[key] = _value;
       });
