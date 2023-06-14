@@ -36,6 +36,7 @@
         :data-source="dataSource"
         rowKey="taskId"
         :pagination="pageInfo.pagination"
+        :scroll="{ x: true }"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
         <span slot="result" slot-scope="text">
@@ -153,6 +154,8 @@ const columns = [
     title: '操作',
     dataIndex: 'action',
     key: 'action',
+    fixed: 'right',
+    width: 160,
     scopedSlots: { customRender: 'action' },
   },
 ];
@@ -202,7 +205,7 @@ export default {
         bizToken: this.computedQuery.bizToken,
       });
     },
-    handleDeal({ businessId, publishId, procDefId, taskId,nodeId }) {
+    handleDeal({ businessId, publishId, procDefId, taskId, nodeId }) {
       this.$router.push({
         path: '/platform/formPreviewer',
         query: {
@@ -306,4 +309,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+>>> .ant-table td {
+  white-space: nowrap;
+}
+</style>

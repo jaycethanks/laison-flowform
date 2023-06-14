@@ -45,6 +45,7 @@
         :data-source="dataSource"
         rowKey="businessId"
         :pagination="pageInfo.pagination"
+        :scroll="{ x: true }"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
         <span slot="result" slot-scope="text">
@@ -199,6 +200,8 @@ const columns = [
     title: '操作',
     dataIndex: 'action',
     key: 'action',
+    fixed: 'right',
+    width: 160,
     scopedSlots: { customRender: 'action' },
   },
 ];
@@ -373,4 +376,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+>>> .ant-table td {
+  white-space: nowrap;
+}
+</style>

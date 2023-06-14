@@ -7,7 +7,7 @@
         </a-form-item>
         <a-form-item label="状态">
           <a-select
-            style="min-width:100px"
+            style="min-width: 100px"
             v-model="pageInfo.condition.status"
             :allowClear="true"
             :options="StatusOptions"
@@ -27,7 +27,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-card :bordered="false" style="margin-top:1rem">
+    <a-card :bordered="false" style="margin-top: 1rem">
       <a-table
         size="small"
         :loading="pageInfo.loading"
@@ -36,6 +36,7 @@
         :data-source="dataSource"
         rowKey="taskId"
         :pagination="pageInfo.pagination"
+        :scroll="{ x: true }"
       >
         <a slot="name" slot-scope="text">{{ text }}</a>
         <span slot="result" slot-scope="text">
@@ -47,7 +48,7 @@
         </span>
 
         <span slot="taskDuration" slot-scope="text">
-          {{millsToTime(text)}}
+          {{ millsToTime(text) }}
         </span>
 
         <template slot="action" slot-scope="text, record">
@@ -75,7 +76,7 @@ import handleQuery from '@/mixins/handleQuery.js';
 import PreviewFormType from "@/constants/PreviewFormType.js"
 import ProcessResultType from "@/constants/ProcessResultType.js"
 
-import {ProcessStatusType,StatusOptions} from "@/constants/ProcessStatusType.js"
+import { ProcessStatusType, StatusOptions } from "@/constants/ProcessStatusType.js"
 
 import { myDone } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
@@ -86,7 +87,7 @@ import { deleteById } from "@/api/platform/businessOpenAPI.js"
 
 
 const columns = [
-   {
+  {
     title: '标题',
     dataIndex: 'title',
     key: 'title',
@@ -117,19 +118,19 @@ const columns = [
     key: 'delegator',
   },
 
-   {
+  {
     title: '审批意见',
     dataIndex: 'comment',
     key: 'comment',
   },
-   {
+  {
     title: '任务耗时',
     dataIndex: 'taskDuration',
     key: 'taskDuration',
     scopedSlots: { customRender: 'taskDuration' },
 
   },
-    {
+  {
     title: '开始时间',
     dataIndex: 'taskStartTime',
     key: 'taskStartTime',
@@ -144,6 +145,8 @@ const columns = [
     title: '操作',
     dataIndex: 'action',
     key: 'action',
+    fixed: 'right',
+    width: 160,
     scopedSlots: { customRender: 'action' },
   },
 ];
@@ -223,21 +226,22 @@ export default {
         bizToken: this.computedQuery.bizToken,
       });
     },
-    handleCheckDetail({businessId,publishId, procDefId}){
-        this.$router.push({
+    handleCheckDetail({ businessId, publishId, procDefId, nodeId }) {
+      this.$router.push({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.VIEW,
           publishId,
           procDefId,
           businessId,
+          nodeId,
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken
         }
       });
     },
-    handleRowEdit({businessId,publishId, procDefId}){
-        this.$router.push({
+    handleRowEdit({ businessId, publishId, procDefId }) {
+      this.$router.push({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.APPLY,
@@ -249,16 +253,16 @@ export default {
         }
       });
     },
-    async handleDelete(record){
-      const {businessId} = record
+    async handleDelete(record) {
+      const { businessId } = record
       const res = await deleteById({
-          businessId,
-          uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+        businessId,
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken
       })
-      if(res.status === 200){
+      if (res.status === 200) {
         this.$message.success(res.msg)
-      }else{
+      } else {
         this.$message.error(res.msg)
       }
       this.loadData({
@@ -296,7 +300,7 @@ export default {
 
     },
 
-    async handleSubmitInfoOk(submitInfo){
+    async handleSubmitInfoOk(submitInfo) {
       // const formData = await this.getFormData()
       // const res = await submit({
       //   businessId:this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
@@ -312,4 +316,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped>
+>>> .ant-table td {
+  white-space: nowrap;
+}
+</style>
