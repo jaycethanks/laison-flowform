@@ -25,7 +25,16 @@ export default {
       type:Boolean,
       default:false
     }
-  }
+  },
+  created(){
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'getHeight') {
+        const height = this.$el.scrollHeight;
+        event.source.postMessage({ type: 'height', height }, event.origin);
+      }
+    });
+  },
+
 };
 </script>
 <style scoped>
