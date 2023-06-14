@@ -202,7 +202,7 @@ export default {
         bizToken: this.computedQuery.bizToken,
       });
     },
-    handleDeal({ businessId, publishId, procDefId, taskId }) {
+    handleDeal({ businessId, publishId, procDefId, taskId,nodeId }) {
       this.$router.push({
         path: '/platform/formPreviewer',
         query: {
@@ -210,6 +210,7 @@ export default {
           publishId,
           procDefId,
           businessId,
+          nodeId,
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken,
           curTaskId: taskId
