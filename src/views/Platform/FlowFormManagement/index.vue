@@ -30,9 +30,9 @@
                 <div class="process-item">
                   <div class="process-item-content">
                     <!-- description -->
-                    <a-tooltip placement="top" v-show="_item.designDes">
+                    <a-tooltip placement="top">
                       <template slot="title">
-                        {{ _item.designDes }}
+                        <span>{{ _item.designDes }}</span>
                       </template>
                       <ff-icon :icon="_item.designIcon" style="height: 40px; width: 40px" :bgc="_item.designColor" />
                     </a-tooltip>
@@ -68,7 +68,10 @@
                         icon="eye"
                         size="small"
                         title="流程设计"
-                        @click="formPreviewModalTitle=_item.designName;$refs.FormPreviewerModal.show(_item.id)"
+                        @click="
+                          formPreviewModalTitle = _item.designName;
+                          $refs.FormPreviewerModal.show(_item.id);
+                        "
                         >预览该模板表单</a-button
                       >
                     </a-menu-item>
@@ -238,7 +241,7 @@ export default {
       list: [],
       enabled_list: [],
       switchLoading: false,
-      formPreviewModalTitle:'',
+      formPreviewModalTitle: '',
       query: {//查看handleQuery的使用文档 src/mixins/handleQuery.md
         uniTenantId: {
           type: String
@@ -252,6 +255,7 @@ export default {
   created() {
     this.loadList();
   },
+
   methods: {
 
     ellipsis: (str, max) => ellipsis(str, max),
@@ -273,12 +277,12 @@ export default {
       if (res.status === 200) {
         if ('templateList' in res.data) {
           this.list = res.data.templateList
-        }else{
+        } else {
           this.list = []
         }
         if ('publishList' in res.data) {
           this.enabled_list = res.data.publishList
-        }else{
+        } else {
           this.enabled_list = []
         }
       }
@@ -378,64 +382,63 @@ section {
   // display: flex;
   // gap: 20px;
   // flex-wrap: wrap;
-  .group-wrapper{
+  .group-wrapper {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
-  .process-item-wrapper {
-    flex-shrink: 0;
-    background: #fff;
-    border-radius: 5px;
-    position: relative;
-    // margin: 10px;
-    border: 1px solid #f2f2f2;
+    .process-item-wrapper {
+      flex-shrink: 0;
+      background: #fff;
+      border-radius: 5px;
+      position: relative;
+      // margin: 10px;
+      border: 1px solid #f2f2f2;
 
-    // box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
-    width: 296px;
-    // height: 100px;
-    padding: 22px 30px;
-    // border: 1px solid red;
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    &:hover {
-      border: 1px solid #ececec;
-      box-shadow: 0 4px 10px 0 #515a561f;
-    }
-    .process-item {
-      // border: 1px solid black;
+      // box-shadow: 0 0 6px 0 rgb(0 0 0 / 10%);
+      width: 296px;
+      // height: 100px;
+      padding: 22px 30px;
+      // border: 1px solid red;
+      position: relative;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      .process-item-content {
+      align-items: flex-start;
+      justify-content: space-between;
+      &:hover {
+        border: 1px solid #ececec;
+        box-shadow: 0 4px 10px 0 #515a561f;
+      }
+      .process-item {
+        // border: 1px solid black;
         display: flex;
         align-items: center;
         gap: 10px;
-        flex-shrink: 0;
-        .process-item-label {
-          margin-right: 16px;
-        }
+        .process-item-content {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+          .process-item-label {
+            margin-right: 16px;
+          }
 
-        p {
-          margin: 0;
-        }
-        .process-item-lable-title {
-          color: #2f2f2f;
-          font-size: 14px;
-          font-weight: bold;
-          line-height: 22px;
-          margin-bottom: 4px;
-        }
-        .process-item-lable-subtitle {
-          font-size: 12px;
-          color: #999;
-          line-height: 20px;
+          p {
+            margin: 0;
+          }
+          .process-item-lable-title {
+            color: #2f2f2f;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 22px;
+            margin-bottom: 4px;
+          }
+          .process-item-lable-subtitle {
+            font-size: 12px;
+            color: #999;
+            line-height: 20px;
+          }
         }
       }
     }
   }
-  }
-
 }
 </style>
