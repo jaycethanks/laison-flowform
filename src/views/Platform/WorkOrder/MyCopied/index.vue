@@ -7,7 +7,7 @@
         </a-form-item>
         <a-form-item label="状态">
           <a-select
-            style="min-width:100px"
+            style="min-width: 100px"
             v-model="pageInfo.condition.status"
             :allowClear="true"
             :options="StatusOptions"
@@ -27,7 +27,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-card :bordered="false" style="margin-top:1rem">
+    <a-card :bordered="false" style="margin-top: 1rem">
       <a-table
         size="small"
         :loading="pageInfo.loading"
@@ -71,7 +71,7 @@ import handleQuery from '@/mixins/handleQuery.js';
 import ProcessResultType from "@/constants/ProcessResultType.js"
 
 import PreviewFormType from "@/constants/PreviewFormType.js"
-import {ProcessStatusType,StatusOptions} from "@/constants/ProcessStatusType.js"
+import { ProcessStatusType, StatusOptions } from "@/constants/ProcessStatusType.js"
 
 
 import { myCopy } from "@/api/platform/processOpenAPI.js"
@@ -103,7 +103,7 @@ const columns = [
     title: '状态',
     dataIndex: 'status',
     key: 'status',
-    width:100,
+    width: 100,
     scopedSlots: { customRender: 'status' },
 
   },
@@ -117,25 +117,23 @@ const columns = [
   //   ellipsis: true,
   // },
   {
-    title: '更新人',
-    dataIndex: 'updateBy',
-    key: 'updateBy',
-  },
-    {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime',
+    title: '抄送结点',
+    dataIndex: 'nodeName',
+    key: 'nodeName',
   },
   {
-    title: '更新时间',
-    dataIndex: 'updateTime',
-    key: 'updateTime',
+    title: '抄送人',
+    dataIndex: 'copyBy',
+    key: 'copyBy',
   },
+
+
   {
-    title: '委托人',
-    dataIndex: 'delegator',
-    key: 'delegator',
+    title: '抄送时间',
+    dataIndex: 'copyTime',
+    key: 'copyTime',
   },
+
 
   {
     title: '操作',
@@ -190,8 +188,8 @@ export default {
         bizToken: this.computedQuery.bizToken,
       });
     },
-    handleCheckDetail({businessId,publishId, procDefId}){
-        this.$router.push({
+    handleCheckDetail({ businessId, publishId, procDefId }) {
+      this.$router.push({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.VIEW,
@@ -203,8 +201,8 @@ export default {
         }
       });
     },
-    handleRowEdit({businessId,publishId, procDefId}){
-        this.$router.push({
+    handleRowEdit({ businessId, publishId, procDefId }) {
+      this.$router.push({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.APPLY,
@@ -216,16 +214,16 @@ export default {
         }
       });
     },
-    async handleDelete(record){
-      const {businessId} = record
+    async handleDelete(record) {
+      const { businessId } = record
       const res = await deleteById({
-          businessId,
-          uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+        businessId,
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken
       })
-      if(res.status === 200){
+      if (res.status === 200) {
         this.$message.success(res.msg)
-      }else{
+      } else {
         this.$message.error(res.msg)
       }
       this.loadData({
@@ -263,7 +261,7 @@ export default {
 
     },
 
-    async handleSubmitInfoOk(submitInfo){
+    async handleSubmitInfoOk(submitInfo) {
       // const formData = await this.getFormData()
       // const res = await submit({
       //   businessId:this.computedQuery.businessId || '',// 业务ID，从草稿提交时需要携带
