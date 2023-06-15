@@ -294,8 +294,8 @@ export default {
           customStyle: '',
           enablePrint: false, //@jayce
           Expressions: '', //@jayce
-          currentLang: 'zh', //@jayce 23/05/10-09:22:11 :
-          supportedLanguages: ['zh'], //@jayce 23/05/10-10:39:41 :
+          currentLang: 'en', //@jayce 23/05/10-09:22:11 :
+          supportedLanguages: ['en'], //@jayce 23/05/10-10:39:41 :
         },
         //@jayce 23/05/10-10:39:50 :
         predefinedLists: {
@@ -314,16 +314,17 @@ export default {
         //@jayce 23/05/11-14:43:17 : 注意，如果要新增支持的语言，也需要去支持时间选择器: src/lib/kform/KDatePicker/datePicker.vue
         // icon 的显示是通过 svg , 如果需要新增语言, 去 https://github.com/adobe-fonts/noto-emoji-svg/tree/main/flags 这里,
         // 通过这个线上工具,将目录下载下来, 找到对应的图标 https://download-directory.github.io/
-
-        {
-          name: '中文',
-          value: 'zh',
-          disabled: true,
-        },
         {
           name: '英文',
           value: 'en',
+          disabled: true,
+
         },
+        {
+          name: '中文',
+          value: 'zh',
+        },
+
         {
           name: '法语',
           value: 'fr',
