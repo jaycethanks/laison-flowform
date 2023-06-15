@@ -85,7 +85,7 @@
                   [1].includes(ProcessStatusType.TODO)
                 "
                 @click="handleCancelTask(record)"
-                >{{ $t("common.drawBack") }}</a
+                >{{ $t("common.revoke") }}</a
               >
             </template>
 
