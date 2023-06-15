@@ -362,7 +362,7 @@ export default {
     handleElementChange(element) {
       // 结点编辑 change 事件发生后，同步去修改结点多语言配置中的中文项
       const name = element.businessObject.name;
-      this.currentExtendNodeConfig.lang['zh'] = name;
+      this.currentExtendNodeConfig.lang['en'] = name;
     },
     handleLangInputChange(elementId) {
       this.currentExtendNodeConfig.lang = this.$refs['language-support'].getValue();
@@ -467,7 +467,6 @@ export default {
     },
     clickEventCustomHandle() {
       this.initFieldsControl(); // 初始化表单字段控制组件
-      console.log('[this.currentExtendNodeConfig]: ', this.currentExtendNodeConfig);
     },
     //@jayce 21/12/28-16:26:41 :
     initFieldsControl() {

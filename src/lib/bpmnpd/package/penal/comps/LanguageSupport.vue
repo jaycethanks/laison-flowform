@@ -37,7 +37,6 @@ export default {
         {
           name: '中文',
           value: 'zh',
-          disabled: true,
         },
         {
           name: '英文',
@@ -87,9 +86,9 @@ export default {
       this.form.setFieldsValue({ [lang]: value });
       const fields = this.form.getFieldsValue()
       this.$emit('customEvent', fields);
-      // if (lang === 'zh') {
-      //   this.setModalElement(value);
-      // }
+      if (lang === 'en') {
+        this.setModalElement(value);
+      }
     },
     getValue() {
       let result = null;
