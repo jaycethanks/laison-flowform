@@ -2,16 +2,13 @@
   <!-- <div class="form-previewer-root"> -->
   <RootContainer noLogo :loading="pageLoading">
     <Container>
-      <EmptyPage
-        v-if="wrongPage || formInfo == null"
-        :description="wrongPage ? 'Wrong Page!' : 'Error When Parse Form!'"
-      />
-
       <!-- @jayce -->
       <div id="operation-row">
-        <a-button type="link" icon="rollback" @click="$router.go(-1)">返回</a-button>
+        <a-button type="link" icon="rollback" @click="$router.go(-1)">{{
+          $t("common.back")
+        }}</a-button>
         <a-tooltip
-          title="打印预览"
+          :title="$t('common.printPreview')"
           v-if="
             formInfo &&
             formInfo.config != undefined &&
@@ -59,6 +56,13 @@
           </a-col>
         </a-row>
       </main>
+
+      <EmptyPage
+        v-if="wrongPage || formInfo == null"
+        :description="
+          wrongPage ? $t('common.wrongPage') : $t('formPreview.parseError')
+        "
+      />
     </Container>
 
     <footer v-if="ifShowFooter" id="operation-footer-row">
@@ -68,7 +72,10 @@
           @click="handleSubmit(SubmitInfoType.APPLY)"
           v-if="computedQuery.type === PreviewFormType.APPLY"
         >
-          <span> <SvgIconSend style="height: 14px" /> 提交并发起</span>
+          <span>
+            <SvgIconSend style="height: 14px" />
+            {{ $t("formPreview.submitAndInitiateApply") }}</span
+          >
         </a-button>
 
         <a-button
@@ -78,11 +85,14 @@
         >
           <span>
             <a-icon type="check"></a-icon>
-            审批通过</span
+            {{ $t("formPreview.pass") }}</span
           >
         </a-button>
         <a-button v-if="computedQuery.type === PreviewFormType.APPLY" @click="handleSaveAsDraft">
-          <span> <SvgIconSaveDraft style="height: 14px" /> 保存为草稿</span>
+          <span>
+            <SvgIconSaveDraft style="height: 14px" />
+            {{ $t("formPreview.saveAsDraft") }}</span
+          >
         </a-button>
         <a-button
           type="primary"
@@ -91,7 +101,7 @@
         >
           <span>
             <a-icon type="enter" :rotate="180"></a-icon>
-            委托</span
+            {{ $t("formPreview.delegate") }}</span
           >
         </a-button>
         <a-button
@@ -101,7 +111,7 @@
         >
           <span>
             <a-icon type="close"></a-icon>
-            驳回</span
+            {{ $t("formPreview.backTask") }}</span
           >
         </a-button>
       </a-space>
@@ -136,7 +146,7 @@ import SvgIconSaveDraft from '@/assets/svgIcon/SvgIconSaveDraft.vue';
 import SvgIconArchive from '@/assets/svgIcon/SvgIconArchive.vue';
 import { queryProcessNodeForm } from "@/api/platform/platformOpenAPI.js";
 import { create, submit, edit } from "@/api/platform/businessOpenAPI.js"
-import { backTask,delegateTask } from "@/api/platform/processOpenAPI.js"
+import { backTask, delegateTask } from "@/api/platform/processOpenAPI.js"
 
 import RootContainer from "@/components/base/RootContainer/index.vue";
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
@@ -144,33 +154,16 @@ import { organizationStructure } from "@/api/platform/platformOpenAPI.js"
 
 import Container from "@/components/base/Container/index.vue";
 import TimeLine from "./TimeLine.vue"
+import handleLanguage from "@/mixins/handleLanguage.js"
 
 /**
  * 在审批或者发起时， 传递接口的数据结构类似， 但是有些是不同的结构， 所以这里维护了一份映射
  */
 
-// todo: 本地多语言支持
-const FN = {
-  [SubmitInfoType.APPLY]:{
-    fn:submit,
-    subTitle:"发起申请"
-  },
-  [SubmitInfoType.PASS]:{
-    fn:submit,
-    subTitle:"审批通过"
-  },
-  [SubmitInfoType.DELEGATE]:{
-    fn:delegateTask,
-    subTitle:"任务委托"
-  },
-  [SubmitInfoType.BACKTASK]:{
-    fn:backTask,
-    subTitle:"驳回"
-  }
-}
+
 export default {
   name: 'FormPreviewer',
-  mixins: [handleQuery],
+  mixins: [handleQuery, handleLanguage],
   components: {
     KFormBuild,
     JModal,
@@ -183,17 +176,18 @@ export default {
     Container,
     submitInfoModal,
   },
+
   data() {
     return {
       PreviewFormType,
       SubmitInfoType,
       pageLoading: false,
-      modalTitle_:'',// modal title
+      modalTitle_: '',// modal title
       formInfo: null, //表单定义
       formData: null, // 表单数据
       formdataObj: {}, //表单数据
-      submitInfoModalType:NaN,//submitInfoModal可根据type 不同去动态渲染需要录入的字段
-      delegatePerson:[],
+      submitInfoModalType: NaN,//submitInfoModal可根据type 不同去动态渲染需要录入的字段
+      delegatePerson: [],
       isFullScreen: false,
       kfb: {
         disabled: false,
@@ -219,23 +213,43 @@ export default {
         procDefId: {//流程定义ID
           type: String
         },
-        lang: '',
-        businessId: '',
-        nodeId: '',
-        curTaskId:''
+        lang: 'zh',
+        businessId: undefined,
+        nodeId: undefined,
+        curTaskId: undefined
       },
     };
   },
   computed: {
-    ifShowFooter:function(){
+    ifShowFooter: function () {
       return !this.wrongPage && !(this.computedQuery.type === PreviewFormType.COPY) && !(this.computedQuery.type === PreviewFormType.VIEW)
     },
     modalTitle: function () {
       const titles = {
-        [PreviewFormType.APPLY]: "发起流程",
-        [PreviewFormType.APPROVE]: "流程审批",
+        [PreviewFormType.APPLY]: this.$t('formPreview.apply'),
+        [PreviewFormType.APPROVE]: this.$t('formPreview.flowApprove'),
       };
       return titles[this.computedQuery.type] || "未定义modal title 值！"
+    },
+    FN: function () {
+      return {
+        [SubmitInfoType.APPLY]: {
+          fn: submit,
+          subTitle: this.$t('formPreview.apply')
+        },
+        [SubmitInfoType.PASS]: {
+          fn: submit,
+          subTitle: this.$t('formPreview.pass')
+        },
+        [SubmitInfoType.DELEGATE]: {
+          fn: delegateTask,
+          subTitle: this.$t('formPreview.delegate')
+        },
+        [SubmitInfoType.BACKTASK]: {
+          fn: backTask,
+          subTitle: this.$t('formPreview.backTask')
+        }
+      }
     }
   },
   watch: {
@@ -263,31 +277,31 @@ export default {
 
     },
     async loadflowformData() {
-      try{
-      const res = await queryProcessNodeForm({
-        businessId: this.computedQuery.businessId,
-        publishId: this.computedQuery.publishId,
-        procDefId: this.computedQuery.procDefId,
-        nodeType: this.computedQuery.type,
-        nodeId: this.computedQuery.nodeId || '',
-        uniTenantId: this.computedQuery.uniTenantId,
-        bizToken: this.computedQuery.bizToken,
-      })
-      if (res.status === 200) {
-        // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
-        const { formInfo, formConfigs, formData } = res.data
-        this.formData = formData;
-        const formWithNodeConfig = {
-          formInfo,
-          formConfigs,
+      try {
+        const res = await queryProcessNodeForm({
+          businessId: this.computedQuery.businessId,
+          publishId: this.computedQuery.publishId,
+          procDefId: this.computedQuery.procDefId,
+          nodeType: this.computedQuery.type,
+          nodeId: this.computedQuery.nodeId || '',
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken,
+        })
+        if (res.status === 200) {
+          // 真正展示的时候,需要先知道当前审批结点的类型, 是任务审批结点, 还是抄送结点,还是查看结点, 不同的结点配置对字段的控制不同, 所以需要将formInfo 按照规则洗一遍
+          const { formInfo, formConfigs, formData } = res.data
+          this.formData = formData;
+          const formWithNodeConfig = {
+            formInfo,
+            formConfigs,
+          }
+          const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
+          this.formInfo = parsedFormInfo;
+        } else {
+          this.$message.error(res.msg)
         }
-        const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, this.computedQuery.lang);
-        this.formInfo = parsedFormInfo;
-      } else {
-        this.$message.error(res.msg)
-      }
-      }finally{
-      this.pageLoading = false
+      } finally {
+        this.pageLoading = false
       }
     },
 
@@ -353,7 +367,6 @@ export default {
           // prettier-ignore
           // 如果存在LaisonStockList这个组件的前提下，且其存货为空
           if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length == 0) {
-
             this.$message.error('请至少选择一个存货')
             return
           } else if (this.$refs.kfb.form.formItems.LaisonStockList && values.LaisonStockList.tableData.length > 0) {
@@ -381,10 +394,10 @@ export default {
     },
     async handleSubmitInfoOk(submitInfo) {
       // 额外处理， 后端这个字段保存的是一个逗号隔开的字符串
-      if(submitInfo.backUsers){
+      if (submitInfo.backUsers) {
         submitInfo.backUsers = submitInfo.backUsers.join()
       }
-      if(submitInfo.delegator){
+      if (submitInfo.delegator) {
         submitInfo.delegator = submitInfo.delegator[0].id
       }
 
@@ -410,8 +423,8 @@ export default {
     },
     handleSubmit(submitType) {
       // 获取到请求接口
-      const target = FN[submitType];
-      const { fn,subTitle } = target;
+      const target = this.FN[submitType];
+      const { fn, subTitle } = target;
       this.fn = fn;
       this.submitInfoModalType = submitType
       this.modalTitle_ = this.modalTitle + " - " + subTitle
@@ -466,7 +479,7 @@ export default {
        */
       window.rootKForm = laisonRootFormInstance;
     },
-        // 加载三方组织架构,并set到store
+    // 加载三方组织架构,并set到store
     async loadOrgStructAndSetStore() {
       const res = await organizationStructure({
         uniTenantId: this.computedQuery.uniTenantId,
@@ -487,7 +500,7 @@ $operation-row-height: 4rem;
 //   padding: 20px;
 //   min-height: 100vh;
 //   position: relative;
-#operation-row{
+#operation-row {
   padding: 10px;
   display: flex;
   align-items: center;

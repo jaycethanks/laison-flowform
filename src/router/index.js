@@ -10,7 +10,7 @@ import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import Test from '../../playground/Test.vue';
 Vue.use(VueRouter);
 // 测试用业务系统token
-const bizToken = '2f5687d5-00fe-4840-b9dc-2e1f481dcfbb';
+const bizToken = '1ccbb6d3-ad15-4e33-9a59-df6aac6bdd34';
 export const systemRoutes = [
   {
     path: '', //默认首页

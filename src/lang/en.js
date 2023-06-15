@@ -34,6 +34,8 @@ export default {
     ensureDelete: 'Ensure Delete',
     delete: 'Delete',
     deal: 'Deal With',
+    addonsUpload: 'Upload Attachments',
+
     status: {
       draft: 'Draft',
       todo: 'Todo',
@@ -62,6 +64,26 @@ export default {
       taskEndTime: 'End Time',
       comment: 'Comment',
       taskDuration: 'Task Cost',
+    },
+  },
+
+  submitInfoModal: {
+    comment: 'Comment or Remark',
+    recommendations: '推荐输入',
+    enclosure: 'Attachments',
+    delegator: '委托人',
+    delegateTo: '驳回至',
+    selectDealPerson: '选择处理人',
+    words: {
+      a: 'Read',
+      b: 'Received',
+      c: 'Verified',
+      d: 'Qualified',
+      e: 'True',
+      f: 'Confirmed',
+      g: 'Reviewed',
+      h: 'Acknowledged  ',
+      i: 'Well done',
     },
   },
 

@@ -1,34 +1,41 @@
 <template>
-  <a-modal cancelText="取消" okText="确定" v-model="visible" :title="title" @ok="handleOk" @cancel="handleCancle">
+  <a-modal
+    :cancelText="$t('common.cancelText')"
+    :okText="$t('common.okText')"
+    v-model="visible"
+    :title="title"
+    @ok="handleOk"
+    @cancel="handleCancle"
+  >
     <a-form-model ref="ruleForm" :model="form" :rules="rules">
       <a-form-model-item ref="comment" prop="comment">
-        <span slot="label" class="label-slot">评论或备注</span>
+        <span slot="label" class="label-slot">{{$t('submitInfoModal.comment')}}</span>
         <a-textarea allowClear :autoSize="{ minRows: 6, maxRows: 6 }" v-model="form.comment" />
       </a-form-model-item>
       <section class="recommendations">
-        <span>推荐输入:</span>
+        <span>{{$t('submitInfoModal.recommendations')}}:</span>
         <a-button size="small" @click="handleTextClick(text)" v-for="text in recommendations" :key="text">
           {{ text }}
         </a-button>
       </section>
       <a-divider style="margin: 1em 0" />
       <a-form-model-item ref="enclosurePaths" prop="enclosurePaths">
-        <span slot="label" class="label-slot">附件</span>
+        <span slot="label" class="label-slot">{{$t('submitInfoModal.enclosure')}}</span>
         <ffUploader multiple v-model="form.enclosurePaths" />
       </a-form-model-item>
 
       <a-form-model-item v-if="fields.includes('delegator')" ref="delegator" prop="delegator">
-        <span slot="label" class="label-slot">委托人</span>
+        <span slot="label" class="label-slot">{{$t('submitInfoModal.delegator')}}</span>
         <OrgSelectionModal :maxPerson="1" approvalType="people" v-model="form.delegator" :minHeight="100" />
       </a-form-model-item>
 
       <a-form-model-item v-if="fields.includes('backTask')" ref="backNodeId" prop="backNodeId">
-        <span slot="label" class="label-slot">驳回至</span>
+        <span slot="label" class="label-slot">{{$t('submitInfoModal.delegateTo')}}</span>
         <a-select @change="onBackNodesSelectChange" v-model="form.backNodeId" :options="backNodesOptions" />
       </a-form-model-item>
 
       <a-form-model-item v-if="fields.includes('backTask')" ref="backUsers" prop="backUsers">
-        <span slot="label" class="label-slot">选择处理人</span>
+        <span slot="label" class="label-slot">{{$t('submitInfoModal.selectDealPerson')}}</span>
         <a-select mode="multiple" v-model="form.backUsers" :options="backUsersOptions" />
       </a-form-model-item>
     </a-form-model>
@@ -78,24 +85,27 @@ export default {
   computed: {
     fields: function () {
       return this.type ? FieldsMap[this.type] : []
-    }
+    },
+    recommendations: function(){
+      return [
+        this.$t('submitInfoModal.words.a'),
+        this.$t('submitInfoModal.words.b'),
+        this.$t('submitInfoModal.words.c'),
+        this.$t('submitInfoModal.words.d'),
+        this.$t('submitInfoModal.words.e'),
+        this.$t('submitInfoModal.words.f'),
+        this.$t('submitInfoModal.words.g'),
+        this.$t('submitInfoModal.words.h'),
+        this.$t('submitInfoModal.words.i'),
+      ]
+    },
   },
 
   data() {
     return {
       visible: false,
       isEdit: false,
-      recommendations: [
-        "已阅",
-        "收到",
-        "已核对",
-        "合格",
-        "情况属实",
-        "确认",
-        "已复核",
-        "知悉",
-        "辛苦了",
-      ],
+
       labelCol: { span: 7 },
       wrapperCol: { span: 17 },
       form: {
@@ -152,7 +162,7 @@ export default {
       //   this.$set(this, 'form', {});
       // }
       this.$set(this, 'form', {
-        comment:"通过"
+        comment:this.$t('formPreview.pass')
       });
 
 

@@ -7,7 +7,7 @@
     @change="handleChange"
     v-bind="$attrs"
   >
-    <a-button :type="buttonType"> <a-icon type="link" /> 上传附件 </a-button>
+    <a-button :type="buttonType"> <a-icon type="link" /> {{$t('common.addonsUpload')}} </a-button>
     <a-modal :visible="previewVisible" :footer="null" @cancel="previewVisible = false">
       <img alt="example" style="width: 100%" :src="previewImage" />
     </a-modal>

@@ -345,6 +345,7 @@ export default {
           type: PreviewFormType.APPLY,
           publishId,
           procDefId,
+          lang: this.computedQuery.lang,
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken
         }

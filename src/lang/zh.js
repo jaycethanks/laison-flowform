@@ -34,6 +34,10 @@ export default {
     ensureDelete: '确认删除',
     delete: '删除',
     deal: '处理',
+    back: '返回',
+    printPreview: '打印预览',
+    wrongPage: '页面错误',
+    addonsUpload: '上传附件',
     status: {
       draft: '草稿',
       todo: '代办',
@@ -64,7 +68,35 @@ export default {
       taskDuration: '任务耗时',
     },
   },
-
+  formPreview: {
+    apply: '发起申请',
+    pass: '审批通过',
+    delegate: '任务委托',
+    backTask: '驳回',
+    parseError: '表单解析错误', //'Error When Parse Form!'
+    submitAndInitiateApply: '提交并发起',
+    saveAsDraft: '保存为草稿',
+    flowApprove: '流程审批',
+  },
+  submitInfoModal: {
+    comment: '评论或备注',
+    recommendations: '推荐输入',
+    enclosure: '附件',
+    delegator: '委托人',
+    delegateTo: '驳回至',
+    selectDealPerson: '选择处理人',
+    words: {
+      a: '已阅',
+      b: '收到',
+      c: '已核对',
+      d: '合格',
+      e: '情况属实',
+      f: '确认',
+      g: '已复核',
+      h: '知悉',
+      i: '辛苦了',
+    },
+  },
   apply: {
     initiateApply: '发起申请',
     drawBackApply: '撤销申请',
