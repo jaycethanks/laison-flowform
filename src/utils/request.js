@@ -44,24 +44,26 @@ service.interceptors.response.use(
     // }
     // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
     // 否则的话抛出错误
-    if (response.data.status === 401) {
+    // 624: token 失效
+    if (response.data.status === 624) {
       const {
         currentRoute: { path },
       } = router;
       if (/^\/platform\/[^\/]+/.test(path)) {
         // 平台页接口token过期
         router.push('/platform/401');
+        console.log('token_expired');
+        // 获取指向父级窗口的引用,向宿主页面通知 token 失效
+        var parentWindow = window.parent;
+        parentWindow && parentWindow.postMessage({ type: 'token_expired' }, '*');
       } else {
         // 系统平台过期
         $message.error(`登录凭证失效，请重新登录！`);
         router.push('/login');
       }
     } else if (response.data.errorcode === 403) {
-      // Message({
-      //   message: 'The login information has expired. Please login again.',
-      //   type: 'error',
-      //   duration: 5 * 1000,
-      // });
+      $message.error(`登录凭证过期，请重新登录！`);
+      router.push('/login');
       localStorage.removeItem('token');
     } else {
       return response.data;

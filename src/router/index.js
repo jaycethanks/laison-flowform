@@ -7,9 +7,10 @@ import FlowPreviewer from '@/packages/FlowPreviewer/index.vue';
 import FlowDesigner from '@/packages/FlowDesigner';
 import FormDesigner from '@/packages/FormDesigner';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
-
 import Test from '../../playground/Test.vue';
 Vue.use(VueRouter);
+// 测试用业务系统token
+const bizToken = '2f5687d5-00fe-4840-b9dc-2e1f481dcfbb';
 export const systemRoutes = [
   {
     path: '', //默认首页
@@ -287,7 +288,7 @@ const platformRoutes = [
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
+          query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
         });
       } else {
         next();
@@ -311,7 +312,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
+              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
             });
           } else {
             next();
@@ -330,7 +331,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
+              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
             });
           } else {
             next();
@@ -349,7 +350,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
+              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
             });
           } else {
             next();
@@ -367,7 +368,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
+              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
             });
           } else {
             next();

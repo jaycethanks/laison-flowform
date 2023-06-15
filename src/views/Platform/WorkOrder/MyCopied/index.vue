@@ -57,7 +57,7 @@
       </a-table>
     </a-card>
 
-    <submitInfoModal :title="modalTitle" ref="modal" @ok="handleSubmitInfoOk" />
+    <!-- <submitInfoModal :title="modalTitle" ref="modal" @ok="handleSubmitInfoOk" /> -->
 
     <!-- <Container> -->
   </RootContainer>
@@ -77,7 +77,7 @@ import { ProcessStatusType, StatusOptions } from "@/constants/ProcessStatusType.
 
 import { myCopy } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
-import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
+// import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById } from "@/api/platform/businessOpenAPI.js"
 import handleLanguage from "@/mixins/handleLanguage.js"
 
@@ -88,7 +88,7 @@ export default {
     Container,
     RootContainer,
     ffStatus,
-    submitInfoModal
+    // submitInfoModal
   },
   computed: {
     modalTitle: function(){return this.$t('empty')},
@@ -233,21 +233,21 @@ export default {
     },
 
 
-    async handleOk(formFieldsValue, isEdit) {
-      let fn = saveOrUpdate;
-      const res = await fn(formFieldsValue);
-      if (res.status === 200) {
-        this.$message.success('添加成功');
-        this.$refs.modal.hide();
-      } else {
-        this.$message.warn(res.msg);
-      }
-      this.loadData({
-        uniTenantId: this.computedQuery.uniTenantId,
-        bizToken: this.computedQuery.bizToken,
-      });
+    // async handleOk(formFieldsValue, isEdit) {
+    //   let fn = saveOrUpdate;
+    //   const res = await fn(formFieldsValue);
+    //   if (res.status === 200) {
+    //     this.$message.success('添加成功');
+    //     this.$refs.modal.hide();
+    //   } else {
+    //     this.$message.warn(res.msg);
+    //   }
+    //   this.loadData({
+    //     uniTenantId: this.computedQuery.uniTenantId,
+    //     bizToken: this.computedQuery.bizToken,
+    //   });
 
-    },
+    // },
 
     async handleSubmitInfoOk(submitInfo) {
       // const formData = await this.getFormData()
