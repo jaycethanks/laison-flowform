@@ -287,7 +287,7 @@ const platformRoutes = [
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+          query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
         });
       } else {
         next();
@@ -311,7 +311,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
             });
           } else {
             next();
@@ -330,7 +330,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
             });
           } else {
             next();
@@ -349,7 +349,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
             });
           } else {
             next();
@@ -367,7 +367,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: '3209eedc-3d2b-48aa-802d-8ffe5799c476' },
+              query: { uniTenantId: '1660919377043652608', bizToken: '53317a0a-f6e1-45cb-a558-6e70e1dcf797' },
             });
           } else {
             next();

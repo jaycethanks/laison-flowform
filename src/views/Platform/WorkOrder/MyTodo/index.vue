@@ -2,10 +2,10 @@
   <RootContainer>
     <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
       <a-row :gutter="24" style="margin: 0">
-        <a-form-item label="工单编号">
+        <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
-        <a-form-item label="状态">
+        <a-form-item :label="$t('common.status')">
           <a-select
             style="min-width: 100px"
             v-model="pageInfo.condition.status"
@@ -19,10 +19,14 @@
       <a-row type="flex" justify="space-between" :gutter="24" style="margin: 0">
         <a-col>
           <a-form-item>
-            <a-button type="primary" html-type="submit" icon="search">查询</a-button>
+            <a-button type="primary" html-type="submit" icon="search">{{
+              $t("common.query")
+            }}</a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="resetSearch" icon="reload">重置</a-button>
+            <a-button type="primary" @click="resetSearch" icon="reload">{{
+              $t("common.reset")
+            }}</a-button>
           </a-form-item>
         </a-col>
       </a-row>
@@ -50,11 +54,11 @@
         <template slot="action" slot-scope="text, record">
           <a-space>
             <template>
-              <a @click="handleDeal(record)">处理</a>
+              <a @click="handleDeal(record)">{{ $t("common.deal") }}</a>
               <!-- 驳回 通过 委托-->
             </template>
             <template>
-              <a @click="handleCheckDetail(record)">查看</a>
+              <a @click="handleCheckDetail(record)">{{ $t("common.check") }}</a>
             </template>
 
             <!-- <a-popconfirm placement="rightBottom" ok-text="Yes" cancel-text="No" @confirm="handleDelete(record)">
@@ -87,98 +91,76 @@ import { myTodo } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById } from "@/api/platform/businessOpenAPI.js"
+import handleLanguage from "@/mixins/handleLanguage.js"
 
 
-const columns = [
-  {
-    title: '标题',
-    dataIndex: 'title',
-    key: 'title',
-  },
-  {
-    title: '工单编号',
-    dataIndex: 'businessId',
-    key: 'businessId',
-  },
-  {
-    title: '工单类型',
-    dataIndex: 'orderType',
-    key: 'orderType',
-  },
-  {
-    title: '任务名称',
-    dataIndex: 'nodeName',
-    key: 'nodeName',
-  },
-  {
-    title: '申请人',
-    dataIndex: 'userId',
-    key: 'userId',
-  },
-  {
-    title: '委托人',
-    dataIndex: 'delegator',
-    key: 'delegator',
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'taskStartTime',
-    key: 'taskStartTime',
-  },
-
-
-
-  // {
-  //   title: '状态',
-  //   dataIndex: 'status',
-  //   key: 'status',
-  //   width:100,
-  //   scopedSlots: { customRender: 'status' },
-
-  // },
-  // {
-  //   title: '结果',
-  //   dataIndex: 'result',
-  //   key: 'result',
-  //   width:100,
-  //   scopedSlots: { customRender: 'result' },
-
-  //   ellipsis: true,
-  // },
-
-
-
-
-
-  {
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    fixed: 'right',
-    width: 160,
-    scopedSlots: { customRender: 'action' },
-  },
-];
 
 
 export default {
   name: "myTodo",
-  mixins: [searchTableMixin, handleQuery],
+  mixins: [searchTableMixin, handleQuery,handleLanguage],
   components: {
     Container,
     RootContainer,
     ffStatus,
     submitInfoModal
   },
+  computed: {
+    modalTitle: function(){return this.$t('todo.approveFlow')},
+    columns: function () {
+      return [
+        {
+          title: this.$t('common.table.title'),
+          dataIndex: 'title',
+          key: 'title',
+        },
+        {
+          title: this.$t('common.table.businessId'),
+          dataIndex: 'businessId',
+          key: 'businessId',
+        },
+        {
+          title: this.$t('common.table.orderType'),
+          dataIndex: 'orderType',
+          key: 'orderType',
+        },
+        {
+          title: this.$t('common.table.nodeName'),
+          dataIndex: 'nodeName',
+          key: 'nodeName',
+        },
+        {
+          title: this.$t('common.table.applyUser'),
+          dataIndex: 'userId',
+          key: 'userId',
+        },
+        {
+          title: this.$t('common.table.delegator'),
+          dataIndex: 'delegator',
+          key: 'delegator',
+        },
+        {
+          title: this.$t('common.table.createTime'),
+          dataIndex: 'taskStartTime',
+          key: 'taskStartTime',
+        },
+        {
+          title: this.$t('common.table.action'),
+          dataIndex: 'action',
+          key: 'action',
+          fixed: 'right',
+          width: 160,
+          scopedSlots: { customRender: 'action' },
+        },
+      ]
+    }
+  },
   data() {
     return {
       ProcessResultType,
-
       ProcessStatusType,
       StatusOptions,
-      columns,
       findPage: myTodo,
-      modalTitle: '发起流程',
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
@@ -189,6 +171,7 @@ export default {
         bizToken: {
           type: String
         },
+        lang:'zh'
       },
     };
   },

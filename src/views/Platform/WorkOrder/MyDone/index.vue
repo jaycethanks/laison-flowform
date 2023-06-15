@@ -2,10 +2,10 @@
   <RootContainer>
     <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
       <a-row :gutter="24" style="margin: 0">
-        <a-form-item label="工单编号">
+        <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
-        <a-form-item label="状态">
+        <a-form-item :label="$t('common.status')">
           <a-select
             style="min-width: 100px"
             v-model="pageInfo.condition.status"
@@ -19,10 +19,14 @@
       <a-row type="flex" justify="space-between" :gutter="24" style="margin: 0">
         <a-col>
           <a-form-item>
-            <a-button type="primary" html-type="submit" icon="search">查询</a-button>
+            <a-button type="primary" html-type="submit" icon="search">{{
+              $t("common.query")
+            }}</a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="resetSearch" icon="reload">重置</a-button>
+            <a-button type="primary" @click="resetSearch" icon="reload">{{
+              $t("common.reset")
+            }}</a-button>
           </a-form-item>
         </a-col>
       </a-row>
@@ -54,7 +58,7 @@
         <template slot="action" slot-scope="text, record">
           <a-space>
             <template>
-              <a @click="handleCheckDetail(record)">查看</a>
+              <a @click="handleCheckDetail(record)">{{ $t("common.check") }}</a>
             </template>
           </a-space>
         </template>
@@ -82,94 +86,92 @@ import { myDone } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById } from "@/api/platform/businessOpenAPI.js"
-
-
-
-
-const columns = [
-  {
-    title: '标题',
-    dataIndex: 'title',
-    key: 'title',
-  },
-  {
-    title: '工单编号',
-    dataIndex: 'businessId',
-    key: 'businessId',
-  },
-  {
-    title: '工单类型',
-    dataIndex: 'orderType',
-    key: 'orderType',
-  },
-  {
-    title: '任务名称',
-    dataIndex: 'nodeName',
-    key: 'nodeName',
-  },
-  {
-    title: '申请人',
-    dataIndex: 'userId',
-    key: 'userId',
-  },
-  {
-    title: '委托人',
-    dataIndex: 'delegator',
-    key: 'delegator',
-  },
-
-  {
-    title: '审批意见',
-    dataIndex: 'comment',
-    key: 'comment',
-  },
-  {
-    title: '任务耗时',
-    dataIndex: 'taskDuration',
-    key: 'taskDuration',
-    scopedSlots: { customRender: 'taskDuration' },
-
-  },
-  {
-    title: '开始时间',
-    dataIndex: 'taskStartTime',
-    key: 'taskStartTime',
-  },
-  {
-    title: '结束时间',
-    dataIndex: 'taskEndTime',
-    key: 'taskEndTime',
-  },
-
-  {
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    fixed: 'right',
-    width: 160,
-    scopedSlots: { customRender: 'action' },
-  },
-];
-
+import handleLanguage from "@/mixins/handleLanguage.js"
 
 export default {
   name: "myDone",
-  mixins: [searchTableMixin, handleQuery],
+  mixins: [searchTableMixin, handleQuery, handleLanguage],
   components: {
     Container,
     RootContainer,
     ffStatus,
     submitInfoModal
   },
+  computed: {
+    modalTitle: function(){return this.$t('empty')},
+    columns: function () {
+      return [
+        {
+          title: this.$t('common.table.title'),
+          dataIndex: 'title',
+          key: 'title',
+        },
+        {
+          title: this.$t('common.table.businessId'),
+          dataIndex: 'businessId',
+          key: 'businessId',
+        },
+        {
+          title: this.$t('common.table.orderType'),
+          dataIndex: 'orderType',
+          key: 'orderType',
+        },
+        {
+          title: this.$t('common.table.nodeName'),
+          dataIndex: 'nodeName',
+          key: 'nodeName',
+        },
+        {
+          title: this.$t('common.table.applyUser'),
+          dataIndex: 'userId',
+          key: 'userId',
+        },
+        {
+          title: this.$t('common.table.delegator'),
+          dataIndex: 'delegator',
+          key: 'delegator',
+        },
+
+        {
+          title: this.$t('common.table.comment'),
+          dataIndex: 'comment',
+          key: 'comment',
+        },
+        {
+          title: this.$t('common.table.taskDuration'),
+          dataIndex: 'taskDuration',
+          key: 'taskDuration',
+          scopedSlots: { customRender: 'taskDuration' },
+
+        },
+        {
+          title: this.$t('common.table.taskStartTime'),
+          dataIndex: 'taskStartTime',
+          key: 'taskStartTime',
+        },
+        {
+          title: this.$t('common.table.taskEndTime'),
+          dataIndex: 'taskEndTime',
+          key: 'taskEndTime',
+        },
+
+        {
+          title: this.$t('common.table.action'),
+          dataIndex: 'action',
+          key: 'action',
+          fixed: 'right',
+          width: 160,
+          scopedSlots: { customRender: 'action' },
+        },
+      ];
+    }
+  },
   data() {
     return {
       ProcessResultType,
-
       ProcessStatusType,
       StatusOptions,
-      columns,
       findPage: myDone,
-      modalTitle: '发起流程',
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
@@ -180,6 +182,7 @@ export default {
         bizToken: {
           type: String
         },
+        lang: 'zh'
       },
     };
   },

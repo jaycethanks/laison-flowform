@@ -2,7 +2,7 @@
   <RootContainer>
     <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
       <a-row :gutter="24" style="margin: 0">
-        <a-form-item :label="$t('common.workOrderNum')">
+        <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
         <a-form-item :label="$t('common.status')">
@@ -23,10 +23,14 @@
       <a-row type="flex" justify="space-between" :gutter="24" style="margin: 0">
         <a-col>
           <a-form-item>
-            <a-button type="primary" html-type="submit" icon="search">{{$t('common.query')}}</a-button>
+            <a-button type="primary" html-type="submit" icon="search">{{
+              $t("common.query")
+            }}</a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="resetSearch" icon="reload">{{$t('common.reset')}}</a-button>
+            <a-button type="primary" @click="resetSearch" icon="reload">{{
+              $t("common.reset")
+            }}</a-button>
           </a-form-item>
         </a-col>
         <a-col>
@@ -35,7 +39,7 @@
               type="primary"
               @click="templateListVisible = true"
               icon="caret-right"
-              >{{$t('apply.initiateApply') }}</a-button
+              >{{ $t("apply.initiateApply") }}</a-button
             >
           </a-form-item>
         </a-col>
@@ -65,14 +69,14 @@
           <a-space>
             <!-- 公有 -->
             <template>
-              <a @click="handleCheckDetail(record)">{{$t('common.check')}}</a>
+              <a @click="handleCheckDetail(record)">{{ $t("common.check") }}</a>
             </template>
 
             <!-- 草稿 编辑|提交 -->
             <template v-if="[ProcessResultType.TOSUBMIT].includes(record.result)">
-              <a @click="handleRowEdit(record)">{{$t('common.edit')}}</a>
+              <a @click="handleRowEdit(record)">{{ $t("common.edit") }}</a>
               <!-- <a-divider type="vertical" /> -->
-              <a @click="handleRowSubmit(record)">{{$t('common.submit')}}</a>
+              <a @click="handleRowSubmit(record)">{{ $t("common.submit") }}</a>
             </template>
             <template>
               <a
@@ -81,7 +85,7 @@
                   [1].includes(ProcessStatusType.TODO)
                 "
                 @click="handleCancelTask(record)"
-                >{{$t('common.drawBack')}}</a
+                >{{ $t("common.drawBack") }}</a
               >
             </template>
 
@@ -89,7 +93,7 @@
               <a
                 v-if="[ProcessResultType.DEALING].includes(record.result)"
                 @click="handleRemainderTask(record)"
-                >{{$t('apply.urge')}}</a
+                >{{ $t("apply.urge") }}</a
               >
             </template>
 
@@ -101,8 +105,10 @@
               cancel-text="No"
               @confirm="handleDelete(record)"
             >
-              <template slot="title"> {{$t('common.ensureDelete')}}?</template>
-              <a-button style="color: #ff4d4f" type="link">{{$t('common.delete')}}</a-button>
+              <template slot="title"> {{ $t("common.ensureDelete") }}?</template>
+              <a-button style="color: #ff4d4f" type="link">{{
+                $t("common.delete")
+              }}</a-button>
             </a-popconfirm>
           </a-space>
         </template>
@@ -132,79 +138,13 @@ import { myApply, remainderTask, cancelTask } from "@/api/platform/processOpenAP
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById, submit } from "@/api/platform/businessOpenAPI.js"
+import handleLanguage from "@/mixins/handleLanguage.js"
 
-
-// todo: 本地多语言支持
-const FN = {
-  [SubmitInfoType.APPLY]: {
-    fn: submit,
-    subTitle: "发起申请"
-  },
-  [SubmitInfoType.CANCELTASK]: {
-    fn: cancelTask,
-    subTitle: "撤销申请"
-  },
-
-}
-
-const columns = [
-  {
-    title: '标题',
-    dataIndex: 'title',
-    key: 'title',
-  },
-  {
-    title: '工单编号',
-    dataIndex: 'businessId',
-    key: 'businessId',
-  },
-  {
-    title: '工单类型',
-    dataIndex: 'orderType',
-    key: 'orderType',
-  },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    key: 'status',
-    width: 100,
-    scopedSlots: { customRender: 'status' },
-  },
-  {
-    title: '更新人',
-    dataIndex: 'updateBy',
-    key: 'updateBy',
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    key: 'createTime',
-  },
-  {
-    title: '更新时间',
-    dataIndex: 'updateTime',
-    key: 'updateTime',
-  },
-  {
-    title: '委托人',
-    dataIndex: 'delegator',
-    key: 'delegator',
-  },
-
-  {
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    fixed: 'right',
-    width: 160,
-    scopedSlots: { customRender: 'action' },
-  },
-];
 
 
 export default {
   name: "MyApply",
-  mixins: [searchTableMixin, handleQuery],
+  mixins: [searchTableMixin, handleQuery, handleLanguage],
   components: {
     Container,
     RootContainer,
@@ -212,12 +152,83 @@ export default {
     ffStatus,
     submitInfoModal
   },
+  computed: {
+    // 语言的设定是在,created 阶段 handleLanguage mixin 这个过程又依赖handleQuery(会访问data.query) 不要直接将columns 和 FN 依赖 $t 的属性放在data中
+    columns: function () {
+      return [
+        {
+          title: this.$t('common.table.title'),
+          dataIndex: 'title',
+          key: 'title',
+        },
+        {
+          title: this.$t('common.table.businessId'),
+          dataIndex: 'businessId',
+          key: 'businessId',
+        },
+        {
+          title: this.$t('common.table.orderType'),
+          dataIndex: 'orderType',
+          key: 'orderType',
+        },
+        {
+          title: this.$t('common.table.status'),
+          dataIndex: 'status',
+          key: 'status',
+          width: 100,
+          scopedSlots: { customRender: 'status' },
+        },
+        {
+          title: this.$t('common.table.updateBy'),
+          dataIndex: 'updateBy',
+          key: 'updateBy',
+        },
+        {
+          title: this.$t('common.table.createTime'),
+          dataIndex: 'createTime',
+          key: 'createTime',
+        },
+        {
+          title: this.$t('common.table.updateTime'),
+          dataIndex: 'updateTime',
+          key: 'updateTime',
+        },
+        {
+          title: this.$t('common.table.delegator'),
+          dataIndex: 'delegator',
+          key: 'delegator',
+        },
+
+        {
+          title: this.$t('common.table.action'),
+          dataIndex: 'action',
+          key: 'action',
+          fixed: 'right',
+          width: 160,
+          scopedSlots: { customRender: 'action' },
+        },
+      ]
+    },
+    FN: function () {
+      return {
+        [SubmitInfoType.APPLY]: {
+          fn: submit,
+          subTitle: this.$t('apply.initiateApply')
+        },
+        [SubmitInfoType.CANCELTASK]: {
+          fn: cancelTask,
+          subTitle: this.$t('apply.drawBackApply')
+        },
+      }
+    }
+  },
   data() {
     return {
+
+
       ProcessResultType,
       ProcessStatusType,
       StatusOptions,
-      columns,
       findPage: myApply,
       modalTitle_: '',
       modalTitle: '发起流程',
@@ -235,6 +246,7 @@ export default {
         bizToken: {
           type: String
         },
+        lang: 'zh'
       },
     };
   },
@@ -267,7 +279,7 @@ export default {
     },
     handleRowSubmit({ businessId }) {
       this.submitInfoModalType = SubmitInfoType.APPLY
-      const target = FN[SubmitInfoType.APPLY];
+      const target = this.FN[SubmitInfoType.APPLY];
       const { fn, subTitle } = target;
       this.fn = fn;
       this.modalTitle_ = this.modalTitle + " - " + subTitle
@@ -277,7 +289,7 @@ export default {
 
     handleCancelTask({ businessId }) {
       this.submitInfoModalType = SubmitInfoType.CANCELTASK
-      const target = FN[SubmitInfoType.CANCELTASK];
+      const target = this.FN[SubmitInfoType.CANCELTASK];
       const { fn, subTitle } = target;
       this.fn = fn;
       this.modalTitle_ = this.modalTitle + " - " + subTitle

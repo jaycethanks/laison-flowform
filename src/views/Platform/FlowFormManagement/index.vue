@@ -236,10 +236,10 @@ import RootContainer from '@/components/base/RootContainer/index.vue';
 import { listTemplateAndPublish, addTemplate, operateProcessForm, deleteTemplate } from "@/api/platform/platformOpenAPI.js"
 import handleQuery from "@/mixins/handleQuery.js"
 import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
-
+import handleLanguage from "@/mixins/handleLanguage.js"
 export default {
   components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal, Container, TitleRow, RootContainer, EmptyPage },
-  mixins: [handleQuery],
+  mixins: [handleQuery,handleLanguage],
   data() {
     return {
       FlowFormDesignerType,
@@ -260,13 +260,8 @@ export default {
   },
   created() {
     this.loadList();
-    this.handleLanguage(this.computedQuery.lang)
   },
-
   methods: {
-    handleLanguage(lang){
-      this.$i18n.locale = lang
-    },
     ellipsis: (str, max) => ellipsis(str, max),
     async handleSelect(id) {
       const res = await addTemplate({ id, uniTenantId: this.computedQuery.uniTenantId })

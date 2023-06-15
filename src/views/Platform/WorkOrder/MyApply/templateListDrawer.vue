@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     width="400"
-    title="选择流程"
+    :title="$t('apply.selectFlow')"
     placement="right"
     :closable="false"
     :visible="visible"

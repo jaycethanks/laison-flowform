@@ -2,10 +2,10 @@
   <RootContainer>
     <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
       <a-row :gutter="24" style="margin: 0">
-        <a-form-item label="工单编号">
+        <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
-        <a-form-item label="状态">
+        <a-form-item :label="$t('common.status')">
           <a-select
             style="min-width: 100px"
             v-model="pageInfo.condition.status"
@@ -19,10 +19,10 @@
       <a-row type="flex" justify="space-between" :gutter="24" style="margin: 0">
         <a-col>
           <a-form-item>
-            <a-button type="primary" html-type="submit" icon="search">查询</a-button>
+            <a-button type="primary" html-type="submit" icon="search">{{$t("common.query")}}</a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="resetSearch" icon="reload">重置</a-button>
+            <a-button type="primary" @click="resetSearch" icon="reload">{{$t("common.reset")}}</a-button>
           </a-form-item>
         </a-col>
       </a-row>
@@ -50,7 +50,7 @@
         <template slot="action" slot-scope="text, record">
           <a-space>
             <template>
-              <a @click="handleCheckDetail(record)">查看</a>
+              <a @click="handleCheckDetail(record)">{{ $t("common.check") }}</a>
             </template>
           </a-space>
         </template>
@@ -79,92 +79,75 @@ import { myCopy } from "@/api/platform/processOpenAPI.js"
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById } from "@/api/platform/businessOpenAPI.js"
-
-
-
-const columns = [
-  {
-    title: '标题',
-    dataIndex: 'title',
-    key: 'title',
-  },
-  {
-    title: '工单编号',
-    dataIndex: 'businessId',
-    key: 'businessId',
-  },
-  {
-    title: '工单类型',
-    dataIndex: 'orderType',
-    key: 'orderType',
-  },
-
-
-  {
-    title: '状态',
-    dataIndex: 'status',
-    key: 'status',
-    width: 100,
-    scopedSlots: { customRender: 'status' },
-
-  },
-  // {
-  //   title: '结果',
-  //   dataIndex: 'result',
-  //   key: 'result',
-  //   width:100,
-  //   scopedSlots: { customRender: 'result' },
-
-  //   ellipsis: true,
-  // },
-  {
-    title: '抄送结点',
-    dataIndex: 'nodeName',
-    key: 'nodeName',
-  },
-  {
-    title: '抄送人',
-    dataIndex: 'copyBy',
-    key: 'copyBy',
-  },
-
-
-  {
-    title: '抄送时间',
-    dataIndex: 'copyTime',
-    key: 'copyTime',
-  },
-
-
-  {
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    fixed: 'right',
-    width: 160,
-    scopedSlots: { customRender: 'action' },
-  },
-];
-
+import handleLanguage from "@/mixins/handleLanguage.js"
 
 export default {
   name: "myCopy",
-  mixins: [searchTableMixin, handleQuery],
+  mixins: [searchTableMixin, handleQuery, handleLanguage],
   components: {
     Container,
     RootContainer,
     ffStatus,
     submitInfoModal
   },
+  computed: {
+    modalTitle: function(){return this.$t('empty')},
+    columns: function () {
+      return [
+        {
+          title: this.$t('common.table.title'),
+          dataIndex: 'title',
+          key: 'title',
+        },
+        {
+          title: this.$t('common.table.businessId'),
+          dataIndex: 'businessId',
+          key: 'businessId',
+        },
+        {
+          title: this.$t('common.table.orderType'),
+          dataIndex: 'orderType',
+          key: 'orderType',
+        },
+        {
+          title: this.$t('common.table.status'),
+          dataIndex: 'status',
+          key: 'status',
+          width: 100,
+          scopedSlots: { customRender: 'status' },
+        },
+        {
+          title: this.$t('common.table.copyNode'),
+          dataIndex: 'nodeName',
+          key: 'nodeName',
+        },
+        {
+          title: this.$t('common.table.copyBy'),
+          dataIndex: 'copyBy',
+          key: 'copyBy',
+        },
+        {
+          title: this.$t('common.table.copyTime'),
+          dataIndex: 'copyTime',
+          key: 'copyTime',
+        },
+        {
+          title: this.$t('common.table.action'),
+          dataIndex: 'action',
+          key: 'action',
+          fixed: 'right',
+          width: 160,
+          scopedSlots: { customRender: 'action' },
+        },
+      ];
+    }
+  },
   data() {
     return {
       ProcessResultType,
-
       ProcessStatusType,
       StatusOptions,
-      columns,
       findPage: myCopy,
-      modalTitle: '发起流程',
       query: {
         // 查看handleQuery的使用文档 src/mixins/handleQuery.md
         // query 的初始化全部值，都必须在这里指定， 如果需要指明那一个query字段是必须的，
@@ -175,6 +158,7 @@ export default {
         bizToken: {
           type: String
         },
+        lang:'zh'
       },
     };
   },
