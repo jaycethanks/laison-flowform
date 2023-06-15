@@ -36,7 +36,7 @@ export default {
     deal: 'Deal With',
     addonsUpload: 'Upload Attachments',
 
-    status: {
+    _status: {
       draft: 'Draft',
       todo: 'Todo',
       done: 'Completed',

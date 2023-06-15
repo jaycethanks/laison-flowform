@@ -38,7 +38,7 @@ export default {
     printPreview: '打印预览',
     wrongPage: '页面错误',
     addonsUpload: '上传附件',
-    status: {
+    _status: {
       draft: '草稿',
       todo: '代办',
       done: '已办',

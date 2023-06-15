@@ -12,11 +12,11 @@ export const ProcessStatusType = {
 
 const { DRAFT, TODO, DONE, REJECT, AUDITING, REVOKE, CHANGE } = ProcessStatusType;
 export const StatusOptions = [
-  { label: $t('common.status.draft'), value: DRAFT },
-  { label: $t('common.status.todo'), value: TODO },
-  { label: $t('common.status.done'), value: DONE },
-  { label: $t('common.status.revoke'), value: REVOKE },
-  { label: $t('common.status.auding'), value: AUDITING },
-  { label: $t('common.status.reject'), value: REJECT },
-  { label: $t('common.status.change'), value: CHANGE },
+  { label: $t('common._status.draft'), value: DRAFT },
+  { label: $t('common._status.todo'), value: TODO },
+  { label: $t('common._status.done'), value: DONE },
+  { label: $t('common._status.revoke'), value: REVOKE },
+  { label: $t('common._status.auding'), value: AUDITING },
+  { label: $t('common._status.reject'), value: REJECT },
+  { label: $t('common._status.change'), value: CHANGE },
 ];
