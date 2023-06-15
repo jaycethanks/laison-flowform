@@ -39,7 +39,12 @@ export const parseFormWithNodeConfig = function (formWithNodeConfig, currentLang
       return null;
     }
     // 取出配置， set到对应的语言 list
-    const list = jsonFormInfo.predefinedLists[currentLang];
+    const supporedLangs = jsonFormInfo.config.supportedLanguages;
+    let list = jsonFormInfo.predefinedLists[currentLang];
+    if (!list) {
+      // 检查是否有传入的，或者默认的语言对应的表单， 如果没有，就去取支持的语言列表的第一个支持的语言
+      list = jsonFormInfo.predefinedLists[supporedLangs[0]];
+    }
     // 如果 formConfigs 不为 undefined, 那么去解析配置
     formConfigs &&
       walkNodes(list, (element) => {
