@@ -8,6 +8,7 @@ export default {
   methods: {
     handleLanguage(lang) {
       this.$i18n.locale = lang;
+      cusLocalStorage.setItem('business_system', 'lang', lang);
     },
   },
 };

@@ -23,7 +23,9 @@ service.interceptors.request.use(
       if (!checkIfInWhitelist()) {
         config.headers['Authorization'] = 'bearer ' + token;
       } else {
+        const lang = cusLocalStorage.getItem('business_system', 'lang');
         config.headers['Authorization'] = null;
+        config.headers['language'] = lang;
       }
       return config;
     } else {
