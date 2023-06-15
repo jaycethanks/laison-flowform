@@ -13,14 +13,7 @@
 <script>
 import OrgSelectionModal from '@/lib/bpmnpd/package/penal/comps/OrgSelectionModal.vue';
 import TitleRow from '@/components/base/TitleRow';
-const options = [
-  { label: '无', value: 'none' },
-  { label: '发起人自己', value: 'applicant' },
-  { label: '发起人直属主管审批', value: 'applicantLeader' },
-  { label: '指定人员', value: 'people' },
-  { label: '指定角色', value: 'role' },
-  { label: '指定部门', value: 'department' },
-];
+
 export default {
   name: 'NodeApproverConfigModal',
   components: { OrgSelectionModal, TitleRow },
@@ -32,10 +25,15 @@ export default {
         members:[]
       })
     },
+    hasNone:{
+      type:Boolean,
+      default:false,
+    },
     defaultApprovalType:{
       type:String,
       default:'applicant',
-    }
+    },
+
   },
   model: {
     prop: 'customProp',
@@ -73,7 +71,19 @@ export default {
         approvalType: this.defaultApprovalType,
         members: [],
       },
-      options,
+      options:this.hasNone ? [{ label: '无', value: 'none' }].concat([
+        { label: '发起人自己', value: 'applicant' },
+        { label: '发起人直属主管审批', value: 'applicantLeader' },
+        { label: '指定人员', value: 'people' },
+        { label: '指定角色', value: 'role' },
+        { label: '指定部门', value: 'department' },
+      ]):[
+        { label: '发起人自己', value: 'applicant' },
+        { label: '发起人直属主管审批', value: 'applicantLeader' },
+        { label: '指定人员', value: 'people' },
+        { label: '指定角色', value: 'role' },
+        { label: '指定部门', value: 'department' },
+      ]
     };
   },
   methods: {

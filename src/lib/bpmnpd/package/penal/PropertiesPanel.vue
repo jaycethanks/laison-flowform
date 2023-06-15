@@ -115,7 +115,11 @@
         </a-radio-group>
         <template v-if="isPlatform">
           <!-- <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" /> -->
-          <NodeApproverConfigModal defaultApprovalType="none" v-model="currentExtendNodeConfig.copyConfig.approval" />
+          <NodeApproverConfigModal
+            defaultApprovalType="none"
+            hasNone
+            v-model="currentExtendNodeConfig.copyConfig.approval"
+          />
         </template>
 
         <template v-if="isSystem">
