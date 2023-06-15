@@ -1,16 +1,21 @@
 <template>
   <RootContainer>
     <!-- wrongPage from hanleQuery mixin -->
-    <EmptyPage v-if="wrongPage" description="wrong page" />
+    <EmptyPage v-if="wrongPage" :description="$t('ffMgt.wrongPage')" />
     <Container v-else>
-      <TitleRow title="已选择模板" bold>
-        <a-button type="primary" icon="appstore" @click="$refs.FlowFormTemplatesSelectModal.show()">添加模板</a-button>
+      <TitleRow :title="$t('ffMgt.seletedTemplate')" bold>
+        <a-button
+          type="primary"
+          icon="appstore"
+          @click="$refs.FlowFormTemplatesSelectModal.show()"
+          >{{$t('ffMgt.addTemplate')}}</a-button
+        >
       </TitleRow>
 
       <section>
         <template v-if="list.length == 0">
           <a-empty
-            description="数据为空"
+            :description="$t('common.emptyData')"
             style="
               height: 100%;
               width: 100%;
@@ -67,12 +72,12 @@
                         type="link"
                         icon="eye"
                         size="small"
-                        title="流程设计"
+                        :title="$t('ffMgt.flowDesign')"
                         @click="
                           formPreviewModalTitle = _item.designName;
                           $refs.FormPreviewerModal.show(_item.id);
                         "
-                        >预览该模板表单</a-button
+                        >{{$t('common.preview')}}</a-button
                       >
                     </a-menu-item>
                     <a-menu-item key="1">
@@ -80,14 +85,14 @@
                         type="link"
                         icon="edit"
                         size="small"
-                        title="流程设计"
+                        :title="$t('ffMgt.flowDesign')"
                         @click="
                           handleEdit(
                             _item.id,
                             FlowFormDesignerType.PLATFORM_NEW
                           )
                         "
-                        >设计发布该模板</a-button
+                        >{{$t('ffMgt.designPublish')}}</a-button
                       >
                     </a-menu-item>
                     <a-menu-divider />
@@ -100,7 +105,7 @@
                         @click="
                           handleDeleteTemplate(_item.id, _item.designName)
                         "
-                        >删除该模板</a-button
+                        >{{$t('ffMgt.deleteTemplate')}}</a-button
                       >
                     </a-menu-item>
                   </a-menu>
@@ -112,12 +117,12 @@
       </section>
 
       <!-- 已发布流程 Start-->
-      <TitleRow title="已发布流程" bold> </TitleRow>
+      <TitleRow :title="$t('ffMgt.publishedTemplate')" bold> </TitleRow>
 
       <section>
         <template v-if="enabled_list.length == 0">
           <a-empty
-            description="数据为空"
+            :description="$t('common.emptyData')"
             style="
               height: 100%;
               width: 100%;
@@ -190,7 +195,7 @@
                               FlowFormDesignerType.PLATFORM_EDIT
                             )
                           "
-                          >设计发布</a-button
+                          >{{$t('ffMgt.editPublish')}}</a-button
                         >
                       </a-menu-item>
                       <a-menu-divider />
@@ -201,7 +206,7 @@
                           icon="delete"
                           size="small"
                           @click="handleDelete(_item.id, _item.designName)"
-                          >删除该流程</a-button
+                          >{{$t('ffMgt.deleteFlow')}}</a-button
                         >
                       </a-menu-item>
                     </a-menu>
@@ -248,16 +253,20 @@ export default {
         },
         bizToken: {
           type: String
-        }
+        },
+        lang:'zh'
       }
     };
   },
   created() {
     this.loadList();
+    this.handleLanguage(this.computedQuery.lang)
   },
 
   methods: {
-
+    handleLanguage(lang){
+      this.$i18n.locale = lang
+    },
     ellipsis: (str, max) => ellipsis(str, max),
     async handleSelect(id) {
       const res = await addTemplate({ id, uniTenantId: this.computedQuery.uniTenantId })
@@ -269,10 +278,6 @@ export default {
       this.loadList();
     },
     async loadList() {
-      // let res = await API.processFormList();
-      // if (res.code === 0) {
-      //   this.list = res.data;
-      // }
       const res = await listTemplateAndPublish({ uniTenantId: this.computedQuery.uniTenantId })
       if (res.status === 200) {
         if ('templateList' in res.data) {
@@ -286,23 +291,16 @@ export default {
           this.enabled_list = []
         }
       }
-
-      // this.list = mock.data;
-      // // TODO: 数据中需要有enable字段
-      // _mock.data.forEach((item) => {
-      //   item.enable = true;
-      // });
-      // this.enabled_list = _mock.data;
     },
 
     async handleDeleteTemplate(id, name) {
       let _this = this
       this.$confirm({
-        title: `确定要删除 [${name}] 模板吗?`,
-        content: '删除模板不会影响到已发布的流程，你可以再次添加新的模板！',
-        okText: '确定',
+        title: this.$t('ffMgt.deleteTemplateEnsureTitle') + `\n[${name}]`,
+        content: this.$t('ffMgt.deleteTemplateContent'),
+        okText: this.$t('common.okText'),
         okType: 'danger',
-        cancelText: '取消',
+        cancelText: this.$t('common.okText'),
         async onOk() {
           const res = await deleteTemplate({ id }, _this.computedQuery.uniTenantId)
           if (res.status === 200) {
@@ -322,11 +320,11 @@ export default {
     async handleDelete(id, name) {
       let _this = this
       this.$confirm({
-        title: `确定要删除 [${name}] 流程吗?`,
-        content: '删除流程不会影响到已在执行的流程， 但是后续将不再能够发起',
-        okText: '确定',
+        title: this.$t('ffMgt.deleteFlowEnsureTitle') + `\n[${name}]`,
+        content: this.$t('ffMgt.deleteFlowContent'),
+        okText: this.$t('common.okText'),
         okType: 'danger',
-        cancelText: '取消',
+        cancelText: this.$t('common.okText'),
         async onOk() {
           const res = await operateProcessForm({ id, deleteStatus: true }, _this.computedQuery.uniTenantId)
           if (res.status === 200) {

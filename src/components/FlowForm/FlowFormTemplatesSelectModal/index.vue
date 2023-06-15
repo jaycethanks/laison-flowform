@@ -4,10 +4,10 @@
       @cancel="visible=false"
       :bodyStyle="{  overflow: 'hidden',padding:'10px' }"
       :visible="visible"
-      title="选择模板"
+      :title="$t('ffMgt.modal.selectTemplate')"
       :footer="null"
     >
-      <a-input v-model="searchText" placeholder="按照名称过滤" @focus="showFilterList = true">
+      <a-input v-model="searchText" :placeholder="$t('ffMgt.modal.filterByName')" @focus="showFilterList = true">
         <!-- <a-icon slot="addonAfter" type="close"></a-icon> -->
         <!-- <a-button slot="addonAfter">清除</a-button> -->
         <a-button
@@ -36,7 +36,7 @@
                 slot="actions"
                 type="link"
                 icon="eye"
-                >预览模板</a-button
+                >{{$t('common.preview')}}</a-button
               >
               <a-list-item-meta style="font-size:12px">
                 <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
@@ -59,8 +59,12 @@
         :data-source="flatenArray"
       >
         <a-list-item class="list-item" @click="handleSelect(item.id)" slot="renderItem" slot-scope="item, index">
-          <a-button @click.prevent.stop="handlePreview(item.id,item.designName)" slot="actions" type="link" icon="eye"
-            >预览模板</a-button
+          <a-button
+            @click.prevent.stop="handlePreview(item.id,item.designName)"
+            slot="actions"
+            type="link"
+            icon="eye"
+            >{{$t('common.preview')}}</a-button
           >
           <a-list-item-meta style="font-size:12px">
             <span slot="description" style="font-size:12px">{{ellipsis(item.designDes, 10)}}</span>
@@ -80,7 +84,6 @@ import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
 import ellipsis from '@/utils/ellipsis';
 import FormPreviewerModal from '@/packages/FormPreviewerModal/index.vue';
 import {listAllTemplate} from "@/api/platform/platformOpenAPI.js"
-import icons from '@/assets/flowform_icons/index.js';
 
 export default {
   components: { ffIcon,FormPreviewerModal },

@@ -2,10 +2,10 @@
   <RootContainer>
     <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
       <a-row :gutter="24" style="margin: 0">
-        <a-form-item label="工单编号">
+        <a-form-item :label="$t('common.workOrderNum')">
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
-        <a-form-item label="状态">
+        <a-form-item :label="$t('common.status')">
           <a-select
             style="min-width: 100px"
             v-model="pageInfo.condition.status"
@@ -23,15 +23,20 @@
       <a-row type="flex" justify="space-between" :gutter="24" style="margin: 0">
         <a-col>
           <a-form-item>
-            <a-button type="primary" html-type="submit" icon="search">查询</a-button>
+            <a-button type="primary" html-type="submit" icon="search">{{$t('common.query')}}</a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="resetSearch" icon="reload">重置</a-button>
+            <a-button type="primary" @click="resetSearch" icon="reload">{{$t('common.reset')}}</a-button>
           </a-form-item>
         </a-col>
         <a-col>
           <a-form-item label="">
-            <a-button type="primary" @click="templateListVisible = true" icon="caret-right">发起申请 </a-button>
+            <a-button
+              type="primary"
+              @click="templateListVisible = true"
+              icon="caret-right"
+              >{{$t('apply.initiateApply') }}</a-button
+            >
           </a-form-item>
         </a-col>
       </a-row>
@@ -60,14 +65,14 @@
           <a-space>
             <!-- 公有 -->
             <template>
-              <a @click="handleCheckDetail(record)">查看</a>
+              <a @click="handleCheckDetail(record)">{{$t('common.check')}}</a>
             </template>
 
             <!-- 草稿 编辑|提交 -->
             <template v-if="[ProcessResultType.TOSUBMIT].includes(record.result)">
-              <a @click="handleRowEdit(record)">编辑</a>
+              <a @click="handleRowEdit(record)">{{$t('common.edit')}}</a>
               <!-- <a-divider type="vertical" /> -->
-              <a @click="handleRowSubmit(record)">提交</a>
+              <a @click="handleRowSubmit(record)">{{$t('common.submit')}}</a>
             </template>
             <template>
               <a
@@ -76,13 +81,15 @@
                   [1].includes(ProcessStatusType.TODO)
                 "
                 @click="handleCancelTask(record)"
-                >撤回</a
+                >{{$t('common.drawBack')}}</a
               >
             </template>
 
             <template>
-              <a v-if="[ProcessResultType.DEALING].includes(record.result)" @click="handleRemainderTask(record)"
-                >催单</a
+              <a
+                v-if="[ProcessResultType.DEALING].includes(record.result)"
+                @click="handleRemainderTask(record)"
+                >{{$t('apply.urge')}}</a
               >
             </template>
 
@@ -94,8 +101,8 @@
               cancel-text="No"
               @confirm="handleDelete(record)"
             >
-              <template slot="title"> 确定删除？ </template>
-              <a-button style="color: #ff4d4f" type="link">删除</a-button>
+              <template slot="title"> {{$t('common.ensureDelete')}}?</template>
+              <a-button style="color: #ff4d4f" type="link">{{$t('common.delete')}}</a-button>
             </a-popconfirm>
           </a-space>
         </template>
@@ -156,25 +163,13 @@ const columns = [
     dataIndex: 'orderType',
     key: 'orderType',
   },
-
-
   {
     title: '状态',
     dataIndex: 'status',
     key: 'status',
     width: 100,
     scopedSlots: { customRender: 'status' },
-
   },
-  // {
-  //   title: '结果',
-  //   dataIndex: 'result',
-  //   key: 'result',
-  //   width:100,
-  //   scopedSlots: { customRender: 'result' },
-
-  //   ellipsis: true,
-  // },
   {
     title: '更新人',
     dataIndex: 'updateBy',
