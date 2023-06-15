@@ -54,7 +54,6 @@ service.interceptors.response.use(
       if (/^\/platform\/[^\/]+/.test(path)) {
         // 平台页接口token过期
         router.push('/platform/401');
-        console.log('token_expired');
         // 获取指向父级窗口的引用,向宿主页面通知 token 失效
         var parentWindow = window.parent;
         parentWindow && parentWindow.postMessage({ type: 'token_expired' }, '*');

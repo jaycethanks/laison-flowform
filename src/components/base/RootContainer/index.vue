@@ -16,32 +16,36 @@ export default {
   components: {
     FlowFormSvgIcon,
   },
-  props:{
-    noLogo:{
-      type:Boolean,
-      default:false
+  props: {
+    noLogo: {
+      type: Boolean,
+      default: false
     },
-     loading:{
-      type:Boolean,
-      default:false
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
-  created(){
-    window.addEventListener('message', (event) => {
+  created() {
+    window.removeEventListener('message', this.listener)
+    window.addEventListener('message', this.listener);
+  },
+  methods: {
+    listener(event) {
       if (event.data.type === 'getHeight') {
         const height = this.$el.scrollHeight;
         event.source.postMessage({ type: 'height', height }, event.origin);
       }
-    });
-  },
-
+    }
+  }
 };
 </script>
 <style scoped>
 .root-container {
   background-color: #f8f9fb;
   padding: 20px;
-  height: 100%;
+  height: auto;
+  /* height: 100%; */
   overflow: auto;
   position: relative;
 }
@@ -54,7 +58,7 @@ export default {
   right: 10px;
   width: 32px;
 }
-.loading-mask{
+.loading-mask {
   position: fixed;
   inset: 0;
   z-index: 999;

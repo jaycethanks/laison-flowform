@@ -439,3 +439,9 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+// router.afterEach((to, from) => {
+//   // bugfix
+//   var parentWindow = window.parent;
+//   parentWindow && parentWindow.postMessage({ type: 'pathChange' }, '*');
+// });
