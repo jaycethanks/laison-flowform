@@ -265,7 +265,7 @@ export default {
 
     },
     handleCheckDetail({ businessId, publishId, procDefId }) {
-      this.$router.push({
+      this.$router.replace({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.VIEW,
@@ -297,7 +297,7 @@ export default {
       this.businessId = businessId
     },
     handleRowEdit({ businessId, publishId, procDefId }) {
-      this.$router.push({
+      this.$router.replace({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.APPLY,
@@ -339,7 +339,7 @@ export default {
 
     },
     handleSelect({ publishId, procDefId }) {
-      this.$router.push({
+      this.$router.replace({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.APPLY,

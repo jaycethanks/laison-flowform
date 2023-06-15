@@ -248,7 +248,7 @@ export default {
       this.loadList();
     },
     handleEdit(record) {
-      this.$router.push({
+      this.$router.replace({
         path: '/system/flowformDesign/flowformDesigner',
         query: {
           type: FlowFormDesignerType.SYSTEM_EDIT,

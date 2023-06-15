@@ -1,97 +1,98 @@
 // TODO: 其他对应type的测试和逻辑完善
 <template>
-  <div class="flow-form-designer-root">
-    <div class="flow-form-designer-root" v-show="!success">
-      <p class="flow-form-designer-header">
-        <a-button
-          class="header-back"
-          v-if="
+  <RootContainer>
+    <div class="flow-form-designer-root">
+      <div class="flow-form-designer-root" v-show="!success">
+        <p class="flow-form-designer-header">
+          <a-button
+            class="header-back"
+            v-if="
             [
               FlowFormDesignerType.PLATFORM_NEW,
               FlowFormDesignerType.PLATFORM_EDIT,
             ].includes(computedQuery.type)
           "
-          @click="handleGoBackToManagePage"
+            @click="handleGoBackToManagePage"
+            type="link"
+            icon="rollback"
+            >返回</a-button
+          >
+          <a-steps
+            ref="steps"
+            style="margin-bottom: 0; width: auto"
+            size="small"
+            v-model="current"
+            type="navigation"
+            @change="onStepChange"
+          >
+            <!-- bugfix 不可以用v-if, v-if 会导致current 改变， 0,1,2 => 0,1 -->
+            <a-step status="finish" title="表单设计" v-show="!noFormDesign">
+              <SvgIconFormDesign style="width: 20px; height: 20px" slot="icon" />
+            </a-step>
+            <a-step status="finish" title="流程设计">
+              <SvgIconFlowDesign style="width: 20px; height: 20px" slot="icon" />
+            </a-step>
+            <a-step status="process" title="流程发布">
+              <SvgIconFFPublish style="width: 20px; height: 20px" slot="icon" />
+            </a-step>
+          </a-steps>
+        </p>
+        <div class="flow-form-designer-container">
+          <form-design v-show="!noFormDesign && current === 0" ref="formDesignView"></form-design>
+          <flow-design
+            v-show="current === 1"
+            :bpmnEditDataInit="bpmnEditDataInit"
+            :type="computedQuery.type"
+          ></flow-design>
+          <flow-form-publish
+            v-show="current === 2"
+            @submit="sumbitHandler"
+            :publishEditDataInit="publishEditDataInit"
+            @success="$emit('back')"
+            @doSubmit="handleSubmit"
+            :type="computedQuery.type"
+            :fetchGroup="fn.fetchGroup"
+            :uniTenantId="computedQuery.uniTenantId"
+          ></flow-form-publish>
+        </div>
+      </div>
+      <SuccessPage description="提交成功" v-show="success">
+        <a-button
+          v-if="[FlowFormDesignerType.SYSTEM_NEW].includes(computedQuery.type)"
+          @click="handleGoBackToDesign"
+          type="link"
+          icon="rollback"
+          >继续设计</a-button
+        >
+        <a-button
+          v-if="[FlowFormDesignerType.SYSTEM_EDIT].includes(computedQuery.type)"
+          @click="handleGoBackToTemplatesList"
           type="link"
           icon="rollback"
           >返回</a-button
         >
-        <a-steps
-          ref="steps"
-          style="margin-bottom: 0; width: auto"
-          size="small"
-          v-model="current"
-          type="navigation"
-          @change="onStepChange"
-        >
-          <!-- bugfix 不可以用v-if, v-if 会导致current 改变， 0,1,2 => 0,1 -->
-          <a-step status="finish" title="表单设计" v-show="!noFormDesign">
-            <SvgIconFormDesign style="width: 20px; height: 20px" slot="icon" />
-          </a-step>
-          <a-step status="finish" title="流程设计">
-            <SvgIconFlowDesign style="width: 20px; height: 20px" slot="icon" />
-          </a-step>
-          <a-step status="process" title="流程发布">
-            <SvgIconFFPublish style="width: 20px; height: 20px" slot="icon" />
-          </a-step>
-        </a-steps>
-      </p>
-      <div class="flow-form-designer-container">
-        <form-design v-show="!noFormDesign && current === 0" ref="formDesignView"></form-design>
-        <flow-design
-          v-show="current === 1"
-          :bpmnEditDataInit="bpmnEditDataInit"
-          :type="computedQuery.type"
-        ></flow-design>
-        <flow-form-publish
-          v-show="current === 2"
-          @submit="sumbitHandler"
-          :publishEditDataInit="publishEditDataInit"
-          @success="$emit('back')"
-          @doSubmit="handleSubmit"
-          :type="computedQuery.type"
-          :fetchGroup="fn.fetchGroup"
-          :uniTenantId="computedQuery.uniTenantId"
-        ></flow-form-publish>
-      </div>
-    </div>
-    <SuccessPage description="提交成功" v-show="success">
-      <a-button
-        v-if="[FlowFormDesignerType.SYSTEM_NEW].includes(computedQuery.type)"
-        @click="handleGoBackToDesign"
-        type="link"
-        icon="rollback"
-        >继续设计</a-button
-      >
-      <a-button
-        v-if="[FlowFormDesignerType.SYSTEM_EDIT].includes(computedQuery.type)"
-        @click="handleGoBackToTemplatesList"
-        type="link"
-        icon="rollback"
-        >返回</a-button
-      >
 
-      <a-button
-        v-if="
+        <a-button
+          v-if="
           [
             FlowFormDesignerType.PLATFORM_NEW,
             FlowFormDesignerType.PLATFORM_EDIT,
           ].includes(computedQuery.type)
         "
-        @click="handleGoBackToManagePage"
-        type="link"
-        icon="rollback"
-        >返回</a-button
-      >
-    </SuccessPage>
-  </div>
+          @click="handleGoBackToManagePage"
+          type="link"
+          icon="rollback"
+          >返回</a-button
+        >
+      </SuccessPage>
+    </div>
+  </RootContainer>
 </template>
 
 <script>
 import FormDesign from '@/packages/FormDesigner/index.vue';
 import FlowDesign from '@/packages/FlowDesigner/index.vue';
 import handleQuery from '@/mixins/handleQuery.js';
-
 import FlowFormPublish from './FlowFormPublish';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 
@@ -101,6 +102,7 @@ import SvgIconFFPublish from '@/assets/svgIcon/SvgIconFFPublish.vue';
 import { listDesignGroup as system_listDesignGroup, findById as system_query, add as system_add, update as system_update } from '@/api/system/processFormTemplate.js';
 import { queryTemplate, queryProcessForm, publishProcessForm, updateProcessForm, organizationStructure, listDesignGroup } from "@/api/platform/platformOpenAPI.js"
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
+import RootContainer from '@/components/base/RootContainer';
 
 export default {
   name: 'FlowFormDesigner',
@@ -123,7 +125,8 @@ export default {
     SvgIconFormDesign,
     SvgIconFlowDesign,
     SvgIconFFPublish,
-    SuccessPage
+    SuccessPage,
+    RootContainer
   },
   provide: function () {
     return {
@@ -363,7 +366,7 @@ export default {
 
     },
     handleGoBackToManagePage() {
-      this.$router.push({
+      this.$router.replace({
         path: '/platform/flowformManagement',
         query: {
           uniTenantId: this.computedQuery.uniTenantId,
@@ -373,7 +376,7 @@ export default {
     },
     handleGoBackToTemplatesList() {
       this.resetStore()
-      this.$router.push({
+      this.$router.replace({
         path: '/system/flowformDesign/flowformTemplatesList',
       });
     },

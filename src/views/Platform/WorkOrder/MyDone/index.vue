@@ -230,7 +230,7 @@ export default {
       });
     },
     handleCheckDetail({ businessId, publishId, procDefId, nodeId }) {
-      this.$router.push({
+      this.$router.replace({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.VIEW,
@@ -244,7 +244,7 @@ export default {
       });
     },
     handleRowEdit({ businessId, publishId, procDefId }) {
-      this.$router.push({
+      this.$router.replace({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.APPLY,
@@ -274,7 +274,7 @@ export default {
       });
     },
     handleSelect({ publishId, procDefId }) {
-      this.$router.push({
+      this.$router.replace({
         path: '/platform/formPreviewer',
         query: {
           type: PreviewFormType.APPLY,
