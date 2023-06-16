@@ -365,7 +365,7 @@ export default {
 
     },
     handleGoBackToManagePage() {
-      this.$router.replace({
+      this.$router.push({
         path: '/platform/flowformManagement',
         query: {
           uniTenantId: this.computedQuery.uniTenantId,
@@ -375,7 +375,7 @@ export default {
     },
     handleGoBackToTemplatesList() {
       this.resetStore()
-      this.$router.replace({
+      this.$router.push({
         path: '/system/flowformDesign/flowformTemplatesList',
       });
     },

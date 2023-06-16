@@ -336,7 +336,7 @@ export default {
       });
     },
     handleEdit(id, type) {
-      this.$router.replace({
+      this.$router.push({
         path: '/platform/flowformDesigner',
         query: {
           type: type,
