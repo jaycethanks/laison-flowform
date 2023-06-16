@@ -48,7 +48,7 @@
                       </p>
 
                       <p class="process-item-lable-subtitle">
-                        {{ ellipsis(_item.designDes, 18) }}
+                        {{ ellipsis(_item.designDes, 12) }}
                       </p>
                     </div>
                   </div>
@@ -155,7 +155,7 @@
                       </p>
 
                       <p class="process-item-lable-subtitle">
-                        {{ ellipsis(_item.designDes, 15) }}
+                        {{ ellipsis(_item.designDes, 12) }}
                       </p>
                     </div>
                   </div>
