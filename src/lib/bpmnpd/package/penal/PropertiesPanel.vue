@@ -337,7 +337,6 @@ export default {
       handler:function(){
         if(this.bpmnEditDataInit && !!this.bpmnEditDataInit.nodeConfigs){
           this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeConfigs);
-          console.log('[this.historyExtendConfig]: ',this.historyExtendConfig)
         }
       },
       deep:true,

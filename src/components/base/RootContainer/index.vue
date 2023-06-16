@@ -4,7 +4,7 @@
       <a-icon type="loading" />
       wait a moment...
     </div>
-    <div class="root-content">
+    <div ref="rootContent" class="root-content">
       <slot />
     </div>
     <FlowFormSvgIcon v-if="!noLogo" class="root-container-icon" />
@@ -33,7 +33,7 @@ export default {
   methods: {
     listener(event) {
       if (event.data.type === 'getHeight') {
-        const height = this.$el.scrollHeight;
+        const height = this.$el && this.$el.scrollHeight;
         event.source.postMessage({ type: 'height', height }, event.origin);
       }
     }
@@ -42,15 +42,14 @@ export default {
 </script>
 <style scoped>
 .root-container {
-  background-color: #f8f9fb;
+  /* background-color: #f8f9fb; */
   padding: 20px;
   height: auto;
-  /* height: 100%; */
-  overflow: auto;
   position: relative;
 }
 .root-content {
-  overflow: auto;
+  overflow: hidden;
+  height: auto;
 }
 .root-container-icon {
   position: fixed;

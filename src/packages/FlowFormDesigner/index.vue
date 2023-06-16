@@ -1,6 +1,5 @@
 <template>
-  <!-- <RootContainer> -->
-  <div class="flow-form-designer-root">
+  <RootContainer>
     <div class="flow-form-designer-root" v-show="!success">
       <p class="flow-form-designer-header">
         <a-button
@@ -84,8 +83,7 @@
         >返回</a-button
       >
     </SuccessPage>
-  </div>
-  <!-- </RootContainer> -->
+  </RootContainer>
 </template>
 
 <script>
@@ -102,7 +100,7 @@ import { listDesignGroup as system_listDesignGroup, findById as system_query, ad
 import { queryTemplate, queryProcessForm, publishProcessForm, updateProcessForm, organizationStructure, listDesignGroup } from "@/api/platform/platformOpenAPI.js"
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
 import RootContainer from '@/components/base/RootContainer';
-
+import getHeightPostMessage from "@/utils/getHeightPostMessage.js"
 export default {
   name: 'FlowFormDesigner',
   mixins: [handleQuery],
@@ -165,6 +163,7 @@ export default {
     // 尝试数据初始化
     this.resetStore()
 
+
     // 根据query的type 进行一系列初始化
     this.handleType(this.computedQuery.type);
   },
@@ -216,6 +215,7 @@ export default {
        */
 
       this.$bus.$emit('stepChange', from, key);
+      // getHeightPostMessage();// 通知宿主页面重新获取iframe 高度
     },
     sumbitHandler() {
       this.isSubmit = true;
@@ -425,9 +425,9 @@ export default {
   }
 }
 .flow-form-designer-root {
-  height: 100%;
+  // height: 100%;
+  height:90vh;
   width: 100%;
-  min-height: 1000px;
 }
 .flow-form-designer-container {
   height: calc(100% - 40px);

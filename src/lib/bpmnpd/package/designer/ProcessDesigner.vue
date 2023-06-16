@@ -365,6 +365,12 @@ export default {
       this.init()
     }
   },
+  created() {
+    window.addEventListener('resize', () => {
+      // console.log('[resize]: ')
+      // this.init()
+    })
+  },
   mounted() {
     this.init()
   },
@@ -380,7 +386,11 @@ export default {
     },
     initBpmnModeler() {
       //@jayce 21/12/21-11:37:52 :  初始化bpmn实例 --> 设定监听器
-      if (this.bpmnModeler) return;
+      if (this.bpmnModeler) {
+        this.bpmnModeler.destroy();
+        this.$emit('destroy', this.bpmnModeler);
+        this.bpmnModeler = null;
+      }
       this.bpmnModeler = new BpmnModeler({
         container: this.$refs['bpmn-canvas'],
         keyboard: this.keyboard ? { bindTo: document } : null,

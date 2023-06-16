@@ -8,9 +8,10 @@ import FlowDesigner from '@/packages/FlowDesigner';
 import FormDesigner from '@/packages/FormDesigner';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import Test from '../../playground/Test.vue';
+import getHeightPostMessage from '@/utils/getHeightPostMessage.js';
 Vue.use(VueRouter);
 // 测试用业务系统token
-const bizToken = '1ccbb6d3-ad15-4e33-9a59-df6aac6bdd34';
+const bizToken = 'c0d67e6a-6d8c-4edb-ac5b-148bd7b650b6';
 export const systemRoutes = [
   {
     path: '', //默认首页
@@ -440,8 +441,6 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-// router.afterEach((to, from) => {
-//   // bugfix
-//   var parentWindow = window.parent;
-//   parentWindow && parentWindow.postMessage({ type: 'pathChange' }, '*');
-// });
+router.afterEach((to, from) => {
+  getHeightPostMessage();
+});
