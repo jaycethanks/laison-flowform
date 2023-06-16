@@ -1,12 +1,13 @@
 <template>
-  <el-dialog
+  <a-modal @cancel="handleClose" :title="title" :width="width + '%'" :visible.sync="visible">
+    <!-- <el-dialog
+    :lock-scroll="true"
     :title="title"
     :visible.sync="visible"
     :width="width + '%'"
-    :modal-append-to-body="false"
     :before-close="handleClose"
-    style="padding: 0 !important"
-  >
+    :center="true"
+  > -->
     <div class="org-container">
       <el-card
         v-if="selectable"
@@ -124,7 +125,8 @@
       <el-button :size="elementSize" @click="handleClose">取 消</el-button>
       <el-button :size="elementSize" type="primary" @click="handleOk">确 定</el-button>
     </span>
-  </el-dialog>
+    <!-- </el-dialog> -->
+  </a-modal>
 </template>
 
 <script>
@@ -611,6 +613,9 @@ export default {
 };
 </script>
 <style scoped>
+>>> .el-dialog__wrapper{
+  overflow: hidden!important;;
+}
 >>> .el-dialog__header {
   padding: 10px;
   padding-bottom: 0;
