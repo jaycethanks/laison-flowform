@@ -132,7 +132,6 @@
 </template>
 
 <script>
-import mock from "./mock"
 import KFormBuild from '@/lib/kform/KFormBuild/index';
 import JModal from '@/components/jeecg/JModal/index.vue';
 import { parseFormWithNodeConfig } from '@/utils/kformRelatedUtils.js';
