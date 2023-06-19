@@ -116,7 +116,7 @@ export default {
   },
   ffPublish: {
     iconSetting: '图标设置',
-    icon: '图标设置',
+    icon: '图标',
     formName: '表单名称',
     maxCharacters: '最多字符',
     plzInputFormName: '请输入表单名称',
