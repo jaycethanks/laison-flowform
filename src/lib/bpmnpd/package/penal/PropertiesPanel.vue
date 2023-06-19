@@ -62,7 +62,6 @@
         <div slot="header" class="panel-tab__title"><a-icon type="bell"></a-icon>任务监听器</div>
         <user-task-listeners :id="elementId" :type="elementType" />
       </a-collapse-panel>
-
       <a-collapse-panel key="extensions" v-if="isSystem">
         <div slot="header" class="panel-tab__title"><i class="el-icon-circle-plus"></i>扩展属性</div>
         <element-properties :id="elementId" :type="elementType" />
@@ -82,7 +81,6 @@
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
       </a-collapse-panel>
-
       <a-collapse-panel class="person-incarge-item" key="peopleInchage" v-if="elementType === 'UserTask'">
         <div slot="header" class="panel-tab__title"><a-icon type="share-alt"></a-icon>审批配置</div>
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>

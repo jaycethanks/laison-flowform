@@ -11,7 +11,7 @@ import Test from '../../playground/Test.vue';
 import getHeightPostMessage from '@/utils/getHeightPostMessage.js';
 Vue.use(VueRouter);
 // 测试用业务系统token
-const bizToken = 'c0d67e6a-6d8c-4edb-ac5b-148bd7b650b6';
+const bizToken = '210cafb6-e68d-49cb-a29f-b39249f1a45a';
 export const systemRoutes = [
   {
     path: '', //默认首页

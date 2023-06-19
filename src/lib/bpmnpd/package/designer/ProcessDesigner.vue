@@ -308,7 +308,6 @@ export default {
       //@jayce 23/05/22-13:21:13 : cusom Start
       // @ref:https://blog.csdn.net/qq_39211165/article/details/113620805
       // @ref:https://stackoverflow.com/a/67207123/12261182
-
       if (this.isPlatform) {
         Modules.push({
           // __init__: ['labelEditingProvider'],
@@ -386,11 +385,12 @@ export default {
     },
     initBpmnModeler() {
       //@jayce 21/12/21-11:37:52 :  初始化bpmn实例 --> 设定监听器
-      if (this.bpmnModeler) {
-        this.bpmnModeler.destroy();
-        this.$emit('destroy', this.bpmnModeler);
-        this.bpmnModeler = null;
-      }
+      if (this.bpmnModeler) return;
+      // if (this.bpmnModeler) {
+      //   this.bpmnModeler.destroy();
+      //   this.$emit('destroy', this.bpmnModeler);
+      //   this.bpmnModeler = null;
+      // }
       this.bpmnModeler = new BpmnModeler({
         container: this.$refs['bpmn-canvas'],
         keyboard: this.keyboard ? { bindTo: document } : null,
