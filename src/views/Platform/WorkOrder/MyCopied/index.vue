@@ -158,7 +158,7 @@ export default {
         bizToken: {
           type: String
         },
-        lang:'zh'
+        lang:'en'
       },
     };
   },

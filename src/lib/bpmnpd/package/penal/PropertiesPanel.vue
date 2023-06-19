@@ -86,14 +86,16 @@
         key="peopleInchage"
         v-if="elementType === 'UserTask' && !isFirstElement"
       >
-        <div slot="header" class="panel-tab__title"><a-icon type="share-alt"></a-icon>审批配置</div>
-        <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
-        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
-        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
-        <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
+        <!-- 审批配置 -->
+        <div slot="header" class="panel-tab__title">
+          <a-icon type="share-alt"></a-icon>{{ $t("flowDesigner.proPanel.approveConfig") }}
+        </div>
         <template v-if="isPlatform">
-          <TitleRow title="审批类型" size="small" bold> </TitleRow>
-          <a-checkbox v-model="currentExtendNodeConfig.taskConfig.autoApproval"> 自动审批 </a-checkbox>
+          <!-- 审批类型 -->
+          <TitleRow :title="$t('flowDesigner.proPanel.approveType')" size="small" bold> </TitleRow>
+          <a-checkbox v-model="currentExtendNodeConfig.taskConfig.autoApproval">
+            {{ $t("flowDesigner.proPanel.autoApprove") }}
+          </a-checkbox>
         </template>
 
         <template v-if="isPlatform">
@@ -102,7 +104,10 @@
         </template>
 
         <template v-if="isSystem">
-          <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
+          <!-- 字段控制 -->
+          <p class="field-label-text">
+            <a-icon type="control"></a-icon>{{ $t("flowDesigner.proPanel.fieldsControl") }}
+          </p>
           <FormFieldsControl v-model="currentExtendNodeConfig.taskConfig.columnConfigs" />
         </template>
       </a-collapse-panel>
@@ -112,12 +117,20 @@
         key="copyConfig"
         v-if="elementType === 'UserTask' && !isFirstElement"
       >
-        <div slot="header" class="panel-tab__title"><a-icon type="mail"></a-icon>抄送配置</div>
-        <TitleRow title="抄送类型" size="small" bold> </TitleRow>
+        <!-- 抄送配置 -->
+        <div slot="header" class="panel-tab__title">
+          <a-icon type="mail"></a-icon>{{ $t("flowDesigner.proPanel.copyConfig") }}
+        </div>
+        <TitleRow :title="$t('flowDesigner.proPanel.copyType')" size="small" bold> </TitleRow>
 
+        <!-- 抄送类型 -->
         <a-radio-group v-model="currentExtendNodeConfig.copyConfig.type">
-          <a-radio value="start">节点审批前</a-radio>
-          <a-radio value="end">节点审批后</a-radio>
+          <a-radio value="start">{{
+            $t("flowDesigner.proPanel.nodeStart")
+          }}</a-radio>
+          <a-radio value="end">{{
+            $t("flowDesigner.proPanel.nodeEnd")
+          }}</a-radio>
         </a-radio-group>
         <template v-if="isPlatform">
           <!-- <OrgSelectionModal v-model="currentExtendNodeConfig.copyConfig.members" /> -->
@@ -129,7 +142,10 @@
         </template>
 
         <template v-if="isSystem">
-          <p class="field-label-text"><a-icon type="control"></a-icon>字段控制</p>
+          <!-- 字段控制 -->
+          <p class="field-label-text">
+            <a-icon type="control"></a-icon>{{ $t("flowDesigner.proPanel.fieldsControl") }}
+          </p>
           <FormFieldsControl v-model="currentExtendNodeConfig.copyConfig.columnConfigs" />
         </template>
       </a-collapse-panel>
@@ -140,7 +156,11 @@
         v-if="elementType === 'UserTask' && !isFirstElement"
       >
         <div slot="header" class="panel-tab__title">
-          <a-icon type="eye"></a-icon><span style="margin-right: 20px">查看配置</span>
+          <!-- 查看类型 -->
+          <a-icon type="eye"></a-icon
+          ><span style="margin-right: 20px">{{
+            $t("flowDesigner.proPanel.checkConfig")
+          }}</span>
         </div>
         <div class="common-config">
           <el-row :gutter="20">
@@ -152,7 +172,8 @@
                     currentExtendNodeConfig.viewConfig.commonConfig.newest
                   "
                 >
-                  <el-checkbox label="显示最新"></el-checkbox>
+                  <!-- 显示最新 -->
+                  <el-checkbox :label="$t('flowDesigner.proPanel.showNewest')"></el-checkbox>
                 </el-checkbox-group></div
             ></el-col>
             <!-- <el-col :span="8"
@@ -285,7 +306,7 @@ export default {
       activeTab: ['peopleInchage'],
       elementId: '',
       elementType: '',
-      isFirstElement:false,
+      isFirstElement: false,
       elementBusinessObject: {}, // 元素 businessObject 镜像，提供给需要做判断的组件使用
       conditionFormVisible: false, // 流转条件设置
       formVisible: false, // 表单配置
@@ -343,15 +364,15 @@ export default {
       deep: true,
       immediate: true,
     },
-    bpmnEditDataInit:{
+    bpmnEditDataInit: {
       // bpmnEditDataInit 数据是异步拉取的， 所以不能在 created 阶段去初始化
-      handler:function(){
-        if(this.bpmnEditDataInit && !!this.bpmnEditDataInit.nodeConfigs){
+      handler: function () {
+        if (this.bpmnEditDataInit && !!this.bpmnEditDataInit.nodeConfigs) {
           this.historyExtendConfig = JSON.parse(this.bpmnEditDataInit.nodeConfigs);
         }
       },
-      deep:true,
-      immediate:true
+      deep: true,
+      immediate: true
     }
   },
 
@@ -403,13 +424,13 @@ export default {
       };
       this.getActiveElement();
     },
-    checkIfFirstElement(selectElements){
-      for(let i = 0; i < selectElements.length; i++){
-        if(selectElements[i].incoming){
-          for(let j = 0; j < selectElements[i].incoming.length; j++){
+    checkIfFirstElement(selectElements) {
+      for (let i = 0; i < selectElements.length; i++) {
+        if (selectElements[i].incoming) {
+          for (let j = 0; j < selectElements[i].incoming.length; j++) {
             const pre = selectElements[i].incoming[j]
-            console.log('[pre]: ',pre)
-            if(pre.source && pre.source.type === 'bpmn:StartEvent'){
+            console.log('[pre]: ', pre)
+            if (pre.source && pre.source.type === 'bpmn:StartEvent') {
               return true
             }
           }
@@ -487,7 +508,7 @@ export default {
     // },
     shapeRemoveEventCustomHandle(element) {
       let i = this.historyExtendConfig.findIndex((it) => it.node_id === element.id);
-      if(i != -1){
+      if (i != -1) {
         this.historyExtendConfig.splice(i, 1); // 移除该节点
       }
     },

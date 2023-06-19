@@ -1,12 +1,17 @@
 <template>
   <div class="root">
-    <TitleRow title="指定审批人" size="small" bold> </TitleRow>
+    <!-- 指定审批人 -->
+    <TitleRow :title="$t('orgSelectComp.approverDesignation')" size="small" bold> </TitleRow>
     <a-radio-group v-model="approval.approvalType" :options="options" @change="emitChange" />
     <OrgSelectionModal
       v-model="approval.members"
       style="margin-top: 10px"
       :approvalType="approval.approvalType"
-      v-if="!['none','applicant','applicantLeader'].includes(approval.approvalType)"
+      v-if="
+        !['none', 'applicant', 'applicantLeader'].includes(
+          approval.approvalType
+        )
+      "
     />
   </div>
 </template>
@@ -18,20 +23,20 @@ export default {
   name: 'NodeApproverConfigModal',
   components: { OrgSelectionModal, TitleRow },
   props: {
-    customProp:{
-      type:Object,
-      default:()=>({
-        approvalType:'applicant',
-        members:[]
+    customProp: {
+      type: Object,
+      default: () => ({
+        approvalType: 'applicant',
+        members: []
       })
     },
-    hasNone:{
-      type:Boolean,
-      default:false,
+    hasNone: {
+      type: Boolean,
+      default: false,
     },
-    defaultApprovalType:{
-      type:String,
-      default:'applicant',
+    defaultApprovalType: {
+      type: String,
+      default: 'applicant',
     },
 
   },
@@ -48,7 +53,7 @@ export default {
       handler: function () {
         if (this.customProp && this.customProp.approvalType && this.customProp.members) {
           const {
-            approvalType, members ,
+            approvalType, members,
           } = this.customProp;
           this.approval.approvalType = approvalType;
           this.approval.members = members;
@@ -65,32 +70,37 @@ export default {
       deep: true,
     },
   },
+  computed: {
+    options: function () {
+      return this.hasNone ? [{ label: this.$t('orgSelectComp.none'), value: 'none' }].concat([
+        { label: this.$t('orgSelectComp.applicantSelf'), value: 'applicant' },
+        { label: this.$t('orgSelectComp.applicantLeader'), value: 'applicantLeader' },
+        { label: this.$t('orgSelectComp.peopleAssignment'), value: 'people' },
+        { label: this.$t('orgSelectComp.roleAssignment'), value: 'role' },
+        { label: this.$t('orgSelectComp.deptAssignment'), value: 'department' },
+      ]) : [
+        { label: this.$t('orgSelectComp.applicantSelf'), value: 'applicant' },
+        { label: this.$t('orgSelectComp.applicantLeader'), value: 'applicantLeader' },
+        { label: this.$t('orgSelectComp.peopleAssignment'), value: 'people' },
+        { label: this.$t('orgSelectComp.roleAssignment'), value: 'role' },
+        { label: this.$t('orgSelectComp.deptAssignment'), value: 'department' },
+      ]
+    }
+  },
   data() {
     return {
       approval: {
         approvalType: this.defaultApprovalType,
         members: [],
       },
-      options:this.hasNone ? [{ label: '无', value: 'none' }].concat([
-        { label: '发起人自己', value: 'applicant' },
-        { label: '发起人直属主管审批', value: 'applicantLeader' },
-        { label: '指定人员', value: 'people' },
-        { label: '指定角色', value: 'role' },
-        { label: '指定部门', value: 'department' },
-      ]):[
-        { label: '发起人自己', value: 'applicant' },
-        { label: '发起人直属主管审批', value: 'applicantLeader' },
-        { label: '指定人员', value: 'people' },
-        { label: '指定角色', value: 'role' },
-        { label: '指定部门', value: 'department' },
-      ]
+
     };
   },
   methods: {
     emitChange() {
       this.$emit('customEvent', {
         approvalType: this.approval.approvalType,
-        members:this.approval.members,
+        members: this.approval.members,
       });
     },
   },

@@ -24,13 +24,13 @@
           @change="onStepChange"
         >
           <!-- bugfix 不可以用v-if, v-if 会导致current 改变， 0,1,2 => 0,1 -->
-          <a-step status="finish" title="表单设计" v-show="!noFormDesign">
+          <a-step status="finish" :title="$t('ffDesigner.formDesign')" v-show="!noFormDesign">
             <SvgIconFormDesign style="width: 20px; height: 20px" slot="icon" />
           </a-step>
-          <a-step status="finish" title="流程设计">
+          <a-step status="finish" :title="$t('ffDesigner.flowDesign')">
             <SvgIconFlowDesign style="width: 20px; height: 20px" slot="icon" />
           </a-step>
-          <a-step status="process" title="流程发布">
+          <a-step status="process" :title="$t('ffDesigner.ffPublish')">
             <SvgIconFFPublish style="width: 20px; height: 20px" slot="icon" />
           </a-step>
         </a-steps>
@@ -54,20 +54,20 @@
         ></flow-form-publish>
       </div>
     </div>
-    <SuccessPage description="提交成功" v-show="success">
+    <SuccessPage :description="$t('ffDesigner.submitSuccess')" v-show="success">
       <a-button
         v-if="[FlowFormDesignerType.SYSTEM_NEW].includes(computedQuery.type)"
         @click="handleGoBackToDesign"
         type="link"
         icon="rollback"
-        >继续设计</a-button
+        >{{$t('ffDesigner.continueDesign')}}</a-button
       >
       <a-button
         v-if="[FlowFormDesignerType.SYSTEM_EDIT].includes(computedQuery.type)"
         @click="handleGoBackToTemplatesList"
         type="link"
         icon="rollback"
-        >返回</a-button
+        >{{$t('common.back')}}</a-button
       >
 
       <a-button
@@ -80,7 +80,7 @@
         @click="handleGoBackToManagePage"
         type="link"
         icon="rollback"
-        >返回</a-button
+        >{{$t('common.back')}}</a-button
       >
     </SuccessPage>
   </RootContainer>
@@ -101,9 +101,11 @@ import { queryTemplate, queryProcessForm, publishProcessForm, updateProcessForm,
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
 import RootContainer from '@/components/base/RootContainer';
 import getHeightPostMessage from "@/utils/getHeightPostMessage.js"
+import handleLanguage from "@/mixins/handleLanguage.js"
+
 export default {
   name: 'FlowFormDesigner',
-  mixins: [handleQuery],
+  mixins: [handleQuery,handleLanguage],
 
   props: {
     editRecord: {
@@ -154,6 +156,7 @@ export default {
         templateId: undefined,
         uniTenantId: undefined,
         bizToken: undefined,
+        lang:'en'
       },
       success: false
     };

@@ -254,7 +254,7 @@ export default {
         bizToken: {
           type: String
         },
-        lang:'zh'
+        lang:'en'
       }
     };
   },
@@ -342,7 +342,8 @@ export default {
           type: type,
           templateId: id,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
         }
       });
     },
