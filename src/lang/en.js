@@ -111,7 +111,7 @@ export default {
   ffDesigner: {
     formDesign: 'Form Design',
     flowDesign: 'Flow Design',
-    ffPublish: 'Flow Form Publish',
+    ffPublish: 'Publish',
     submitSuccess: 'Submit Success!',
     continueDesign: 'Continue Designing',
   },
