@@ -81,7 +81,11 @@
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createMeterNumber" label="生成表号"></el-checkbox> -->
       </a-collapse-panel>
-      <a-collapse-panel class="person-incarge-item" key="peopleInchage" v-if="elementType === 'UserTask'">
+      <a-collapse-panel
+        class="person-incarge-item"
+        key="peopleInchage"
+        v-if="elementType === 'UserTask' && !isFirstElement"
+      >
         <div slot="header" class="panel-tab__title"><a-icon type="share-alt"></a-icon>审批配置</div>
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
@@ -103,7 +107,11 @@
         </template>
       </a-collapse-panel>
 
-      <a-collapse-panel class="person-incarge-item" key="copyConfig" v-if="elementType === 'UserTask'">
+      <a-collapse-panel
+        class="person-incarge-item"
+        key="copyConfig"
+        v-if="elementType === 'UserTask' && !isFirstElement"
+      >
         <div slot="header" class="panel-tab__title"><a-icon type="mail"></a-icon>抄送配置</div>
         <TitleRow title="抄送类型" size="small" bold> </TitleRow>
 
@@ -126,7 +134,11 @@
         </template>
       </a-collapse-panel>
 
-      <a-collapse-panel class="person-incarge-item" key="flowCheckConfig" v-if="elementType === 'UserTask'">
+      <a-collapse-panel
+        class="person-incarge-item"
+        key="flowCheckConfig"
+        v-if="elementType === 'UserTask' && !isFirstElement"
+      >
         <div slot="header" class="panel-tab__title">
           <a-icon type="eye"></a-icon><span style="margin-right: 20px">查看配置</span>
         </div>
@@ -273,6 +285,7 @@ export default {
       activeTab: ['peopleInchage'],
       elementId: '',
       elementType: '',
+      isFirstElement:false,
       elementBusinessObject: {}, // 元素 businessObject 镜像，提供给需要做判断的组件使用
       conditionFormVisible: false, // 流转条件设置
       formVisible: false, // 表单配置
@@ -390,6 +403,20 @@ export default {
       };
       this.getActiveElement();
     },
+    checkIfFirstElement(selectElements){
+      for(let i = 0; i < selectElements.length; i++){
+        if(selectElements[i].incoming){
+          for(let j = 0; j < selectElements[i].incoming.length; j++){
+            const pre = selectElements[i].incoming[j]
+            console.log('[pre]: ',pre)
+            if(pre.source && pre.source.type === 'bpmn:StartEvent'){
+              return true
+            }
+          }
+        }
+      }
+      return false
+    },
     getActiveElement() {
       // 初始第一个选中元素 bpmn:Process
       this.initFormOnChanged(null);
@@ -398,6 +425,8 @@ export default {
       });
       // 监听选择事件，修改当前激活的元素以及表单
       this.bpmnModeler.on('selection.changed', ({ newSelection }) => {
+        // 检查点击的结点是否是第一个结点，如果是第一个结点，禁止用户配置抄送以及查看结点
+        this.isFirstElement = this.checkIfFirstElement(newSelection)
         this.initFormOnChanged(newSelection[0] || null);
       });
       this.bpmnModeler.on('element.changed', ({ element }) => {
