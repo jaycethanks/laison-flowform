@@ -62,7 +62,7 @@ service.interceptors.response.use(
         $message.error(`登录凭证失效，请重新登录！`);
         router.push('/login');
       }
-    } else if (response.data.errorcode === 403) {
+    } else if ([403, 401].includes(response.data.status)) {
       $message.error(`登录凭证过期，请重新登录！`);
       router.push('/login');
       localStorage.removeItem('token');

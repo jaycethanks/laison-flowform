@@ -1,8 +1,10 @@
 <template>
   <div>
     <a-modal
+      width="50%"
+      height="10%"
       @cancel="visible=false"
-      :bodyStyle="{  overflow: 'hidden',padding:'10px' }"
+      :bodyStyle="{  height:'50vh',overflow: 'hidden',padding:'10px' }"
       :visible="visible"
       :title="$t('ffMgt.modal.selectTemplate')"
       :footer="null"
@@ -27,6 +29,7 @@
         tab-position="left"
         @prevClick="() => {}"
         @nextClick="() => {}"
+        :tabBarGutter="0"
       >
         <a-tab-pane class="tab-pane" v-for="group in list" :key="group.groupId" :tab="ellipsis(group.groupName, 10)">
           <a-list size="small" item-layout="horizontal" :data-source="group.list">
@@ -53,7 +56,7 @@
       <a-list
         class="filter-list"
         v-show="showFilterList"
-        style="height: 400px;overflow-y:auto"
+        style="height: 100%;overflow-y:auto"
         size="small"
         item-layout="horizontal"
         :data-source="flatenArray"
@@ -153,13 +156,14 @@ export default {
 <style scoped lang="scss">
 
 .tab-wrapper{
-  height: 400px;
-  // overflow: auto;
+  height: 100%;
+  overflow-y: auto;
   margin-top:10px;
+
 
   .tab-pane{
     ::v-deep .ant-list-items{
-      height: 400px;
+      height: 100%;
       overflow-y: auto;
     }
   }
@@ -175,6 +179,9 @@ export default {
   &:hover{
     background-color: rgb(247, 247, 247);
   }
+}
+::v-deep .ant-list{
+  margin-bottom: 40px;
 }
 ::v-deep .ant-list-item-meta{
   align-items: center;
