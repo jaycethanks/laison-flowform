@@ -140,7 +140,6 @@ import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import Container from "@/components/base/Container/index.vue"
 import RootContainer from '@/components/base/RootContainer/index.vue'
 import convert from 'xml-js';
-let index = 0;
 export default {
   props: {
     height: {
