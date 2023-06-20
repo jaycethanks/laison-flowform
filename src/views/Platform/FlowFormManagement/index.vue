@@ -285,6 +285,8 @@ export default {
         } else {
           this.enabled_list = []
         }
+      }else {
+        this.$message.error(res.msg)
       }
     },
 

@@ -37,6 +37,8 @@ export default {
         const { total, list } = res.data;
         this.dataSource = list;
         this.pageInfo.pagination.total = total;
+      } else {
+        this.$message.error(res.msg);
       }
       this.pageInfo.loading = false;
     },
