@@ -80,7 +80,9 @@ export default {
     submitAndInitiateApply: 'Enviar e iniciar',
     saveAsDraft: 'Salvar como rascunho',
     flowApprove: 'Aprovação de fluxo',
-    getFormDataError:'Erro ao obter dados do formulário. Verifique se o formulário foi preenchido corretamente!'
+    getFormDataError:'Erro ao obter dados do formulário. Verifique se o formulário foi preenchido corretamente!',
+    checkFlowDiagram:'Ver Fluxograma'
+
 
   },
   submitInfoModal: {

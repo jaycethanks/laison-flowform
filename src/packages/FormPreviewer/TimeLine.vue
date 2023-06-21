@@ -4,40 +4,48 @@
       <a-button type="link" @click="handleCheckFlowDiagram">
         <span style="display: inline-flex; align-items: center; gap: 0.2em">
           <SvgIconFlow style="height: 1.2em; width: 1.2em" />
-          查看流程图
+          {{ $t("formPreview.checkFlowDiagram") }}
         </span>
       </a-button>
     </p>
     <a-timeline>
       <a-timeline-item
-        v-for="(operateItem,index) in operateRecord"
+        v-for="(operateItem, index) in operateRecord"
         :key="index"
         :color="getColor(operateItem.taskType).bg"
       >
         <p
-          :style="{display:'flex',justifyContent:'space-between',padding:'.2em .6em'
+          :style="{
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '.2em .6em',
           }"
         >
-          <span style="font-weight:bold">
+          <span style="font-weight: bold">
             {{ operateItem.nodeName }}
           </span>
-          <span
-            :style="{color:getColor(operateItem.taskType).text}"
-            >{{ circulateTaskType(operateItem.taskType) }}</span
-          >
+          <span :style="{ color: getColor(operateItem.taskType).text }">{{
+            circulateTaskType(operateItem.taskType)
+          }}</span>
         </p>
         <p class="userName">
           <SvgIconPersonPin style="height: 14px; width: 14px" />{{
             operateItem.executorName
           }}
         </p>
-        <div v-if="operateItem.comment" class="comment">{{ operateItem.comment }}</div>
+        <div v-if="operateItem.comment" class="comment">
+          {{ operateItem.comment }}
+        </div>
 
         <p v-if="operateItem.enclosurePaths" class="link-files">
           <SvgIconLinkedFiles style="height: 14px; width: 14px" />附件
         </p>
         <div v-if="operateItem.enclosurePaths" class="addons">
-          <div class="addon-item" v-for="addon in circulateFiles(operateItem.enclosurePaths)" :key="addon.name">
+          <div
+            class="addon-item"
+            v-for="addon in circulateFiles(operateItem.enclosurePaths)"
+            :key="addon.name"
+          >
             <a href="#" @click="download(addon.path, addon.name)">{{
               addon.name
             }}</a>
@@ -91,25 +99,25 @@ export default {
     operations: {
       type: Object,
     },
-    businessId:{
-      type:String,
+    businessId: {
+      type: String,
       required: true,
     },
-    uniTenantId:{
-      type:String,
+    uniTenantId: {
+      type: String,
       required: true,
     },
-    bizToken:{
-      type:String,
+    bizToken: {
+      type: String,
       required: true,
     },
   },
   data() {
     return {
       flowPreviewerModalVisible: false,
-      operateRecord:[],
-      flowPreviewerData:null,
-      taskTypes:{
+      operateRecord: [],
+      flowPreviewerData: null,
+      taskTypes: {
         // todo: 多语言支持
         create: "创建",
         pass: "通过",
@@ -128,28 +136,28 @@ export default {
     JModal,
     FlowPreviewer
   },
-  created(){
+  created() {
     this.loadOperationRecord()
   },
   methods: {
-    circulateTaskType(typeString){
+    circulateTaskType(typeString) {
       return this.taskTypes[typeString]
     },
 
     handleCheckFlowDiagram() {
       this.flowPreviewerModalVisible = true
     },
-    async loadOperationRecord(){
+    async loadOperationRecord() {
       const res = await taskProgress({
         businessId: this.businessId,
         uniTenantId: this.uniTenantId,
         bizToken: this.bizToken,
 
       });
-      if(res.status == 200){
+      if (res.status == 200) {
         this.operateRecord = res.data.operateRecord
         this.flowPreviewerData = res.data.processProgress
-      }else{
+      } else {
         this.$message.error(res.msg)
       }
     },
