@@ -13,7 +13,7 @@
           @click="handleGoBackToManagePage"
           type="link"
           icon="rollback"
-          >{{$t('common.back')}}</a-button
+          >{{ $t("common.back") }}</a-button
         >
         <a-steps
           ref="steps"
@@ -24,7 +24,11 @@
           @change="onStepChange"
         >
           <!-- bugfix 不可以用v-if, v-if 会导致current 改变， 0,1,2 => 0,1 -->
-          <a-step status="finish" :title="$t('ffDesigner.formDesign')" v-show="!noFormDesign">
+          <a-step
+            status="finish"
+            :title="$t('ffDesigner.formDesign')"
+            v-show="!noFormDesign"
+          >
             <SvgIconFormDesign style="width: 20px; height: 20px" slot="icon" />
           </a-step>
           <a-step status="finish" :title="$t('ffDesigner.flowDesign')">
@@ -36,7 +40,10 @@
         </a-steps>
       </p>
       <div class="flow-form-designer-container">
-        <form-design v-show="!noFormDesign && current === 0" ref="formDesignView"></form-design>
+        <form-design
+          v-show="!noFormDesign && current === 0"
+          ref="formDesignView"
+        ></form-design>
         <flow-design
           v-show="current === 1"
           :bpmnEditDataInit="bpmnEditDataInit"
@@ -60,14 +67,14 @@
         @click="handleGoBackToDesign"
         type="link"
         icon="rollback"
-        >{{$t('ffDesigner.continueDesign')}}</a-button
+        >{{ $t("ffDesigner.continueDesign") }}</a-button
       >
       <a-button
         v-if="[FlowFormDesignerType.SYSTEM_EDIT].includes(computedQuery.type)"
         @click="handleGoBackToTemplatesList"
         type="link"
         icon="rollback"
-        >{{$t('common.back')}}</a-button
+        >{{ $t("common.back") }}</a-button
       >
 
       <a-button
@@ -80,7 +87,7 @@
         @click="handleGoBackToManagePage"
         type="link"
         icon="rollback"
-        >{{$t('common.back')}}</a-button
+        >{{ $t("common.back") }}</a-button
       >
     </SuccessPage>
   </RootContainer>
@@ -101,11 +108,12 @@ import { queryTemplate, queryProcessForm, publishProcessForm, updateProcessForm,
 import SuccessPage from "@/components/FlowForm/SuccessPage/index.vue"
 import RootContainer from '@/components/base/RootContainer';
 import getHeightPostMessage from "@/utils/getHeightPostMessage.js"
+
 import handleLanguage from "@/mixins/handleLanguage.js"
 
 export default {
   name: 'FlowFormDesigner',
-  mixins: [handleQuery,handleLanguage],
+  mixins: [handleQuery, handleLanguage],
 
   props: {
     editRecord: {
@@ -156,7 +164,7 @@ export default {
         templateId: undefined,
         uniTenantId: undefined,
         bizToken: undefined,
-        lang:'en'
+        lang: 'en'
       },
       success: false
     };
@@ -178,7 +186,7 @@ export default {
       this.current = tabIndex;
     },
 
-    onStepChange(key,a,b) {
+    onStepChange(key, a, b) {
       this.stepsHistoryStack.push(key);
       let from = this.stepsHistoryStack.at(-2);
 
@@ -372,7 +380,9 @@ export default {
         path: '/platform/flowformManagement',
         query: {
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },
@@ -380,9 +390,14 @@ export default {
       this.resetStore()
       this.$router.push({
         path: '/system/flowformDesign/flowformTemplatesList',
+        query: {
+          uniTenantId: this.computedQuery.uniTenantId,
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+        }
       });
     },
-    resetStore(){
+    resetStore() {
       this.$store.commit('RESET_KFORM');
       this.$store.commit('RESET_BPMN');
       this.$store.commit('RESET_FLOWFORM');
@@ -429,7 +444,7 @@ export default {
 }
 .flow-form-designer-root {
   // height: 100%;
-  height:90vh;
+  height: 90vh;
   width: 100%;
 }
 .flow-form-designer-container {

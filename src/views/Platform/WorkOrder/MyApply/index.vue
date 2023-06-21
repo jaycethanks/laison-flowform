@@ -1,6 +1,10 @@
 <template>
   <RootContainer>
-    <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
+    <a-form
+      layout="inline"
+      @keyup.enter.native="handleQuery"
+      @submit.prevent="handleQuery"
+    >
       <a-row :gutter="24" style="margin: 0">
         <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
@@ -73,7 +77,9 @@
             </template>
 
             <!-- 草稿 编辑|提交 -->
-            <template v-if="[ProcessResultType.TOSUBMIT].includes(record.result)">
+            <template
+              v-if="[ProcessResultType.TOSUBMIT].includes(record.result)"
+            >
               <a @click="handleRowEdit(record)">{{ $t("common.edit") }}</a>
               <!-- <a-divider type="vertical" /> -->
               <a @click="handleRowSubmit(record)">{{ $t("common.submit") }}</a>
@@ -105,7 +111,9 @@
               cancel-text="No"
               @confirm="handleDelete(record)"
             >
-              <template slot="title"> {{ $t("common.ensureDelete") }}?</template>
+              <template slot="title">
+                {{ $t("common.ensureDelete") }}?</template
+              >
               <a-button style="color: #ff4d4f" type="link">{{
                 $t("common.delete")
               }}</a-button>
@@ -115,9 +123,18 @@
       </a-table>
     </a-card>
 
-    <submitInfoModal :type="submitInfoModalType" :title="modalTitle_" ref="modal" @ok="handleSubmitInfoOk" />
+    <submitInfoModal
+      :type="submitInfoModalType"
+      :title="modalTitle_"
+      ref="modal"
+      @ok="handleSubmitInfoOk"
+    />
 
-    <TemplateListDrawer @select="handleSelect" :visible="templateListVisible" @close="templateListVisible = false" />
+    <TemplateListDrawer
+      @select="handleSelect"
+      :visible="templateListVisible"
+      @close="templateListVisible = false"
+    />
     <!-- <Container> -->
   </RootContainer>
 </template>
@@ -273,7 +290,9 @@ export default {
           procDefId,
           businessId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },
@@ -305,7 +324,9 @@ export default {
           procDefId,
           businessId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },

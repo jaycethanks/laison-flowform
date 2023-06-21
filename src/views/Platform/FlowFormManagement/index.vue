@@ -8,7 +8,7 @@
           type="primary"
           icon="appstore"
           @click="$refs.FlowFormTemplatesSelectModal.show()"
-          >{{$t('ffMgt.addTemplate')}}</a-button
+          >{{ $t("ffMgt.addTemplate") }}</a-button
         >
       </TitleRow>
 
@@ -28,7 +28,13 @@
         </template>
 
         <template v-for="(item, index) in list">
-          <TitleRow size="small" :key="item.groupId" :title="item.groupName" bold> </TitleRow>
+          <TitleRow
+            size="small"
+            :key="item.groupId"
+            :title="item.groupName"
+            bold
+          >
+          </TitleRow>
           <div class="group-wrapper" :key="index">
             <template v-for="_item in item.list">
               <div class="process-item-wrapper" :key="_item.id">
@@ -39,11 +45,18 @@
                       <template slot="title">
                         <span>{{ _item.designDes }}</span>
                       </template>
-                      <ff-icon :icon="_item.designIcon" style="height: 40px; width: 40px" :bgc="_item.designColor" />
+                      <ff-icon
+                        :icon="_item.designIcon"
+                        style="height: 40px; width: 40px"
+                        :bgc="_item.designColor"
+                      />
                     </a-tooltip>
 
                     <div class="process-item-label">
-                      <p class="process-item-lable-title" :title="_item.designName">
+                      <p
+                        class="process-item-lable-title"
+                        :title="_item.designName"
+                      >
                         {{ ellipsis(_item.designName, 12) }}
                       </p>
 
@@ -56,7 +69,10 @@
 
                 <!-- settings -->
                 <a-dropdown :trigger="['click']">
-                  <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+                  <a
+                    class="ant-dropdown-link"
+                    @click="(e) => e.preventDefault()"
+                  >
                     <a-icon type="ellipsis" style="font-size: 20px" />
                   </a>
                   <!-- <a-button
@@ -77,7 +93,7 @@
                           formPreviewModalTitle = _item.designName;
                           $refs.FormPreviewerModal.show(_item.id);
                         "
-                        >{{$t('common.preview')}}</a-button
+                        >{{ $t("common.preview") }}</a-button
                       >
                     </a-menu-item>
                     <a-menu-item key="1">
@@ -92,7 +108,7 @@
                             FlowFormDesignerType.PLATFORM_NEW
                           )
                         "
-                        >{{$t('ffMgt.designPublish')}}</a-button
+                        >{{ $t("ffMgt.designPublish") }}</a-button
                       >
                     </a-menu-item>
                     <a-menu-divider />
@@ -105,7 +121,7 @@
                         @click="
                           handleDeleteTemplate(_item.id, _item.designName)
                         "
-                        >{{$t('ffMgt.deleteTemplate')}}</a-button
+                        >{{ $t("ffMgt.deleteTemplate") }}</a-button
                       >
                     </a-menu-item>
                   </a-menu>
@@ -135,7 +151,13 @@
         </template>
 
         <template v-for="(item, index) in enabled_list">
-          <TitleRow size="small" :key="item.groupId" :title="item.groupName" bold> </TitleRow>
+          <TitleRow
+            size="small"
+            :key="item.groupId"
+            :title="item.groupName"
+            bold
+          >
+          </TitleRow>
           <div class="group-wrapper" :key="index">
             <template v-for="_item in item.list">
               <div class="process-item-wrapper" :key="_item.id">
@@ -146,11 +168,18 @@
                       <template slot="title">
                         {{ _item.designDes }}
                       </template>
-                      <ff-icon :icon="_item.designIcon" style="height: 40px; width: 40px" :bgc="_item.designColor" />
+                      <ff-icon
+                        :icon="_item.designIcon"
+                        style="height: 40px; width: 40px"
+                        :bgc="_item.designColor"
+                      />
                     </a-tooltip>
 
                     <div class="process-item-label">
-                      <p class="process-item-lable-title" :title="_item.designName">
+                      <p
+                        class="process-item-lable-title"
+                        :title="_item.designName"
+                      >
                         {{ ellipsis(_item.designName, 12) }}
                       </p>
 
@@ -171,7 +200,10 @@
                     size="small"
                   ></a-switch>
                   <a-dropdown :trigger="['click']">
-                    <a class="ant-dropdown-link" @click="(e) => e.preventDefault()">
+                    <a
+                      class="ant-dropdown-link"
+                      @click="(e) => e.preventDefault()"
+                    >
                       <a-icon type="ellipsis" style="font-size: 20px" />
                     </a>
                     <!-- <a-button
@@ -195,7 +227,7 @@
                               FlowFormDesignerType.PLATFORM_EDIT
                             )
                           "
-                          >{{$t('ffMgt.editPublish')}}</a-button
+                          >{{ $t("ffMgt.editPublish") }}</a-button
                         >
                       </a-menu-item>
                       <a-menu-divider />
@@ -206,7 +238,7 @@
                           icon="delete"
                           size="small"
                           @click="handleDelete(_item.id, _item.designName)"
-                          >{{$t('ffMgt.deleteFlow')}}</a-button
+                          >{{ $t("ffMgt.deleteFlow") }}</a-button
                         >
                       </a-menu-item>
                     </a-menu>
@@ -217,8 +249,15 @@
           </div>
         </template>
       </section>
-      <FormPreviewerModal :title="formPreviewModalTitle" ref="FormPreviewerModal" :footer="null" />
-      <FlowFormTemplatesSelectModal ref="FlowFormTemplatesSelectModal" @ok="handleSelect" />
+      <FormPreviewerModal
+        :title="formPreviewModalTitle"
+        ref="FormPreviewerModal"
+        :footer="null"
+      />
+      <FlowFormTemplatesSelectModal
+        ref="FlowFormTemplatesSelectModal"
+        @ok="handleSelect"
+      />
     </Container>
   </RootContainer>
 </template>
@@ -239,7 +278,7 @@ import EmptyPage from '@/components/FlowForm/EmptyPage/index.vue';
 import handleLanguage from "@/mixins/handleLanguage.js"
 export default {
   components: { ffIcon, FormPreviewerModal, FlowFormTemplatesSelectModal, Container, TitleRow, RootContainer, EmptyPage },
-  mixins: [handleQuery,handleLanguage],
+  mixins: [handleQuery, handleLanguage],
   data() {
     return {
       FlowFormDesignerType,
@@ -254,7 +293,7 @@ export default {
         bizToken: {
           type: String
         },
-        lang:'en'
+        lang: 'en'
       }
     };
   },
@@ -285,7 +324,7 @@ export default {
         } else {
           this.enabled_list = []
         }
-      }else {
+      } else {
         this.$message.error(res.msg)
       }
     },

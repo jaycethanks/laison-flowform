@@ -1,6 +1,10 @@
 <template>
   <RootContainer>
-    <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
+    <a-form
+      layout="inline"
+      @keyup.enter.native="handleQuery"
+      @submit.prevent="handleQuery"
+    >
       <a-row :gutter="24" style="margin: 0">
         <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
@@ -98,7 +102,7 @@ import handleLanguage from "@/mixins/handleLanguage.js"
 
 export default {
   name: "myTodo",
-  mixins: [searchTableMixin, handleQuery,handleLanguage],
+  mixins: [searchTableMixin, handleQuery, handleLanguage],
   components: {
     Container,
     RootContainer,
@@ -106,7 +110,7 @@ export default {
     submitInfoModal
   },
   computed: {
-    modalTitle: function(){return this.$t('todo.approveFlow')},
+    modalTitle: function () { return this.$t('todo.approveFlow') },
     columns: function () {
       return [
         {
@@ -171,7 +175,7 @@ export default {
         bizToken: {
           type: String
         },
-        lang:'en'
+        lang: 'en'
       },
     };
   },
@@ -199,7 +203,9 @@ export default {
           nodeId,
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken,
-          curTaskId: taskId
+          curTaskId: taskId,
+          lang: this.computedQuery.lang
+
         }
       });
     },
@@ -212,7 +218,9 @@ export default {
           procDefId,
           businessId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },
@@ -225,7 +233,9 @@ export default {
           procDefId,
           businessId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },
@@ -254,7 +264,9 @@ export default {
           publishId,
           procDefId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },

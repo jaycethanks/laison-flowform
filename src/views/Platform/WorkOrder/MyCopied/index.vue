@@ -1,6 +1,10 @@
 <template>
   <RootContainer>
-    <a-form layout="inline" @keyup.enter.native="handleQuery" @submit.prevent="handleQuery">
+    <a-form
+      layout="inline"
+      @keyup.enter.native="handleQuery"
+      @submit.prevent="handleQuery"
+    >
       <a-row :gutter="24" style="margin: 0">
         <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
@@ -19,10 +23,14 @@
       <a-row type="flex" justify="space-between" :gutter="24" style="margin: 0">
         <a-col>
           <a-form-item>
-            <a-button type="primary" html-type="submit" icon="search">{{$t("common.query")}}</a-button>
+            <a-button type="primary" html-type="submit" icon="search">{{
+              $t("common.query")
+            }}</a-button>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="resetSearch" icon="reload">{{$t("common.reset")}}</a-button>
+            <a-button type="primary" @click="resetSearch" icon="reload">{{
+              $t("common.reset")
+            }}</a-button>
           </a-form-item>
         </a-col>
       </a-row>
@@ -91,7 +99,7 @@ export default {
     // submitInfoModal
   },
   computed: {
-    modalTitle: function(){return this.$t('empty')},
+    modalTitle: function () { return this.$t('empty') },
     columns: function () {
       return [
         {
@@ -158,7 +166,7 @@ export default {
         bizToken: {
           type: String
         },
-        lang:'en'
+        lang: 'en'
       },
     };
   },
@@ -185,7 +193,9 @@ export default {
           businessId,
           nodeId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },
@@ -198,7 +208,9 @@ export default {
           procDefId,
           businessId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },
@@ -227,7 +239,9 @@ export default {
           publishId,
           procDefId,
           uniTenantId: this.computedQuery.uniTenantId,
-          bizToken: this.computedQuery.bizToken
+          bizToken: this.computedQuery.bizToken,
+          lang: this.computedQuery.lang
+
         }
       });
     },
