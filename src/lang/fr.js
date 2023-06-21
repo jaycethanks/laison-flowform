@@ -80,6 +80,7 @@ export default {
     submitAndInitiateApply: 'Soumettre et initier',
     saveAsDraft: 'Enregistrer en tant que brouillon',
     flowApprove: 'Approbation des flux',
+    getFormDataError:'Erreur lors de la récupération des données du formulaire. Veuillez vérifier si le formulaire est rempli correctement!'
   },
   submitInfoModal: {
     comment: 'Commentaire ou remarque',

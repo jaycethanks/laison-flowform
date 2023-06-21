@@ -45,7 +45,11 @@
               />
             </section>
           </a-col>
-          <a-col :xs="24" :xl="6" v-if="this.computedQuery.type !== PreviewFormType.APPLY">
+          <a-col
+            :xs="24"
+            :xl="6"
+            v-if="this.computedQuery.type !== PreviewFormType.APPLY"
+          >
             <aside class="timeline">
               <TimeLine
                 :businessId="computedQuery.businessId"
@@ -88,7 +92,10 @@
             {{ $t("formPreview.pass") }}</span
           >
         </a-button>
-        <a-button v-if="computedQuery.type === PreviewFormType.APPLY" @click="handleSaveAsDraft">
+        <a-button
+          v-if="computedQuery.type === PreviewFormType.APPLY"
+          @click="handleSaveAsDraft"
+        >
           <span>
             <SvgIconSaveDraft style="height: 14px" />
             {{ $t("formPreview.saveAsDraft") }}</span
@@ -331,13 +338,11 @@ export default {
       if (submitInfo.delegator) {
         submitInfo.delegator = submitInfo.delegator[0].id
       }
+      // const formData = await this.getFormData()
 
-
-
-      const formData = await this.getFormData()
       const res = await this.fn({
         businessId: this.computedQuery.businessId || '',// submit接口， 业务ID，从草稿提交时需要携带
-        formData,
+        formData: this.formData,
         curTaskId: this.computedQuery.curTaskId || '',// submit接口，审批时需要携带
         uniTenantId: this.computedQuery.uniTenantId,
         publishId: this.computedQuery.publishId,
@@ -352,13 +357,14 @@ export default {
         this.$message.error(res.msg)
       }
     },
-    handleSubmit(submitType) {
+    async handleSubmit(submitType) {
       // 获取到请求接口
       const target = this.FN[submitType];
       const { fn, subTitle } = target;
       this.fn = fn;
       this.submitInfoModalType = submitType
       this.modalTitle_ = this.modalTitle + " - " + subTitle
+      this.formData = await this.getFormData()
       this.$refs.modal.show()
     },
     async handleSaveAsDraft() {
@@ -394,7 +400,7 @@ export default {
         formData = await this.$refs.kfb.getData()
       } catch (e) {
         formData = null;
-        this.$message.error("获取表单数据异常,请先检查表单是否按要求填写！")
+        this.$message.error(this.$t('formPreview.getFormDataError'))
         throw Error("获取表单数据异常")
       }
       return formData

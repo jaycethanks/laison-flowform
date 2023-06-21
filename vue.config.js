@@ -45,7 +45,7 @@ module.exports = defineConfig({
 
   devServer: {
     // disableHostCheck: true,
-    port: 3000,
+    port: 4200,
     // client: {
     //   logging: 'log',
     // },

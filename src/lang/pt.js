@@ -80,6 +80,8 @@ export default {
     submitAndInitiateApply: 'Enviar e iniciar',
     saveAsDraft: 'Salvar como rascunho',
     flowApprove: 'Aprovação de fluxo',
+    getFormDataError:'Erro ao obter dados do formulário. Verifique se o formulário foi preenchido corretamente!'
+
   },
   submitInfoModal: {
     comment: 'Comentário ou observação',

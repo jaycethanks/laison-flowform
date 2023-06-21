@@ -78,6 +78,9 @@ export default {
     submitAndInitiateApply: 'إرسال وبدء',
     saveAsDraft: 'حفظ كمسودة',
     flowApprove: 'موافقة التدفق',
+    getFormDataError:'فشل في الحصول على بيانات النموذج. يرجى التحقق مما إذا كان النموذج مملوءًا بشكل صحيح.'
+    
+
   },
   submitInfoModal: {
     comment: 'تعليق أو ملاحظة',

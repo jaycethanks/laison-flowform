@@ -78,6 +78,7 @@ export default {
     submitAndInitiateApply: '提交并发起',
     saveAsDraft: '保存为草稿',
     flowApprove: '流程审批',
+    getFormDataError:'获取表单数据异常,请先检查表单是否按要求填写！'
   },
   submitInfoModal: {
     comment: '评论或备注',
