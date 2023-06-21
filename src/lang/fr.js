@@ -81,7 +81,9 @@ export default {
     saveAsDraft: 'Enregistrer en tant que brouillon',
     flowApprove: 'Approbation des flux',
     getFormDataError:'Erreur lors de la récupération des données du formulaire. Veuillez vérifier si le formulaire est rempli correctement!',
-    checkFlowDiagram:'Voir le Diagramme de Flux'
+    checkFlowDiagram:'Voir le Diagramme de Flux',
+    flowChart:'Diagramme de Flux'
+
 
   },
   submitInfoModal: {

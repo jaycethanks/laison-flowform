@@ -79,7 +79,8 @@ export default {
     saveAsDraft: '保存为草稿',
     flowApprove: '流程审批',
     getFormDataError:'获取表单数据异常,请先检查表单是否按要求填写！',
-    checkFlowDiagram:'查看流程图'
+    checkFlowDiagram:'查看流程图',
+    flowChart:'流程图'
   },
   submitInfoModal: {
     comment: '评论或备注',

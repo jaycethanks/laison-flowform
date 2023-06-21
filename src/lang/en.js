@@ -79,7 +79,9 @@ export default {
     saveAsDraft: 'Save as Draft',
     flowApprove: 'Flow Approval',
     getFormDataError:'Failed to get form data. Please check if the form is filled out correctly!',
-    checkFlowDiagram:'View Flowchart'
+    checkFlowDiagram:'View Flowchart',
+    flowChart:'Flowchart'
+
 
   },
   submitInfoModal: {

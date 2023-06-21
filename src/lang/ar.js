@@ -79,7 +79,9 @@ export default {
     saveAsDraft: 'حفظ كمسودة',
     flowApprove: 'موافقة التدفق',
     getFormDataError:'فشل في الحصول على بيانات النموذج. يرجى التحقق مما إذا كان النموذج مملوءًا بشكل صحيح.',
-    checkFlowDiagram:'عرض المخطط التدفقي'
+    checkFlowDiagram:'عرض المخطط التدفقي',
+    flowChart:'مخطط تدفق'
+
 
     
 

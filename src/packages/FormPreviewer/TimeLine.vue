@@ -38,7 +38,9 @@
         </div>
 
         <p v-if="operateItem.enclosurePaths" class="link-files">
-          <SvgIconLinkedFiles style="height: 14px; width: 14px" />附件
+          <SvgIconLinkedFiles style="height: 14px; width: 14px" />{{
+            $t("submitInfoModal.enclosure")
+          }}
         </p>
         <div v-if="operateItem.enclosurePaths" class="addons">
           <div
@@ -59,7 +61,7 @@
       width="1200px"
       :visible="flowPreviewerModalVisible"
       switchFullscreen
-      title="流程图"
+      :title="$t('formPreview.flowChart')"
       @ok="() => {}"
       @cancel="flowPreviewerModalVisible = false"
       :maskClosable="false"
