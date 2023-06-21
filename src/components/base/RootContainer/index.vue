@@ -48,7 +48,7 @@ export default {
   position: relative;
 }
 .root-content {
-  overflow: hidden;
+  overflow-y: auto;
   height: auto;
 }
 .root-container-icon {
