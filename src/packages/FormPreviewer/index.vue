@@ -368,20 +368,20 @@ export default {
       this.$refs.modal.show()
     },
     async handleSaveAsDraft() {
-      const formData = await this.getFormData()
+      this.formData = await this.getFormData()
       let res;
       if (this.computedQuery.businessId) {
         // 如果 businessId 存在， 则说明是编辑，走编辑接口， 否则，走创建
         res = await edit({
           businessId: this.computedQuery.businessId,
-          formData,
+          formData: this.formData,
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken,
         })
       } else {
         res = await create({
           publishId: this.computedQuery.publishId,
-          formData,
+          formData: this.formData,
           uniTenantId: this.computedQuery.uniTenantId,
           bizToken: this.computedQuery.bizToken,
         })
