@@ -18,13 +18,27 @@
           :type="elementType"
         />
       </a-collapse-panel>
-      <a-collapse-panel v-if="elementType === 'Process' && isSystem" key="message">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-s-comment"></i>消息与信号</div>
+      <a-collapse-panel
+        v-if="elementType === 'Process' && isSystem"
+        key="message"
+      >
+        <div slot="header" class="panel-tab__title">
+          <i class="el-icon-s-comment"></i>消息与信号
+        </div>
         <signal-and-massage />
       </a-collapse-panel>
-      <a-collapse-panel key="condition" v-if="conditionFormVisible && isSystem" v-show="isSystem">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-s-promotion"></i>流转条件</div>
-        <flow-condition :business-object="elementBusinessObject" :type="elementType" />
+      <a-collapse-panel
+        key="condition"
+        v-if="conditionFormVisible && isSystem"
+        v-show="isSystem"
+      >
+        <div slot="header" class="panel-tab__title">
+          <i class="el-icon-s-promotion"></i>流转条件
+        </div>
+        <flow-condition
+          :business-object="elementBusinessObject"
+          :type="elementType"
+        />
       </a-collapse-panel>
       <!-- <a-collapse-panel v-if="formVisible" key="form">
         <div slot="header" class="panel-tab__title"><i class="el-icon-s-order"></i>表单</div>
@@ -58,12 +72,19 @@
       <!--        <element-listeners :id="elementId" :type="elementType" />-->
       <!--      </a-collapse-panel>-->
 
-      <a-collapse-panel key="taskListeners" v-if="elementType === 'UserTask' && isSystem">
-        <div slot="header" class="panel-tab__title"><a-icon type="bell"></a-icon>任务监听器</div>
+      <a-collapse-panel
+        key="taskListeners"
+        v-if="elementType === 'UserTask' && isSystem"
+      >
+        <div slot="header" class="panel-tab__title">
+          <a-icon type="bell"></a-icon>任务监听器
+        </div>
         <user-task-listeners :id="elementId" :type="elementType" />
       </a-collapse-panel>
       <a-collapse-panel key="extensions" v-if="isSystem">
-        <div slot="header" class="panel-tab__title"><i class="el-icon-circle-plus"></i>扩展属性</div>
+        <div slot="header" class="panel-tab__title">
+          <i class="el-icon-circle-plus"></i>扩展属性
+        </div>
         <element-properties :id="elementId" :type="elementType" />
       </a-collapse-panel>
       <!-- <a-collapse-panel key="other" key="other">
@@ -73,9 +94,19 @@
             <element-other-config :id="elementId" />
           </a-collapse-panel> -->
 
-      <a-collapse-panel class="person-incarge-item" key="languages" v-if="elementType === 'UserTask' && isSystem">
-        <div slot="header" class="panel-tab__title"><a-icon type="tags"></a-icon>结点多语言</div>
-        <LanguageSupport :elementId="elementId" v-model="currentExtendNodeConfig.lang" ref="language-support" />
+      <a-collapse-panel
+        class="person-incarge-item"
+        key="languages"
+        v-if="elementType === 'UserTask' && isSystem"
+      >
+        <div slot="header" class="panel-tab__title">
+          <a-icon type="tags"></a-icon>结点多语言
+        </div>
+        <LanguageSupport
+          :elementId="elementId"
+          v-model="currentExtendNodeConfig.lang"
+          ref="language-support"
+        />
         <!-- <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyerLeader" label="申请者领导审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.applyer" label="申请者审批"></el-checkbox>
         <el-checkbox v-model="currentExtendNodeConfig.taskConfig.createOrderNumber" label="产生订单编号"></el-checkbox>
@@ -84,15 +115,25 @@
       <a-collapse-panel
         class="person-incarge-item"
         key="peopleInchage"
-        v-if="elementType === 'UserTask' && !isFirstElement"
+        v-if="
+          (elementType === 'UserTask' && isSystem) ||
+          (elementType === 'UserTask' && isPlatform && !isFirstElement)
+        "
       >
+        <!-- 审批结点在模板设计阶段需要字段控制 -->
         <!-- 审批配置 -->
         <div slot="header" class="panel-tab__title">
-          <a-icon type="share-alt"></a-icon>{{ $t("flowDesigner.proPanel.approveConfig") }}
+          <a-icon type="share-alt"></a-icon
+          >{{ $t("flowDesigner.proPanel.approveConfig") }}
         </div>
         <template v-if="isPlatform">
           <!-- 审批类型 -->
-          <TitleRow :title="$t('flowDesigner.proPanel.approveType')" size="small" bold> </TitleRow>
+          <TitleRow
+            :title="$t('flowDesigner.proPanel.approveType')"
+            size="small"
+            bold
+          >
+          </TitleRow>
           <a-checkbox v-model="currentExtendNodeConfig.taskConfig.autoApproval">
             {{ $t("flowDesigner.proPanel.autoApprove") }}
           </a-checkbox>
@@ -100,15 +141,20 @@
 
         <template v-if="isPlatform">
           <!-- <OrgSelectionModal v-model="currentExtendNodeConfig.taskConfig.members" /> -->
-          <NodeApproverConfigModal v-model="currentExtendNodeConfig.taskConfig.approval" />
+          <NodeApproverConfigModal
+            v-model="currentExtendNodeConfig.taskConfig.approval"
+          />
         </template>
 
         <template v-if="isSystem">
           <!-- 字段控制 -->
           <p class="field-label-text">
-            <a-icon type="control"></a-icon>{{ $t("flowDesigner.proPanel.fieldsControl") }}
+            <a-icon type="control"></a-icon
+            >{{ $t("flowDesigner.proPanel.fieldsControl") }}
           </p>
-          <FormFieldsControl v-model="currentExtendNodeConfig.taskConfig.columnConfigs" />
+          <FormFieldsControl
+            v-model="currentExtendNodeConfig.taskConfig.columnConfigs"
+          />
         </template>
       </a-collapse-panel>
 
@@ -119,9 +165,15 @@
       >
         <!-- 抄送配置 -->
         <div slot="header" class="panel-tab__title">
-          <a-icon type="mail"></a-icon>{{ $t("flowDesigner.proPanel.copyConfig") }}
+          <a-icon type="mail"></a-icon
+          >{{ $t("flowDesigner.proPanel.copyConfig") }}
         </div>
-        <TitleRow :title="$t('flowDesigner.proPanel.copyType')" size="small" bold> </TitleRow>
+        <TitleRow
+          :title="$t('flowDesigner.proPanel.copyType')"
+          size="small"
+          bold
+        >
+        </TitleRow>
 
         <!-- 抄送类型 -->
         <a-radio-group v-model="currentExtendNodeConfig.copyConfig.type">
@@ -144,9 +196,12 @@
         <template v-if="isSystem">
           <!-- 字段控制 -->
           <p class="field-label-text">
-            <a-icon type="control"></a-icon>{{ $t("flowDesigner.proPanel.fieldsControl") }}
+            <a-icon type="control"></a-icon
+            >{{ $t("flowDesigner.proPanel.fieldsControl") }}
           </p>
-          <FormFieldsControl v-model="currentExtendNodeConfig.copyConfig.columnConfigs" />
+          <FormFieldsControl
+            v-model="currentExtendNodeConfig.copyConfig.columnConfigs"
+          />
         </template>
       </a-collapse-panel>
 
@@ -173,7 +228,9 @@
                   "
                 >
                   <!-- 显示最新 -->
-                  <el-checkbox :label="$t('flowDesigner.proPanel.showNewest')"></el-checkbox>
+                  <el-checkbox
+                    :label="$t('flowDesigner.proPanel.showNewest')"
+                  ></el-checkbox>
                 </el-checkbox-group></div
             ></el-col>
             <!-- <el-col :span="8"
