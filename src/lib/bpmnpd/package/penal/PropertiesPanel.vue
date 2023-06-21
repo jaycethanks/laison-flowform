@@ -161,7 +161,7 @@
       <a-collapse-panel
         class="person-incarge-item"
         key="copyConfig"
-        v-if="elementType === 'UserTask' && !isFirstElement"
+        v-if="elementType === 'UserTask'"
       >
         <!-- 抄送配置 -->
         <div slot="header" class="panel-tab__title">
