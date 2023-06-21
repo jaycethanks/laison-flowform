@@ -14,26 +14,68 @@
           >
           <el-tooltip effect="light">
             <div slot="content">
-              <el-button :size="headerButtonSize" type="text" @click="downloadProcessAsXml()">下载为XML文件</el-button>
+              <el-button
+                :size="headerButtonSize"
+                type="text"
+                @click="downloadProcessAsXml()"
+                >下载为XML文件</el-button
+              >
               <br />
-              <el-button :size="headerButtonSize" type="text" @click="downloadProcessAsSvg()">下载为SVG文件</el-button>
+              <el-button
+                :size="headerButtonSize"
+                type="text"
+                @click="downloadProcessAsSvg()"
+                >下载为SVG文件</el-button
+              >
               <br />
-              <el-button :size="headerButtonSize" type="text" @click="downloadProcessAsBpmn()"
+              <el-button
+                :size="headerButtonSize"
+                type="text"
+                @click="downloadProcessAsBpmn()"
                 >下载为BPMN文件</el-button
               >
             </div>
-            <el-button :size="headerButtonSize" :type="headerButtonType" icon="el-icon-download">下载文件</el-button>
+            <el-button
+              :size="headerButtonSize"
+              :type="headerButtonType"
+              icon="el-icon-download"
+              >下载文件</el-button
+            >
           </el-tooltip>
           <el-tooltip effect="light">
             <div slot="content">
-              <el-button :size="headerButtonSize" type="text" @click="previewProcessXML">预览XML</el-button>
+              <el-button
+                :size="headerButtonSize"
+                type="text"
+                @click="previewProcessXML"
+                >预览XML</el-button
+              >
               <br />
-              <el-button :size="headerButtonSize" type="text" @click="previewProcessJson">预览JSON</el-button>
+              <el-button
+                :size="headerButtonSize"
+                type="text"
+                @click="previewProcessJson"
+                >预览JSON</el-button
+              >
             </div>
-            <el-button :size="headerButtonSize" :type="headerButtonType" icon="el-icon-view">预览</el-button>
+            <el-button
+              :size="headerButtonSize"
+              :type="headerButtonType"
+              icon="el-icon-view"
+              >预览</el-button
+            >
           </el-tooltip>
-          <el-tooltip v-if="simulation" effect="light" :content="this.simulationStatus ? '退出模拟' : '开启模拟'">
-            <el-button :size="headerButtonSize" :type="headerButtonType" icon="el-icon-cpu" @click="processSimulation">
+          <el-tooltip
+            v-if="simulation"
+            effect="light"
+            :content="this.simulationStatus ? '退出模拟' : '开启模拟'"
+          >
+            <el-button
+              :size="headerButtonSize"
+              :type="headerButtonType"
+              icon="el-icon-cpu"
+              @click="processSimulation"
+            >
               模拟
             </el-button>
           </el-tooltip>
@@ -109,7 +151,11 @@
             />
           </el-tooltip>
           <el-tooltip effect="light" content="重置视图并居中">
-            <el-button :size="headerButtonSize" icon="el-icon-c-scale-to-original" @click="processReZoom()" />
+            <el-button
+              :size="headerButtonSize"
+              icon="el-icon-c-scale-to-original"
+              @click="processReZoom()"
+            />
           </el-tooltip>
         </el-button-group>
         <el-button-group key="stack-control">
@@ -132,10 +178,19 @@
           <el-popover placement="top" width="160" v-model="visible">
             <p>这是一段内容这是一段内容确定删除吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="visible = false">取消</el-button>
-              <el-button type="primary" size="mini" @click="processRestart">确定</el-button>
+              <el-button size="mini" type="text" @click="visible = false"
+                >取消</el-button
+              >
+              <el-button type="primary" size="mini" @click="processRestart"
+                >确定</el-button
+              >
             </div>
-            <el-button slot="reference" :size="headerButtonSize" icon="el-icon-refresh" @click="visible = true" />
+            <el-button
+              slot="reference"
+              :size="headerButtonSize"
+              icon="el-icon-refresh"
+              @click="visible = true"
+            />
             <!-- <el-tooltip effect="light" content="重新绘制">
                 </el-tooltip> -->
             <!-- TODO: bug  打不开 popover -->
@@ -317,8 +372,8 @@ export default {
           contextPadProvider: ["value", ''],//禁用图形菜单
           bendpoints: ["value", {}],//禁用连线拖动
           zoomScroll: ["value", ''],//禁用滚动
-          moveCanvas: ['value', ''],//禁用拖动整个流程图
           move: ['value', '']//禁用单个图形拖动
+          // moveCanvas: ['value', ''],//禁用拖动整个流程图
         });
       }
       return Modules;
