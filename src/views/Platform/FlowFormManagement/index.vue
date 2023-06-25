@@ -91,7 +91,10 @@
                         :title="$t('ffMgt.flowDesign')"
                         @click="
                           formPreviewModalTitle = _item.designName;
-                          $refs.FormPreviewerModal.show(_item.id);
+                          $refs.FormPreviewerModal.show(
+                            _item.id,
+                            computedQuery.lang
+                          );
                         "
                         >{{ $t("common.preview") }}</a-button
                       >
@@ -255,6 +258,7 @@
         :footer="null"
       />
       <FlowFormTemplatesSelectModal
+        :lang="computedQuery.lang"
         ref="FlowFormTemplatesSelectModal"
         @ok="handleSelect"
       />
