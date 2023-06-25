@@ -18,6 +18,23 @@
           >
           </a-select>
         </a-form-item>
+        <a-form-item :label="$t('工单类型')">
+          <a-select
+            style="min-width: 100px"
+            v-model="pageInfo.condition.status"
+            :allowClear="true"
+            :options="StatusOptions"
+          >
+          </a-select>
+        </a-form-item>
+        <a-form-item :label="$t('时间范围')">
+          <a-range-picker
+            :locale="locale_"
+            v-model="timeRange_"
+            :show-time="false"
+            format="YYYY-MM-DD"
+          />
+        </a-form-item>
         <!-- <a-col :md="6" :sm="8"> </a-col>
         <a-col :md="6" :sm="8">
           <span style="float: left; overflow: hidden" class="table-page-search-submitButtons"> </span>
