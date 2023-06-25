@@ -702,7 +702,7 @@ export default {
          */
 
         // prettier-ignore
-        // H: History Nodes Fields Control Template 获取历史的字段控制模板
+        // H: History Nodes Fields Control Template 获取历史的字段控制模板  
         const H = this.historyExtendConfig.length > 0 ? this.historyExtendConfig[0].taskConfig.columnConfigs : [] //获取历史节点，都是一样的随便取一个
         if (this.historyExtendConfig.length === 0 || H.length === 0) return; // 如果压根没有历史节点，或者表单字段为空就不需要做处理
         // N: New Nodes Fields Control Template 生成最新的字段控制模板
@@ -727,7 +727,6 @@ export default {
         const DiffKeys = N_keys.filter((it) => H_keys.indexOf(it) != -1); // 存在历史的字段key
 
         // 设定每个节点历史配置值
-        console.log(this.historyExtendConfig, '--line586');
         // prettier-ignore
         this.historyExtendConfig.forEach((it) => {
           historyExtendConfig_backup.forEach(h_it => {
@@ -748,6 +747,7 @@ export default {
               let target = historyColumnConfigs.find(i => i.key === it.key);
               it.hidden = target.hidden;
               it.disabled = target.disabled;
+              it.exposeFields = target.exposeFields;
               // it = target;不可以这样直接赋值，对象的内存地址直接被覆盖了，无法利用引用值特性直接修改原 historyExtendConfig 数据
             }
           })
