@@ -11,7 +11,8 @@ import Test from '../../playground/Test.vue';
 import getHeightPostMessage from '@/utils/getHeightPostMessage.js';
 Vue.use(VueRouter);
 // 测试用业务系统token
-const bizToken = '210cafb6-e68d-49cb-a29f-b39249f1a45a';
+const bizToken = 'd3affb4e-e977-41d0-bfc7-7ae69fa35a3c';
+const uniTenantId = '1669230063662399488'
 export const systemRoutes = [
   {
     path: '', //默认首页
@@ -289,7 +290,7 @@ const platformRoutes = [
         // 如果没有传递 query 参数，默认设置 'type'
         next({
           path: to.path,
-          query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
+          query: { uniTenantId: uniTenantId, bizToken: bizToken },
         });
       } else {
         next();
@@ -313,7 +314,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
+              query: { uniTenantId: uniTenantId, bizToken: bizToken },
             });
           } else {
             next();
@@ -332,7 +333,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
+              query: { uniTenantId: uniTenantId, bizToken: bizToken },
             });
           } else {
             next();
@@ -351,7 +352,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
+              query: { uniTenantId: uniTenantId, bizToken: bizToken },
             });
           } else {
             next();
@@ -369,7 +370,7 @@ const platformRoutes = [
           if (!to.query.uniTenantId) {
             next({
               path: to.path,
-              query: { uniTenantId: '1660919377043652608', bizToken: bizToken },
+              query: { uniTenantId: uniTenantId, bizToken: bizToken },
             });
           } else {
             next();

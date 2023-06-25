@@ -9,29 +9,57 @@
     :expandedRowKeys="expandedRowKeys"
   >
     <span slot="visibleTitleSlot">
-      <a-checkbox v-model="visibleAll" @change="(e) => toggleAll(e, 'hidden')"></a-checkbox>
+      <a-checkbox
+        v-model="visibleAll"
+        @change="(e) => toggleAll(e, 'hidden')"
+      ></a-checkbox>
       可见</span
     >
     <span slot="editableTitleSlot">
-      <a-checkbox v-model="editableAll" @change="(e) => toggleAll(e, 'disabled')"></a-checkbox>
+      <a-checkbox
+        v-model="editableAll"
+        @change="(e) => toggleAll(e, 'disabled')"
+      ></a-checkbox>
       可编辑</span
     >
     <span slot="visible" slot-scope="visible, record">
-      <a-checkbox :checked="!visible" @change="(e) => toggleVisible(e, record)"></a-checkbox>
+      <a-checkbox
+        :checked="!visible"
+        @change="(e) => toggleVisible(e, record)"
+      ></a-checkbox>
     </span>
-    <span slot="editable" slot-scope="editable, record" v-if="record.type != 'text'">
-      <a-checkbox :checked="!editable" @change="(e) => toggleEditable(e, record)"></a-checkbox>
+    <span
+      slot="editable"
+      slot-scope="editable, record"
+      v-if="record.type != 'text'"
+    >
+      <a-checkbox
+        :checked="!editable"
+        @change="(e) => toggleEditable(e, record)"
+      ></a-checkbox>
     </span>
 
     <template v-if="!noExpand" slot-scope="props" slot="expandIcon">
-      <a v-if="ifCustom(props.record.type)" class="expand-icon" @click="toggleRowExpand(props.record)">
-        <a-icon :type="expandedRows.has(props.record.key) ? 'caret-down' : 'caret-right'" />
+      <a
+        v-if="ifCustom(props.record.type)"
+        class="expand-icon"
+        @click="toggleRowExpand(props.record)"
+      >
+        <a-icon
+          :type="
+            expandedRows.has(props.record.key) ? 'caret-down' : 'caret-right'
+          "
+        />
       </a>
     </template>
 
     <template v-if="!noExpand" slot="expandedRowRender" slot-scope="record">
       <!-- 渲染可展开的行 -->
-      <FormFieldsControl noExpand v-model="record.exposeFields" style="padding: 2px 0px; background-color: #f3f3f3" />
+      <FormFieldsControl
+        noExpand
+        v-model="record.exposeFields"
+        style="padding: 2px 0px; background-color: #f3f3f3"
+      />
     </template>
   </a-table>
 </template>
@@ -104,13 +132,13 @@ export default {
     ['cusProp']: {
       // 同步selectAll checkbox 状态
       handler: function (val) {
-        console.log(this.cusProp, '--line56');
         let exist = this.cusProp.some((it) => it.hidden == true); // true: 存在不可见项
         !exist ? (this.visibleAll = true) : (this.visibleAll = false);
         let _exist = this.cusProp.some((it) => it.disabled == true); // true: 存在不可编辑项
         !_exist ? (this.editableAll = true) : (this.editableAll = false);
       },
       deep: true,
+      immediate: true,
     },
   },
   created() {

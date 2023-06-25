@@ -8,21 +8,23 @@
   >
     <a-form-model-item
       v-if="!exposeFields.name.hidden"
-      :disabled="disabled || exposeFields.name.disabled"
       ref="name"
       label="Activity name"
       prop="name"
     >
-      <a-input v-model="exposeFields.name.value" />
+      <a-input
+        :disabled="disabled || exposeFields.name.disabled"
+        v-model="exposeFields.name.value"
+      />
     </a-form-model-item>
     <a-form-model-item
       v-if="!exposeFields.region.hidden"
-      :disabled="disabled || exposeFields.region.disabled"
       label="Activity zone"
       required
       prop="region"
     >
       <a-select
+        :disabled="disabled || exposeFields.region.disabled"
         v-model="exposeFields.region.value"
         placeholder="please select your zone"
       >
@@ -32,12 +34,12 @@
     </a-form-model-item>
     <a-form-model-item
       v-if="!exposeFields.date1.hidden"
-      :disabled="disabled || exposeFields.date1.disabled"
       label="Activity time"
       required
       prop="date1"
     >
       <a-date-picker
+        :disabled="disabled || exposeFields.date1.disabled"
         v-model="exposeFields.date1.value"
         show-time
         type="date"
@@ -47,19 +49,23 @@
     </a-form-model-item>
     <a-form-model-item
       v-if="!exposeFields.delivery.hidden"
-      :disabled="disabled || exposeFields.delivery.disabled"
       label="Instant delivery"
       prop="delivery"
     >
-      <a-switch v-model="exposeFields.delivery.value" />
+      <a-switch
+        :disabled="disabled || exposeFields.delivery.disabled"
+        v-model="exposeFields.delivery.value"
+      />
     </a-form-model-item>
     <a-form-model-item
       v-if="!exposeFields.type.hidden"
-      :disabled="disabled || exposeFields.type.disabled"
       label="Activity type"
       prop="type"
     >
-      <a-checkbox-group v-model="exposeFields.type.value">
+      <a-checkbox-group
+        :disabled="disabled || exposeFields.type.disabled"
+        v-model="exposeFields.type.value"
+      >
         <a-checkbox value="1" name="type"> Online </a-checkbox>
         <a-checkbox value="2" name="type"> Promotion </a-checkbox>
         <a-checkbox value="3" name="type"> Offline </a-checkbox>
@@ -72,22 +78,27 @@
       required
       prop="resource"
     >
-      <a-radio-group v-model="exposeFields.resource.value">
+      <a-radio-group
+        :disabled="disabled || exposeFields.type.disabled"
+        v-model="exposeFields.resource.value"
+      >
         <a-radio value="1"> Sponsor </a-radio>
         <a-radio value="2"> Venue </a-radio>
       </a-radio-group>
     </a-form-model-item>
     <a-form-model-item
       v-if="!exposeFields.desc.hidden"
-      :disabled="disabled || exposeFields.desc.disabled"
       label="Activity form"
       required
       prop="desc"
     >
-      <a-input v-model="exposeFields.desc.value" type="textarea" />
+      <a-input
+        :disabled="disabled || exposeFields.desc.disabled"
+        v-model="exposeFields.desc.value"
+        type="textarea"
+      />
     </a-form-model-item>
     <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
-      <a-button type="primary" @click="onSubmit"> Create </a-button>
       <a-button style="margin-left: 10px" @click="resetForm"> Reset </a-button>
     </a-form-model-item>
   </a-form-model>
@@ -201,7 +212,6 @@ export default {
         for (let i in this.value) {
           this.exposeFields[i].value = this.value[i];
         }
-        console.log('[this.exposeFields]: ', this.exposeFields)
       },
       immediate: true,
       deep: true
@@ -209,16 +219,7 @@ export default {
   },
 
   methods: {
-    onSubmit() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
+
     resetForm() {
       this.$refs.ruleForm.resetFields();
     },
@@ -227,7 +228,6 @@ export default {
      * @description:
      */
     validateCurrentForm() {
-      console.log("trigger")
       return new Promise((resolve, reject) => {
         if (this.$refs.ruleForm) {
           this.$refs.ruleForm.validate(valid => {
