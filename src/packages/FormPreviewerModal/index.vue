@@ -5,7 +5,7 @@
     :visible="visible"
     switchFullscreen
     :title="title"
-    @ok="()=>{}"
+    @ok="() => {}"
     @cancel="closeModal"
     :maskClosable="false"
     :footer="footer"
@@ -26,7 +26,12 @@
       </a-tooltip>
     </div> -->
     <div style="padding: 20px" id="pdfDom">
-      <k-form-build @mount="handleMount" :value="formInfo" :disabled="allDisabled" ref="kfb" />
+      <k-form-build
+        @mount="handleMount"
+        :value="formInfo"
+        :disabled="allDisabled"
+        ref="kfb"
+      />
     </div>
   </j-modal>
 </template>
@@ -39,6 +44,8 @@ import JModal from '@/components/jeecg/JModal/index.vue';
 import { message } from 'ant-design-vue';
 //import '@/assets/SourceHanSansCN-Regular-normal'
 import { queryTemplate } from "@/api/platform/platformOpenAPI.js"
+import { parseFormWithNodeConfig } from '@/utils/kformRelatedUtils.js';
+
 export default {
   name: 'FormPreviewerModal',
   // mixins: [JeecgListMixin, activitiMixin],
@@ -71,7 +78,7 @@ export default {
   data() {
     return {
       // title:'',
-      visible:false,
+      visible: false,
       okBtnDisabled: true,
       allDisabled: true,
       formInfo: {}, //表单定义
@@ -87,12 +94,17 @@ export default {
 
     },
 
-    async show(id) {
-      const res = await queryTemplate({id})
-      if(res.status === 200){
-        const { formInfo } = res.data
-        this.formInfo = JSON.parse(formInfo)
-      }else{
+    async show(id, lang) {
+      const res = await queryTemplate({ id })
+      const { formInfo } = res.data
+      const formWithNodeConfig = {
+        formInfo,
+        formConfigs: null,
+      }
+      const parsedFormInfo = parseFormWithNodeConfig(formWithNodeConfig, lang);
+      if (res.status === 200) {
+        this.formInfo = parsedFormInfo
+      } else {
         this.$message.error(res.msg)
       }
       this.visible = true;
