@@ -187,7 +187,7 @@ export default {
       this.$router.push({
         path: '/platform/formPreviewer',
         query: {
-          type: PreviewFormType.VIEW,
+          type: PreviewFormType.COPY,
           publishId,
           procDefId,
           businessId,
