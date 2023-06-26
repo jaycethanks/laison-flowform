@@ -58,6 +58,27 @@ export const myCopy = (pageInfo) =>
     },
   });
 
+/**
+ * 统计列表，注：statsLevel放在条件中使用，没有默认就是3
+ * *1.发起人 （发起人、查看全部的人)
+ * *2.参与人 （发起人、参与人、查看全部的人)
+ * *3.全部   (发起人、发起人部门及其子部门、参与人、查看全部的人)
+ */
+export const myStats = (pageInfo) =>
+  axios({
+    url: `processOpenAPI/myStats/${pageInfo.pagination.current}/${pageInfo.pagination.pageSize}`,
+    method: 'post',
+    data: pageInfo.condition,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: pageInfo.uniTenantId,
+      bizToken: pageInfo.bizToken,
+    },
+  });
+
+
+
+
 export const myApplyList = (condition) =>
   axios({
     url: 'processOpenAPI/myApplyList',
@@ -187,3 +208,19 @@ export const getNodeCandidates = (condition) =>
       bizToken: condition.bizToken,
     },
   });
+
+// 获取table查询 options 项通用接口
+export const sampleCondition = (condition) =>
+  axios({
+    url: 'processOpenAPI/sampleCondition',
+    method: 'post',
+    data: {
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      uniTenantId: condition.uniTenantId,
+      bizToken: condition.bizToken,
+    },
+  });
+
+

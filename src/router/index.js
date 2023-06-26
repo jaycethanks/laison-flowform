@@ -379,6 +379,25 @@ const platformRoutes = [
         name: '抄送我的',
         component: () => import('@/views/Platform/WorkOrder/MyCopied/index.vue'),
       },
+      {
+        path: 'statistic',
+        icon: 'file-add', //antd-icon name
+        meta: {
+          title: '工单统计',
+        },
+        beforeEnter: (to, from, next) => {
+          if (!to.query.uniTenantId) {
+            next({
+              path: to.path,
+              query: { uniTenantId: uniTenantId, bizToken: bizToken },
+            });
+          } else {
+            next();
+          }
+        },
+        name: '抄送我的',
+        component: () => import('@/views/Platform/WorkOrder/Statistic/index.vue'),
+      },
     ],
   },
   {

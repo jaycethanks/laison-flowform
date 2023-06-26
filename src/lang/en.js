@@ -67,6 +67,8 @@ export default {
       taskEndTime: 'End Time',
       comment: 'Comment',
       taskDuration: 'Task Cost',
+      timeRange: 'Time Range',
+
     },
   },
   formPreview: {
@@ -78,9 +80,9 @@ export default {
     submitAndInitiateApply: 'Submit and Initiate',
     saveAsDraft: 'Save as Draft',
     flowApprove: 'Flow Approval',
-    getFormDataError:'Failed to get form data. Please check if the form is filled out correctly!',
-    checkFlowDiagram:'View Flowchart',
-    flowChart:'Flowchart'
+    getFormDataError: 'Failed to get form data. Please check if the form is filled out correctly!',
+    checkFlowDiagram: 'View Flowchart',
+    flowChart: 'Flowchart'
 
 
   },

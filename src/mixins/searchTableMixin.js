@@ -1,5 +1,6 @@
 import moment from 'moment'
 import 'moment/locale/zh-cn';
+import { sampleCondition } from "@/api/platform/processOpenAPI.js"
 
 import zh from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import ar from 'ant-design-vue/es/date-picker/locale/ar_EG';
@@ -39,7 +40,8 @@ export default {
       dataSource: null,
       timeRange_: [],
       locale_: en,
-      defaultStartBeforeMonth: 3
+      defaultStartBeforeMonth: 3,
+      sampleCondition_: {},// 通用 query 条件options 列表
     };
   },
   watch: {
@@ -61,6 +63,10 @@ export default {
     this.timeLocalInit()
     this.timeRangeInit()
   },
+  mounted() {
+    this._loadSampleCondition()
+
+  },
   methods: {
     moment,
     timeLocalInit() {
@@ -73,6 +79,30 @@ export default {
         .add(-this.defaultStartBeforeMonth, 'M')
       const endTime = this.moment()
       this.timeRange_ = [startTime, endTime]
+    },
+    async _loadSampleCondition() {
+      const res = await sampleCondition({
+        uniTenantId: this.computedQuery.uniTenantId,
+        bizToken: this.computedQuery.bizToken,
+      })
+      if (res.status === 200) {
+        this.sampleCondition_ = res.data
+        if (res.data.orderTypes) {
+          this.sampleCondition_.orderTypes = this.sampleCondition_.orderTypes.map(it => ({
+            label: it,
+            value: it
+          }))
+        }
+        if (res.data.applyList) {
+          this.sampleCondition_.applyList = this.sampleCondition_.applyList.map(it => ({
+            label: it.name,
+            value: it.id
+          }))
+        }
+
+      } else {
+        this.$message.error(res.msg)
+      }
     },
     momentToString(momentObj, dayEnd) {
       return dayEnd ?

@@ -18,16 +18,16 @@
           >
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('工单类型')">
+        <a-form-item :label="$t('common.table.orderType')">
           <a-select
             style="min-width: 100px"
-            v-model="pageInfo.condition.status"
+            v-model="pageInfo.condition.orderType"
             :allowClear="true"
-            :options="StatusOptions"
+            :options="sampleCondition_.orderTypes"
           >
           </a-select>
         </a-form-item>
-        <a-form-item :label="$t('时间范围')">
+        <a-form-item :label="$t('common.table.timeRange')">
           <a-range-picker
             :locale="locale_"
             v-model="timeRange_"
@@ -167,7 +167,7 @@ import PreviewFormType from "@/constants/PreviewFormType.js"
 import { SubmitInfoType } from "@/constants/SubmitInfoType.js"
 import ProcessResultType from "@/constants/ProcessResultType.js"
 import { ProcessStatusType, StatusOptions } from "@/constants/ProcessStatusType.js"
-import { myApply, remainderTask, cancelTask } from "@/api/platform/processOpenAPI.js"
+import { myApply, remainderTask, cancelTask, sampleCondition } from "@/api/platform/processOpenAPI.js"
 
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
@@ -294,6 +294,7 @@ export default {
         bizToken: this.computedQuery.bizToken,
       });
     },
+
     handleQuery() {
       this._loadData()
 

@@ -9,12 +9,12 @@
         <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
-        <a-form-item :label="$t('common.status')">
+        <a-form-item :label="$t('common.table.orderType')">
           <a-select
             style="min-width: 100px"
-            v-model="pageInfo.condition.status"
+            v-model="pageInfo.condition.orderType"
             :allowClear="true"
-            :options="StatusOptions"
+            :options="sampleCondition_.orderTypes"
           >
           </a-select>
         </a-form-item>
@@ -184,8 +184,10 @@ export default {
       uniTenantId: this.computedQuery.uniTenantId,
       bizToken: this.computedQuery.bizToken,
     });
+
   },
   methods: {
+
     handleQuery() {
       this.loadData({
         uniTenantId: this.computedQuery.uniTenantId,

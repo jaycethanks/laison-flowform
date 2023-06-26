@@ -69,6 +69,8 @@ export default {
       taskEndTime: 'Hora de término da tarefa',
       comment: 'Comentário',
       taskDuration: 'Custo da tarefa',
+      timeRange: 'Intervalo de tempo',
+
     },
   },
   formPreview: {
@@ -80,9 +82,9 @@ export default {
     submitAndInitiateApply: 'Enviar e iniciar',
     saveAsDraft: 'Salvar como rascunho',
     flowApprove: 'Aprovação de fluxo',
-    getFormDataError:'Erro ao obter dados do formulário. Verifique se o formulário foi preenchido corretamente!',
-    checkFlowDiagram:'Ver Fluxograma',
-    flowChart:'Fluxograma'
+    getFormDataError: 'Erro ao obter dados do formulário. Verifique se o formulário foi preenchido corretamente!',
+    checkFlowDiagram: 'Ver Fluxograma',
+    flowChart: 'Fluxograma'
 
 
 

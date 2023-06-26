@@ -9,12 +9,12 @@
         <a-form-item :label="$t('common.table.businessId')">
           <a-input v-model="pageInfo.condition.name"></a-input>
         </a-form-item>
-        <a-form-item :label="$t('common.status')">
+        <a-form-item :label="$t('common.table.orderType')">
           <a-select
             style="min-width: 100px"
-            v-model="pageInfo.condition.status"
+            v-model="pageInfo.condition.orderType"
             :allowClear="true"
-            :options="StatusOptions"
+            :options="sampleCondition_.orderTypes"
           >
           </a-select>
         </a-form-item>
@@ -88,6 +88,7 @@ import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
 // import submitInfoModal from "@/components/FlowForm/SubmitInfoModal/submitInfoModal.vue"
 import { deleteById } from "@/api/platform/businessOpenAPI.js"
 import handleLanguage from "@/mixins/handleLanguage.js"
+import { sampleCondition } from "@/api/platform/processOpenAPI.js"
 
 export default {
   name: "myCopy",

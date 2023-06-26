@@ -69,6 +69,8 @@ export default {
       taskEndTime: 'Heure de fin de la tâche',
       comment: 'Commentaire',
       taskDuration: 'Coût de la tâche',
+      timeRange: 'Plage horaire',
+
     },
   },
   formPreview: {
@@ -80,9 +82,9 @@ export default {
     submitAndInitiateApply: 'Soumettre et initier',
     saveAsDraft: 'Enregistrer en tant que brouillon',
     flowApprove: 'Approbation des flux',
-    getFormDataError:'Erreur lors de la récupération des données du formulaire. Veuillez vérifier si le formulaire est rempli correctement!',
-    checkFlowDiagram:'Voir le Diagramme de Flux',
-    flowChart:'Diagramme de Flux'
+    getFormDataError: 'Erreur lors de la récupération des données du formulaire. Veuillez vérifier si le formulaire est rempli correctement!',
+    checkFlowDiagram: 'Voir le Diagramme de Flux',
+    flowChart: 'Diagramme de Flux'
 
 
   },
