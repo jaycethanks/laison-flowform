@@ -73,6 +73,7 @@ export const myStats = (pageInfo) =>
       'Content-Type': 'application/json;charset=UTF-8',
       uniTenantId: pageInfo.uniTenantId,
       bizToken: pageInfo.bizToken,
+      statsLevel: pageInfo.statsLevel,
     },
   });
 

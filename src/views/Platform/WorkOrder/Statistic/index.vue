@@ -202,7 +202,8 @@ export default {
         bizToken: {
           type: String
         },
-        lang: 'zh'
+        lang: 'zh',
+        statsLevel: 3
       },
     };
   },
@@ -216,6 +217,7 @@ export default {
       this.loadData({
         uniTenantId: this.computedQuery.uniTenantId,
         bizToken: this.computedQuery.bizToken,
+        statsLevel: this.computedQuery.statsLevel,
       });
     },
     handleQuery() {
