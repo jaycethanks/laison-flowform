@@ -101,20 +101,16 @@
   </RootContainer>
 </template>
 <script>
-import Container from "@/components/base/Container"
 import RootContainer from "@/components/base/RootContainer"
-import platformRegistrationModal from '@/views/System/PlatformManagement/PlatformRegistration/platformRegistrationModal.vue';
 import searchTableMixin from '@/mixins/searchTableMixin.js';
-import { findPage, saveOrUpdate } from '@/api/system/platformManage.js';
 import handleQuery from '@/mixins/handleQuery.js';
+import Container from "@/components/base/Container"
 import PreviewFormType from "@/constants/PreviewFormType.js"
-import { SubmitInfoType } from "@/constants/SubmitInfoType.js"
 import ProcessResultType from "@/constants/ProcessResultType.js"
 import { ProcessStatusType, StatusOptions } from "@/constants/ProcessStatusType.js"
 import { myStats, remainderTask, cancelTask } from "@/api/platform/processOpenAPI.js"
 
 import ffStatus from "@/components/FlowForm/ffStatus/index.vue"
-import { deleteById, submit } from "@/api/platform/businessOpenAPI.js"
 import handleLanguage from "@/mixins/handleLanguage.js"
 
 
@@ -184,18 +180,7 @@ export default {
         },
       ]
     },
-    FN: function () {
-      return {
-        [SubmitInfoType.APPLY]: {
-          fn: submit,
-          subTitle: this.$t('apply.initiateApply')
-        },
-        [SubmitInfoType.CANCELTASK]: {
-          fn: cancelTask,
-          subTitle: this.$t('apply.drawBackApply')
-        },
-      }
-    }
+
   },
   data() {
     return {

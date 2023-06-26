@@ -252,6 +252,8 @@ export const systemRoutes = [
       { name: 'myTodo', redirect: '/platform/workorder/mytodo', path: 'myTodo' },
       { name: 'myDone', redirect: '/platform/workorder/mydone', path: 'myDone' },
       { name: 'myCopied', redirect: '/platform/workorder/mycopied', path: 'myCopied' },
+      { name: 'statistic', redirect: '/platform/workorder/statistic', path: 'statistic' },
+
     ],
   },
   {
@@ -381,7 +383,7 @@ const platformRoutes = [
       },
       {
         path: 'statistic',
-        icon: 'file-add', //antd-icon name
+        icon: 'bar-chart', //antd-icon name
         meta: {
           title: '工单统计',
         },
@@ -395,7 +397,7 @@ const platformRoutes = [
             next();
           }
         },
-        name: '抄送我的',
+        name: '工单统计',
         component: () => import('@/views/Platform/WorkOrder/Statistic/index.vue'),
       },
     ],
