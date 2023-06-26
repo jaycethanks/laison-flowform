@@ -585,19 +585,51 @@ export const customComponents = {
   title: '自定义组件',
   list: cuscomponents.map((cuscomponent) => {
     const requiredFields = ['component', 'label', 'type'];
-    console.log('[cuscomponent]: ', cuscomponent);
+    const preDefinedTypes = [
+      'input',
+      'textarea',
+      'date',
+      'time',
+      'number',
+      'radio',
+      'checkbox',
+      'select',
+      'rate',
+      'switch',
+      'slider',
+      'uploadImg',
+      'uploadFile',
+      'cascader',
+      'treeSelect',
+      'batch',
+      'editor',
+      'selectInputList',
+      'button',
+      'alert',
+      'text',
+      'html',
+      'divider'
+    ]
     requiredFields.forEach((field) => {
       if (!cuscomponent[field]) {
         throw Error(
           `检测到你的自定义组件不符合必要注册条件: 以下字段为必要字段,不可为空,参考信息:\n
 ${requiredFields
-  .map((field) => {
-    return `${field}: ${field === 'component' ? cuscomponent['component']?.__file || undefined : cuscomponent[field]}`;
-  })
-  .join('\n')} 均为必须字段.\n`,
+            .map((field) => {
+              return `${field}: ${field === 'component' ? cuscomponent['component']?.__file || undefined : cuscomponent[field]}`;
+            })
+            .join('\n')} 均为必须字段.\n`,
         );
       }
+
+
     });
+
+    if (preDefinedTypes.includes(cuscomponent.type)) {
+      throw Error(`检测到你的自定义组件 ${cuscomponent.label} 中导出的type 含有预定义的组件类型， 请检查并修改. \n`)
+    }
+
+
     //! @jayce 23/04/23-14:37:19 :这里的文件是异步加载的,仅用户点击该控件时,才会去渲染,
     //! 所不不能在这里拿到自定义组件中的 $data.exposeFields, 应该在用户点击控件的时候,去handle
     //! 具体的在 src/lib/kform/KFormItem/customComponent.vue mounted 阶段

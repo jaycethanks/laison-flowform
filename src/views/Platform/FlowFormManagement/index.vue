@@ -271,7 +271,6 @@ import API from '@/api/ErpConfig.js';
 import FormPreviewerModal from '@/packages/FormPreviewerModal/index.vue';
 import ffIcon from '@/components/FlowForm/ffIcon/index.vue';
 import FlowFormTemplatesSelectModal from '@/components/FlowForm/FlowFormTemplatesSelectModal/index.vue';
-import _mock from './_mock';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import Container from '@/components/base/Container/index.vue';
 import TitleRow from '@/components/base/TitleRow/index.vue';
