@@ -1,12 +1,8 @@
-import TestComponent from './examples/TestComponent';
 import CustomFields from './CustomFields';
-import CustomeForm  from "./CustomeForm"
-import FieldsControl from './examples/exampleComponentForFieldsControl';
+import CustomeForm from "./CustomeForm"
 const cusComps = [];
 
-cusComps.push(TestComponent);
 cusComps.push(CustomFields);
-cusComps.push(FieldsControl);
 cusComps.push(CustomeForm);
 
 

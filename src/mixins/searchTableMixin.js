@@ -61,10 +61,11 @@ export default {
   },
   created() {
     this.timeLocalInit()
-    this.timeRangeInit()
   },
   mounted() {
     this._loadSampleCondition()
+    this.timeRangeInit()
+
 
   },
   methods: {
@@ -75,8 +76,11 @@ export default {
     },
     timeRangeInit() {
       //初始化查询条件的时间范围
+      const recent = Number(this.computedQuery.recent || this.defaultStartBeforeMonth)
+      if (isNaN(recent)) { this.$message.error('recent query param should be a number !') }
+      console.log('[recent]: ', recent)
       const startTime = this.moment()
-        .add(-this.defaultStartBeforeMonth, 'M')
+        .add(-recent, 'M')
       const endTime = this.moment()
       this.timeRange_ = [startTime, endTime]
     },

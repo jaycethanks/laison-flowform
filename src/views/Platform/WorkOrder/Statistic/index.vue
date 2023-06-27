@@ -203,7 +203,9 @@ export default {
           type: String
         },
         lang: 'zh',
-        statsLevel: 3
+        statsLevel: 3,
+        recent: 3,//时间过滤器默认间隔
+
       },
     };
   },

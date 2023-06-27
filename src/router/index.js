@@ -234,15 +234,15 @@ export const systemRoutes = [
 
     // redirect: '/test',
     children: [
-      { name: 'test', redirect: '/platform/test', path: 'test' },
-      { name: 'formDesign', redirect: '/platform/formDesign', path: 'formDesign' },
-      { name: 'formPreviewer', redirect: '/platform/formPreviewer', path: 'formPreviewer' },
-      { name: 'flowPreviewer', redirect: '/platform/flowPreviewer', path: 'flowPreviewer' },
-      {
-        name: 'flowformDesigner',
-        path: 'flowformDesigner',
-        redirect: '/platform/flowformDesigner',
-      },
+      // { name: 'test', redirect: '/platform/test', path: 'test' },
+      // { name: 'formDesign', redirect: '/platform/formDesign', path: 'formDesign' },
+      // { name: 'formPreviewer', redirect: '/platform/formPreviewer', path: 'formPreviewer' },
+      // { name: 'flowPreviewer', redirect: '/platform/flowPreviewer', path: 'flowPreviewer' },
+      // {
+      //   name: 'flowformDesigner',
+      //   path: 'flowformDesigner',
+      //   redirect: '/platform/flowformDesigner',
+      // },
       {
         name: 'flowformManagement',
         path: 'flowformManagement',

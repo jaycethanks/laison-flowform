@@ -280,7 +280,8 @@ export default {
         bizToken: {
           type: String
         },
-        lang: 'zh'
+        lang: 'zh',
+        recent: 3,//时间过滤器默认间隔
       },
     };
   },

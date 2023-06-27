@@ -610,6 +610,9 @@ export const customComponents = {
       'html',
       'divider'
     ]
+    /**
+     * 比填写字段检查
+     */
     requiredFields.forEach((field) => {
       if (!cuscomponent[field]) {
         throw Error(
@@ -621,12 +624,21 @@ ${requiredFields
             .join('\n')} 均为必须字段.\n`,
         );
       }
-
-
     });
 
+    /**
+     * 预定义组件类型检查
+     */
     if (preDefinedTypes.includes(cuscomponent.type)) {
       throw Error(`检测到你的自定义组件 ${cuscomponent.label} 中导出的type 含有预定义的组件类型， 请检查并修改. \n`)
+    }
+
+    /**
+     * options 字段补齐
+     */
+
+    if (typeof cuscomponent.options === 'undefined') {
+      cuscomponent.options = {}
     }
 
 

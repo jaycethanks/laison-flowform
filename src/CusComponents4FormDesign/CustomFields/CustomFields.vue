@@ -64,6 +64,9 @@ export default {
       immediate: true,
       deep: true,
     }
-  }
+  },
+  created() {
+    console.log('[this]: ', this)
+  },
 };
 </script>

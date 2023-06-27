@@ -40,12 +40,6 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   (response) => {
-    // console.log('[response]: ', response);
-    // if (process.env.NODE_ENV === 'mock') {
-    //   return injectMock();
-    // }
-    // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
-    // 否则的话抛出错误
     // 624: token 失效
     if (response.data.status === 624) {
       const {
@@ -73,11 +67,7 @@ service.interceptors.response.use(
   // 服务器状态码不是2开头的的情况
   // 然后根据返回的状态码进行一些操作，例如登录过期提示，错误提示等等
   (error) => {
-    // Message({
-    //   message: error.response.statusText,
-    //   type: 'error',
-    //   duration: 5 * 1000,
-    // });
+    $message.error(`Network Error！ Please try again`);
   },
 );
 

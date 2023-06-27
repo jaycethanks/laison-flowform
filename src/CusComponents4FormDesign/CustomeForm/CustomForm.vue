@@ -200,7 +200,6 @@ export default {
         for (let i in this.exposeFields) {
           form[i] = this.exposeFields[i].value;
         }
-        console.log('[form]: ', form)
         this.$emit("change", form)
       },
       immediate: true,
