@@ -22,7 +22,11 @@
           : formConfig.wrapperCol
         : {}
     "
-    :style="formConfig.layout === 'horizontal' && formConfig.labelLayout === 'flex' ? { display: 'flex' } : {}"
+    :style="
+      formConfig.layout === 'horizontal' && formConfig.labelLayout === 'flex'
+        ? { display: 'flex' }
+        : {}
+    "
   >
     <component
       ref="actualCusComp"
@@ -36,9 +40,14 @@
       :sunOfProps="sunOfProps"
       :stockRecord="stockRecord"
       :rootCompent="rootCompent"
+      :lang="currentLang"
       :conditions="cd"
       :options="record.options"
-      :height="typeof record.options.height !== 'undefined' ? record.options.height : ''"
+      :height="
+        typeof record.options.height !== 'undefined'
+          ? record.options.height
+          : ''
+      "
       v-decorator="[
         record.model,
         {
@@ -56,7 +65,7 @@ export default {
   props: ['record', 'formConfig', 'disabled', 'dynamicData', 'sunOfProps', 'stockRecord', 'rootCompent', 'showType'],
   watch: {
     disabled: {
-      handler(val, oldVal) {},
+      handler(val, oldVal) { },
       deep: true,
       //确认是否以当前的初始值执行handler的函数。
       immediate: true,
@@ -78,6 +87,9 @@ export default {
       window.re = customComponentList[this.record];
       window.cm = customComponentList[this.record.type];
       return customComponentList[this.record.type];
+    },
+    currentLang() {
+      return cusLocalStorage.getItem('business_system', 'lang');
     },
     cd() {
       try {
