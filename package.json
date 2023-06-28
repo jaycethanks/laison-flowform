@@ -2,10 +2,9 @@
   "name": "laison-flowform",
   "version": "0.0.1",
   "private": false,
-  "main": "dist/laison-flowform.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib index.js --name laison-flowform --dest dist"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "ant-design-vue": "1.7.8",

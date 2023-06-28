@@ -6,6 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = defineConfig({
+  publicPath: '/',
   pages: {
     index: {
       entry: 'playground/main.js',
