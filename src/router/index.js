@@ -9,6 +9,7 @@ import FormDesigner from '@/packages/FormDesigner';
 import FlowFormDesignerType from '@/constants/FlowFormDesignerType.js';
 import Test from '../../playground/Test.vue';
 import getHeightPostMessage from '@/utils/getHeightPostMessage.js';
+import $store from "@/store/index.js"
 Vue.use(VueRouter);
 // 测试用业务系统token
 const bizToken = 'd3affb4e-e977-41d0-bfc7-7ae69fa35a3c';
@@ -449,10 +450,23 @@ const router = new VueRouter({
 
 export default router;
 
+function logoutHandle() {
+  $store.commit('SET_TOKEN', undefined);
+  $store.commit('SET_USER', null);
+  router.push('/login');
+}
+function checkLogin() {
+  const token = cusLocalStorage.getItem('system', 'access_token');
+  return !!token
+}
 // 动态设置标题
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = to.meta.title;
+    // document.title = to.meta.title;
+  }
+  // 如果是跳转到系统页面， 检查是否登陆
+  if (/^\/system(\/.*)*$/.test(to.path) && !checkLogin()) {
+    logoutHandle()
   }
   // bugfix: 解决从 系统模板编辑 直接通过 menu 跳转到 新增模板时，路由守卫beforeEnter 不会触发的问题
   // 这里直接禁止重复跳转
