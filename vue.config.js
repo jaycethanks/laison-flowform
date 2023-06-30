@@ -70,7 +70,7 @@ module.exports = defineConfig({
       },
       '/api/file': {
         // target: 'http://127.0.0.1:2456', // 请求本地 需要jeecg-boot后台项目
-        target: 'http://192.168.3.47:80/file', // 请求本地 需要jeecg-boot后台项目
+        target: 'http://192.168.3.47:4000/file', // 请求本地 需要jeecg-boot后台项目
         // target: 'http://192.168.0.166:11180', // 请求本地 需要jeecg-boot后台项目
         changeOrigin: true,
         pathRewrite: {

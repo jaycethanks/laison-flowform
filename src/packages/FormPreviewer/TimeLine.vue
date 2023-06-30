@@ -45,12 +45,10 @@
         <div v-if="operateItem.enclosurePaths" class="addons">
           <div
             class="addon-item"
-            v-for="addon in circulateFiles(operateItem.enclosurePaths)"
+            v-for="(addon, index) in circulateFiles(operateItem.enclosurePaths)"
             :key="addon.name"
           >
-            <a href="#" @click="download(addon.path, addon.name)">{{
-              addon.name
-            }}</a>
+            <ffFilePreviewer :label="addon.name" :url="'/file' + addon.path" />
           </div>
         </div>
 
@@ -80,10 +78,10 @@ import SvgIconPersonPin from "@/assets/svgIcon/SvgIconPersonPin.vue"
 import SvgIconLinkedFiles from "@/assets/svgIcon/SvgIconLinkedFiles.vue"
 import SvgIconFlow from "@/assets/svgIcon/SvgIconFlow.vue"
 import FlowPreviewer from "@/packages/FlowPreviewer/index.vue"
-import { downloadFile } from "@/utils/downloadFile.js"
 import baseStyle from '@/components/base/baseStyle'
 import JModal from "@/components/jeecg/JModal/index.vue"
 import { taskProgress } from "@/api/platform/processOpenAPI.js"
+import ffFilePreviewer from "@/components/FlowForm/ffFilePreviewer/index.vue"
 const _fileUrl = process.env.VUE_APP_FILE_URL;
 const colors = {
   create: baseStyle.$primary,
@@ -94,8 +92,6 @@ const colors = {
   change: baseStyle.$dark,
   todo: baseStyle.$warning
 }
-
-
 export default {
   props: {
     operations: {
@@ -136,12 +132,25 @@ export default {
     SvgIconLinkedFiles,
     SvgIconFlow,
     JModal,
-    FlowPreviewer
+    FlowPreviewer,
+    ffFilePreviewer
   },
   created() {
     this.loadOperationRecord()
   },
   methods: {
+    // handleAddonClick(addon) {
+    //   if (addon.isImg) {
+    //     const url = _fileUrl + addon.path;
+    //     this.handlePreview(url)
+    //   } else {
+    //     this.download(addon.path, addon.name)
+    //   }
+    // },
+    // handleCancel() {
+    //   this.previewVisible = false;
+    // },
+
     circulateTaskType(typeString) {
       return this.taskTypes[typeString]
     },
@@ -168,33 +177,12 @@ export default {
     },
     circulateFiles(filePaths) {
       if (!filePaths) return [];
-      return filePaths.split(',').map(path => ({
+      return filePaths.split('|').map(path => ({
         name: path.substring(path.lastIndexOf('/') + 1),
-        path
+        path,
       }))
     },
-    download(path, fileName) {
-      const link = document.createElement('a')
-      const url = _fileUrl + path;
-      // const url = "http://192.168.3.47/file/1314/1547/wallhaven-578d73.jpg"
 
-      downloadFile(url, fileName)
-
-      return
-      link.style.display = 'none'
-      link.setAttribute('target', '_blank')
-      /**
-       * download的属性是HTML5新增的属性
-       * href属性的地址必须是非跨域的地址，如果引用的是第三方的网站或者说是前后端分离的项目(调用后台的接口)，这时download就会不起作用。
-       * 此时，如果是下载浏览器无法解析的文件，例如.exe,.xlsx..那么浏览器会自动下载，但是如果使用浏览器可以解析的文件，比如.txt,.png,.pdf....浏览器就会采取预览模式
-       * 所以，对于.txt,.png,.pdf等的预览功能我们就可以直接不设置download属性(前提是后端响应头的Content-Type: application/octet-stream，如果为application/pdf浏览器则会判断文件为 pdf ，自动执行预览的策略)
-       */
-      fileName && link.setAttribute('download', fileName)
-      link.href = url
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    }
   }
 
 }

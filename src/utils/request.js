@@ -27,6 +27,12 @@ service.interceptors.request.use(
         config.headers['Authorization'] = null;
         config.headers['language'] = lang;
       }
+      // /api/file 文件下载， 去除 /api baseUrl
+      // debugger
+      // if (/^\/api\/file\//.test(config.url)) {
+      //   console.log('[config]: ', config)
+
+      // }
       return config;
     } else {
       return config;
