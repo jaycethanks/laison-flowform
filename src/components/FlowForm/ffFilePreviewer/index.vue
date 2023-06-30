@@ -21,14 +21,23 @@
       :closable="false"
       @cancel="handleCancel"
     >
-      <img :alt="label" style="max-width: 80vw; max-height: 80vh" :src="url" />
+      <!-- svg 图片没有高度会直接坍塌 -->
+      <img
+        :alt="label"
+        style="
+          min-height: 200px;
+          min-width: 200px;
+          max-width: 80vw;
+          max-height: 80vh;
+        "
+        :src="url"
+      />
       <!-- <img alt="example" :src="url" /> -->
     </a-modal>
   </div>
 </template>
 <script>
 import { downloadFile } from "@/utils/downloadFile.js"
-const _fileUrl = process.env.VUE_APP_FILE_URL;
 
 export default {
   name: "ffFilePreviewer",
@@ -65,10 +74,8 @@ export default {
     },
     download(path, fileName) {
       // const link = document.createElement('a')
-      const url = _fileUrl + path;
       // const url = "http://192.168.3.47/file/1314/1547/wallhaven-578d73.jpg"
-
-      downloadFile(url, fileName)
+      downloadFile(path, fileName)
 
       return
       link.style.display = 'none'
@@ -97,9 +104,9 @@ export default {
   align-items: center;
 
   .viewer-img-box {
-    width: 60px;
-    height: 60px;
-    padding: 4px;
+    width: 50px;
+    height: 50px;
+    padding: 8px;
     position: relative;
     .img {
       height: 100%;
